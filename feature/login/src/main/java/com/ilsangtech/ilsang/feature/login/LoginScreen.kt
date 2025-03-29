@@ -39,7 +39,7 @@ fun LoginTitle() {
                     color = title01.color
                 )
             ) {
-                append("특별한 하루를 위한\n작은 도전,")
+                append("특별한 하루를 위한\n작은 도전, ")
                 withStyle(SpanStyle(color = primary)) {
                     append("일")
                 }
