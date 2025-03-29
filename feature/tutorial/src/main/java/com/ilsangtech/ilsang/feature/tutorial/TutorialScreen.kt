@@ -5,9 +5,12 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,7 +32,13 @@ fun TutorialScreen(navigateToHome: () -> Unit) {
             .fillMaxSize()
             .statusBarsPadding(),
     ) {
+        val pagerState = rememberPagerState(
+            initialPage = 0,
+            pageCount = { pages.size }
+        )
+
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
             SkipButton(
@@ -41,9 +50,40 @@ fun TutorialScreen(navigateToHome: () -> Unit) {
                     ),
                 onClick = navigateToHome
             )
+            Spacer(Modifier.weight(1f))
+            TutorialPager(
+                pages = pages,
+                pagerState = pagerState,
+            )
+            Spacer(Modifier.weight(1f))
+            TutorialPageIndicator(pagerState)
+            Spacer(Modifier.height(43.dp))
+            TutorialButton(
+                pagerState = pagerState,
+                onClick = navigateToHome
+            )
         }
     }
 }
+
+private val pages = listOf(
+    TutorialPage(
+        title = "원하는 퀘스트를 선택하세요",
+        imageRes = R.drawable.tutorial_step_1,
+        imageWidthDp = 225.92.dp
+    ),
+    TutorialPage(
+        title = "사진을 촬영해 주세요",
+        imageRes = R.drawable.tutorial_step_2,
+        imageWidthDp = 192.dp
+    ),
+    TutorialPage(
+        title = "사진을 찍으면 퀘스트 완료!",
+        imageRes = R.drawable.tutorial_step_3,
+        imageWidthDp = 192.dp
+    ),
+)
+
 
 @Composable
 private fun SkipButton(
