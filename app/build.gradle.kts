@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:login"))
+
     implementation(libs.androidx.core.splashscreen)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
