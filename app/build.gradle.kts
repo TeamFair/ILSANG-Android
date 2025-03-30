@@ -41,7 +41,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:designsystem"))
     implementation(project(":feature:login"))
+    implementation(project(":feature:tutorial"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
