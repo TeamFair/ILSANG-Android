@@ -29,10 +29,7 @@ import com.ilsangtech.ilsang.designsystem.theme.tapBoldTextStyle
 @Composable
 fun TutorialScreen(navigateToHome: () -> Unit) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .navigationBarsPadding(),
+        modifier = Modifier.fillMaxSize()
     ) {
         val pagerState = rememberPagerState(
             initialPage = 0,
@@ -41,7 +38,10 @@ fun TutorialScreen(navigateToHome: () -> Unit) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding(),
         ) {
             SkipButton(
                 modifier = Modifier
@@ -52,14 +52,15 @@ fun TutorialScreen(navigateToHome: () -> Unit) {
                     ),
                 onClick = navigateToHome
             )
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(48.dp))
             TutorialPager(
                 pages = pages,
                 pagerState = pagerState,
+                modifier = Modifier.weight(1f)
             )
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(45.dp))
             TutorialPageIndicator(pagerState)
-            Spacer(Modifier.height(43.dp))
+            Spacer(Modifier.height(45.dp))
             TutorialButton(
                 pagerState = pagerState,
                 onClick = navigateToHome
