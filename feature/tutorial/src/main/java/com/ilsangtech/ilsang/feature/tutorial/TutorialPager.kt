@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,10 +52,10 @@ fun TutorialPager(
     pagerState: PagerState,
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HorizontalPager(
-            modifier = modifier,
             state = pagerState
         ) { pageIndex ->
             Column(
@@ -69,9 +70,9 @@ fun TutorialPager(
                 )
                 Spacer(Modifier.height(35.dp))
                 Image(
-                    modifier = Modifier.width(pages[pageIndex].imageWidthDp),
+                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = pages[pageIndex].imageRes),
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Fit,
                     contentDescription = null,
                 )
             }
