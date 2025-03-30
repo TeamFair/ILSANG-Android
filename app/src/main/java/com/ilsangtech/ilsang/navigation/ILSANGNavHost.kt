@@ -24,7 +24,9 @@ fun ILSANGNavHost(
 
         composable("tutorial") {
             TutorialScreen {
-                navController.navigate("home")
+                navController.navigate("home") {
+                    popUpTo("tutorial") { inclusive = true }
+                }
             }
         }
         composable("home") {
