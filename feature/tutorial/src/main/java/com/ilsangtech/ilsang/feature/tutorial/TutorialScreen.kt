@@ -1,0 +1,120 @@
+package com.ilsangtech.ilsang.feature.tutorial
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.ui.R.drawable.right_icon
+import com.ilsangtech.ilsang.designsystem.theme.gray300
+import com.ilsangtech.ilsang.designsystem.theme.tapBoldTextStyle
+
+@Composable
+fun TutorialScreen(navigateToHome: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
+    ) {
+        val pagerState = rememberPagerState(
+            initialPage = 0,
+            pageCount = { pages.size }
+        )
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            SkipButton(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(
+                        top = 20.dp,
+                        end = 20.dp
+                    ),
+                onClick = navigateToHome
+            )
+            Spacer(Modifier.weight(1f))
+            TutorialPager(
+                pages = pages,
+                pagerState = pagerState,
+            )
+            Spacer(Modifier.weight(1f))
+            TutorialPageIndicator(pagerState)
+            Spacer(Modifier.height(43.dp))
+            TutorialButton(
+                pagerState = pagerState,
+                onClick = navigateToHome
+            )
+        }
+    }
+}
+
+private val pages = listOf(
+    TutorialPage(
+        title = "원하는 퀘스트를 선택하세요",
+        imageRes = R.drawable.tutorial_step_1,
+        imageWidthDp = 225.92.dp
+    ),
+    TutorialPage(
+        title = "사진을 촬영해 주세요",
+        imageRes = R.drawable.tutorial_step_2,
+        imageWidthDp = 192.dp
+    ),
+    TutorialPage(
+        title = "사진을 찍으면 퀘스트 완료!",
+        imageRes = R.drawable.tutorial_step_3,
+        imageWidthDp = 192.dp
+    ),
+)
+
+
+@Composable
+private fun SkipButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier.clickable(
+            onClick = onClick,
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null
+        ),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "SKIP",
+                style = tapBoldTextStyle,
+                color = gray300
+            )
+            Icon(
+                painter = painterResource(id = right_icon),
+                contentDescription = null,
+                tint = gray300
+            )
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun TutorialScreenPreview() {
+    TutorialScreen {}
+}
