@@ -39,7 +39,7 @@ import com.ilsangtech.ilsang.designsystem.theme.secondary
 import com.ilsangtech.ilsang.designsystem.theme.title01
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(login: () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +50,8 @@ fun LoginScreen() {
             Spacer(Modifier.weight(1f))
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 LoginTitle()
                 Spacer(Modifier.height(28.dp))
                 AutoSlidePager(
@@ -67,7 +68,7 @@ fun LoginScreen() {
             }
 
             Spacer(Modifier.weight(1f))
-            LoginButton { }
+            LoginButton(login = login)
             Spacer(Modifier.height(38.dp))
         }
     }
@@ -141,7 +142,7 @@ private val loginButtonTextStyle = TextStyle(
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen {}
 }
 
 @Preview(showBackground = true)
