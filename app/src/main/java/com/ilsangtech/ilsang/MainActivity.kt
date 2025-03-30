@@ -6,23 +6,17 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.compose.ui.text.style.TextAlign
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
+import androidx.lifecycle.lifecycleScope
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -30,7 +24,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.ilsangtech.ilsang.feature.login.LoginScreen
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -46,41 +39,31 @@ class MainActivity : ComponentActivity() {
         auth = Firebase.auth
 
         setContent {
-            val coroutineScope = rememberCoroutineScope()
-            val googleIdOption = GetSignInWithGoogleOption.Builder(
-                serverClientId = getString(R.string.default_web_client_id)
-            ).build()
-            val request = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
             var currentUser by remember { mutableStateOf(auth.currentUser) }
-            if (currentUser == null) {
-                LoginScreen {
-                    coroutineScope.launch {
-                        try {
-                            val result = credentialManager.getCredential(
-                                request = request,
-                                context = this@MainActivity
-                            )
-                            handleSignIn(result) {
-                                currentUser = auth.currentUser
-                            }
+            ILSANGApp(
+                currentUser = currentUser,
+                login = { login { currentUser = auth.currentUser } }
+            )
+        }
+    }
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "로그인 상태",
-                        textAlign = TextAlign.Center
-                    )
-                }
+    private fun login(onLoginSuccess: () -> Unit) {
+        val googleIdOption = GetSignInWithGoogleOption.Builder(
+            serverClientId = getString(R.string.default_web_client_id)
+        ).build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@MainActivity
+                )
+                handleSignIn(result) { onLoginSuccess() }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

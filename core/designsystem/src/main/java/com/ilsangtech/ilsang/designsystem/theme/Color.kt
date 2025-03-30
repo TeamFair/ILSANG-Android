@@ -22,5 +22,6 @@ val background = Color(0xFFF6F6F6)
 val ilsangColors = lightColorScheme(
     primary = primary,
     secondary = secondary,
-    background = background
+    background = background,
+    surface = background,
 )
