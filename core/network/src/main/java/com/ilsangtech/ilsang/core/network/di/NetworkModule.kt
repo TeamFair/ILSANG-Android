@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.di
 
 import com.ilsangtech.ilsang.core.network.BuildConfig
+import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,11 @@ object NetworkModule {
                 Json.asConverterFactory(MediaType.get("application/json"))
             )
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBannerApiService(retrofit: Retrofit): BannerApiService {
+        return retrofit.create(BannerApiService::class.java)
     }
 }
