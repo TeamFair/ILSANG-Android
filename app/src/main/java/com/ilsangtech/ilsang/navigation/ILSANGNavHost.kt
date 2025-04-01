@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.navigation
 
-import HomeScreen
+import com.ilsangtech.ilsang.feature.home.HomeScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
