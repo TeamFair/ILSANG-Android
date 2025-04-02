@@ -5,6 +5,7 @@ firebaseBom = "33.11.0"
 googleid = "1.1.1"
 hiltAndroid = "2.53.1"
 hiltAndroidCompiler = "2.51.1"
+hiltNavigationComposeVersion = "1.2.0"
 kotlinxSerializationJson = "1.8.1"
 navigationCompose = "2.8.9"
 retrofit = "2.11.0"
@@ -34,6 +35,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
