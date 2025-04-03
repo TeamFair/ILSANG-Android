@@ -2,7 +2,6 @@ package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.banner.BannerResponse
 import com.ilsangtech.ilsang.core.network.model.banner.BannerSearchRequest
-import com.ilsangtech.ilsang.core.network.model.banner.NetworkBanner
 import retrofit2.http.GET
 import retrofit2.http.Query
 
