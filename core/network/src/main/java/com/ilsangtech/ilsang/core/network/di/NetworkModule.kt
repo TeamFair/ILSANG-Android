@@ -8,7 +8,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -21,9 +23,15 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
+            .client(OkHttpClient.Builder()
+                .addNetworkInterceptor(
+                    HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    }
+                ).build())
             .baseUrl("${BuildConfig.SERVER_URL}/api/")
             .addConverterFactory(
-                Json.asConverterFactory(MediaType.get("application/json"))
+                Json.asConverterFactory("application/json".toMediaType())
             )
             .build()
     }
