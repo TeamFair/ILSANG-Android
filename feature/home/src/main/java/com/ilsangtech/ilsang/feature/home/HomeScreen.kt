@@ -5,58 +5,61 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 
 @Composable
 fun HomeScreen() {
-    val homeTaps = HomeTap.entries
-    var selectedTap by remember { mutableStateOf(homeTaps.first()) }
-
+    val navController = rememberNavController()
     Scaffold(
         bottomBar = {
-            HomeBottomBar(
-                selectedTap = selectedTap,
-                onTabSelected = { selectedTap = it }
-            )
+            HomeBottomBar(navController)
         }
     ) { paddingValues ->
-        Surface(modifier = Modifier.padding(
-            start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
-            end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
-            bottom = paddingValues.calculateBottomPadding()
-        )) {
-            if (selectedTap == HomeTap.Home) {
+        NavHost(
+            modifier = Modifier.padding(
+                start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                bottom = paddingValues.calculateBottomPadding()
+            ),
+            navController = navController,
+            startDestination = HomeTap.Home.name
+        ) {
+            composable(HomeTap.Home.name) {
                 HomeTapScreen()
-            } else {
-                // 다른 탭에 대한 UI
             }
+            composable(HomeTap.Quest.name) {}
+            composable(HomeTap.Approval.name) {}
+            composable(HomeTap.Ranking.name) {}
+            composable(HomeTap.My.name) {}
         }
     }
 }
 
 @Composable
 fun HomeBottomBar(
-    selectedTap: HomeTap,
-    onTabSelected: (HomeTap) -> Unit
+    navController: NavHostController,
 ) {
+    val currentNavBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = currentNavBackStackEntry.value?.destination?.route
+
     val homeTaps = HomeTap.entries
     ILSANGNavigationBar {
         homeTaps.forEach { tap ->
             ILSANGNavigationBarItem(
-                selected = selectedTap == tap,
+                selected = currentRoute == tap.name,
                 icon = {
                     Icon(
                         painter = painterResource(id = tap.defaultIconRes),
@@ -72,7 +75,15 @@ fun HomeBottomBar(
                     )
                 },
                 label = tap.title,
-                onClick = { onTabSelected(tap) }
+                onClick = {
+                    navController.navigate(tap.name) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
         }
     }
