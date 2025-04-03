@@ -12,7 +12,8 @@ class BannerRepositoryImpl @Inject constructor(
         return bannerDataSource.getBanners().bannerList.map { networkBanner ->
             Banner(
                 title = networkBanner.title,
-                imageUrl = imageRepository.getImageUrl(networkBanner.image.imageId),
+                imageId = networkBanner.image.imageId,
+                imageUrl = networkBanner.image.location,
                 description = networkBanner.description,
                 activeYn = networkBanner.activeYn
             )
