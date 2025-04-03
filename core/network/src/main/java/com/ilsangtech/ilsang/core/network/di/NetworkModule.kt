@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.network.di
 
 import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
+import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -40,5 +41,11 @@ object NetworkModule {
     @Singleton
     fun provideBannerApiService(retrofit: Retrofit): BannerApiService {
         return retrofit.create(BannerApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestApiService(retrofit: Retrofit): QuestApiService {
+        return retrofit.create(QuestApiService::class.java)
     }
 }
