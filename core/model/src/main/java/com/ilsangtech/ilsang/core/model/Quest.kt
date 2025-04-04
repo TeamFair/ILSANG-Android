@@ -5,7 +5,7 @@ data class Quest(
     val creatorRole: String,
     val expireDate: String,
     val favoriteYn: Boolean,
-    val imageId: String,
+    val imageId: String?,
     val mainImageId: String?,
     val marketId: String?,
     val missionId: String,
