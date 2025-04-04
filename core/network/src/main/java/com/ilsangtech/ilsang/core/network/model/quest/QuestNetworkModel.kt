@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.network.model.quest
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -8,7 +9,7 @@ data class QuestNetworkModel(
     val creatorRole: String,
     val expireDate: String,
     val favoriteYn: Boolean,
-    val imageId: String,
+    val imageId: String?,
     val mainImageId: String?,
     val marketId: String?,
     val missionId: String,
@@ -16,7 +17,7 @@ data class QuestNetworkModel(
     val missionType: String,
     val popularYn: Boolean,
     val questId: String,
-    val rewardNetworkModelList: List<RewardNetworkModel>,
+    @SerialName("rewardList") val rewardNetworkModelList: List<RewardNetworkModel>,
     val score: Int,
     val status: String,
     val target: String,
