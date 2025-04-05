@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
-import com.ilsangtech.ilsang.core.network.model.quest.PageableRequest
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import javax.inject.Inject
 
@@ -17,12 +16,9 @@ class QuestDataSourceImpl @Inject constructor(
     ): UncompletedTotalQuestResponse {
         return questApiService.getUncompletedTotalQuest(
             authorization = authorization,
-            popularYn = popularYn,
-            pageable = PageableRequest(
-                page = page,
-                size = size,
-                sort = sort
-            )
+            page = page,
+            size = size,
+            sort = sort
         )
     }
 }

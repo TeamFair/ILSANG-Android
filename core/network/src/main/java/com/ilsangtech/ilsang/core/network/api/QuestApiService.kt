@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.core.network.api
 
-import com.ilsangtech.ilsang.core.network.model.quest.PageableRequest
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,6 +10,8 @@ interface QuestApiService {
     suspend fun getUncompletedTotalQuest(
         @Header("authorization") authorization: String,
         @Query("popularYn") popularYn: Boolean? = null,
-        @Query("pageable") pageable: PageableRequest
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 8,
+        @Query("sort") sort: List<String> = emptyList()
     ): UncompletedTotalQuestResponse
 }
