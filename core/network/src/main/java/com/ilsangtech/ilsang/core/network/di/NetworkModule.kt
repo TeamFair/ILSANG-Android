@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.di
 
 import com.ilsangtech.ilsang.core.network.BuildConfig
+import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -47,5 +48,11 @@ object NetworkModule {
     @Singleton
     fun provideQuestApiService(retrofit: Retrofit): QuestApiService {
         return retrofit.create(QuestApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
     }
 }
