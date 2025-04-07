@@ -27,14 +27,14 @@ class QuestRepositoryImpl(
         ).data.map(QuestNetworkModel::toQuest)
     }
 
-    override suspend fun getLargeRewardQuests(): List<Map<String, List<Quest>>> {
+    override suspend fun getLargeRewardQuests(): Map<String, List<Quest>> {
         val rewardContentList = listOf("INTELLECT", "SOCIABILITY", "STRENGTH", "FUN", "CHARM")
-        return rewardContentList.map { rewardContent ->
-            val quests = questDataSource.getLargeRewardQuest(
+        return rewardContentList.associateWith { rewardContent ->
+            questDataSource.getLargeRewardQuest(
                 authorization = userRepository.currentUser!!.authorization!!,
                 rewardContent = rewardContent,
-            )
-            mapOf(rewardContent to quests.data.map(QuestNetworkModel::toQuest))
+                size = 3
+            ).data.map(QuestNetworkModel::toQuest)
         }
     }
 

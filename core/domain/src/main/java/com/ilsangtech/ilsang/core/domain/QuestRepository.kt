@@ -7,5 +7,5 @@ interface QuestRepository {
 
     suspend fun getRecommendedQuests(): List<Quest>
 
-    suspend fun getLargeRewardQuests(): List<Map<String, List<Quest>>>
+    suspend fun getLargeRewardQuests(): Map<String, List<Quest>>
 }
