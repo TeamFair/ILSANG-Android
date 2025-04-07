@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,14 +28,31 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
-fun HomeTapScreen(banners: List<Banner>) {
+fun HomeTapScreen(
+    userNickname: String?,
+    homeTapUiState: HomeTapUiState,
+) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn {
-            item { HomeTapTopBar() }
-            items(banners) { banner ->
-                BannerView(banner)
+        if (homeTapUiState is HomeTapUiState.Success) {
+            LazyColumn {
+                item { HomeTapTopBar() }
+                items(homeTapUiState.data.banners) { banner -> BannerView(banner) }
+                item { Spacer(Modifier.height(36.dp)) }
+                popularQuestsContent(homeTapUiState.data.popularQuests)
+                item { Spacer(Modifier.height(36.dp)) }
+                item {
+                    RecommendedQuestsContent(
+                        userNickname = userNickname,
+                        recommendedQuests = homeTapUiState.data.recommendedQuests
+                    )
+                }
+                item { Spacer(Modifier.height(36.dp)) }
+                item { LargeRewardQuestsContent(homeTapUiState.data.largeRewardQuests) }
+                item { Spacer(Modifier.height(36.dp)) }
+                item { UserRankContent(homeTapUiState.data.topRankUsers) }
+                item { Spacer(Modifier.height(84.dp)) }
             }
         }
     }
@@ -84,5 +102,8 @@ fun BannerView(banner: Banner) {
 @Preview
 @Composable
 fun HomeTapScreenPreview() {
-    HomeTapScreen(emptyList())
+    HomeTapScreen(
+        "누구누구",
+        HomeTapUiState.Loading
+    )
 }
