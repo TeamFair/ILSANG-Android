@@ -62,7 +62,7 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
-fun LargeRewardQuestsContent(largeRewardQuests: List<Quest>) {
+fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +70,8 @@ fun LargeRewardQuestsContent(largeRewardQuests: List<Quest>) {
     ) {
         var selectedTabIndex by remember { mutableIntStateOf(0) }
         val tabList = remember { listOf("체력", "지능", "매력", "재미", "사회성") }
-
+        val rewardTypeList =
+            remember { listOf("STRENGTH", "INTELLECT", "FUN", "SOCIABILITY", "CHARM") }
         val questTapButtonInteractionSource = remember { MutableInteractionSource() }
         Text(
             text = "큰 보상 퀘스트",
@@ -113,7 +114,7 @@ fun LargeRewardQuestsContent(largeRewardQuests: List<Quest>) {
             }
         }
         Spacer(Modifier.height(12.dp))
-        largeRewardQuests.forEach {
+        largeRewardQuests[rewardTypeList[selectedTabIndex]]?.forEach {
             LargeRewardQuestCard(
                 modifier = Modifier.padding(bottom = 12.dp),
                 quest = it
@@ -251,7 +252,9 @@ fun LargeRewardQuestBadge(
 @Composable
 fun RewardChips(rewardList: List<Reward>) {
     var storedList = emptyList<Reward>()
-    Column {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         rewardList.forEach {
             if (storedList.size < 3) {
                 storedList = storedList + it
@@ -358,6 +361,6 @@ private val largeRewardQuestWriterStyle = TextStyle(
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
 fun LargeRewardQuestsContentPreview() {
-    LargeRewardQuestsContent(emptyList())
+    LargeRewardQuestsContent(mapOf())
 }
 
