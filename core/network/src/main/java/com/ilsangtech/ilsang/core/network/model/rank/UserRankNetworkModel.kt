@@ -7,6 +7,6 @@ data class UserRankNetworkModel(
     val customerId: String,
     val lank: Int,
     val nickname: String,
-    val profileImage: String,
+    val profileImage: String?,
     val xpSum: Int
 )
