@@ -1,9 +1,5 @@
 package com.ilsangtech.ilsang.feature.home.home
 
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,21 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.Bitmap
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import coil3.size.Size
-import coil3.transform.Transformation
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -44,12 +35,15 @@ import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 
 @Composable
-fun RecommendedQuestsContent(recommendedQuests: List<Quest>) {
+fun RecommendedQuestsContent(
+    userNickname: String?,
+    recommendedQuests: List<Quest>
+) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
         Text(
-            text = "추천 퀘스트",
+            text = if (userNickname == null) "추천 퀘스트" else "$userNickname 님을 위한 추천 퀘스트",
             style = recommendedQuestsContentTitleStyle
         )
         Spacer(Modifier.height(12.dp))
