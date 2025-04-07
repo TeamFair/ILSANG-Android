@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,8 +24,10 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
+    val userNickname by homeViewModel.userNickname.collectAsStateWithLifecycle()
+    val homeTapUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
     Scaffold(
         bottomBar = {
             HomeBottomBar(navController)
@@ -38,7 +43,10 @@ fun HomeScreen() {
             startDestination = HomeTap.Home.name
         ) {
             composable(HomeTap.Home.name) {
-                HomeTapScreen()
+                HomeTapScreen(
+                    userNickname = userNickname,
+                    homeTapUiState = homeTapUiState
+                )
             }
             composable(HomeTap.Quest.name) {}
             composable(HomeTap.Approval.name) {}
