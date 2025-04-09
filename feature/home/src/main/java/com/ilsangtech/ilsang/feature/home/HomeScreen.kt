@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
@@ -48,7 +49,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     homeTapUiState = homeTapUiState
                 )
             }
-            composable(HomeTap.Quest.name) {}
+            composable(HomeTap.Quest.name) { QuestTabScreen() }
             composable(HomeTap.Approval.name) {}
             composable(HomeTap.Ranking.name) {}
             composable(HomeTap.My.name) {}
