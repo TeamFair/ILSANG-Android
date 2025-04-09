@@ -175,7 +175,7 @@ fun LargeRewardQuestCard(
                         .zIndex(2f)
                         .offset(x = 10.dp, y = (-10).dp)
                         .align(Alignment.TopEnd),
-                    score = quest.score
+                    xpSum = quest.rewardList.sumOf { it.quantity }
                 )
                 AsyncImage(
                     modifier = Modifier
@@ -229,7 +229,7 @@ fun LargeRewardQuestCard(
 @Composable
 fun LargeRewardQuestBadge(
     modifier: Modifier = Modifier,
-    score: Int
+    xpSum: Int
 ) {
     Box(
         modifier = modifier
@@ -242,7 +242,7 @@ fun LargeRewardQuestBadge(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 6.dp),
-            text = "${score}XP",
+            text = "${xpSum}XP",
             style = badge02TextStyle,
             color = Color.White
         )
