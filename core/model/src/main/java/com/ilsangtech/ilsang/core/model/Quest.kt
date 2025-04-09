@@ -13,7 +13,7 @@ data class Quest(
     val missionType: String,
     val popularYn: Boolean,
     val questId: String,
-    val rewardNetworkModelList: List<Reward>,
+    val rewardList: List<Reward>,
     val score: Int,
     val status: String,
     val target: String,

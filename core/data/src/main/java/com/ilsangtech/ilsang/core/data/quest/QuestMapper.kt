@@ -18,7 +18,7 @@ fun QuestNetworkModel.toQuest(): Quest {
         missionType = missionType,
         popularYn = popularYn,
         questId = questId,
-        rewardNetworkModelList = rewardNetworkModelList.map(RewardNetworkModel::toReward),
+        rewardList = rewardNetworkModelList.map(RewardNetworkModel::toReward),
         score = score,
         status = status,
         target = target,

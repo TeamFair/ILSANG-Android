@@ -204,7 +204,7 @@ fun LargeRewardQuestCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(4.dp))
-                RewardChips(quest.rewardNetworkModelList)
+                RewardChips(quest.rewardList)
             }
             Spacer(Modifier.weight(1f))
             FilledIconButton(
