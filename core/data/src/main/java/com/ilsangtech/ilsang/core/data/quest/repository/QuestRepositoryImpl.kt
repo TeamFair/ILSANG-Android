@@ -15,7 +15,7 @@ class QuestRepositoryImpl(
         return questDataSource.getUncompletedTotalQuest(
             authorization = userRepository.currentUser!!.authorization!!,
             popularYn = true,
-            size = 4,
+            size = 8,
         ).data.map(QuestNetworkModel::toQuest)
     }
 

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -92,23 +94,34 @@ fun LazyListScope.popularQuestsContent(popularQuests: List<Quest>) {
     item {
         Spacer(Modifier.height(12.dp))
     }
-    items(popularQuests.size / 2) { index ->
-        Column {
-            Row(
-                modifier = Modifier.padding(horizontal = 20.dp)
-            ) {
-                PopularQuestCard(
-                    modifier = Modifier.weight(1f),
-                    quest = popularQuests[index]
-                )
-                Spacer(Modifier.width(8.dp))
-                PopularQuestCard(
-                    modifier = Modifier.weight(1f),
-                    quest = popularQuests[index + 1]
-                )
-            }
-            if (index != popularQuests.size / 2 - 1) {
-                Spacer(Modifier.height(8.dp))
+    item {
+        val pageCount = popularQuests.size / 4
+        val pagerState = rememberPagerState { pageCount }
+
+        HorizontalPager(
+            state = pagerState
+        ) {
+            val questSubList =
+                popularQuests.subList(it * 4, minOf((it + 1) * 4, popularQuests.size))
+            Column {
+                repeat(questSubList.size / 2) { index ->
+                    Row(
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    ) {
+                        PopularQuestCard(
+                            modifier = Modifier.weight(1f),
+                            quest = questSubList[index]
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        PopularQuestCard(
+                            modifier = Modifier.weight(1f),
+                            quest = questSubList[index + 1]
+                        )
+                    }
+                    if (index != questSubList.size - 1) {
+                        Spacer(Modifier.height(8.dp))
+                    }
+                }
             }
         }
     }
