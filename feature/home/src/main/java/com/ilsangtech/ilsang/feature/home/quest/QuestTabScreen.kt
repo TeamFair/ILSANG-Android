@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.ilsangtech.ilsang.core.model.QuestType
 
 @Composable
 fun QuestTabScreen() {
@@ -24,7 +25,10 @@ fun QuestTabScreen() {
         Column {
             QuestTapHeader()
             Box(modifier = Modifier.fillMaxWidth()) {
-                SortTypeMenuContent(Modifier.zIndex(1f))
+                SortTypeMenuContent(
+                    modifier = Modifier.zIndex(1f),
+                    questType = QuestType.NORMAL
+                )
                 LazyColumn(
                     modifier = Modifier.offset(y = 64.dp)
                 ) {}

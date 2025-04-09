@@ -32,13 +32,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
-fun SortTypeMenuContent(modifier: Modifier) {
+fun SortTypeMenuContent(
+    modifier: Modifier,
+    questType: QuestType
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -49,7 +53,9 @@ fun SortTypeMenuContent(modifier: Modifier) {
             ),
         horizontalArrangement = Arrangement.End
     ) {
-        RepeatQuestSortTypeMenu()
+        if (questType == QuestType.REPEAT) {
+            RepeatQuestSortTypeMenu()
+        }
         Spacer(Modifier.width(8.dp))
         QuestSortTypeMenu()
     }
@@ -195,5 +201,8 @@ private val dropdownMenuTitleStyle = TextStyle(
 )
 @Composable
 fun SortTypeMenuContentPreview() {
-    SortTypeMenuContent(Modifier)
+    SortTypeMenuContent(
+        modifier = Modifier,
+        questType = QuestType.REPEAT
+    )
 }
