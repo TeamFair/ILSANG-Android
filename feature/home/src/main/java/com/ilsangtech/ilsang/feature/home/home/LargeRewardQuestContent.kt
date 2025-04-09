@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -28,10 +30,8 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +60,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
+import kotlinx.coroutines.launch
 
 @Composable
 fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
@@ -68,11 +69,13 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
-        var selectedTabIndex by remember { mutableIntStateOf(0) }
         val tabList = remember { listOf("체력", "지능", "매력", "재미", "사회성") }
         val rewardTypeList =
             remember { listOf("STRENGTH", "INTELLECT", "FUN", "SOCIABILITY", "CHARM") }
-        val questTapButtonInteractionSource = remember { MutableInteractionSource() }
+
+        val coroutineScope = rememberCoroutineScope()
+        val pagerState = rememberPagerState { tabList.size }
+
         Text(
             text = "큰 보상 퀘스트",
             style = largeRewardQuestsContentTitleStyle
@@ -81,12 +84,12 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
         TabRow(
             containerColor = Color.Transparent,
             contentColor = gray500,
-            selectedTabIndex = selectedTabIndex,
+            selectedTabIndex = pagerState.currentPage,
             indicator = { tabPositions ->
-                if (selectedTabIndex < tabPositions.size) {
+                if (pagerState.currentPage < tabPositions.size) {
                     TabRowDefaults.PrimaryIndicator(
                         modifier = Modifier
-                            .tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                            .tabIndicatorOffset(tabPositions[pagerState.currentPage]),
                         width = 40.dp,
                         height = 3.dp,
                         color = primary,
@@ -100,8 +103,12 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
                 Tab(
                     modifier = Modifier
                         .height(30.sp.value.dp),
-                    selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
                     content = {
                         Text(
                             text = title,
@@ -114,20 +121,26 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
             }
         }
         Spacer(Modifier.height(12.dp))
-        largeRewardQuests[rewardTypeList[selectedTabIndex]]?.forEach {
-            LargeRewardQuestCard(
-                modifier = Modifier.padding(bottom = 12.dp),
-                quest = it
-            )
+        HorizontalPager(
+            state = pagerState
+        ) {
+            Column {
+                largeRewardQuests[rewardTypeList[pagerState.currentPage]]?.forEach {
+                    LargeRewardQuestCard(
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        quest = it
+                    )
+                }
+            }
         }
         Box(
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable(
                     onClick = {},
-                    interactionSource = questTapButtonInteractionSource,
+                    interactionSource = null,
                     indication = null
-                ),
+                )
         ) {
             Row {
                 Text(
