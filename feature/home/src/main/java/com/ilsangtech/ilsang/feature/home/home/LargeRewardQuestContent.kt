@@ -285,10 +285,7 @@ fun RewardChips(rewardList: List<Reward>) {
 fun RewardChip(reward: Reward) {
     Box(
         modifier = Modifier
-            .size(
-                width = 50.dp,
-                height = 25.dp
-            )
+            .height(25.dp)
             .border(
                 width = 1.dp,
                 color = primary,
