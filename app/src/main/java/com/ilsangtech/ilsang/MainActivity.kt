@@ -6,16 +6,15 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -24,12 +23,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var splashScreen: SplashScreen
     private lateinit var auth: FirebaseAuth
     private val credentialManager = CredentialManager.create(this)
+    private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
@@ -39,15 +41,20 @@ class MainActivity : ComponentActivity() {
         auth = Firebase.auth
 
         setContent {
-            var currentUser by remember { mutableStateOf(auth.currentUser) }
+            val currentUserState by mainActivityViewModel.currentUserState.collectAsStateWithLifecycle()
             ILSANGApp(
-                currentUser = currentUser,
-                login = { login { currentUser = auth.currentUser } }
+                currentUser = currentUserState,
+                login = {
+                    loginWithFirebase(
+                        onLoginSuccess = {
+                            mainActivityViewModel.login(auth.currentUser) }
+                    )
+                }
             )
         }
     }
 
-    private fun login(onLoginSuccess: () -> Unit) {
+    private fun loginWithFirebase(onLoginSuccess: () -> Unit) {
         val googleIdOption = GetSignInWithGoogleOption.Builder(
             serverClientId = getString(R.string.default_web_client_id)
         ).build()
