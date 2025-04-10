@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 
 @Composable
-fun QuestTypeBadge(repeatType: String) {
+fun QuestTypeBadge(
+    modifier: Modifier = Modifier,
+    repeatType: String
+) {
     val badgeBrush = when (repeatType) {
         "일간" -> Brush.horizontalGradient(
             colors = listOf(
@@ -42,7 +45,7 @@ fun QuestTypeBadge(repeatType: String) {
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(
                 width = 40.dp,
                 height = 20.dp
