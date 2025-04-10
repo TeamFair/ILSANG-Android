@@ -22,6 +22,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +56,16 @@ fun DefaultQuestCard(
     quest: Quest,
     badge: @Composable (Modifier) -> Unit
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if (showBottomSheet) {
+        QuestBottomSheet(
+            quest = quest,
+            showBottomSheet = showBottomSheet,
+            onDismiss = { showBottomSheet = false }
+        )
+    }
+
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -115,7 +129,7 @@ fun DefaultQuestCard(
                 colors = IconButtonDefaults.filledIconButtonColors(
                     containerColor = Color(0x1A929292),
                 ),
-                onClick = {}
+                onClick = { showBottomSheet = true }
             ) {
                 Icon(
                     painter = painterResource(R.drawable.large_reward_quest_right_icon),
