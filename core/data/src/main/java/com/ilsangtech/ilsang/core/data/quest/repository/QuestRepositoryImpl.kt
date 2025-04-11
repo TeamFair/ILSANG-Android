@@ -38,4 +38,29 @@ class QuestRepositoryImpl(
         }
     }
 
+    override suspend fun getUncompletedNormalQuests(): List<Quest> {
+        return questDataSource.getUncompletedNormalQuest(
+            authorization = userRepository.currentUser!!.authorization!!,
+            page = 0,
+            size = 60
+        ).data.map(QuestNetworkModel::toQuest)
+    }
+
+    override suspend fun getUncompletedRepeatQuests(status: String): List<Quest> {
+        return questDataSource.getUncompletedRepeatQuest(
+            authorization = userRepository.currentUser!!.authorization!!,
+            page = 0,
+            size = 60,
+            status = status
+        ).data.map(QuestNetworkModel::toQuest)
+    }
+
+    override suspend fun getUncompletedEventQuests(): List<Quest> {
+        return questDataSource.getUncompletedEventQuest(
+            authorization = userRepository.currentUser!!.authorization!!,
+            page = 0,
+            size = 60
+        ).data.map(QuestNetworkModel::toQuest)
+    }
+
 }
