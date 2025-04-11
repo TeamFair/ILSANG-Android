@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -24,4 +25,12 @@ interface QuestApiService {
         @Query("size") size: Int = 3,
         @Query("sort") sort: List<String> = emptyList()
     ): LargeRewardQuestResponse
+
+    // 미완료한 기본 퀘스트 목록 조회
+    @GET("customer/uncompletedQuest")
+    suspend fun getUncompletedNormalQuest(
+        @Header("authorization") authorization: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 60,
+    ): UncompletedNormalQuestResponse
 }
