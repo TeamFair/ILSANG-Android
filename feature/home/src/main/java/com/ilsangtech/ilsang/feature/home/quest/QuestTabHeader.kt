@@ -16,10 +16,6 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -40,16 +36,30 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 
 @Composable
-fun QuestTapHeader() {
+fun QuestTapHeader(
+    selectedQuestType: QuestType,
+    selectedRewardType: RewardType,
+    onSelectQuestType: (QuestType) -> Unit,
+    onSelectRewardType: (RewardType) -> Unit
+) {
     Column {
-        QuestTypeTabRow()
+        QuestTypeTabRow(
+            selectedQuestType = selectedQuestType,
+            onSelectedQuestType = onSelectQuestType
+        )
         Spacer(Modifier.height(5.dp))
-        RewardTypeTabRow()
+        RewardTypeTabRow(
+            selectedRewardType,
+            onSelectRewardType
+        )
     }
 }
 
 @Composable
-fun QuestTypeTabRow() {
+fun QuestTypeTabRow(
+    selectedQuestType: QuestType,
+    onSelectedQuestType: (QuestType) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,20 +69,19 @@ fun QuestTypeTabRow() {
             ),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        var selectedQuestTypeTab by remember { mutableStateOf(QuestType.entries.first()) }
         QuestType.entries.forEach { questType ->
             Box(
                 modifier = Modifier
                     .clickable(
                         interactionSource = null,
                         indication = null,
-                        onClick = { selectedQuestTypeTab = questType }
+                        onClick = { onSelectedQuestType(questType) }
                     )
             ) {
                 Text(
                     text = questType.title,
                     style = questTypeTabTitleStyle,
-                    color = if (selectedQuestTypeTab == questType) gray500 else gray300
+                    color = if (selectedQuestType == questType) gray500 else gray300
                 )
             }
         }
@@ -80,18 +89,20 @@ fun QuestTypeTabRow() {
 }
 
 @Composable
-fun RewardTypeTabRow() {
-    var selectedRewardTypeTab by remember { mutableStateOf(RewardType.entries.first()) }
+fun RewardTypeTabRow(
+    selectedRewardType: RewardType,
+    onSelectRewardType: (RewardType) -> Unit
+) {
     TabRow(
         modifier = Modifier.fillMaxWidth(),
         containerColor = Color.Transparent,
-        selectedTabIndex = RewardType.entries.indexOf(selectedRewardTypeTab),
+        selectedTabIndex = RewardType.entries.indexOf(selectedRewardType),
         indicator = { tabPositions ->
-            if (RewardType.entries.indexOf(selectedRewardTypeTab) < tabPositions.size)
+            if (RewardType.entries.indexOf(selectedRewardType) < tabPositions.size)
                 TabRowDefaults.PrimaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(
                         currentTabPosition =
-                        tabPositions[RewardType.entries.indexOf(selectedRewardTypeTab)]
+                        tabPositions[RewardType.entries.indexOf(selectedRewardType)]
                     ),
                     color = primary,
                     shape = RectangleShape,
@@ -108,8 +119,8 @@ fun RewardTypeTabRow() {
     ) {
         RewardType.entries.forEach { rewardType ->
             Tab(
-                selected = selectedRewardTypeTab == rewardType,
-                onClick = { selectedRewardTypeTab = rewardType },
+                selected = selectedRewardType == rewardType,
+                onClick = { onSelectRewardType(rewardType) },
                 selectedContentColor = gray500,
                 unselectedContentColor = gray300
             ) {
@@ -138,11 +149,13 @@ private val rewardTypeTabTitleStyle = TextStyle(
 @Preview(showBackground = true)
 @Composable
 fun QuestTypeTabRowPreview() {
-    QuestTypeTabRow()
+    QuestTypeTabRow(
+        selectedQuestType = QuestType.REPEAT,
+    ) {}
 }
 
 @Preview(showBackground = true)
 @Composable
 fun RewardTypeTabRowPreview() {
-    RewardTypeTabRow()
+    RewardTypeTabRow(selectedRewardType = RewardType.STRENGTH) {}
 }
