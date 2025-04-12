@@ -143,33 +143,18 @@ fun DefaultQuestCard(
 
 @Composable
 fun RewardChips(rewardList: List<Reward>) {
-    var storedList = emptyList<Reward>()
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        rewardList.forEach {
-            if (storedList.size < 3) {
-                storedList = storedList + it
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    storedList.forEach { reward ->
+        rewardList
+            .chunked(3)
+            .forEach { chunk ->
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    chunk.forEach { reward ->
                         RewardChip(reward)
                     }
-                    storedList = emptyList()
                 }
             }
-        }
-        if (storedList.isNotEmpty()) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                storedList.forEach { reward ->
-                    RewardChip(reward)
-                }
-            }
-        }
     }
 }
 
