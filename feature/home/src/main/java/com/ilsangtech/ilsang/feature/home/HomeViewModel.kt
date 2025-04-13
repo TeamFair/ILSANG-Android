@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.domain.BannerRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
@@ -76,54 +77,60 @@ class HomeViewModel @Inject constructor(
     val selectedSortType = _selectedSortType.asStateFlow()
 
     val questTabUiState: StateFlow<QuestTabUiState> = combine(
-        selectedQuestType, selectedRewardType, selectedRepeatPeriod, selectedSortType
-    ) { questType, rewardType, repeatPeriod, sortType ->
-        try {
-            val questList = when (questType) {
-                QuestType.NORMAL -> questRepository.getUncompletedNormalQuests()
-                QuestType.REPEAT -> questRepository.getUncompletedRepeatQuests(
-                    when (repeatPeriod) {
-                        RepeatQuestPeriod.DAILY -> "DAILY"
-                        RepeatQuestPeriod.WEEKLY -> "WEEKLY"
-                        RepeatQuestPeriod.MONTHLY -> "MONTHLY"
-                    }
-                )
+        selectedQuestType, selectedRepeatPeriod
+    ) { questType, repeatPeriod ->
+        when (questType) {
+            QuestType.NORMAL -> questRepository.getUncompletedNormalQuests()
+            QuestType.REPEAT -> questRepository.getUncompletedRepeatQuests(
+                when (repeatPeriod) {
+                    RepeatQuestPeriod.DAILY -> "DAILY"
+                    RepeatQuestPeriod.WEEKLY -> "WEEKLY"
+                    RepeatQuestPeriod.MONTHLY -> "MONTHLY"
+                }
+            )
 
-                QuestType.EVENT -> questRepository.getUncompletedEventQuests()
-                else -> emptyList()
-            }.filter { quest ->
+            QuestType.EVENT -> questRepository.getUncompletedEventQuests()
+            else -> emptyList()
+        }
+    }
+        .combine(selectedRewardType) { quests, rewardType ->
+            quests.filter { quest ->
                 quest.rewardList.find { it.content == rewardType.name } != null
-            }.sortedBy {
+            }
+        }.combine<List<Quest>, String, QuestTabUiState>(selectedSortType) { quests, sortType ->
+            val sortedQuests = quests.sortedBy { quest ->
                 when (sortType) {
                     "포인트 높은 순" -> {
-                        it.rewardList.sumOf { reward ->
+                        quest.rewardList.sumOf { reward ->
                             -reward.quantity
                         }
                     }
 
                     "포인트 낮은 순" -> {
-                        it.rewardList.sumOf { reward ->
+                        quest.rewardList.sumOf { reward ->
                             reward.quantity
                         }
                     }
 
                     else -> {
-                        -it.score
+                        -quest.score
                     }
                 }
             }
-
             QuestTabUiState.Success(
-                data = QuestTabUiData(questList)
+                QuestTabUiData(
+                    questList = sortedQuests
+                )
             )
-        } catch (e: Exception) {
-            QuestTabUiState.Error(e)
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = QuestTabUiState.Loading
-    )
+        .catch {
+            emit(QuestTabUiState.Error(it))
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = QuestTabUiState.Loading
+        )
 
     fun selectQuestType(questType: QuestType) {
         _selectedQuestType.value = questType
