@@ -161,9 +161,9 @@ fun DropDownMenu(
                 Icon(
                     painter = painterResource(
                         if (!expanded) {
-                            R.drawable.dropdown_menu_down
-                        } else {
                             R.drawable.dropdown_menu_up
+                        } else {
+                            R.drawable.dropdown_menu_down
                         }
                     ),
                     contentDescription = null
