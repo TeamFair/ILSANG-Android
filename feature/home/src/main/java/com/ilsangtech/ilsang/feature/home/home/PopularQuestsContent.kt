@@ -36,15 +36,16 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 @Composable
 fun PopularQuestCard(
     modifier: Modifier = Modifier,
-    quest: Quest
+    quest: Quest,
+    onCardClick: () -> Unit
 ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
-        )
-
+        ),
+        onClick = onCardClick
     ) {
         AsyncImage(
             modifier = Modifier.height(160.dp),
@@ -79,7 +80,10 @@ fun PopularQuestCard(
     }
 }
 
-fun LazyListScope.popularQuestsContent(popularQuests: List<Quest>) {
+fun LazyListScope.popularQuestsContent(
+    popularQuests: List<Quest>,
+    onPopularQuestClick: (Quest) -> Unit
+) {
     item {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
@@ -110,12 +114,14 @@ fun LazyListScope.popularQuestsContent(popularQuests: List<Quest>) {
                     ) {
                         PopularQuestCard(
                             modifier = Modifier.weight(1f),
-                            quest = questSubList[index]
+                            quest = questSubList[index],
+                            onCardClick = { onPopularQuestClick(questSubList[index]) }
                         )
                         Spacer(Modifier.width(8.dp))
                         PopularQuestCard(
                             modifier = Modifier.weight(1f),
-                            quest = questSubList[index + 1]
+                            quest = questSubList[index + 1],
+                            onCardClick = { onPopularQuestClick(questSubList[index + 1]) }
                         )
                     }
                     if (index != questSubList.size - 1) {
