@@ -45,13 +45,16 @@ import com.ilsangtech.ilsang.feature.home.quest.DefaultQuestCard
 import kotlinx.coroutines.launch
 
 @Composable
-fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
+fun LargeRewardQuestsContent(
+    largeRewardQuests: Map<String, List<Quest>>,
+    navigateToQuestTab: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
-        val tabList = remember { RewardType.entries.map { it.title} }
+        val tabList = remember { RewardType.entries.map { it.title } }
         val rewardTypeList = remember { RewardType.entries }
 
         val coroutineScope = rememberCoroutineScope()
@@ -124,7 +127,7 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable(
-                    onClick = {},
+                    onClick = navigateToQuestTab,
                     interactionSource = null,
                     indication = null
                 )
@@ -186,6 +189,6 @@ private val largeRewardQuestTapStyle = TextStyle(
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
 fun LargeRewardQuestsContentPreview() {
-    LargeRewardQuestsContent(mapOf())
+    LargeRewardQuestsContent(mapOf()) {}
 }
 

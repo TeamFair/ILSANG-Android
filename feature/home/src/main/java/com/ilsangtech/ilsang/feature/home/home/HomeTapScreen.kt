@@ -37,6 +37,7 @@ import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
 fun HomeTapScreen(
     userNickname: String?,
     homeTapUiState: HomeTapUiState,
+    navigateToQuestTab: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -81,7 +82,12 @@ fun HomeTapScreen(
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
-                item { LargeRewardQuestsContent(homeTapUiState.data.largeRewardQuests) }
+                item {
+                    LargeRewardQuestsContent(
+                        largeRewardQuests = homeTapUiState.data.largeRewardQuests,
+                        navigateToQuestTab = navigateToQuestTab
+                    )
+                }
                 item { Spacer(Modifier.height(36.dp)) }
                 item { UserRankContent(homeTapUiState.data.topRankUsers) }
                 item { Spacer(Modifier.height(84.dp)) }
@@ -137,5 +143,5 @@ fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
         HomeTapUiState.Loading
-    )
+    ) {}
 }
