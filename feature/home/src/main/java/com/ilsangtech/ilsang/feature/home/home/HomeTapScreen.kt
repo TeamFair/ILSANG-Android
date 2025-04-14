@@ -15,6 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,32 +28,66 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Banner
+import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
 
 @Composable
 fun HomeTapScreen(
     userNickname: String?,
     homeTapUiState: HomeTapUiState,
+    navigateToQuestTab: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
+        var bottomSheetQuest by remember { mutableStateOf<Quest?>(null) }
+        var showBottomSheet by remember { mutableStateOf(false) }
+
+        if (showBottomSheet) {
+            bottomSheetQuest?.let {
+                QuestBottomSheet(
+                    quest = it,
+                    showBottomSheet = showBottomSheet,
+                    onDismiss = {
+                        showBottomSheet = false
+                        bottomSheetQuest = null
+                    }
+                )
+            }
+        }
+
         if (homeTapUiState is HomeTapUiState.Success) {
             LazyColumn {
                 item { HomeTapTopBar() }
                 items(homeTapUiState.data.banners) { banner -> BannerView(banner) }
                 item { Spacer(Modifier.height(36.dp)) }
-                popularQuestsContent(homeTapUiState.data.popularQuests)
+                popularQuestsContent(
+                    popularQuests = homeTapUiState.data.popularQuests,
+                    onPopularQuestClick = {
+                        bottomSheetQuest = it
+                        showBottomSheet = true
+                    }
+                )
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
                         userNickname = userNickname,
-                        recommendedQuests = homeTapUiState.data.recommendedQuests
+                        recommendedQuests = homeTapUiState.data.recommendedQuests,
+                        onRecommendedQuestClick = {
+                            bottomSheetQuest = it
+                            showBottomSheet = true
+                        }
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
-                item { LargeRewardQuestsContent(homeTapUiState.data.largeRewardQuests) }
+                item {
+                    LargeRewardQuestsContent(
+                        largeRewardQuests = homeTapUiState.data.largeRewardQuests,
+                        navigateToQuestTab = navigateToQuestTab
+                    )
+                }
                 item { Spacer(Modifier.height(36.dp)) }
                 item { UserRankContent(homeTapUiState.data.topRankUsers) }
                 item { Spacer(Modifier.height(84.dp)) }
@@ -105,5 +143,5 @@ fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
         HomeTapUiState.Loading
-    )
+    ) {}
 }

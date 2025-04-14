@@ -7,6 +7,6 @@ data class Reward(
     val questId: String,
     val rewardId: String,
     val target: String?,
-    val title: String,
+    val title: String?,
     val type: String
 )

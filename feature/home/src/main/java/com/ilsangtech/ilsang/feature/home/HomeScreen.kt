@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
@@ -46,9 +47,18 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 HomeTapScreen(
                     userNickname = userNickname,
                     homeTapUiState = homeTapUiState
-                )
+                ) {
+                    homeViewModel.selectSortType("포인트 높은 순")
+                    navController.navigate(HomeTap.Quest.name) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             }
-            composable(HomeTap.Quest.name) {}
+            composable(HomeTap.Quest.name) { QuestTabScreen(homeViewModel) }
             composable(HomeTap.Approval.name) {}
             composable(HomeTap.Ranking.name) {}
             composable(HomeTap.My.name) {}

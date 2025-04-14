@@ -1,29 +1,18 @@
 package com.ilsangtech.ilsang.feature.home.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -34,44 +23,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
-import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.Reward
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
+import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
-import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray300
-import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.quest.DefaultQuestCard
 import kotlinx.coroutines.launch
 
 @Composable
-fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
+fun LargeRewardQuestsContent(
+    largeRewardQuests: Map<String, List<Quest>>,
+    navigateToQuestTab: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
-        val tabList = remember { listOf("체력", "지능", "매력", "재미", "사회성") }
-        val rewardTypeList =
-            remember { listOf("STRENGTH", "INTELLECT", "FUN", "SOCIABILITY", "CHARM") }
+        val tabList = remember { RewardType.entries.map { it.title } }
+        val rewardTypeList = remember { RewardType.entries }
 
         val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState { tabList.size }
@@ -125,10 +109,16 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
             state = pagerState
         ) {
             Column {
-                largeRewardQuests[rewardTypeList[pagerState.currentPage]]?.forEach {
-                    LargeRewardQuestCard(
+                largeRewardQuests[rewardTypeList[pagerState.currentPage].name]?.forEach {
+                    DefaultQuestCard(
                         modifier = Modifier.padding(bottom = 12.dp),
-                        quest = it
+                        quest = it,
+                        badge = { modifier ->
+                            LargeRewardQuestBadge(
+                                modifier = modifier,
+                                xpSum = it.rewardList.sumOf { reward -> reward.quantity }
+                            )
+                        }
                     )
                 }
             }
@@ -137,7 +127,7 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable(
-                    onClick = {},
+                    onClick = navigateToQuestTab,
                     interactionSource = null,
                     indication = null
                 )
@@ -158,86 +148,6 @@ fun LargeRewardQuestsContent(largeRewardQuests: Map<String, List<Quest>>) {
     }
 }
 
-@Composable
-fun LargeRewardQuestCard(
-    modifier: Modifier = Modifier,
-    quest: Quest
-) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 23.dp,
-                    vertical = 20.dp
-                )
-        ) {
-            Box(
-                modifier = Modifier.padding(
-                    top = 10.dp,
-                    end = 10.dp
-                )
-            ) {
-                LargeRewardQuestBadge(
-                    modifier = Modifier
-                        .zIndex(2f)
-                        .offset(x = 10.dp, y = (-10).dp)
-                        .align(Alignment.TopEnd),
-                    xpSum = quest.rewardList.sumOf { it.quantity }
-                )
-                AsyncImage(
-                    modifier = Modifier
-                        .zIndex(1f)
-                        .size(60.dp)
-                        .clip(CircleShape)
-                        .background(
-                            color = largeRewardQuestWriterBackgroundColor,
-                        ),
-                    model = BuildConfig.IMAGE_URL + quest.imageId,
-                    contentDescription = quest.missionTitle
-                )
-            }
-            Spacer(Modifier.width(10.dp))
-            Column {
-                Text(
-                    text = quest.missionTitle,
-                    maxLines = 1,
-                    style = largeRewardQuestTitleStyle,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = quest.writer,
-                    maxLines = 1,
-                    style = largeRewardQuestWriterStyle,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(Modifier.height(4.dp))
-                RewardChips(quest.rewardList)
-            }
-            Spacer(Modifier.weight(1f))
-            FilledIconButton(
-                modifier = Modifier
-                    .size(26.dp)
-                    .align(Alignment.CenterVertically),
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(0x1A929292),
-                ),
-                onClick = {}
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.large_reward_quest_right_icon),
-                    tint = gray500,
-                    contentDescription = null
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun LargeRewardQuestBadge(
@@ -262,85 +172,6 @@ fun LargeRewardQuestBadge(
     }
 }
 
-@Composable
-fun RewardChips(rewardList: List<Reward>) {
-    var storedList = emptyList<Reward>()
-    Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        rewardList.forEach {
-            if (storedList.size < 3) {
-                storedList = storedList + it
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    storedList.forEach { reward ->
-                        RewardChip(reward)
-                    }
-                    storedList = emptyList()
-                }
-            }
-        }
-        if (storedList.isNotEmpty()) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                storedList.forEach { reward ->
-                    RewardChip(reward)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun RewardChip(reward: Reward) {
-    Box(
-        modifier = Modifier
-            .height(25.dp)
-            .border(
-                width = 1.dp,
-                color = primary,
-                shape = RoundedCornerShape(12.dp)
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier.size(18.dp),
-                painter = painterResource(
-                    when (reward.content) {
-                        "INTELLECT" -> R.drawable.bulb
-                        "SOCIABILITY" -> R.drawable.social
-                        "STRENGTH" -> R.drawable.strength
-                        "FUN" -> R.drawable.`fun`
-                        else -> R.drawable.heart
-                    }
-                ),
-                tint = Color.Unspecified,
-                contentDescription = null
-            )
-
-            Text(
-                text = "${reward.quantity}",
-                style = caption02,
-                color = primary
-            )
-            Spacer(Modifier.width(1.dp))
-            Text(
-                text = "P",
-                style = caption02,
-                color = primary
-            )
-        }
-    }
-}
-
-private val largeRewardQuestWriterBackgroundColor = Color(0xFFF1F5FF)
 
 private val largeRewardQuestsContentTitleStyle = TextStyle(
     fontSize = 19.sp,
@@ -354,23 +185,10 @@ private val largeRewardQuestTapStyle = TextStyle(
     fontFamily = FontFamily(Font(pretendard_semibold))
 )
 
-private val largeRewardQuestTitleStyle = TextStyle(
-    fontSize = 15.sp,
-    lineHeight = 20.sp,
-    fontFamily = FontFamily(Font(pretendard_semibold))
-)
-
-private val largeRewardQuestWriterStyle = TextStyle(
-    fontSize = 11.sp,
-    lineHeight = 16.sp,
-    fontFamily = FontFamily(Font(pretendard_regular)),
-    color = gray400
-)
-
 
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
 fun LargeRewardQuestsContentPreview() {
-    LargeRewardQuestsContent(mapOf())
+    LargeRewardQuestsContent(mapOf()) {}
 }
 

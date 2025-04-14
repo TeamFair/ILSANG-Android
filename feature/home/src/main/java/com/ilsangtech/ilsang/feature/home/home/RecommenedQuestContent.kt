@@ -37,7 +37,8 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 @Composable
 fun RecommendedQuestsContent(
     userNickname: String?,
-    recommendedQuests: List<Quest>
+    recommendedQuests: List<Quest>,
+    onRecommendedQuestClick: (Quest) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
@@ -51,14 +52,20 @@ fun RecommendedQuestsContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(recommendedQuests) { quest ->
-                RecommendedQuestView(quest)
+                RecommendedQuestView(
+                    quest = quest,
+                    onCardClick = { onRecommendedQuestClick(quest) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun RecommendedQuestView(quest: Quest) {
+fun RecommendedQuestView(
+    quest: Quest,
+    onCardClick: () -> Unit
+) {
     Card(
         modifier = Modifier.size(
             width = 152.dp,
@@ -67,7 +74,8 @@ fun RecommendedQuestView(quest: Quest) {
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
-        )
+        ),
+        onClick = onCardClick
     ) {
 
         Column(
