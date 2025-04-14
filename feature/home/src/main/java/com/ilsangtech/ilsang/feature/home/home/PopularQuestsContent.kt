@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.home.home
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,12 +27,15 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.feature.home.BuildConfig
+import com.ilsangtech.ilsang.feature.home.quest.QuestTypeBadge
 
 
 @Composable
@@ -47,35 +52,56 @@ fun PopularQuestCard(
         ),
         onClick = onCardClick
     ) {
-        AsyncImage(
-            modifier = Modifier.height(160.dp),
-            model = BuildConfig.IMAGE_URL + quest.mainImageId,
-            contentScale = ContentScale.Crop,
-            contentDescription = quest.missionTitle
-        )
-        Spacer(Modifier.height(9.dp))
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp)
-                .fillMaxWidth()
-                .height(
-                    popularQuestCardTitleStyle.lineHeight.value.dp * 2
-                            + popularQuestCardWriterStyle.lineHeight.value.dp
+        Box {
+            Box(
+                modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.TopEnd)
+                    .padding(top = 16.dp, end = 16.dp)
+            ) {
+                if (quest.type == QuestType.REPEAT.name) {
+                    QuestTypeBadge(
+                        repeatType = QuestType.REPEAT.title
+                    )
+                } else {
+                    LargeRewardQuestBadge(
+                        xpSum = quest.rewardList.sumOf { it.quantity }
+                    )
+                }
+            }
+
+            Column {
+                AsyncImage(
+                    modifier = Modifier.height(160.dp),
+                    model = BuildConfig.IMAGE_URL + quest.mainImageId,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = quest.missionTitle
                 )
-        ) {
-            Text(
-                text = quest.missionTitle,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = popularQuestCardTitleStyle
-            )
-            Text(
-                text = quest.writer,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = popularQuestCardWriterStyle
-            )
+                Spacer(Modifier.height(9.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth()
+                        .height(
+                            popularQuestCardTitleStyle.lineHeight.value.dp * 2
+                                    + popularQuestCardWriterStyle.lineHeight.value.dp
+                        )
+                ) {
+                    Text(
+                        text = quest.missionTitle,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = popularQuestCardTitleStyle
+                    )
+                    Text(
+                        text = quest.writer,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = popularQuestCardWriterStyle
+                    )
+                }
+            }
         }
     }
 }
