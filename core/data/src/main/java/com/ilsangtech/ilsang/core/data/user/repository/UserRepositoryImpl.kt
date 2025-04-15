@@ -36,6 +36,7 @@ class UserRepositoryImpl @Inject constructor(
             couponCount = userInfoResponse.userInfoNetworkModel.couponCount,
             nickname = userInfoResponse.userInfoNetworkModel.nickname,
             profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
+            xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
             status = userInfoResponse.userInfoNetworkModel.status
         )
     }
@@ -50,6 +51,7 @@ class UserRepositoryImpl @Inject constructor(
                 couponCount = userInfoResponse.userInfoNetworkModel.couponCount,
                 nickname = userInfoResponse.userInfoNetworkModel.nickname,
                 profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
+                xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
                 status = userInfoResponse.userInfoNetworkModel.status
             )
         }

@@ -8,5 +8,6 @@ data class UserInfo(
     val profileImage: String? = null,
     val completeChallengeCount: Int,
     val couponCount: Int,
+    val xpPoint: Int,
     val status: String
 )
