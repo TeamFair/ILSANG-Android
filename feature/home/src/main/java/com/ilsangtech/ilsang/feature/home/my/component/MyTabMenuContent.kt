@@ -16,10 +16,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 
 @Composable
 fun MyTabMenuContent() {
@@ -69,15 +74,26 @@ fun MyTabMenu(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
         ) {
-            Text(text = emojiText)
+            Text(
+                text = emojiText,
+                style = myTabMenuTextStyle
+            )
             Spacer(Modifier.width(4.dp))
             Text(
                 text = title,
-                color = textColor
+                color = textColor,
+                style = myTabMenuTextStyle
             )
         }
     }
 }
+
+private val myTabMenuTextStyle = TextStyle(
+    fontFamily = FontFamily(Font(pretendard_semibold)),
+    fontSize = 14.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.4.sp,
+)
 
 @Preview(showBackground = true, backgroundColor = 0xF6F6F6)
 @Composable
