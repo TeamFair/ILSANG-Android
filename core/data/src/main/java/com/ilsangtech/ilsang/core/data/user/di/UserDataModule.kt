@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSourceImpl
 import com.ilsangtech.ilsang.core.data.user.repository.UserRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
+import com.ilsangtech.ilsang.core.network.api.UserApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +17,14 @@ import javax.inject.Singleton
 object UserDataModule {
     @Provides
     @Singleton
-    fun provideUserDataSource(authApiService: AuthApiService): UserDataSource {
-        return UserDataSourceImpl(authApiService)
+    fun provideUserDataSource(
+        authApiService: AuthApiService,
+        userApiService: UserApiService
+    ): UserDataSource {
+        return UserDataSourceImpl(
+            authApiService = authApiService,
+            userApiService = userApiService
+        )
     }
 
     @Provides
