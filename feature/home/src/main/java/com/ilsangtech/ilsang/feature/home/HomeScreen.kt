@@ -22,12 +22,13 @@ import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-    val userNickname by homeViewModel.userNickname.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val homeTapUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
     Scaffold(
         bottomBar = {
@@ -45,7 +46,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
         ) {
             composable(HomeTap.Home.name) {
                 HomeTapScreen(
-                    userNickname = userNickname,
+                    userNickname = userInfo?.nickname,
                     homeTapUiState = homeTapUiState
                 ) {
                     homeViewModel.selectSortType("포인트 높은 순")

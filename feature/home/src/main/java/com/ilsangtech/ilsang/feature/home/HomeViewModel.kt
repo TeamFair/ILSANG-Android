@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
+import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiData
@@ -32,8 +33,8 @@ class HomeViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val rankRepository: RankRepository
 ) : ViewModel() {
-    val userNickname: StateFlow<String?> = flow {
-        emit(userRepository.currentUser?.nickname)
+    val userInfo: StateFlow<UserInfo?> = flow {
+        emit(userRepository.currentUser)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
