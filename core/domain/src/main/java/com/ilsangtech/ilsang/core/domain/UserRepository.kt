@@ -5,5 +5,5 @@ import com.ilsangtech.ilsang.core.model.UserInfo
 interface UserRepository {
     var currentUser: UserInfo?
 
-    suspend fun login(user: User)
+    suspend fun login(email: String, accessToken: String)
 }
