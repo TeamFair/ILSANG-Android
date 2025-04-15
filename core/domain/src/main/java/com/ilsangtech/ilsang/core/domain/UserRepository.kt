@@ -6,4 +6,6 @@ interface UserRepository {
     var currentUser: UserInfo?
 
     suspend fun login(email: String, accessToken: String)
+
+    suspend fun updateUserInfo()
 }

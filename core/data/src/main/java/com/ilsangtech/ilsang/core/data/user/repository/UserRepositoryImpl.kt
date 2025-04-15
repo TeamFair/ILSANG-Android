@@ -39,4 +39,19 @@ class UserRepositoryImpl @Inject constructor(
             status = userInfoResponse.userInfoNetworkModel.status
         )
     }
+
+    override suspend fun updateUserInfo() {
+        currentUser?.authorization?.let {
+            val userInfoResponse = userDataSource.getUserInfo(
+                authorization = it
+            )
+            currentUser = currentUser?.copy(
+                completeChallengeCount = userInfoResponse.userInfoNetworkModel.completeChallengeCount,
+                couponCount = userInfoResponse.userInfoNetworkModel.couponCount,
+                nickname = userInfoResponse.userInfoNetworkModel.nickname,
+                profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
+                status = userInfoResponse.userInfoNetworkModel.status
+            )
+        }
+    }
 }
