@@ -9,7 +9,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
-    override var currentUser: User? = null
+    override var currentUser: UserInfo? = null
 
     override suspend fun login(user: User) {
         val userResponse = userDataSource.login(
