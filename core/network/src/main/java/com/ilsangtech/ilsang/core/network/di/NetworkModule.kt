@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
  import com.ilsangtech.ilsang.core.network.api.RankApiService
+import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -61,5 +62,11 @@ object NetworkModule {
     @Singleton
     fun provideRankApiService(retrofit: Retrofit): RankApiService {
         return retrofit.create(RankApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApiService {
+        return retrofit.create(UserApiService::class.java)
     }
 }
