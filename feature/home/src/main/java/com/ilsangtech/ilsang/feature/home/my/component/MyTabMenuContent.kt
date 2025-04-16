@@ -25,25 +25,27 @@ import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
+import com.ilsangtech.ilsang.feature.home.my.MyTabMenu
 
 @Composable
-fun MyTabMenuContent() {
-    val myTabMenuEmojiList = remember { listOf("📜", "⛳", "🎖") }
-    val myTabMenuTitleList = remember { listOf("퀘스트", "활동", "내 정보") }
-    var selectedMenu by remember { mutableIntStateOf(0) }
-
+fun MyTabMenuContent(
+    selectedMenu: MyTabMenu,
+    onSelectMenu: (MyTabMenu) -> Unit = {}
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        myTabMenuTitleList.forEachIndexed { index, title ->
+        MyTabMenu.entries.forEach { menu ->
             MyTabMenu(
                 modifier = Modifier.weight(1f),
-                emojiText = myTabMenuEmojiList[index],
-                title = title,
-                isSelected = index == selectedMenu
+                emojiText = menu.emoji,
+                title = menu.title,
+                isSelected = menu == selectedMenu
             ) {
-                selectedMenu = index
+                if (menu != MyTabMenu.ACTIVITY) { // 활동 메뉴의 경우 스킵
+                    onSelectMenu(menu)
+                }
             }
         }
     }
@@ -98,5 +100,5 @@ private val myTabMenuTextStyle = TextStyle(
 @Preview(showBackground = true, backgroundColor = 0xF6F6F6)
 @Composable
 fun MyTabMenuContentPreview() {
-    MyTabMenuContent()
+    MyTabMenuContent(selectedMenu = MyTabMenu.CHALLENGE) { }
 }
