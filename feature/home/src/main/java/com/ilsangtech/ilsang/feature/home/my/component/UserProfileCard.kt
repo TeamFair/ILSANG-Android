@@ -3,7 +3,6 @@ package com.ilsangtech.ilsang.feature.home.my.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,15 +32,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
 
 @Composable
-fun UserProfileCard() {
+fun UserProfileCard(userInfo: UserInfo) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -75,14 +76,14 @@ fun UserProfileCard() {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Lv. " + "9",
+                        text = "Lv. " + XpLevelCalculator.getCurrentLevel(userInfo.xpPoint),
                         style = userProfileCardLevelTextStyle
                     )
                 }
             }
             Spacer(Modifier.width(19.dp))
             Column {
-                NicknameWithUnderline("김일상123")
+                NicknameWithUnderline(userInfo.nickname!!)
                 Spacer(Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -102,14 +103,16 @@ fun UserProfileCard() {
                     )
                     Spacer(Modifier.width(7.dp))
                     Text(
-                        text = "300" + "XP",
+                        text = "${XpLevelCalculator.getXpPointInCurrentLevel(userInfo.xpPoint)}XP",
                         style = userProfileCardXpTextStyle,
                         color = primary
                     )
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "다음 레벨까지 " + "1000" + "XP 남았어요!",
+                    text = "다음 레벨까지 "
+                            + XpLevelCalculator.getRequiredXpPointForNextLevel(userInfo.xpPoint)
+                            + "XP 남았어요!",
                     style = userProfileCardLevelDescriptionTextStyle
                 )
             }
@@ -186,5 +189,17 @@ private val userProfileCardLevelDescriptionTextStyle = TextStyle(
 @Preview
 @Composable
 fun UserProfileCardPreview() {
-    UserProfileCard()
+    UserProfileCard(
+        UserInfo(
+            accessToken = "",
+            authorization = "",
+            nickname = "김일상1234",
+            email = "",
+            profileImage = null,
+            completeChallengeCount = 0,
+            couponCount = 0,
+            xpPoint = 160,
+            status = ""
+        )
+    )
 }
