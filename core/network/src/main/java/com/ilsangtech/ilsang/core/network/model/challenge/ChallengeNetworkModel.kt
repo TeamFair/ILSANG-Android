@@ -9,8 +9,8 @@ data class ChallengeNetworkModel(
     val hateCnt: Int,
     val likeCnt: Int,
     val missionTitle: String,
-    val questImage: String,
-    val receiptImageId: String,
+    val questImage: String?,
+    val receiptImageId: String?,
     val status: String,
     val userNickName: String,
     val viewCount: Int
