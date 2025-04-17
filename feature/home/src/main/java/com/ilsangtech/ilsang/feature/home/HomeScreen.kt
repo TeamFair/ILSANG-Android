@@ -62,7 +62,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             composable(HomeTap.Quest.name) { QuestTabScreen(homeViewModel) }
             composable(HomeTap.Approval.name) {}
             composable(HomeTap.Ranking.name) {}
-            composable(HomeTap.My.name) {}
+            composable(HomeTap.My.name) { MyTabScreen(homeViewModel) }
         }
     }
 }
