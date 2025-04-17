@@ -2,7 +2,6 @@ package com.ilsangtech.ilsang.core.data.challenge.di
 
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSourceImpl
-import com.ilsangtech.ilsang.core.data.challenge.repository.ChallengePagingSource
 import com.ilsangtech.ilsang.core.data.challenge.repository.ChallengeRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
@@ -32,13 +31,5 @@ object ChallengeDataModule {
             challengeDataSource = challengeDataSource,
             userRepository = userRepository
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideChallengePagingSource(
-        challengeRepository: ChallengeRepository
-    ): ChallengePagingSource {
-        return ChallengePagingSource(challengeRepository)
     }
 }
