@@ -11,11 +11,11 @@ class ChallengeRepositoryImpl(
     private val userRepository: UserRepository,
     private val challengeDataSource: ChallengeDataSource
 ) : ChallengeRepository {
-    override suspend fun getChallenges(
+    override suspend fun getChallengesWithTotal(
         page: Int,
         size: Int
-    ): List<Challenge> {
-        return challengeDataSource.getChallenges(
+    ): Pair<List<Challenge>, Int> {
+        val response = challengeDataSource.getChallenges(
             authorization = userRepository.currentUser?.authorization!!,
             status = "APPROVED",
             userId = "",
@@ -23,6 +23,7 @@ class ChallengeRepositoryImpl(
             questId = "",
             page = page,
             size = size
-        ).map(ChallengeNetworkModel::toChallenge)
+        )
+        return response.challengeList.map(ChallengeNetworkModel::toChallenge) to response.total
     }
 }

@@ -4,10 +4,10 @@ import androidx.paging.PagingSource
 import com.ilsangtech.ilsang.core.model.Challenge
 
 interface ChallengeRepository {
-    suspend fun getChallenges(
+    suspend fun getChallengesWithTotal(
         page: Int,
         size: Int
-    ): List<Challenge>
+    ): Pair<List<Challenge>, Int>
 
     fun getChallengePaging(): PagingSource<Int, Challenge>
 }
