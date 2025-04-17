@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -23,14 +23,21 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_medium
 import com.ilsangtech.ilsang.designsystem.theme.caption01
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.feature.home.BuildConfig
+import com.ilsangtech.ilsang.feature.home.my.util.formatDate
+import kotlinx.coroutines.flow.asFlow
 
 @Composable
-fun MyChallengeContent() {
+fun MyChallengeContent(challengePager: LazyPagingItems<Challenge>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,15 +50,15 @@ fun MyChallengeContent() {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(9.dp)
         ) {
-            items(emptyList<String>()) {
-                MyChallengeItem()
+            items(challengePager.itemCount) { index ->
+                challengePager[index]?.let { MyChallengeItem(it) }
             }
         }
     }
 }
 
 @Composable
-fun MyChallengeItem() {
+fun MyChallengeItem(challenge: Challenge) {
     Card(
         shape = RoundedCornerShape(12.dp),
         onClick = {}
@@ -62,7 +69,8 @@ fun MyChallengeItem() {
                 .height(172.dp)
         ) {
             AsyncImage(
-                model = "",
+                modifier = Modifier.fillMaxSize(),
+                model = BuildConfig.IMAGE_URL + challenge.receiptImageId,
                 contentDescription = "수행한 챌린지 이미지",
                 contentScale = ContentScale.Crop
             )
@@ -73,13 +81,13 @@ fun MyChallengeItem() {
                     .padding(start = 20.dp, bottom = 20.dp)
             ) {
                 Text(
-                    text = "겨울 간식 먹기",
+                    text = challenge.missionTitle,
                     style = title01,
                     color = Color.White
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "2024.12.27",
+                    text = formatDate(challenge.createdAt),
                     style = caption01,
                     color = Color.White
                 )
@@ -98,5 +106,7 @@ private val myChallengeContentTitleTextStyle = TextStyle(
 @Preview(showBackground = true, backgroundColor = 0xF6F6F6)
 @Composable
 fun MyChallengeContentPreview() {
-    MyChallengeContent()
+    MyChallengeContent(
+        emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems()
+    )
 }
