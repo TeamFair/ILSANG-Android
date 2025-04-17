@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.core.data.challenge.repository
 
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.toChallenge
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
@@ -26,4 +28,32 @@ class ChallengeRepositoryImpl(
         )
         return response.challengeList.map(ChallengeNetworkModel::toChallenge) to response.total
     }
+
+    override fun getChallengePaging(): PagingSource<Int, Challenge> =
+        object : PagingSource<Int, Challenge>() {
+            override fun getRefreshKey(state: PagingState<Int, Challenge>): Int? {
+                return state.anchorPosition?.let { anchorPosition ->
+                    val anchorPage = state.closestPageToPosition(anchorPosition)
+                    anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+                }
+            }
+
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Challenge> {
+                return try {
+                    val pageNumber = params.key ?: 0
+                    val size = params.loadSize
+                    val challengesWithTotal = getChallengesWithTotal(pageNumber, size)
+
+                    val challenges = challengesWithTotal.first
+                    val total = challengesWithTotal.second
+                    return LoadResult.Page(
+                        data = challenges,
+                        prevKey = null,
+                        nextKey = if ((pageNumber + 1) * size < total) pageNumber + 1 else null
+                    )
+                } catch (e: Exception) {
+                    LoadResult.Error(e)
+                }
+            }
+        }
 }
