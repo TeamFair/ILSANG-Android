@@ -2,7 +2,11 @@ package com.ilsangtech.ilsang.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.BannerRepository
+import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
@@ -31,7 +35,8 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
-    private val rankRepository: RankRepository
+    private val rankRepository: RankRepository,
+    private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
     val userInfo: StateFlow<UserInfo?> = flow {
         emit(userRepository.currentUser)
@@ -148,4 +153,13 @@ class HomeViewModel @Inject constructor(
     fun selectSortType(sortType: String) {
         _selectedSortType.value = sortType
     }
+
+    val challengePager = Pager(
+        PagingConfig(
+            pageSize = 10,
+            initialLoadSize = 10
+        )
+    ) { challengeRepository.getChallengePaging() }
+        .flow.cachedIn(scope = viewModelScope)
+
 }
