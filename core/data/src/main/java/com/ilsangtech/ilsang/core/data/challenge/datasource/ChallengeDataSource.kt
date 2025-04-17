@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
-import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeNetworkModel
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
 
 interface ChallengeDataSource {
     suspend fun getChallenges(
@@ -11,5 +11,5 @@ interface ChallengeDataSource {
         questId: String,
         page: Int,
         size: Int
-    ): List<ChallengeNetworkModel>
+    ): ChallengesResponse
 }

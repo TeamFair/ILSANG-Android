@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
-import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeNetworkModel
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
 
 class ChallengeDataSourceImpl(
     private val challengeApiService: ChallengeApiService
@@ -14,7 +14,7 @@ class ChallengeDataSourceImpl(
         questId: String,
         page: Int,
         size: Int
-    ): List<ChallengeNetworkModel> {
+    ): ChallengesResponse {
         return challengeApiService.getChallenges(
             authorization = authorization,
             status = status,
@@ -23,6 +23,6 @@ class ChallengeDataSourceImpl(
             questId = questId,
             page = page,
             size = size
-        ).challengeList
+        )
     }
 }
