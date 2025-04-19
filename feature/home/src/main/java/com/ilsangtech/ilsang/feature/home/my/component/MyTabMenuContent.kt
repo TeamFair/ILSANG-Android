@@ -32,17 +32,15 @@ fun MyTabMenuContent(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        MyTabMenu.entries.forEach { menu ->
+        MyTabMenu.entries.filter { menu ->
+            menu != MyTabMenu.ACTIVITY
+        }.forEach { menu ->
             MyTabMenu(
                 modifier = Modifier.weight(1f),
                 emojiText = menu.emoji,
                 title = menu.title,
                 isSelected = menu == selectedMenu
-            ) {
-                if (menu != MyTabMenu.ACTIVITY) { // 활동 메뉴의 경우 스킵
-                    onSelectMenu(menu)
-                }
-            }
+            ) { onSelectMenu(menu) }
         }
     }
 }
