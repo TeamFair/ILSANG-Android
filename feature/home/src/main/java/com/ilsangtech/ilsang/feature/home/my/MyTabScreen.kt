@@ -27,7 +27,7 @@ import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeContent
 import com.ilsangtech.ilsang.feature.home.my.component.MyTabHeader
 import com.ilsangtech.ilsang.feature.home.my.component.MyTabMenuContent
-import com.ilsangtech.ilsang.feature.home.my.component.UserProfileCard
+import com.ilsangtech.ilsang.feature.home.my.component.UserProfileContent
 import kotlinx.coroutines.flow.asFlow
 
 @Composable
@@ -58,7 +58,7 @@ fun MyTabScreen(
         ) {
             MyTabHeader()
             Spacer(Modifier.height(5.dp))
-            UserProfileCard(userInfo!!)
+            UserProfileContent(userInfo = userInfo!!)
             Spacer(Modifier.height(16.dp))
             MyTabMenuContent(selectedMenu = selectedMenu) {
                 selectedMenu = it
