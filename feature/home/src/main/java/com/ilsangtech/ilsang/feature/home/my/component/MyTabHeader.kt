@@ -32,7 +32,8 @@ fun MyTabHeader() {
         Spacer(Modifier.weight(1f))
         Icon(
             painter = painterResource(R.drawable.setting),
-            contentDescription = "설정"
+            contentDescription = "설정",
+            tint = gray500
         )
     }
 }
