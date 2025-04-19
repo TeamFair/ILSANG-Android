@@ -25,6 +25,7 @@ import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeContent
+import com.ilsangtech.ilsang.feature.home.my.component.MyInfoMenuContent
 import com.ilsangtech.ilsang.feature.home.my.component.MyTabHeader
 import com.ilsangtech.ilsang.feature.home.my.component.MyTabMenuContent
 import com.ilsangtech.ilsang.feature.home.my.component.UserProfileContent
@@ -69,7 +70,9 @@ fun MyTabScreen(
                 }
 
                 MyTabMenu.ACTIVITY -> {}
-                MyTabMenu.INFO -> {}
+                MyTabMenu.INFO -> {
+                    MyInfoMenuContent(userInfo)
+                }
             }
         }
     }
