@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.home.my.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,7 +49,8 @@ fun MyChallengeContent(challengePager: LazyPagingItems<Challenge>) {
             style = myChallengeContentTitleTextStyle
         )
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(9.dp)
+            verticalArrangement = Arrangement.spacedBy(9.dp),
+            contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             items(challengePager.itemCount) { index ->
                 challengePager[index]?.let { MyChallengeItem(it) }
