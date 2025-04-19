@@ -10,9 +10,9 @@ interface ChallengeApiService {
     suspend fun getChallenges(
         @Header("authorization") authorization: String,
         @Query("status") status: String,
-        @Query("userId") userId: String,
+        @Query("userId") userId: String?,
         @Query("userDataOnly") userDataOnly: Boolean,
-        @Query("questId") questId: String,
+        @Query("questId") questId: String?,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): ChallengesResponse

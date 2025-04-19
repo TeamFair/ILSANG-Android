@@ -9,9 +9,9 @@ class ChallengeDataSourceImpl(
     override suspend fun getChallenges(
         authorization: String,
         status: String,
-        userId: String,
+        userId: String?,
         userDataOnly: Boolean,
-        questId: String,
+        questId: String?,
         page: Int,
         size: Int
     ): ChallengesResponse {

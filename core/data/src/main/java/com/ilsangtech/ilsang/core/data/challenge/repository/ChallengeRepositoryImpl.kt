@@ -20,9 +20,9 @@ class ChallengeRepositoryImpl(
         val response = challengeDataSource.getChallenges(
             authorization = userRepository.currentUser?.authorization!!,
             status = "APPROVED",
-            userId = "",
+            userId = null,
             userDataOnly = true,
-            questId = "",
+            questId = null,
             page = page,
             size = size
         )
