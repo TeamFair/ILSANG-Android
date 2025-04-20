@@ -18,6 +18,7 @@ val gray200 = Color(0xFFCACBD1)
 val gray100 = Color(0xFFE9EAEC)
 
 val background = Color(0xFFF6F6F6)
+val errorColor = Color(0xFFF16969)
 
 val ilsangColors = lightColorScheme(
     primary = primary,
