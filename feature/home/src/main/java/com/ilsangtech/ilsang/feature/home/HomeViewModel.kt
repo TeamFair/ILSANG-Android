@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -164,7 +165,15 @@ class HomeViewModel @Inject constructor(
     private val _editNickname = MutableStateFlow("")
     val editNickname = _editNickname.asStateFlow()
 
-    fun updateNickname(nickname: String) {
+    fun changeNickname(nickname: String) {
         _editNickname.value = nickname
+    }
+
+    fun updateNickname() {
+        viewModelScope.launch {
+            userRepository.updateUserNickname(editNickname.value)
+            _userInfo.value = userRepository.currentUser
+            _editNickname.value = ""
+        }
     }
 }
