@@ -8,4 +8,6 @@ interface UserRepository {
     suspend fun login(email: String, accessToken: String)
 
     suspend fun updateUserInfo()
+
+    suspend fun updateUserNickname(nickname: String)
 }

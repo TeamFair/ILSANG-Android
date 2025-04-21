@@ -4,6 +4,8 @@ import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
+import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
+import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import javax.inject.Inject
 
@@ -17,5 +19,15 @@ class UserDataSourceImpl @Inject constructor(
 
     override suspend fun getUserInfo(authorization: String): UserInfoResponse {
         return userApiService.getUserInfo(authorization)
+    }
+
+    override suspend fun updateUserNickname(
+        authorization: String,
+        nickname: String
+    ): NicknameUpdateResponse {
+        return userApiService.updateUserNickname(
+            authorization,
+            NicknameUpdateRequest(nickname)
+        )
     }
 }
