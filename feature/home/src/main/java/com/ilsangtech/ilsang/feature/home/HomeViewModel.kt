@@ -39,13 +39,8 @@ class HomeViewModel @Inject constructor(
     private val rankRepository: RankRepository,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    val userInfo: StateFlow<UserInfo?> = flow {
-        emit(userRepository.currentUser)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
-    )
+    private val _userInfo: MutableStateFlow<UserInfo?> = MutableStateFlow(userRepository.currentUser)
+    val userInfo: StateFlow<UserInfo?> = _userInfo.asStateFlow()
 
     val homeTapUiState: StateFlow<HomeTapUiState> = combine(
         flow { emit(bannerRepository.getBanners()) },
