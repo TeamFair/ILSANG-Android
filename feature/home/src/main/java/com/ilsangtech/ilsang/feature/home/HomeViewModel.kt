@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
@@ -161,5 +162,8 @@ class HomeViewModel @Inject constructor(
         )
     ) { challengeRepository.getChallengePaging() }
         .flow.cachedIn(scope = viewModelScope)
+
+    private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
+    val selectedChallenge = _selectedChallenge.asStateFlow()
 
 }
