@@ -30,20 +30,25 @@ import com.ilsangtech.ilsang.feature.home.my.component.UserProfileContent
 import kotlinx.coroutines.flow.asFlow
 
 @Composable
-fun MyTabScreen(homeViewModel: HomeViewModel) {
+fun MyTabScreen(
+    homeViewModel: HomeViewModel,
+    navigateToNicknameEdit: () -> Unit
+) {
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val challengePager = homeViewModel.challengePager.collectAsLazyPagingItems()
 
     MyTabScreen(
         userInfo = userInfo,
-        challengePager = challengePager
+        challengePager = challengePager,
+        navigateToNicknameEdit = navigateToNicknameEdit
     )
 }
 
 @Composable
 fun MyTabScreen(
     userInfo: UserInfo?,
-    challengePager: LazyPagingItems<Challenge>
+    challengePager: LazyPagingItems<Challenge>,
+    navigateToNicknameEdit: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -56,7 +61,10 @@ fun MyTabScreen(
         ) {
             MyTabHeader()
             Spacer(Modifier.height(5.dp))
-            UserProfileContent(userInfo = userInfo!!)
+            UserProfileContent(
+                userInfo = userInfo!!,
+                navigateToNicknameEdit = navigateToNicknameEdit
+            )
             Spacer(Modifier.height(16.dp))
             MyTabMenuContent(selectedMenu = selectedMenu) {
                 selectedMenu = it
@@ -91,5 +99,5 @@ fun MyTabScreenPreview() {
             status = ""
         ),
         challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems()
-    )
+    ) {}
 }

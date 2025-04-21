@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.feature.home.my.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,8 +45,14 @@ import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
 
 @Composable
-fun UserProfileContent(userInfo: UserInfo) {
-    MyInfoProfileContent(userInfo)
+fun UserProfileContent(
+    userInfo: UserInfo,
+    navigateToNicknameEdit: () -> Unit
+) {
+    MyInfoProfileContent(
+        userInfo = userInfo,
+        navigateToNicknameEdit = navigateToNicknameEdit
+    )
 }
 
 @Composable
@@ -125,9 +132,18 @@ fun DefaultProfileCardContent(userInfo: UserInfo) {
 
 
 @Composable
-fun MyInfoProfileContent(userInfo: UserInfo) {
+fun MyInfoProfileContent(
+    userInfo: UserInfo,
+    navigateToNicknameEdit: () -> Unit
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = navigateToNicknameEdit
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.padding(bottom = 4.dp)) {
@@ -275,7 +291,7 @@ fun UserProfileCardPreview() {
             xpPoint = 160,
             status = ""
         )
-    )
+    ) {}
 }
 
 @Preview(showBackground = true)
@@ -293,5 +309,5 @@ fun MyInfoProfileContentPreview() {
             xpPoint = 160,
             status = ""
         )
-    )
+    ) {}
 }
