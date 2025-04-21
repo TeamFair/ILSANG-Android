@@ -61,17 +61,26 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             composable(HomeTap.Home.name) {
                 HomeTapScreen(
                     userNickname = userInfo?.nickname,
-                    homeTapUiState = homeTapUiState
-                ) {
-                    homeViewModel.selectSortType("포인트 높은 순")
-                    navController.navigate(HomeTap.Quest.name) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    homeTapUiState = homeTapUiState,
+                    navigateToQuestTab = {
+                        homeViewModel.selectSortType("포인트 높은 순")
+                        navController.navigate(HomeTap.Quest.name) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    },
+                    navigateToMyTab = {
+                        navController.navigate("${HomeTap.My.name}/Main") {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
-                }
+                )
             }
             composable(HomeTap.Quest.name) { QuestTabScreen(homeViewModel) }
             composable(HomeTap.Approval.name) {}

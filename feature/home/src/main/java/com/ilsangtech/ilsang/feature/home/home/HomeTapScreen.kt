@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.feature.home.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +38,8 @@ import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
 fun HomeTapScreen(
     userNickname: String?,
     homeTapUiState: HomeTapUiState,
-    navigateToQuestTab: () -> Unit
+    navigateToQuestTab: () -> Unit,
+    navigateToMyTab: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -60,7 +62,11 @@ fun HomeTapScreen(
 
         if (homeTapUiState is HomeTapUiState.Success) {
             LazyColumn {
-                item { HomeTapTopBar() }
+                item {
+                    HomeTapTopBar(
+                        onClickProfile = navigateToMyTab
+                    )
+                }
                 items(homeTapUiState.data.banners) { banner -> BannerView(banner) }
                 item { Spacer(Modifier.height(36.dp)) }
                 popularQuestsContent(
@@ -97,7 +103,10 @@ fun HomeTapScreen(
 }
 
 @Composable
-fun HomeTapTopBar(modifier: Modifier = Modifier) {
+fun HomeTapTopBar(
+    modifier: Modifier = Modifier,
+    onClickProfile: () -> Unit
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -117,7 +126,13 @@ fun HomeTapTopBar(modifier: Modifier = Modifier) {
         )
         Spacer(Modifier.weight(1f))
         Icon(
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier
+                .size(36.dp)
+                .clickable(
+                    onClick = onClickProfile,
+                    indication = null,
+                    interactionSource = null
+                ),
             painter = painterResource(id = R.drawable.default_user_profile),
             tint = Color.Unspecified,
             contentDescription = null
@@ -142,6 +157,7 @@ fun BannerView(banner: Banner) {
 fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
-        HomeTapUiState.Loading
-    ) {}
+        HomeTapUiState.Loading,
+        {}, {}
+    )
 }
