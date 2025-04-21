@@ -166,4 +166,10 @@ class HomeViewModel @Inject constructor(
     private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
     val selectedChallenge = _selectedChallenge.asStateFlow()
 
+    private val _editNickname = MutableStateFlow("")
+    val editNickname = _editNickname.asStateFlow()
+
+    fun updateNickname(nickname: String) {
+        _editNickname.value = nickname
+    }
 }
