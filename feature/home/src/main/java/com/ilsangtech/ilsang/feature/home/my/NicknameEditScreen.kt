@@ -38,7 +38,8 @@ fun NicknameEditScreen(
     val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
     NicknameEditScreen(
         nickname = nickname,
-        onNicknameChange = homeViewModel::updateNickname,
+        onNicknameChange = homeViewModel::changeNickname,
+        onEditButtonClick = homeViewModel::updateNickname,
         navigateToMyTabMain = navigateToMyTabMain
     )
 }
@@ -47,6 +48,7 @@ fun NicknameEditScreen(
 fun NicknameEditScreen(
     nickname: String,
     onNicknameChange: (String) -> Unit,
+    onEditButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
     Surface(
@@ -64,7 +66,11 @@ fun NicknameEditScreen(
                 modifier = Modifier
                     .imePadding()
                     .padding(horizontal = 20.dp),
-                onClick = {}
+                enabled = nickname.isNotEmpty(),
+                onClick = {
+                    onEditButtonClick()
+                    navigateToMyTabMain()
+                }
             )
         }
     }
@@ -73,6 +79,7 @@ fun NicknameEditScreen(
 @Composable
 fun EditButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     Button(
@@ -81,9 +88,11 @@ fun EditButton(
             .padding(bottom = 8.dp),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            disabledContentColor = gray300,
-            containerColor = primary
+            disabledContainerColor = gray300,
+            containerColor = primary,
+            disabledContentColor = Color.White
         ),
+        enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
@@ -106,6 +115,7 @@ fun NicknameEditScreenPreview() {
     NicknameEditScreen(
         nickname = "닉네임",
         onNicknameChange = {},
+        onEditButtonClick = {},
         navigateToMyTabMain = {}
     )
 }
