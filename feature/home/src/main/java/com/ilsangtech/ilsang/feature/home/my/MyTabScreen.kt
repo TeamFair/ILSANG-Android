@@ -21,6 +21,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeContent
 import com.ilsangtech.ilsang.feature.home.my.component.MyInfoMenuContent
@@ -35,10 +36,12 @@ fun MyTabScreen(
     navigateToNicknameEdit: () -> Unit
 ) {
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
     val challengePager = homeViewModel.challengePager.collectAsLazyPagingItems()
 
     MyTabScreen(
         userInfo = userInfo,
+        userXpStats = userXpStats,
         challengePager = challengePager,
         navigateToNicknameEdit = navigateToNicknameEdit
     )
@@ -47,6 +50,7 @@ fun MyTabScreen(
 @Composable
 fun MyTabScreen(
     userInfo: UserInfo?,
+    userXpStats: UserXpStats,
     challengePager: LazyPagingItems<Challenge>,
     navigateToNicknameEdit: () -> Unit
 ) {
@@ -76,7 +80,10 @@ fun MyTabScreen(
 
                 MyTabMenu.ACTIVITY -> {}
                 MyTabMenu.INFO -> {
-                    MyInfoMenuContent(userInfo)
+                    MyInfoMenuContent(
+                        userInfo,
+                        userXpStats
+                    )
                 }
             }
         }
@@ -98,6 +105,7 @@ fun MyTabScreenPreview() {
             xpPoint = 0,
             status = ""
         ),
+        userXpStats = UserXpStats(),
         challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems()
     ) {}
 }
