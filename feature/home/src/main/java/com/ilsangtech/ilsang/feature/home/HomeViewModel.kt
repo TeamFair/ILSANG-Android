@@ -16,6 +16,7 @@ import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiData
@@ -164,6 +165,14 @@ class HomeViewModel @Inject constructor(
 
     private val _editNickname = MutableStateFlow("")
     val editNickname = _editNickname.asStateFlow()
+
+    val userXpStats = flow {
+        emit(userRepository.getUserXpStats())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = UserXpStats()
+    )
 
     fun changeNickname(nickname: String) {
         _editNickname.value = nickname
