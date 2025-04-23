@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import javax.inject.Inject
 
 class UserDataSourceImpl @Inject constructor(
@@ -19,6 +20,13 @@ class UserDataSourceImpl @Inject constructor(
 
     override suspend fun getUserInfo(authorization: String): UserInfoResponse {
         return userApiService.getUserInfo(authorization)
+    }
+
+    override suspend fun getUserXpStats(
+        authorization: String,
+        customerId: String?
+    ): UserXpStatsResponse {
+        return userApiService.getUserXpStats(authorization, customerId)
     }
 
     override suspend fun updateUserNickname(
