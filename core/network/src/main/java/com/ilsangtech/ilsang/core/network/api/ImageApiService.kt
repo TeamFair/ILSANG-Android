@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ImageApiService {
-    @GET("open/image/{imageId}")
+    @GET("customer/image/{imageId}")
     suspend fun getImage(
         @Path("imageId") imageId: String
     ): ImageResponse
