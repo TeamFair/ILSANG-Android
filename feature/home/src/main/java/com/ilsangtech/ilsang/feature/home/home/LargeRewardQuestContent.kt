@@ -47,7 +47,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LargeRewardQuestsContent(
     largeRewardQuests: Map<String, List<Quest>>,
-    navigateToQuestTab: () -> Unit
+    navigateToQuestTab: () -> Unit,
+    onApproveButtonClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -118,7 +119,8 @@ fun LargeRewardQuestsContent(
                                 modifier = modifier,
                                 xpSum = it.rewardList.sumOf { reward -> reward.quantity }
                             )
-                        }
+                        },
+                        onApproveButtonClick = onApproveButtonClick
                     )
                 }
             }
@@ -189,6 +191,6 @@ private val largeRewardQuestTapStyle = TextStyle(
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
 fun LargeRewardQuestsContentPreview() {
-    LargeRewardQuestsContent(mapOf()) {}
+    LargeRewardQuestsContent(mapOf(), {}, {})
 }
 

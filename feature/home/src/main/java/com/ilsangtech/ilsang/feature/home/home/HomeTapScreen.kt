@@ -55,7 +55,8 @@ fun HomeTapScreen(
                     onDismiss = {
                         showBottomSheet = false
                         bottomSheetQuest = null
-                    }
+                    },
+                    onApproveButtonClick = {}
                 )
             }
         }
@@ -91,7 +92,8 @@ fun HomeTapScreen(
                 item {
                     LargeRewardQuestsContent(
                         largeRewardQuests = homeTapUiState.data.largeRewardQuests,
-                        navigateToQuestTab = navigateToQuestTab
+                        navigateToQuestTab = navigateToQuestTab,
+                        onApproveButtonClick = {}
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }

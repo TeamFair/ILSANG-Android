@@ -106,7 +106,8 @@ fun QuestTabScreen(
                                             xpSum = quest.rewardList.sumOf { it.quantity },
                                         )
                                     }
-                                }
+                                },
+                                onApproveButtonClick = {}
                             )
                         }
                         item {
