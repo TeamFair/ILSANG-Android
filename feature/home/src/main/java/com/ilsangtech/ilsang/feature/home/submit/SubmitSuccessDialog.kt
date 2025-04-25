@@ -42,12 +42,13 @@ import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
-fun SubmitResultDialog(
+fun SubmitSuccessDialog(
     modifier: Modifier = Modifier,
     quest: Quest,
     onDismiss: () -> Unit
@@ -64,14 +65,14 @@ fun SubmitResultDialog(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SubmitResultDialogIcon()
+                SubmitSuccessDialogIcon()
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = "${quest.rewardList.sumOf { it.quantity }}XP가 상승했어요",
-                    style = submitResultDialogTitleStyle
+                    style = submitSuccessDialogTitleStyle
                 )
                 Spacer(Modifier.height(12.dp))
-                SubmitResultStatsContent(quest.rewardList)
+                SubmitSuccessStatsContent(quest.rewardList)
                 Spacer(Modifier.height(12.dp))
                 Button(
                     modifier = Modifier.width(228.dp),
@@ -81,7 +82,7 @@ fun SubmitResultDialog(
                 ) {
                     Text(
                         text = "확인",
-                        style = submitResultDialogButtonTextStyle
+                        style = buttonTextStyle
                     )
                 }
             }
@@ -90,7 +91,7 @@ fun SubmitResultDialog(
 }
 
 @Composable
-fun SubmitResultDialogIcon() {
+fun SubmitSuccessDialogIcon() {
     Box(
         modifier = Modifier.size(
             width = 58.dp,
@@ -102,7 +103,7 @@ fun SubmitResultDialogIcon() {
                 .width(40.dp)
                 .align(Alignment.BottomStart)
                 .offset(x = 7.dp),
-            painter = painterResource(id = R.drawable.submit_result_icon),
+            painter = painterResource(id = R.drawable.submit_success_icon),
             contentDescription = null,
             tint = Color.Unspecified
         )
@@ -152,7 +153,7 @@ fun SubmitResultDialogIcon() {
 }
 
 @Composable
-fun SubmitResultStatsContent(rewardList: List<Reward>) {
+fun SubmitSuccessStatsContent(rewardList: List<Reward>) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
@@ -166,7 +167,7 @@ fun SubmitResultStatsContent(rewardList: List<Reward>) {
             rewardList.chunked(3).forEach { rewardChunk ->
                 Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                     rewardChunk.forEach { reward ->
-                        SubmitResultStatBox(reward)
+                        SubmitSuccessStatBox(reward)
                     }
                 }
             }
@@ -175,7 +176,7 @@ fun SubmitResultStatsContent(rewardList: List<Reward>) {
 }
 
 @Composable
-fun SubmitResultStatBox(reward: Reward) {
+fun SubmitSuccessStatBox(reward: Reward) {
     val painterResource = painterResource(
         when (reward.type) {
             RewardType.STRENGTH.name -> {
@@ -214,27 +215,20 @@ fun SubmitResultStatBox(reward: Reward) {
                 modifier = Modifier.padding(horizontal = 7.dp),
                 text = "${reward.quantity}P",
                 textAlign = TextAlign.Center,
-                style = submitResultStatTextStyle
+                style = submitSuccessStatTextStyle
             )
         }
     }
 }
 
-private val submitResultDialogTitleStyle = TextStyle(
+private val submitSuccessDialogTitleStyle = TextStyle(
     fontFamily = FontFamily(Font(pretendard_bold)),
     fontSize = 17.sp,
     lineHeight = 18.sp,
     color = gray500
 )
 
-private val submitResultDialogButtonTextStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_semibold)),
-    fontSize = 16.sp,
-    lineHeight = 18.sp,
-    color = Color.White
-)
-
-private val submitResultStatTextStyle = TextStyle(
+private val submitSuccessStatTextStyle = TextStyle(
     fontFamily = FontFamily(Font(pretendard_semibold)),
     fontSize = 11.sp,
     lineHeight = 1.3.em,
@@ -243,7 +237,7 @@ private val submitResultStatTextStyle = TextStyle(
 
 @Preview
 @Composable
-private fun SubmitResultDialogPreview() {
+private fun SubmitSuccessDialogPreview() {
     val previewReward = Reward(
         content = "",
         quantity = 200,
@@ -259,14 +253,14 @@ private fun SubmitResultDialogPreview() {
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SubmitResultDialogIcon()
+            SubmitSuccessDialogIcon()
             Spacer(Modifier.height(8.dp))
             Text(
                 text = "200XP가 상승했어요",
-                style = submitResultDialogTitleStyle
+                style = submitSuccessDialogTitleStyle
             )
             Spacer(Modifier.height(12.dp))
-            SubmitResultStatsContent(
+            SubmitSuccessStatsContent(
                 listOf(
                     previewReward.copy(type = RewardType.STRENGTH.name),
                     previewReward.copy(type = RewardType.INTELLECT.name),
@@ -284,7 +278,7 @@ private fun SubmitResultDialogPreview() {
             ) {
                 Text(
                     text = "확인",
-                    style = submitResultDialogButtonTextStyle
+                    style = buttonTextStyle
                 )
             }
         }
