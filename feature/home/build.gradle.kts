@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:util"))
 
+    implementation(libs.androidx.camera.core)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
