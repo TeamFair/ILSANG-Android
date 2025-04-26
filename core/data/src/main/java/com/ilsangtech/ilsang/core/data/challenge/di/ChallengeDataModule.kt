@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSourceImpl
 import com.ilsangtech.ilsang.core.data.challenge.repository.ChallengeRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
+import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
 import dagger.Module
@@ -25,10 +26,12 @@ object ChallengeDataModule {
     @Singleton
     fun provideChallengeRepository(
         challengeDataSource: ChallengeDataSource,
+        imageRepository: ImageRepository,
         userRepository: UserRepository
     ): ChallengeRepository {
         return ChallengeRepositoryImpl(
             challengeDataSource = challengeDataSource,
+            imageRepository = imageRepository,
             userRepository = userRepository
         )
     }
