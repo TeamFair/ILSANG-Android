@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
+import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
  import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
@@ -75,5 +76,11 @@ object NetworkModule {
     @Singleton
     fun provideChallengeApiService(retrofit: Retrofit): ChallengeApiService {
         return retrofit.create(ChallengeApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageApiService(retrofit: Retrofit): ImageApiService {
+        return retrofit.create(ImageApiService::class.java)
     }
 }
