@@ -1,6 +1,8 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitRequest
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
 
 class ChallengeDataSourceImpl(
@@ -23,6 +25,20 @@ class ChallengeDataSourceImpl(
             questId = questId,
             page = page,
             size = size
+        )
+    }
+
+    override suspend fun submitChallenge(
+        authorization: String,
+        questId: String,
+        imageId: String
+    ): ChallengeSubmitResponse {
+        return challengeApiService.submitChallenge(
+            authorization = authorization,
+            challengeSubmitRequest = ChallengeSubmitRequest(
+                questId = questId,
+                receiptImageId = imageId
+            )
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
 
 interface ChallengeDataSource {
@@ -12,4 +13,10 @@ interface ChallengeDataSource {
         page: Int,
         size: Int
     ): ChallengesResponse
+
+    suspend fun submitChallenge(
+        authorization: String,
+        questId: String,
+        imageId: String
+    ): ChallengeSubmitResponse
 }
