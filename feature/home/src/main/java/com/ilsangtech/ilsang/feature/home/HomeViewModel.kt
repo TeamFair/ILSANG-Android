@@ -41,7 +41,8 @@ class HomeViewModel @Inject constructor(
     private val rankRepository: RankRepository,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    private val _userInfo: MutableStateFlow<UserInfo?> = MutableStateFlow(userRepository.currentUser)
+    private val _userInfo: MutableStateFlow<UserInfo?> =
+        MutableStateFlow(userRepository.currentUser)
     val userInfo: StateFlow<UserInfo?> = _userInfo.asStateFlow()
 
     val homeTapUiState: StateFlow<HomeTapUiState> = combine(
@@ -163,8 +164,14 @@ class HomeViewModel @Inject constructor(
     private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
     val selectedChallenge = _selectedChallenge.asStateFlow()
 
-    private val _editNickname = MutableStateFlow("")
+    private val _editNickname = MutableStateFlow(userInfo.value?.nickname ?: "")
     val editNickname = _editNickname.asStateFlow()
+
+    private val _nicknameEditErrorMessage = MutableStateFlow<String?>(null)
+    val nicknameEditErrorMessage = _nicknameEditErrorMessage.asStateFlow()
+
+    private val _isNicknameEditSuccess = MutableStateFlow<Boolean?>(null)
+    val isNicknameEditSuccess = _isNicknameEditSuccess.asStateFlow()
 
     val userXpStats = flow {
         emit(userRepository.getUserXpStats())
@@ -174,15 +181,38 @@ class HomeViewModel @Inject constructor(
         initialValue = UserXpStats()
     )
 
+    private fun isValidNickname(name: String): Boolean {
+        val pattern = ".*[가-힣a-zA-Z0-9]+.*".toRegex()
+        return pattern.matches(name) && name.length in 2..12
+    }
+
     fun changeNickname(nickname: String) {
         _editNickname.value = nickname
+        if (isValidNickname(nickname)) {
+            _nicknameEditErrorMessage.value = null
+        } else {
+            _nicknameEditErrorMessage.value = "한글+영어+숫자 포함 2 ~ 12자 이하로 닉네임을 입력해주세요."
+        }
     }
 
     fun updateNickname() {
         viewModelScope.launch {
-            userRepository.updateUserNickname(editNickname.value)
-            _userInfo.value = userRepository.currentUser
-            _editNickname.value = ""
+            runCatching {
+                userRepository.updateUserNickname(editNickname.value)
+            }.onSuccess {
+                userRepository.updateUserInfo()
+                _userInfo.value = userRepository.currentUser
+                _isNicknameEditSuccess.value = true
+            }.onFailure {
+                _isNicknameEditSuccess.value = false
+                _nicknameEditErrorMessage.value = "입력하신 닉네임은 이미 사용중이에요.\n다른 닉네임을 입력해주세요."
+            }
         }
+    }
+
+    fun clearNicknameEditResult() {
+        _editNickname.value = _userInfo.value?.nickname ?: ""
+        _nicknameEditErrorMessage.value = null
+        _isNicknameEditSuccess.value = null
     }
 }
