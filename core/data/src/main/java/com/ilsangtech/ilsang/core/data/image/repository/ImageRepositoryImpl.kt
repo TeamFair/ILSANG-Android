@@ -10,4 +10,8 @@ class ImageRepositoryImpl @Inject constructor(
     override suspend fun getImageUrl(imageId: String): String {
         return imageDataSource.getImage(imageId).networkImage.location
     }
+
+    override suspend fun uploadImage(imageBytes: ByteArray): String {
+        return imageDataSource.uploadImage(imageBytes).imageUploadResponseData.imageId
+    }
 }
