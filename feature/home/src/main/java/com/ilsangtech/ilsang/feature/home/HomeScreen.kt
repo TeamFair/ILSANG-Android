@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,16 +23,30 @@ import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-    val userNickname by homeViewModel.userNickname.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val homeTapUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
+
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStackEntry?.destination
+    val topLevelDestinations = listOf(
+        HomeTap.Home.name,
+        HomeTap.Quest.name,
+        HomeTap.Approval.name,
+        HomeTap.Ranking.name,
+        "${HomeTap.My.name}/Main"
+    )
+
     Scaffold(
         bottomBar = {
-            HomeBottomBar(navController)
+            if (currentDestination?.hierarchy?.any { it.route in topLevelDestinations } == true) {
+                HomeBottomBar(navController)
+            }
         }
     ) { paddingValues ->
         NavHost(
@@ -45,23 +60,37 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
         ) {
             composable(HomeTap.Home.name) {
                 HomeTapScreen(
-                    userNickname = userNickname,
-                    homeTapUiState = homeTapUiState
-                ) {
-                    homeViewModel.selectSortType("포인트 높은 순")
-                    navController.navigate(HomeTap.Quest.name) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    userNickname = userInfo?.nickname,
+                    homeTapUiState = homeTapUiState,
+                    navigateToQuestTab = {
+                        homeViewModel.selectSortType("포인트 높은 순")
+                        navController.navigate(HomeTap.Quest.name) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    },
+                    navigateToMyTab = {
+                        navController.navigate("${HomeTap.My.name}/Main") {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
-                }
+                )
             }
             composable(HomeTap.Quest.name) { QuestTabScreen(homeViewModel) }
             composable(HomeTap.Approval.name) {}
             composable(HomeTap.Ranking.name) {}
-            composable(HomeTap.My.name) {}
+            myTabNavigation(
+                homeViewModel = homeViewModel,
+                navigateToMyTabMain = {
+                    navController.popBackStack()
+                },
+                navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") })
         }
     }
 }
@@ -70,14 +99,13 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 fun HomeBottomBar(
     navController: NavHostController,
 ) {
-    val currentNavBackStackEntry = navController.currentBackStackEntryAsState()
-    val currentRoute = currentNavBackStackEntry.value?.destination?.route
-
+    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentNavBackStackEntry?.destination
     val homeTaps = HomeTap.entries
     ILSANGNavigationBar {
         homeTaps.forEach { tap ->
             ILSANGNavigationBarItem(
-                selected = currentRoute == tap.name,
+                selected = currentDestination?.hierarchy?.any { it.route == tap.name } == true,
                 icon = {
                     Icon(
                         painter = painterResource(id = tap.defaultIconRes),

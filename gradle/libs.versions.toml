@@ -4,6 +4,7 @@ coilCompose = "3.1.0"
 credentialsPlayServicesAuth = "1.5.0"
 firebaseBom = "33.11.0"
 googleid = "1.1.1"
+graphicsShapes = "1.0.1"
 hiltAndroid = "2.53.1"
 hiltAndroidCompiler = "2.53.1"
 hiltNavigationComposeVersion = "1.2.0"
@@ -11,17 +12,18 @@ kotlinxSerializationJson = "1.8.1"
 loggingInterceptor = "4.12.0"
 navigationCompose = "2.8.9"
 okhttp = "4.12.0"
+pagingRuntime = "3.3.6"
 retrofit = "2.11.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
 splashScreen = "1.0.1"
 kotlin = "2.0.0"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
 appcompat = "1.7.0"
 material = "1.12.0"
 jetbrainsKotlinJvm = "2.0.0"
@@ -31,7 +33,11 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentialsPlayServicesAuth" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+androidx-graphics-shapes = { module = "androidx.graphics:graphics-shapes", version.ref = "graphicsShapes" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingRuntime" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }

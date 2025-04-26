@@ -19,20 +19,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.background
-import com.ilsangtech.ilsang.designsystem.theme.caption02
+import com.ilsangtech.ilsang.designsystem.theme.caption01
 import com.ilsangtech.ilsang.designsystem.theme.gray500
+import com.ilsangtech.ilsang.designsystem.theme.primary
 
 private val ilsangDialogRadius = 24.dp
 
 @Composable
 fun ILSANGDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     content: String,
     buttonText: String,
@@ -71,7 +73,8 @@ fun ILSANGDialog(
                 Spacer(Modifier.height(6.dp))
                 Text(
                     text = content,
-                    style = caption02,
+                    textAlign = TextAlign.Center,
+                    style = caption01,
                     color = gray500
                 )
                 Spacer(Modifier.height(20.dp))
@@ -79,7 +82,8 @@ fun ILSANGDialog(
                 ILSANGButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = buttonText,
-                    onClick = onClickButton
+                    onClick = onClickButton,
+                    colors = ButtonDefaults.buttonColors(containerColor = primary)
                 )
             }
         }
@@ -88,7 +92,7 @@ fun ILSANGDialog(
 
 @Composable
 fun ILSANGDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     content: String,
     positiveButtonText: String,
@@ -129,7 +133,8 @@ fun ILSANGDialog(
                 Spacer(Modifier.height(6.dp))
                 Text(
                     text = content,
-                    style = caption02,
+                    textAlign = TextAlign.Center,
+                    style = caption01,
                     color = gray500
                 )
                 Spacer(Modifier.height(20.dp))
@@ -148,7 +153,8 @@ fun ILSANGDialog(
                     ILSANGButton(
                         modifier = Modifier.weight(1f),
                         text = positiveButtonText,
-                        onClick = onClickPositiveButton
+                        onClick = onClickPositiveButton,
+                        colors = ButtonDefaults.buttonColors(containerColor = primary)
                     )
                 }
 
