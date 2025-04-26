@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +34,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 fun NicknameEditContent(
     modifier: Modifier = Modifier,
     nickname: String,
+    nicknameEditErrorMessage: String?,
     onNicknameChange: (String) -> Unit
 ) {
     Column(
@@ -50,7 +50,8 @@ fun NicknameEditContent(
         Spacer(Modifier.height(10.dp))
         NicknameEditTextField(
             text = nickname,
-            onTextChange = onNicknameChange
+            onTextChange = onNicknameChange,
+            errorMessage = nicknameEditErrorMessage
         )
     }
 }
@@ -70,6 +71,7 @@ fun NicknameEditTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = background,
                 unfocusedContainerColor = background,
+                errorContainerColor = background,
                 disabledBorderColor = Color.Transparent,
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -131,6 +133,7 @@ fun NicknameEditContentPreview() {
     var nickname by remember { mutableStateOf("") }
     NicknameEditContent(
         nickname = nickname,
+        nicknameEditErrorMessage = null,
         onNicknameChange = { nickname = it }
     )
 }

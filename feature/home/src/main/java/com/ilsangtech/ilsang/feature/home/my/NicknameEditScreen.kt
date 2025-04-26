@@ -13,6 +13,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,18 +36,35 @@ fun NicknameEditScreen(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit
 ) {
+    val originUserInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
+    val nicknameEditErrorMessage by homeViewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
+    val isNicknameEditSuccess by homeViewModel.isNicknameEditSuccess.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isNicknameEditSuccess) {
+        if (isNicknameEditSuccess == true) {
+            navigateToMyTabMain()
+            homeViewModel.clearNicknameEditResult()
+        }
+    }
     NicknameEditScreen(
+        originNickname = originUserInfo?.nickname ?: "",
         nickname = nickname,
+        nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = homeViewModel::changeNickname,
         onEditButtonClick = homeViewModel::updateNickname,
-        navigateToMyTabMain = navigateToMyTabMain
+        navigateToMyTabMain = {
+            navigateToMyTabMain()
+            homeViewModel.clearNicknameEditResult()
+        }
     )
 }
 
 @Composable
 fun NicknameEditScreen(
+    originNickname: String,
     nickname: String,
+    nicknameEditErrorMessage: String?,
     onNicknameChange: (String) -> Unit,
     onEditButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
@@ -59,6 +77,7 @@ fun NicknameEditScreen(
             NicknameEditHeader(navigateToMyTabMain)
             NicknameEditContent(
                 nickname = nickname,
+                nicknameEditErrorMessage = nicknameEditErrorMessage,
                 onNicknameChange = onNicknameChange
             )
             Spacer(Modifier.weight(1f))
@@ -66,11 +85,8 @@ fun NicknameEditScreen(
                 modifier = Modifier
                     .imePadding()
                     .padding(horizontal = 20.dp),
-                enabled = nickname.isNotEmpty(),
-                onClick = {
-                    onEditButtonClick()
-                    navigateToMyTabMain()
-                }
+                enabled = originNickname != nickname && nicknameEditErrorMessage == null,
+                onClick = onEditButtonClick
             )
         }
     }
@@ -113,7 +129,9 @@ private val editButtonTextStyle = TextStyle(
 @Composable
 fun NicknameEditScreenPreview() {
     NicknameEditScreen(
+        originNickname = "닉네임",
         nickname = "닉네임",
+        nicknameEditErrorMessage = null,
         onNicknameChange = {},
         onEditButtonClick = {},
         navigateToMyTabMain = {}
