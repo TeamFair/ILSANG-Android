@@ -68,14 +68,10 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserNickname(nickname: String) {
         currentUser?.authorization?.let {
-            runCatching {
-                userDataSource.updateUserNickname(
-                    authorization = it,
-                    nickname = nickname
-                )
-            }.onSuccess {
-                currentUser = currentUser?.copy(nickname = nickname)
-            }
+            userDataSource.updateUserNickname(
+                authorization = it,
+                nickname = nickname
+            )
         }
     }
 }
