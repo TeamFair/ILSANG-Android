@@ -256,4 +256,8 @@ class HomeViewModel @Inject constructor(
     fun selectQuest(quest: Quest) {
         _selectedQuest.value = quest
     }
+
+    fun selectChallenge(challenge: Challenge) {
+        _selectedChallenge.value = challenge
+    }
 }
