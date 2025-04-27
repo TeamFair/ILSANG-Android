@@ -25,6 +25,7 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
+import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
@@ -62,6 +63,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 HomeTapScreen(
                     userNickname = userInfo?.nickname,
                     homeTapUiState = homeTapUiState,
+                    onApproveButtonClick = {
+                        homeViewModel.selectQuest(it)
+                    },
                     navigateToQuestTab = {
                         homeViewModel.selectSortType("포인트 높은 순")
                         navController.navigate(HomeTap.Quest.name) {
@@ -79,10 +83,21 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             }
                             launchSingleTop = true
                         }
+                    },
+                    navigateToSubmit = { uri ->
+                        homeViewModel.setCapturedImageUri(uri)
+                        navController.navigate("Submit")
                     }
                 )
             }
-            composable(HomeTap.Quest.name) { QuestTabScreen(homeViewModel) }
+            composable(HomeTap.Quest.name) {
+                QuestTabScreen(
+                    homeViewModel = homeViewModel,
+                    navigateToSubmit = {
+                        navController.navigate("Submit")
+                    }
+                )
+            }
             composable(HomeTap.Approval.name) {}
             composable(HomeTap.Ranking.name) {}
             myTabNavigation(
@@ -91,6 +106,11 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     navController.popBackStack()
                 },
                 navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") })
+            composable("Submit") {
+                SubmitScreen(homeViewModel) {
+                    navController.popBackStack()
+                }
+            }
         }
     }
 }

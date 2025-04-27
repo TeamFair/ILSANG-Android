@@ -1,5 +1,8 @@
 package com.ilsangtech.ilsang.feature.home.home
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -24,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,14 +37,28 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
+import com.ilsangtech.ilsang.feature.home.util.FileManager
 
 @Composable
 fun HomeTapScreen(
     userNickname: String?,
     homeTapUiState: HomeTapUiState,
+    onApproveButtonClick: (Quest) -> Unit,
     navigateToQuestTab: () -> Unit,
-    navigateToMyTab: () -> Unit
+    navigateToMyTab: () -> Unit,
+    navigateToSubmit: (Uri) -> Unit
 ) {
+    val context = LocalContext.current
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val imageCaptureLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) {
+                imageUri?.let {
+                    navigateToSubmit(it)
+                }
+            }
+        }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,7 +74,12 @@ fun HomeTapScreen(
                         showBottomSheet = false
                         bottomSheetQuest = null
                     },
-                    onApproveButtonClick = {}
+                    onApproveButtonClick = {
+                        if (imageUri == null) {
+                            imageUri = FileManager.createCacheFile(context)
+                        }
+                        imageCaptureLauncher.launch(imageUri!!)
+                    }
                 )
             }
         }
@@ -75,6 +98,7 @@ fun HomeTapScreen(
                     onPopularQuestClick = {
                         bottomSheetQuest = it
                         showBottomSheet = true
+                        onApproveButtonClick(it)
                     }
                 )
                 item { Spacer(Modifier.height(36.dp)) }
@@ -85,6 +109,7 @@ fun HomeTapScreen(
                         onRecommendedQuestClick = {
                             bottomSheetQuest = it
                             showBottomSheet = true
+                            onApproveButtonClick(it)
                         }
                     )
                 }
@@ -93,7 +118,13 @@ fun HomeTapScreen(
                     LargeRewardQuestsContent(
                         largeRewardQuests = homeTapUiState.data.largeRewardQuests,
                         navigateToQuestTab = navigateToQuestTab,
-                        onApproveButtonClick = {}
+                        onApproveButtonClick = {
+                            if (imageUri == null) {
+                                imageUri = FileManager.createCacheFile(context)
+                            }
+                            imageCaptureLauncher.launch(imageUri!!)
+                            onApproveButtonClick(it)
+                        }
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
@@ -160,6 +191,6 @@ fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
         HomeTapUiState.Loading,
-        {}, {}
+        {}, {}, {}, {}
     )
 }

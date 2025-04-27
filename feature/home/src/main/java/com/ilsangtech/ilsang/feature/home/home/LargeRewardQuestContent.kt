@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 fun LargeRewardQuestsContent(
     largeRewardQuests: Map<String, List<Quest>>,
     navigateToQuestTab: () -> Unit,
-    onApproveButtonClick: () -> Unit
+    onApproveButtonClick: (Quest) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -120,7 +120,7 @@ fun LargeRewardQuestsContent(
                                 xpSum = it.rewardList.sumOf { reward -> reward.quantity }
                             )
                         },
-                        onApproveButtonClick = onApproveButtonClick
+                        onApproveButtonClick = { onApproveButtonClick(it) }
                     )
                 }
             }
