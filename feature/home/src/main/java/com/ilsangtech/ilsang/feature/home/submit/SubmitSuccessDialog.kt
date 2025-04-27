@@ -178,7 +178,7 @@ fun SubmitSuccessStatsContent(rewardList: List<Reward>) {
 @Composable
 fun SubmitSuccessStatBox(reward: Reward) {
     val painterResource = painterResource(
-        when (reward.type) {
+        when (reward.content) {
             RewardType.STRENGTH.name -> {
                 R.drawable.strength
             }
@@ -262,11 +262,11 @@ private fun SubmitSuccessDialogPreview() {
             Spacer(Modifier.height(12.dp))
             SubmitSuccessStatsContent(
                 listOf(
-                    previewReward.copy(type = RewardType.STRENGTH.name),
-                    previewReward.copy(type = RewardType.INTELLECT.name),
-                    previewReward.copy(type = RewardType.CHARM.name),
-                    previewReward.copy(type = RewardType.FUN.name),
-                    previewReward.copy(type = RewardType.SOCIABILITY.name),
+                    previewReward.copy(content = RewardType.STRENGTH.name),
+                    previewReward.copy(content = RewardType.INTELLECT.name),
+                    previewReward.copy(content = RewardType.CHARM.name),
+                    previewReward.copy(content = RewardType.FUN.name),
+                    previewReward.copy(content = RewardType.SOCIABILITY.name),
                 )
             )
             Spacer(Modifier.height(12.dp))
