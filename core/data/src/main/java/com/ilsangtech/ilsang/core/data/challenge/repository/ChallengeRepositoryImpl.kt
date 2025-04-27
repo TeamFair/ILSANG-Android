@@ -60,7 +60,10 @@ class ChallengeRepositoryImpl(
         }
 
     override suspend fun submitChallenge(imageBytes: ByteArray, questId: String): String {
-        val imageId = imageRepository.uploadImage(imageBytes)
+        val imageId = imageRepository.uploadImage(
+            type = "RECEIPT",
+            imageBytes = imageBytes
+        )
         return challengeDataSource.submitChallenge(
             authorization = userRepository.currentUser?.authorization!!,
             questId = questId,
