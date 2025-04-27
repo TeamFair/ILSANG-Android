@@ -33,7 +33,8 @@ import kotlinx.coroutines.flow.asFlow
 @Composable
 fun MyTabScreen(
     homeViewModel: HomeViewModel,
-    navigateToNicknameEdit: () -> Unit
+    navigateToNicknameEdit: () -> Unit,
+    navigateToMyChallenge: () -> Unit
 ) {
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
@@ -43,7 +44,11 @@ fun MyTabScreen(
         userInfo = userInfo,
         userXpStats = userXpStats,
         challengePager = challengePager,
-        navigateToNicknameEdit = navigateToNicknameEdit
+        navigateToNicknameEdit = navigateToNicknameEdit,
+        navigateToMyChallenge = {
+            homeViewModel.selectChallenge(it)
+            navigateToMyChallenge()
+        }
     )
 }
 
@@ -52,7 +57,8 @@ fun MyTabScreen(
     userInfo: UserInfo?,
     userXpStats: UserXpStats,
     challengePager: LazyPagingItems<Challenge>,
-    navigateToNicknameEdit: () -> Unit
+    navigateToNicknameEdit: () -> Unit,
+    navigateToMyChallenge: (Challenge) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -75,7 +81,10 @@ fun MyTabScreen(
             }
             when (selectedMenu) {
                 MyTabMenu.CHALLENGE -> {
-                    MyChallengeContent(challengePager)
+                    MyChallengeContent(
+                        challengePager = challengePager,
+                        onMyChallengeClick = navigateToMyChallenge
+                    )
                 }
 
                 MyTabMenu.ACTIVITY -> {}
@@ -106,6 +115,8 @@ fun MyTabScreenPreview() {
             status = ""
         ),
         userXpStats = UserXpStats(),
-        challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems()
-    ) {}
+        challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
+        navigateToNicknameEdit = {},
+        navigateToMyChallenge = {}
+    )
 }

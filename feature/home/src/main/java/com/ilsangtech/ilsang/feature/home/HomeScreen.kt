@@ -105,7 +105,11 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
-                navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") })
+                navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") },
+                navigateToMyChallenge = {
+                    navController.navigate("${HomeTap.My.name}/Challenge")
+                }
+            )
             composable("Submit") {
                 SubmitScreen(homeViewModel) {
                     navController.popBackStack()
