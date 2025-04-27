@@ -21,7 +21,7 @@ object FileManager {
         val inputStream = context.contentResolver.openInputStream(uri)!!
         val bitmap = BitmapFactory.decodeStream(inputStream)
 
-        val maxSizeBytes = 1 * 1024 * 1024 // 1MB
+        val maxSizeBytes = 1 * 1024 * 100// 100KB
         var quality = 100
         val outputStream = ByteArrayOutputStream()
 
