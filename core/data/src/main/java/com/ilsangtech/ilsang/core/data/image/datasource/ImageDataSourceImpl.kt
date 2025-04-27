@@ -5,9 +5,7 @@ import com.ilsangtech.ilsang.core.network.model.image.ImageResponse
 import com.ilsangtech.ilsang.core.network.model.image.ImageUploadResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 import javax.inject.Inject
 
 class ImageDataSourceImpl @Inject constructor(
@@ -17,12 +15,20 @@ class ImageDataSourceImpl @Inject constructor(
         return imageApiService.getImage(imageId)
     }
 
-    override suspend fun uploadImage(imageBytes: ByteArray): ImageUploadResponse {
+    override suspend fun uploadImage(
+        authorization: String,
+        type: String,
+        imageBytes: ByteArray
+    ): ImageUploadResponse {
         val requestBody = imageBytes.toRequestBody("image/*".toMediaType())
-        return imageApiService.uploadImage(MultipartBody.Part.createFormData(
-            name = "image",
-            filename = "image.jpg",
-            body = requestBody
-        ))
+        return imageApiService.uploadImage(
+            authorization = authorization,
+            type = type,
+            image = MultipartBody.Part.createFormData(
+                name = "file",
+                filename = "image.jpg",
+                body = requestBody
+            )
+        )
     }
 }

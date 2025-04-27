@@ -6,5 +6,9 @@ import com.ilsangtech.ilsang.core.network.model.image.ImageUploadResponse
 interface ImageDataSource {
     suspend fun getImage(imageId: String): ImageResponse
 
-    suspend fun uploadImage(imageBytes: ByteArray): ImageUploadResponse
+    suspend fun uploadImage(
+        authorization: String,
+        type: String,
+        imageBytes: ByteArray
+    ): ImageUploadResponse
 }
