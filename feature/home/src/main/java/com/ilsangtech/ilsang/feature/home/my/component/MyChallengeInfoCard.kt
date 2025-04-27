@@ -65,7 +65,7 @@ fun MyChallengeInfoCard(
                     .size(48.dp)
                     .clip(CircleShape)
                     .background(primary100),
-                model = BuildConfig.IMAGE_URL + challenge.receiptImageId,
+                model = BuildConfig.IMAGE_URL + challenge.questImage,
                 contentDescription = null
             )
             Spacer(Modifier.width(12.dp))
