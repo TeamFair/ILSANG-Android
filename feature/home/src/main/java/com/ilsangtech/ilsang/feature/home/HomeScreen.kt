@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
+import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
@@ -98,7 +99,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     }
                 )
             }
-            composable(HomeTap.Approval.name) {}
+            composable(HomeTap.Approval.name) {
+                ApprovalScreen()
+            }
             composable(HomeTap.Ranking.name) {}
             myTabNavigation(
                 homeViewModel = homeViewModel,
