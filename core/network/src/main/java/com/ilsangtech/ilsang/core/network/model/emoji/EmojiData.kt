@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmojiData(
-    val emojiId: String,
-    val emojiStatus: String,
-    val targetId: String,
-    val targetType: String
+    val likeId: String?,
+    val isLike: Boolean,
+    val hateId: String?,
+    val isHate: Boolean
 )
