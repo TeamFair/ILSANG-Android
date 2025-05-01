@@ -13,6 +13,6 @@ data class RandomChallengeNetworkModel(
     val receiptImageId: String,
     val status: String,
     val userNickName: String,
-    val userProfileImage: String,
+    val userProfileImage: String?,
     val viewCount: Int
 )
