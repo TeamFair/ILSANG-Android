@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +18,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -32,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.ilsangtech.ilsang.core.model.RandomChallenge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -42,34 +44,41 @@ import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.util.DateConverter
 
 @Composable
 fun ApprovalItem(challenge: RandomChallenge) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 20.dp,
-                vertical = 16.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    Surface(
+        color = Color.White,
+        shape = RoundedCornerShape(12.dp)
     ) {
-        ApprovalItemHeader(
-            userProfileImage = challenge.userProfileImage,
-            userNickname = challenge.userNickName,
-            createdAt = challenge.createdAt
-        )
-        ApprovalItemBody(
-            title = challenge.missionTitle,
-            challengeImage = challenge.receiptImageId
-        )
-        ApprovalItemFooter(
-            likeCount = challenge.likeCnt,
-            hateCount = challenge.hateCnt,
-            onLikeButtonClick = {},
-            onHateButtonClick = {}
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 16.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ApprovalItemHeader(
+                userProfileImage = challenge.userProfileImage,
+                userNickname = challenge.userNickName,
+                createdAt = challenge.createdAt
+            )
+            ApprovalItemBody(
+                title = challenge.missionTitle,
+                challengeImage = challenge.receiptImageId
+            )
+            ApprovalItemFooter(
+                likeCount = challenge.likeCnt,
+                hateCount = challenge.hateCnt,
+                onLikeButtonClick = {},
+                onHateButtonClick = {}
+            )
+        }
     }
 }
 
@@ -99,7 +108,7 @@ fun ApprovalItemHeader(
                 style = approvalItemNicknameTextStyle
             )
             Text(
-                text = createdAt,
+                text = DateConverter.timeAgoSinceDate(createdAt),
                 style = approvalItemTimeTextStyle
             )
         }
@@ -131,8 +140,9 @@ fun ApprovalItemBody(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
+                .aspectRatio(5/4f)
                 .clip(RoundedCornerShape(12.dp)),
-            model = challengeImage,
+            model = BuildConfig.IMAGE_URL + challengeImage,
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
