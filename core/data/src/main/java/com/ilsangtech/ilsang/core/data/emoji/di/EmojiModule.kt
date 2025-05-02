@@ -7,16 +7,22 @@ import com.ilsangtech.ilsang.core.domain.EmojiRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object EmojiModule {
+    @Provides
+    @Singleton
     fun provideEmojiDataSource(emojiApiService: EmojiApiService): EmojiDataSource {
         return EmojiDataSourceImpl(emojiApiService)
     }
 
+    @Provides
+    @Singleton
     fun provideEmojiRepository(
         userRepository: UserRepository,
         emojiDataSource: EmojiDataSource
