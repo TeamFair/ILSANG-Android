@@ -15,6 +15,7 @@ fun RandomChallengeNetworkModel.toRandomChallenge(): RandomChallenge {
         status = status,
         userNickName = userNickName,
         userProfileImage = userProfileImage,
-        viewCount = viewCount
+        viewCount = viewCount,
+        emoji = null
     )
 }

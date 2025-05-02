@@ -11,5 +11,6 @@ data class RandomChallenge(
     val status: String,
     val userNickName: String,
     val userProfileImage: String?,
-    val viewCount: Int
+    val viewCount: Int,
+    val emoji: Emoji?
 )
