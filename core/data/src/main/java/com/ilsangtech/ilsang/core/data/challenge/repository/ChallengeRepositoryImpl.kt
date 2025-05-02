@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.toChallenge
 import com.ilsangtech.ilsang.core.data.challenge.toRandomChallenge
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
+import com.ilsangtech.ilsang.core.domain.EmojiRepository
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.Challenge
@@ -16,7 +17,8 @@ import com.ilsangtech.ilsang.core.network.model.challenge.RandomChallengeNetwork
 class ChallengeRepositoryImpl(
     private val userRepository: UserRepository,
     private val imageRepository: ImageRepository,
-    private val challengeDataSource: ChallengeDataSource
+    private val challengeDataSource: ChallengeDataSource,
+    private val emojiRepository: EmojiRepository
 ) : ChallengeRepository {
     override suspend fun getChallengesWithTotal(
         page: Int,
@@ -89,7 +91,11 @@ class ChallengeRepositoryImpl(
                     val size = params.loadSize
                     val challengesWithTotal = getRandomChallengesWithTotal(pageNumber, size)
 
-                    val challenges = challengesWithTotal.first
+                    val challenges = challengesWithTotal.first.map {
+                        val emoji = emojiRepository.getEmoji(it.challengeId)
+                        it.copy(emoji = emoji)
+                    }
+
                     val total = challengesWithTotal.second
                     return LoadResult.Page(
                         data = challenges,

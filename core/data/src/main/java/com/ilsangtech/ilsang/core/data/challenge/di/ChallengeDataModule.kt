@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSourceImpl
 import com.ilsangtech.ilsang.core.data.challenge.repository.ChallengeRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
+import com.ilsangtech.ilsang.core.domain.EmojiRepository
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
@@ -27,12 +28,14 @@ object ChallengeDataModule {
     fun provideChallengeRepository(
         challengeDataSource: ChallengeDataSource,
         imageRepository: ImageRepository,
-        userRepository: UserRepository
+        userRepository: UserRepository,
+        emojiRepository: EmojiRepository
     ): ChallengeRepository {
         return ChallengeRepositoryImpl(
             challengeDataSource = challengeDataSource,
             imageRepository = imageRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            emojiRepository = emojiRepository
         )
     }
 }
