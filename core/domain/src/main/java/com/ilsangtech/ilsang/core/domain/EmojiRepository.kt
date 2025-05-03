@@ -10,7 +10,7 @@ interface EmojiRepository {
         targetId: String,
         targetType: String,
         emojiType: EmojiType
-    )
+    ): String
 
     suspend fun deleteEmoji(emojiId: String)
 }

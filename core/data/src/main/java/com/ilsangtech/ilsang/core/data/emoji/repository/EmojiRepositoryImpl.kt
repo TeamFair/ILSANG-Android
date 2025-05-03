@@ -19,15 +19,15 @@ class EmojiRepositoryImpl(
         ).emojiData.toEmoji()
     }
 
-    override suspend fun registerEmoji(targetId: String, targetType: String, emojiType: EmojiType) {
-        emojiDataSource.registerEmoji(
+    override suspend fun registerEmoji(targetId: String, targetType: String, emojiType: EmojiType): String {
+        return emojiDataSource.registerEmoji(
             authorization = userRepository.currentUser?.authorization!!,
             emojiRegistrationRequest = EmojiRegistrationRequest(
                 targetId = targetId,
                 targetType = targetType,
                 emojiType = emojiType.name
             )
-        )
+        ).emojiRegistrationData.emojiId
     }
 
     override suspend fun deleteEmoji(emojiId: String) {
