@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -43,6 +44,9 @@ import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
+import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.designsystem.theme.primary100
+import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
@@ -50,6 +54,9 @@ import com.ilsangtech.ilsang.feature.home.util.DateConverter
 
 @Composable
 fun ApprovalItem(challenge: RandomChallenge) {
+fun ApprovalItem(
+    challenge: RandomChallenge,
+) {
     Surface(
         color = Color.White,
         shape = RoundedCornerShape(12.dp)
@@ -73,6 +80,8 @@ fun ApprovalItem(challenge: RandomChallenge) {
                 challengeImage = challenge.receiptImageId
             )
             ApprovalItemFooter(
+                isLiked = challenge.emoji?.isLike == true,
+                isHated = challenge.emoji?.isHate == true,
                 likeCount = challenge.likeCnt,
                 hateCount = challenge.hateCnt,
                 onLikeButtonClick = {},
@@ -140,7 +149,7 @@ fun ApprovalItemBody(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(5/4f)
+                .aspectRatio(5 / 4f)
                 .clip(RoundedCornerShape(12.dp)),
             model = BuildConfig.IMAGE_URL + challengeImage,
             contentScale = ContentScale.Crop,
@@ -151,6 +160,8 @@ fun ApprovalItemBody(
 
 @Composable
 fun ApprovalItemFooter(
+    isLiked: Boolean,
+    isHated: Boolean,
     likeCount: Int,
     hateCount: Int,
     onLikeButtonClick: () -> Unit,
@@ -201,6 +212,10 @@ fun ApprovalItemFooter(
             ApprovalFeedbackButton(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(top = 11.dp, bottom = 9.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isHated) primary100 else gray100,
+                    contentColor = if (isHated) primary300 else gray300
+                ),
                 onClick = onHateButtonClick
             ) {
                 Icon(
@@ -208,7 +223,6 @@ fun ApprovalItemFooter(
                         .padding(vertical = 3.dp)
                         .padding(start = 2.dp, end = 1.dp),
                     painter = painterResource(R.drawable.thumbs_down),
-                    tint = gray300,
                     contentDescription = null
                 )
             }
@@ -216,6 +230,10 @@ fun ApprovalItemFooter(
             ApprovalFeedbackButton(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(top = 9.dp, bottom = 11.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isLiked) primary else gray100,
+                    contentColor = if (isLiked) Color.White else gray300
+                ),
                 onClick = onLikeButtonClick
             ) {
                 Icon(
@@ -223,7 +241,6 @@ fun ApprovalItemFooter(
                         .padding(vertical = 3.dp)
                         .padding(start = 1.dp, end = 2.dp),
                     painter = painterResource(R.drawable.thumbs_up),
-                    tint = gray300,
                     contentDescription = null
                 )
             }
@@ -236,13 +253,14 @@ fun ApprovalFeedbackButton(
     modifier: Modifier,
     onClick: () -> Unit,
     contentPadding: PaddingValues,
+    colors: ButtonColors,
     content: @Composable RowScope.() -> Unit
 ) {
     Button(
         modifier = modifier.fillMaxWidth(),
         content = content,
         contentPadding = contentPadding,
-        colors = ButtonDefaults.buttonColors(containerColor = gray100),
+        colors = colors,
         shape = RoundedCornerShape(12.dp),
         onClick = onClick
     )
@@ -279,7 +297,11 @@ fun ApprovalItemPreview() {
         userNickName = "일상123",
         customerId = "",
         userProfileImage = "",
-        viewCount = 4
+        viewCount = 4,
+        emoji = null
     )
     ApprovalItem(challenge)
+    ApprovalItem(
+        challenge = challenge,
+    )
 }
