@@ -53,9 +53,10 @@ import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.util.DateConverter
 
 @Composable
-fun ApprovalItem(challenge: RandomChallenge) {
 fun ApprovalItem(
     challenge: RandomChallenge,
+    onLikeButtonClick: () -> Unit,
+    onHateButtonClick: () -> Unit
 ) {
     Surface(
         color = Color.White,
@@ -84,8 +85,8 @@ fun ApprovalItem(
                 isHated = challenge.emoji?.isHate == true,
                 likeCount = challenge.likeCnt,
                 hateCount = challenge.hateCnt,
-                onLikeButtonClick = {},
-                onHateButtonClick = {}
+                onLikeButtonClick = onLikeButtonClick,
+                onHateButtonClick = onHateButtonClick
             )
         }
     }
@@ -300,8 +301,10 @@ fun ApprovalItemPreview() {
         viewCount = 4,
         emoji = null
     )
-    ApprovalItem(challenge)
+
     ApprovalItem(
         challenge = challenge,
+        onLikeButtonClick = {},
+        onHateButtonClick = {}
     )
 }

@@ -29,11 +29,19 @@ fun ApprovalScreen(approvalViewModel: ApprovalViewModel = hiltViewModel()) {
             contentPadding = PaddingValues(vertical = 48.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                Spacer(Modifier.statusBarsPadding())
-            }
+            item { Spacer(Modifier.statusBarsPadding()) }
             items(randomChallenges.itemCount) {
-                ApprovalItem(challenge = randomChallenges[it]!!)
+                randomChallenges[it]?.let { randomChallenge ->
+                    ApprovalItem(
+                        challenge = randomChallenge,
+                        onLikeButtonClick = {
+                            approvalViewModel.likeChallenge(randomChallenge)
+                        },
+                        onHateButtonClick = {
+                            approvalViewModel.hateChallenge(randomChallenge)
+                        }
+                    )
+                }
             }
         }
     }
