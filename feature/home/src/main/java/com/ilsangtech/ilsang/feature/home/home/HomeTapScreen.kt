@@ -46,7 +46,8 @@ fun HomeTapScreen(
     onApproveButtonClick: (Quest) -> Unit,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Uri) -> Unit
+    navigateToSubmit: (Uri) -> Unit,
+    navigateToRankingTab: () -> Unit
 ) {
     val context = LocalContext.current
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -128,7 +129,12 @@ fun HomeTapScreen(
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
-                item { UserRankContent(homeTapUiState.data.topRankUsers) }
+                item {
+                    UserRankContent(
+                        rankList = homeTapUiState.data.topRankUsers,
+                        navigateToRankingTab = navigateToRankingTab
+                    )
+                }
                 item { Spacer(Modifier.height(84.dp)) }
             }
         }
@@ -191,6 +197,6 @@ fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
         HomeTapUiState.Loading,
-        {}, {}, {}, {}
+        {}, {}, {}, {}, {}
     )
 }
