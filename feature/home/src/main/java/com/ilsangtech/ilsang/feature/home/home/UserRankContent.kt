@@ -44,7 +44,10 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
-fun UserRankContent(rankList: List<UserRank>) {
+fun UserRankContent(
+    rankList: List<UserRank>,
+    navigateToRankingTab: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,7 +63,11 @@ fun UserRankContent(rankList: List<UserRank>) {
             )
             Spacer(Modifier.weight(1f))
             Icon(
-                modifier = Modifier.clickable { },
+                modifier = Modifier.clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = navigateToRankingTab
+                ),
                 painter = painterResource(R.drawable.user_rank_content_right_icon),
                 tint = gray500,
                 contentDescription = null
@@ -202,7 +209,7 @@ fun UserRankContentPreview() {
                 "", "닉네임1", 300, null, 1
             )
         )
-    )
+    ) {}
 }
 
 @Preview

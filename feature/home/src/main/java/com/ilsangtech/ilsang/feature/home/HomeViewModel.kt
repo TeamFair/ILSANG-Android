@@ -260,4 +260,14 @@ class HomeViewModel @Inject constructor(
     fun selectChallenge(challenge: Challenge) {
         _selectedChallenge.value = challenge
     }
+
+    val rankingUiState = flow {
+        emit(
+            RewardType.entries.associateWith { rankRepository.getXpTypeRank(it) }
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyMap()
+    )
 }

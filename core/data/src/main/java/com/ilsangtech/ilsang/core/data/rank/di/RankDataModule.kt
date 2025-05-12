@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.data.rank.datasource.RankDataSource
 import com.ilsangtech.ilsang.core.data.rank.datasource.RankDataSourceImpl
 import com.ilsangtech.ilsang.core.data.rank.repository.RankRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.RankRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import dagger.Module
 import dagger.Provides
@@ -25,9 +26,13 @@ object RankDataModule {
     @Provides
     @Singleton
     fun provideRankRepository(
+        userRepository: UserRepository,
         rankDataSource: RankDataSource
     ): RankRepository {
-        return RankRepositoryImpl(rankDataSource)
+        return RankRepositoryImpl(
+            userRepository = userRepository,
+            rankDataSource = rankDataSource
+        )
     }
 
 }

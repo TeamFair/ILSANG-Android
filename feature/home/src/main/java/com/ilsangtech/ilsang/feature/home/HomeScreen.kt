@@ -26,6 +26,7 @@ import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
+import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
 import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 @Composable
@@ -88,6 +89,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     navigateToSubmit = { uri ->
                         homeViewModel.setCapturedImageUri(uri)
                         navController.navigate("Submit")
+                    },
+                    navigateToRankingTab = {
+                        navController.navigate(HomeTap.Ranking.name)
                     }
                 )
             }
@@ -102,7 +106,9 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             composable(HomeTap.Approval.name) {
                 ApprovalScreen()
             }
-            composable(HomeTap.Ranking.name) {}
+            composable(HomeTap.Ranking.name) {
+                RankingScreen(homeViewModel)
+            }
             myTabNavigation(
                 homeViewModel = homeViewModel,
                 navigateToMyTabMain = {
