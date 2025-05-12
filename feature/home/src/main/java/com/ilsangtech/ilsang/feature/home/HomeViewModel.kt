@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -21,6 +22,7 @@ import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiData
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiState
+import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -214,5 +216,48 @@ class HomeViewModel @Inject constructor(
         _editNickname.value = _userInfo.value?.nickname ?: ""
         _nicknameEditErrorMessage.value = null
         _isNicknameEditSuccess.value = null
+    }
+
+    private val _selectedQuest = MutableStateFlow<Quest?>(null)
+    val selectedQuest = _selectedQuest.asStateFlow()
+
+    private val _capturedImageUri = MutableStateFlow<Uri?>(null)
+    val capturedImageUri = _capturedImageUri.asStateFlow()
+
+    fun setCapturedImageUri(uri: Uri) {
+        _capturedImageUri.value = uri
+    }
+
+    private val _submitUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
+    val submitUiState = _submitUiState.asStateFlow()
+
+    fun submitApproveImage(bytes: ByteArray) {
+        viewModelScope.launch {
+            runCatching {
+                _submitUiState.value = SubmitUiState.Loading
+                challengeRepository.submitChallenge(
+                    questId = selectedQuest.value!!.questId,
+                    imageBytes = bytes
+                )
+            }.onSuccess {
+                _submitUiState.value = SubmitUiState.Success
+            }.onFailure {
+                _submitUiState.value = SubmitUiState.Error
+            }
+        }
+    }
+
+    fun completeSubmit() {
+        _submitUiState.value = SubmitUiState.NotSubmitted
+        _capturedImageUri.value = null
+        _selectedQuest.value = null
+    }
+
+    fun selectQuest(quest: Quest) {
+        _selectedQuest.value = quest
+    }
+
+    fun selectChallenge(challenge: Challenge) {
+        _selectedChallenge.value = challenge
     }
 }

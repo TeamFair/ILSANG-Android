@@ -2,12 +2,26 @@ package com.ilsangtech.ilsang.core.data.image.repository
 
 import com.ilsangtech.ilsang.core.data.image.datasource.ImageDataSource
 import com.ilsangtech.ilsang.core.domain.ImageRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(
+    private val userRepository: UserRepository,
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
     override suspend fun getImageUrl(imageId: String): String {
         return imageDataSource.getImage(imageId).networkImage.location
+    }
+
+    override suspend fun uploadImage(
+        type: String,
+        imageBytes: ByteArray
+    ): String {
+        val authorization = userRepository.currentUser!!.authorization!!
+        return imageDataSource.uploadImage(
+            type = type,
+            authorization = authorization,
+            imageBytes = imageBytes
+        ).imageUploadResponseData.imageId
     }
 }

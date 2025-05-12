@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -63,6 +64,7 @@ import com.ilsangtech.ilsang.feature.home.R
 fun QuestBottomSheet(
     quest: Quest,
     showBottomSheet: Boolean,
+    onApproveButtonClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
@@ -113,9 +115,7 @@ fun QuestBottomSheet(
             )
             QuestBottomSheetContent(
                 quest = quest,
-                onApproveButtonClick = {
-                    onDismiss()
-                }
+                onApproveButtonClick = onApproveButtonClick
             )
         }
     }

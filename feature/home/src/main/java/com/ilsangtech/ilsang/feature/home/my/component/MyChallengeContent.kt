@@ -38,7 +38,10 @@ import com.ilsangtech.ilsang.feature.home.my.util.formatDate
 import kotlinx.coroutines.flow.asFlow
 
 @Composable
-fun MyChallengeContent(challengePager: LazyPagingItems<Challenge>) {
+fun MyChallengeContent(
+    challengePager: LazyPagingItems<Challenge>,
+    onMyChallengeClick: (Challenge) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,17 +56,25 @@ fun MyChallengeContent(challengePager: LazyPagingItems<Challenge>) {
             contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             items(challengePager.itemCount) { index ->
-                challengePager[index]?.let { MyChallengeItem(it) }
+                challengePager[index]?.let {
+                    MyChallengeItem(
+                        challenge = it,
+                        onMyChallengeClick = { onMyChallengeClick(it) }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun MyChallengeItem(challenge: Challenge) {
+fun MyChallengeItem(
+    challenge: Challenge,
+    onMyChallengeClick: () -> Unit,
+) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        onClick = {}
+        onClick = onMyChallengeClick
     ) {
         Box(
             modifier = Modifier
@@ -109,6 +120,7 @@ private val myChallengeContentTitleTextStyle = TextStyle(
 @Composable
 fun MyChallengeContentPreview() {
     MyChallengeContent(
-        emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems()
+        emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
+        {}
     )
 }

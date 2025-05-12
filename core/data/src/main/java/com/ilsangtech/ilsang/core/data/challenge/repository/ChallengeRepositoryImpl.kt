@@ -5,12 +5,14 @@ import androidx.paging.PagingState
 import com.ilsangtech.ilsang.core.data.challenge.datasource.ChallengeDataSource
 import com.ilsangtech.ilsang.core.data.challenge.toChallenge
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
+import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeNetworkModel
 
 class ChallengeRepositoryImpl(
     private val userRepository: UserRepository,
+    private val imageRepository: ImageRepository,
     private val challengeDataSource: ChallengeDataSource
 ) : ChallengeRepository {
     override suspend fun getChallengesWithTotal(
@@ -56,4 +58,16 @@ class ChallengeRepositoryImpl(
                 }
             }
         }
+
+    override suspend fun submitChallenge(imageBytes: ByteArray, questId: String): String {
+        val imageId = imageRepository.uploadImage(
+            type = "RECEIPT",
+            imageBytes = imageBytes
+        )
+        return challengeDataSource.submitChallenge(
+            authorization = userRepository.currentUser?.authorization!!,
+            questId = questId,
+            imageId = imageId
+        ).challengeSubmitData.challengeId
+    }
 }

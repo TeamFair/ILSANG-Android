@@ -17,24 +17,34 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Challenge
+import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeHeader
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeInfoCard
 
 @Composable
-fun MyChallengeScreen(homeViewModel: HomeViewModel) {
+fun MyChallengeScreen(
+    homeViewModel: HomeViewModel,
+    navigateToMyTabMain: () -> Unit
+) {
     val challenge by homeViewModel.selectedChallenge.collectAsStateWithLifecycle()
-    MyChallengeScreen(challenge!!)
+    MyChallengeScreen(
+        challenge = challenge!!,
+        navigateToMyTabMain = navigateToMyTabMain
+    )
 }
 
 @Composable
-fun MyChallengeScreen(challenge: Challenge) {
+fun MyChallengeScreen(
+    challenge: Challenge,
+    navigateToMyTabMain: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            MyChallengeHeader { }
+            MyChallengeHeader(onBackButtonClick = navigateToMyTabMain)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -42,8 +52,8 @@ fun MyChallengeScreen(challenge: Challenge) {
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = "",
-                    contentScale = ContentScale.Fit,
+                    model = BuildConfig.IMAGE_URL + challenge.receiptImageId,
+                    contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
                 MyChallengeInfoCard(
@@ -73,6 +83,6 @@ fun MyChallengeScreenPreview() {
             status = "",
             userNickName = "",
             viewCount = 1302
-        )
+        ), {}
     )
 }

@@ -1,5 +1,8 @@
 package com.ilsangtech.ilsang.feature.home.quest
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,24 +18,45 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.home.LargeRewardQuestBadge
+import com.ilsangtech.ilsang.feature.home.util.FileManager
 
 @Composable
-fun QuestTabScreen(homeViewModel: HomeViewModel) {
+fun QuestTabScreen(
+    homeViewModel: HomeViewModel,
+    navigateToSubmit: () -> Unit
+) {
     val selectedQuestType by homeViewModel.selectedQuestType.collectAsStateWithLifecycle()
     val selectedRewardType by homeViewModel.selectedRewardType.collectAsStateWithLifecycle()
     val selectedRepeatPeriod by homeViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
     val selectedSortType by homeViewModel.selectedSortType.collectAsStateWithLifecycle()
     val questTabUiState by homeViewModel.questTabUiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val imageCaptureLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) {
+                imageUri?.let {
+                    homeViewModel.setCapturedImageUri(imageUri!!)
+                    navigateToSubmit()
+                }
+            }
+        }
 
     QuestTabScreen(
         selectedQuestType = selectedQuestType,
@@ -43,7 +67,14 @@ fun QuestTabScreen(homeViewModel: HomeViewModel) {
         onSelectQuestType = homeViewModel::selectQuestType,
         onSelectRewardType = homeViewModel::selectRewardType,
         onSelectRepeatPeriod = homeViewModel::selectRepeatPeriod,
-        onSelectSortType = homeViewModel::selectSortType
+        onSelectSortType = homeViewModel::selectSortType,
+        onApproveButtonClick = {
+            homeViewModel.selectQuest(it)
+            if (imageUri == null) {
+                imageUri = FileManager.createCacheFile(context)
+            }
+            imageCaptureLauncher.launch(imageUri!!)
+        }
     )
 }
 
@@ -57,7 +88,8 @@ fun QuestTabScreen(
     onSelectQuestType: (QuestType) -> Unit,
     onSelectRewardType: (RewardType) -> Unit,
     onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
-    onSelectSortType: (String) -> Unit
+    onSelectSortType: (String) -> Unit,
+    onApproveButtonClick: (Quest) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -106,7 +138,8 @@ fun QuestTabScreen(
                                             xpSum = quest.rewardList.sumOf { it.quantity },
                                         )
                                     }
-                                }
+                                },
+                                onApproveButtonClick = { onApproveButtonClick(quest) }
                             )
                         }
                         item {
@@ -133,6 +166,7 @@ fun QuestTabScreenPreview() {
         onSelectQuestType = {},
         onSelectRewardType = {},
         onSelectRepeatPeriod = {},
-        onSelectSortType = {}
+        onSelectSortType = {},
+        onApproveButtonClick = {}
     )
 }

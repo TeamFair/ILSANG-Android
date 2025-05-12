@@ -14,7 +14,8 @@ import com.ilsangtech.ilsang.feature.home.my.NicknameEditScreen
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit,
-    navigateToNicknameEdit: () -> Unit
+    navigateToNicknameEdit: () -> Unit,
+    navigateToMyChallenge: () -> Unit,
 ) {
     navigation(
         route = HomeTap.My.name,
@@ -23,7 +24,8 @@ fun NavGraphBuilder.myTabNavigation(
         composable("${HomeTap.My.name}/Main") {
             MyTabScreen(
                 homeViewModel = homeViewModel,
-                navigateToNicknameEdit = navigateToNicknameEdit
+                navigateToNicknameEdit = navigateToNicknameEdit,
+                navigateToMyChallenge = navigateToMyChallenge
             )
         }
         composable(
@@ -48,7 +50,10 @@ fun NavGraphBuilder.myTabNavigation(
         }
 
         composable("${HomeTap.My.name}/Challenge") {
-            MyChallengeScreen(homeViewModel)
+            MyChallengeScreen(
+                homeViewModel = homeViewModel,
+                navigateToMyTabMain = navigateToMyTabMain
+            )
         }
     }
 }

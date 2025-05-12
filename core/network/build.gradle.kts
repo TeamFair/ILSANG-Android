@@ -52,7 +52,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.okhttp)
+    api(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.androidx.core.ktx)

@@ -10,4 +10,9 @@ interface ChallengeRepository {
     ): Pair<List<Challenge>, Int>
 
     fun getChallengePaging(): PagingSource<Int, Challenge>
+
+    suspend fun submitChallenge(
+        imageBytes: ByteArray,
+        questId: String
+    ): String
 }

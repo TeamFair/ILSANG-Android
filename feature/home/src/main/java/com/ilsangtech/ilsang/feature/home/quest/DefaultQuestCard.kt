@@ -54,7 +54,8 @@ import com.ilsangtech.ilsang.feature.home.R
 fun DefaultQuestCard(
     modifier: Modifier = Modifier,
     quest: Quest,
-    badge: @Composable (Modifier) -> Unit
+    badge: @Composable (Modifier) -> Unit,
+    onApproveButtonClick: () -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -62,7 +63,8 @@ fun DefaultQuestCard(
         QuestBottomSheet(
             quest = quest,
             showBottomSheet = showBottomSheet,
-            onDismiss = { showBottomSheet = false }
+            onDismiss = { showBottomSheet = false },
+            onApproveButtonClick = onApproveButtonClick
         )
     }
 

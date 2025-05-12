@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:util"))
 
+    implementation(libs.androidx.camera.core)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.exifinterface)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.navigation.compose)
