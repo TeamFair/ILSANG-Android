@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
+import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
  import com.ilsangtech.ilsang.core.network.api.RankApiService
@@ -82,5 +83,11 @@ object NetworkModule {
     @Singleton
     fun provideImageApiService(retrofit: Retrofit): ImageApiService {
         return retrofit.create(ImageApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEmojiApiService(retrofit: Retrofit): EmojiApiService {
+        return retrofit.create(EmojiApiService::class.java)
     }
 }

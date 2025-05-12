@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
+import com.ilsangtech.ilsang.core.network.model.challenge.RandomChallengeResponse
 
 class ChallengeDataSourceImpl(
     private val challengeApiService: ChallengeApiService
@@ -39,6 +40,18 @@ class ChallengeDataSourceImpl(
                 questId = questId,
                 receiptImageId = imageId
             )
+        )
+    }
+
+    override suspend fun getRandomChallenges(
+        authorization: String,
+        page: Int,
+        size: Int
+    ): RandomChallengeResponse {
+        return challengeApiService.getRandomChallenges(
+            authorization = authorization,
+            page = page,
+            size = size
         )
     }
 }
