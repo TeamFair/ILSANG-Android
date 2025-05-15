@@ -7,5 +7,6 @@ data class TitleNetworkModel(
     val id: String,
     val name: String,
     val type: String,
+    val condition: String?,
     val createdAt: String
 )
