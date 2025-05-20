@@ -1,7 +1,10 @@
 package com.ilsangtech.ilsang.feature.home
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -57,6 +60,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
                 end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
                 bottom = paddingValues.calculateBottomPadding()
+                        - WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
             ),
             navController = navController,
             startDestination = HomeTap.Home.name

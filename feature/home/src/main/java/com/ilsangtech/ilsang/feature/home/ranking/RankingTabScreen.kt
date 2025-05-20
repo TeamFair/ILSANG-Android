@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
@@ -40,7 +41,9 @@ fun RankingScreen(homeViewModel: HomeViewModel) {
 fun RankingScreen(rankingUiState: Map<RewardType, List<UserXpTypeRank>>) {
     var selectedRewardType by remember { mutableStateOf(RewardType.entries.first()) }
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding(),
         color = background
     ) {
         Column {

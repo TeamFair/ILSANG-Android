@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -109,6 +110,11 @@ fun SubmitScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
         SubmitScreenHeader { }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+    ) {
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
