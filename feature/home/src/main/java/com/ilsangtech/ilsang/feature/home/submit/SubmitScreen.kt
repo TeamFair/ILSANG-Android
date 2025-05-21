@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.home.submit
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -23,7 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import coil3.request.addLastModifiedToFileCacheKey
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -46,6 +46,7 @@ import com.ilsangtech.ilsang.designsystem.theme.title02
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.util.FileManager
+import java.io.File
 
 @Composable
 fun SubmitScreen(
@@ -53,16 +54,16 @@ fun SubmitScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val imageUri by homeViewModel.capturedImageUri.collectAsStateWithLifecycle()
-    var retakeImageUri by remember { mutableStateOf<Uri?>(null) }
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
     val submitUiState by homeViewModel.submitUiState.collectAsStateWithLifecycle()
 
+    val tempFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
+    var lastModified by remember { mutableLongStateOf(tempFile.lastModified()) }
+
     val imageCaptureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) {
-                homeViewModel.setCapturedImageUri(retakeImageUri!!)
-            }
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { _ ->
+            lastModified = tempFile.lastModified()
         }
 
     when (submitUiState) {
@@ -86,39 +87,39 @@ fun SubmitScreen(
     }
 
     SubmitScreen(
-        imageUri = imageUri,
+        imageFile = tempFile,
+        lastModifyTime = lastModified,
+        onBackButtonClick = onDismiss,
         onRetakeButtonClick = {
-            retakeImageUri = FileManager.createCacheFile(context)
-            imageCaptureLauncher.launch(retakeImageUri!!)
+            imageCaptureLauncher.launch(tempFileUri)
         },
         onSubmitButtonClick = {
-            homeViewModel.submitApproveImage(
-                FileManager.getBytesFromUri(context, imageUri!!)
-            )
+            homeViewModel.submitApproveImage()
         }
-
     )
 }
 
 @Composable
 fun SubmitScreen(
-    imageUri: Uri?,
+    imageFile: File,
+    lastModifyTime: Long,
+    onBackButtonClick: () -> Unit,
     onRetakeButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit
 ) {
     val context = LocalContext.current
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        SubmitScreenHeader { }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
+        SubmitScreenHeader(onBackButtonClick)
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(imageUri)
+                    .data(imageFile)
+                    .memoryCacheKey("$imageFile?t=$lastModifyTime")
+                    .addLastModifiedToFileCacheKey(true)
                     .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
@@ -227,5 +228,5 @@ fun SubmitScreenFooter(
 @Preview
 @Composable
 fun SubmitScreenPreview() {
-    SubmitScreen(null, {}, {})
+    SubmitScreen(File.createTempFile("", ""), 0L, {}, {}, {})
 }

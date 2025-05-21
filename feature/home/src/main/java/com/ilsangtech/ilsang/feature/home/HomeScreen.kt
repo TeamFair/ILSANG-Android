@@ -36,7 +36,6 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
-    val homeTapUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -68,7 +67,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             composable(HomeTap.Home.name) {
                 HomeTapScreen(
                     userNickname = userInfo?.nickname,
-                    homeTapUiState = homeTapUiState,
+                    homeViewModel = homeViewModel,
                     onApproveButtonClick = {
                         homeViewModel.selectQuest(it)
                     },
@@ -90,8 +89,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             launchSingleTop = true
                         }
                     },
-                    navigateToSubmit = { uri ->
-                        homeViewModel.setCapturedImageUri(uri)
+                    navigateToSubmit = {
                         navController.navigate("Submit")
                     },
                     navigateToRankingTab = {

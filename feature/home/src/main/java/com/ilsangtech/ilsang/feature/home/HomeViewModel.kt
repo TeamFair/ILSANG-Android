@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.home
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,7 +24,9 @@ import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiData
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiState
 import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
+import com.ilsangtech.ilsang.feature.home.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +40,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    @ApplicationContext private val context: Context,
+    private val userRepository:  UserRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
     private val rankRepository: RankRepository,
@@ -222,7 +226,7 @@ class HomeViewModel @Inject constructor(
     val selectedQuest = _selectedQuest.asStateFlow()
 
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
-    val capturedImageUri = _capturedImageUri.asStateFlow()
+    val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
 
     fun setCapturedImageUri(uri: Uri) {
         _capturedImageUri.value = uri
@@ -231,13 +235,16 @@ class HomeViewModel @Inject constructor(
     private val _submitUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
     val submitUiState = _submitUiState.asStateFlow()
 
-    fun submitApproveImage(bytes: ByteArray) {
+    fun submitApproveImage() {
         viewModelScope.launch {
             runCatching {
                 _submitUiState.value = SubmitUiState.Loading
                 challengeRepository.submitChallenge(
                     questId = selectedQuest.value!!.questId,
-                    imageBytes = bytes
+                    imageBytes = FileManager.getBytesFromUri(
+                        context,
+                        FileManager.getUriForFile(capturedImageFile.value, context)
+                    )
                 )
             }.onSuccess {
                 _submitUiState.value = SubmitUiState.Success
@@ -270,4 +277,9 @@ class HomeViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyMap()
     )
+
+    override fun onCleared() {
+        super.onCleared()
+        capturedImageFile.value.delete()
+    }
 }
