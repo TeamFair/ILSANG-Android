@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -47,6 +48,7 @@ fun NicknameEditScreen(
             homeViewModel.clearNicknameEditResult()
         }
     }
+
     NicknameEditScreen(
         originNickname = originUserInfo?.nickname ?: "",
         nickname = nickname,
@@ -70,7 +72,9 @@ fun NicknameEditScreen(
     navigateToMyTabMain: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding(),
         color = Color.White
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

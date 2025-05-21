@@ -1,7 +1,10 @@
 package com.ilsangtech.ilsang.feature.home
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -33,7 +36,6 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
-    val homeTapUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -57,6 +59,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
                 end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
                 bottom = paddingValues.calculateBottomPadding()
+                        - WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
             ),
             navController = navController,
             startDestination = HomeTap.Home.name
@@ -64,7 +67,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             composable(HomeTap.Home.name) {
                 HomeTapScreen(
                     userNickname = userInfo?.nickname,
-                    homeTapUiState = homeTapUiState,
+                    homeViewModel = homeViewModel,
                     onApproveButtonClick = {
                         homeViewModel.selectQuest(it)
                     },
@@ -86,8 +89,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             launchSingleTop = true
                         }
                     },
-                    navigateToSubmit = { uri ->
-                        homeViewModel.setCapturedImageUri(uri)
+                    navigateToSubmit = {
                         navController.navigate("Submit")
                     },
                     navigateToRankingTab = {

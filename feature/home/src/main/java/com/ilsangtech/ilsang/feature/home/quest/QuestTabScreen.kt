@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.home.quest
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -18,9 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,14 +45,14 @@ fun QuestTabScreen(
     val questTabUiState by homeViewModel.questTabUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val tempFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
     val imageCaptureLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess) {
-                imageUri?.let {
-                    homeViewModel.setCapturedImageUri(imageUri!!)
-                    navigateToSubmit()
-                }
+                val imageUri = FileManager.getUriForFile(tempFile, context)
+                homeViewModel.setCapturedImageUri(imageUri)
+                navigateToSubmit()
             }
         }
 
@@ -70,10 +68,7 @@ fun QuestTabScreen(
         onSelectSortType = homeViewModel::selectSortType,
         onApproveButtonClick = {
             homeViewModel.selectQuest(it)
-            if (imageUri == null) {
-                imageUri = FileManager.createCacheFile(context)
-            }
-            imageCaptureLauncher.launch(imageUri!!)
+            imageCaptureLauncher.launch(tempFileUri)
         }
     )
 }
@@ -95,6 +90,7 @@ fun QuestTabScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Column {
             QuestTapHeader(

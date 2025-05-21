@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +42,10 @@ fun MyTabScreen(
     val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
     val challengePager = homeViewModel.challengePager.collectAsLazyPagingItems()
 
+    LaunchedEffect(Unit) {
+        challengePager.refresh()
+    }
+
     MyTabScreen(
         userInfo = userInfo,
         userXpStats = userXpStats,
@@ -61,7 +67,9 @@ fun MyTabScreen(
     navigateToMyChallenge: (Challenge) -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
     ) {
         var selectedMenu by remember { mutableStateOf(MyTabMenu.CHALLENGE) }
         Column(
