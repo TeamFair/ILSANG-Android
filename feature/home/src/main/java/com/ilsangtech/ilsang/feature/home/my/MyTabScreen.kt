@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,10 @@ fun MyTabScreen(
     val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
     val challengePager = homeViewModel.challengePager.collectAsLazyPagingItems()
+
+    LaunchedEffect(Unit) {
+        challengePager.refresh()
+    }
 
     MyTabScreen(
         userInfo = userInfo,
