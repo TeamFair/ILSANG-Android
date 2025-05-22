@@ -2,16 +2,21 @@ package com.ilsangtech.ilsang.core.data.user.repository
 
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
+import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
+    private val userDataStore: UserDataStore
 ) : UserRepository {
     override var currentUser: UserInfo? = null
+
+    override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
     override suspend fun login(
         email: String,
@@ -39,7 +44,7 @@ class UserRepositoryImpl @Inject constructor(
             nickname = userInfoResponse.userInfoNetworkModel.nickname,
             profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
             xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
-            status = userInfoResponse.userInfoNetworkModel.status
+            status = userInfoResponse.userInfoNetworkModel.status,
         )
     }
 
@@ -73,5 +78,9 @@ class UserRepositoryImpl @Inject constructor(
                 nickname = nickname
             )
         }
+    }
+
+    override suspend fun completeOnBoarding() {
+        userDataStore.setShouldShowOnBoarding(false)
     }
 }
