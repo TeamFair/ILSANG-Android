@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.user.di
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSourceImpl
 import com.ilsangtech.ilsang.core.data.user.repository.UserRepositoryImpl
+import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
@@ -29,7 +30,10 @@ object UserDataModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(userDataSource: UserDataSource): UserRepository {
-        return UserRepositoryImpl(userDataSource)
+    fun provideUserRepository(
+        userDataSource: UserDataSource,
+        userDataStore: UserDataStore
+    ): UserRepository {
+        return UserRepositoryImpl(userDataSource, userDataStore)
     }
 }
