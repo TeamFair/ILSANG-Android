@@ -11,7 +11,8 @@ import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
 @Composable
 fun ILSANGNavHost(
     startDestination: String,
-    login: () -> Unit
+    login: () -> Unit,
+    completeOnBoarding: () -> Unit
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -24,6 +25,7 @@ fun ILSANGNavHost(
 
         composable("tutorial") {
             TutorialScreen {
+                completeOnBoarding()
                 navController.navigate("home") {
                     popUpTo("tutorial") { inclusive = true }
                 }

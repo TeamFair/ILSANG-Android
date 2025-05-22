@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlinx-serialization")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.ilsangtech.ilsang.core.data"
+    namespace = "com.ilsangtech.ilsang.core.datastore"
     compileSdk = 35
 
     defaultConfig {
@@ -36,15 +35,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:datastore"))
-    implementation(project(":core:network"))
-    implementation(project(":core:model"))
-    implementation(project(":core:domain"))
-
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

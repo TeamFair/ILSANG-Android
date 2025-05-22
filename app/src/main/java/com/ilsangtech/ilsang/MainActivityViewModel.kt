@@ -8,7 +8,9 @@ import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,12 +18,20 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val _currentUserState = MutableStateFlow(Firebase.auth.currentUser)
-    val currentUserState = _currentUserState.asStateFlow()
+    private val _isLoggedIn = MutableStateFlow<Boolean?>(null)
+    val isLoggedIn = _isLoggedIn.asStateFlow()
+
+    val shouldShowOnBoarding = userRepository.shouldShowOnBoarding.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false
+    )
 
     init {
-        if (currentUserState.value != null) {
-            login(currentUserState.value)
+        if (Firebase.auth.currentUser != null) {
+            login(Firebase.auth.currentUser)
+        } else {
+            _isLoggedIn.value = false
         }
     }
 
@@ -36,11 +46,20 @@ class MainActivityViewModel @Inject constructor(
                             email = newUser.email!!,
                         )
                     }.onSuccess {
-                        _currentUserState.value = Firebase.auth.currentUser
+                        _isLoggedIn.value = true
+                    }.onFailure {
+                        _isLoggedIn.value = false
                     }
                 }
             }
+        }?.addOnFailureListener {
+            _isLoggedIn.value = false
         }
+    }
 
+    fun completeOnBoarding() {
+        viewModelScope.launch {
+            userRepository.completeOnBoarding()
+        }
     }
 }
