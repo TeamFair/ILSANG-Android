@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.navigation.ILSANGNavHost
 fun ILSANGApp(
     isLoggedIn: Boolean?,
     shouldShowOnBoarding: Boolean,
+    completeOnBoarding: () -> Unit,
     login: () -> Unit
 ) {
     ILSANGTheme {
@@ -19,6 +20,7 @@ fun ILSANGApp(
                     shouldShowOnBoarding -> "tutorial"
                     else -> "home"
                 },
+                completeOnBoarding = completeOnBoarding,
                 login = login
             )
         }

@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
             ILSANGApp(
                 isLoggedIn = isLoggedIn,
                 shouldShowOnBoarding = shouldShowOnBoarding,
+                completeOnBoarding = mainActivityViewModel::completeOnBoarding,
                 login = {
                     loginWithFirebase(
                         onLoginSuccess = {
