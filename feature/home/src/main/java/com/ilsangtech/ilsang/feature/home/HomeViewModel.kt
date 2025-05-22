@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val userRepository:  UserRepository,
+    private val userRepository: UserRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
     private val rankRepository: RankRepository,
@@ -51,24 +52,30 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(userRepository.currentUser)
     val userInfo: StateFlow<UserInfo?> = _userInfo.asStateFlow()
 
-    val homeTapUiState: StateFlow<HomeTapUiState> = combine(
-        flow { emit(bannerRepository.getBanners()) },
-        flow { emit(questRepository.getPopularQuests()) },
-        flow { emit(questRepository.getRecommendedQuests()) },
-        flow { emit(questRepository.getLargeRewardQuests()) },
-        flow { emit(rankRepository.getTopRankUsers()) }
-    ) { banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers ->
-        HomeTapUiState.Success(
-            data = HomeTapSuccessData(
-                banners = banners,
-                popularQuests = popularQuests,
-                recommendedQuests = recommendedQuests,
-                largeRewardQuests = largeRewardQuests,
-                topRankUsers = topRankUsers
-            )
-        )
-    }.catch {
-        HomeTapUiState.Error(it)
+    val homeTapUiState: StateFlow<HomeTapUiState> = userInfo.map {
+        if (it == null) {
+            HomeTapUiState.Loading
+        } else {
+            val banners = bannerRepository.getBanners()
+            val popularQuests = questRepository.getPopularQuests()
+            val recommendedQuest = questRepository.getRecommendedQuests()
+            val largeRewardQuests = questRepository.getLargeRewardQuests()
+            val topRankUsers = rankRepository.getTopRankUsers()
+
+            try {
+                HomeTapUiState.Success(
+                    data = HomeTapSuccessData(
+                        banners = banners,
+                        popularQuests = popularQuests,
+                        recommendedQuests = recommendedQuest,
+                        largeRewardQuests = largeRewardQuests,
+                        topRankUsers = topRankUsers
+                    )
+                )
+            } catch (e: Exception) {
+                HomeTapUiState.Error(e)
+            }
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
