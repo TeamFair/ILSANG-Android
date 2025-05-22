@@ -11,7 +11,7 @@ import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
 @Composable
 fun ILSANGNavHost(
     startDestination: String,
-    login: () -> Unit
+    login: () -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
