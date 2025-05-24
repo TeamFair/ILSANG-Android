@@ -68,6 +68,7 @@ fun AutoSlidePager(
         pageSize = PageSize.Fixed(180.dp),
         contentPadding = PaddingValues(horizontal = contentPadding),
         state = pagerState,
+        userScrollEnabled = false
     ) { pageIndex ->
         val pageOffset = (pagerState.currentPage - pageIndex) + pagerState.currentPageOffsetFraction
         val scale = lerp(0.83f, 1f, 1f - pageOffset.absoluteValue.coerceIn(0f, 1f))
