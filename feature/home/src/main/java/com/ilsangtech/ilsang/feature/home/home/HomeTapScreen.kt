@@ -100,14 +100,16 @@ fun HomeTapScreen(
                     BannerView(banner)
                 }
                 item { Spacer(Modifier.height(36.dp)) }
-                popularQuestsContent(
-                    popularQuests = (homeTabUiState as HomeTapUiState.Success).data.popularQuests,
-                    onPopularQuestClick = {
-                        bottomSheetQuest = it
-                        showBottomSheet = true
-                        onApproveButtonClick(it)
-                    }
-                )
+                item {
+                    PopularQuestsContent(
+                        popularQuests = (homeTabUiState as HomeTapUiState.Success).data.popularQuests,
+                        onPopularQuestClick = {
+                            bottomSheetQuest = it
+                            showBottomSheet = true
+                            onApproveButtonClick(it)
+                        }
+                    )
+                }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
