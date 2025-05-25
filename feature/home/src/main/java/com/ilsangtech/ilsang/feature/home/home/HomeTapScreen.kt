@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,8 +99,11 @@ fun HomeTapScreen(
                         onClickProfile = navigateToMyTab
                     )
                 }
-                items((homeTabUiState as HomeTapUiState.Success).data.banners) { banner ->
-                    BannerView(banner)
+                item {
+                    BannerView(
+                        banners = (homeTabUiState as HomeTapUiState.Success).data.banners,
+                        onClick = navigateToQuestTab
+                    )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
@@ -185,16 +191,34 @@ fun HomeTapTopBar(
     }
 }
 
-
 @Composable
-fun BannerView(banner: Banner) {
-    AsyncImage(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp)),
-        model = BuildConfig.IMAGE_URL + banner.imageId,
-        contentDescription = banner.description
-    )
+fun BannerView(
+    banners: List<Banner>,
+    onClick: () -> Unit
+) {
+    val pagerState = rememberPagerState { banners.size }
+    HorizontalPager(
+        state = pagerState
+    ) { page ->
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(11 / 10f)
+                .clip(RoundedCornerShape(12.dp))
+                .clickable(
+                    onClick = {
+                        if (banners[page].description.contains("quest")) {
+                            onClick()
+                        }
+                    },
+                    indication = null,
+                    interactionSource = null
+                ),
+            contentScale = ContentScale.Crop,
+            model = BuildConfig.IMAGE_URL + banners[page].imageId,
+            contentDescription = banners[page].description
+        )
+    }
 }
 
 @Preview
