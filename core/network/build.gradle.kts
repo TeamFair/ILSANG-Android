@@ -18,19 +18,22 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        val properties = Properties()
-        properties.load(FileInputStream("local.properties"))
-        buildConfigField("String", "SERVER_URL", properties.getProperty("SERVER_URL"))
     }
 
     buildTypes {
+        val properties = Properties()
+        properties.load(FileInputStream("local.properties"))
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "SERVER_URL", properties.getProperty("RELEASE_SERVER_URL"))
+        }
+        debug {
+            buildConfigField("String", "SERVER_URL", properties.getProperty("DEBUG_SERVER_URL"))
         }
     }
 
