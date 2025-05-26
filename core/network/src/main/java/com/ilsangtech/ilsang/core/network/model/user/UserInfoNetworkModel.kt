@@ -11,5 +11,5 @@ data class UserInfoNetworkModel(
     val profileImage: String?,
     val status: String,
     val xpPoint: Int,
-    val title: TitleNetworkModel?
+    val title: TitleNetworkModel? = null
 )

@@ -10,6 +10,6 @@ data class XpTypeRankNetworkModel(
     val profileImage: String?,
     val xpPoint: Int,
     val xpType: String,
-    val title: TitleNetworkModel?,
-    val xpTotalPoint: Int
+    val title: TitleNetworkModel? = null,
+    val xpTotalPoint: Int? = null
 )

@@ -10,5 +10,5 @@ data class UserRankNetworkModel(
     val nickname: String,
     val profileImage: String?,
     val xpSum: Int,
-    val title: TitleNetworkModel?
+    val title: TitleNetworkModel? = null
 )
