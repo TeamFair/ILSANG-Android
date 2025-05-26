@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.feature.home.home
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,10 +9,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -33,7 +36,9 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
+import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray400
+import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.quest.QuestTypeBadge
 
@@ -106,11 +111,15 @@ fun PopularQuestCard(
     }
 }
 
-fun LazyListScope.popularQuestsContent(
+@Composable
+fun PopularQuestsContent(
     popularQuests: List<Quest>,
     onPopularQuestClick: (Quest) -> Unit
 ) {
-    item {
+    val pageCount = popularQuests.size / 4
+    val pagerState = rememberPagerState { pageCount }
+
+    Column {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = "이번달 인기 퀘스트 모음",
@@ -120,14 +129,7 @@ fun LazyListScope.popularQuestsContent(
                 fontFamily = FontFamily(Font(pretendard_semibold)),
             )
         )
-    }
-    item {
         Spacer(Modifier.height(12.dp))
-    }
-    item {
-        val pageCount = popularQuests.size / 4
-        val pagerState = rememberPagerState { pageCount }
-
         HorizontalPager(
             state = pagerState
         ) {
@@ -154,6 +156,27 @@ fun LazyListScope.popularQuestsContent(
                         Spacer(Modifier.height(8.dp))
                     }
                 }
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(pageCount) {
+                val color = if (pagerState.currentPage == it) {
+                    gray500
+                } else {
+                    gray100
+                }
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .background(
+                            color = color,
+                            shape = CircleShape
+                        )
+                )
             }
         }
     }

@@ -16,5 +16,5 @@ data class RandomChallengeNetworkModel(
     val userNickName: String,
     val userProfileImage: String?,
     val viewCount: Int,
-    val title: TitleNetworkModel?
+    val title: TitleNetworkModel? = null
 )
