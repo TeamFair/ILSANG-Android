@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -57,6 +56,7 @@ import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
+import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -138,7 +138,7 @@ fun QuestBottomSheetHeader(quest: Quest) {
                     .size(80.dp)
                     .clip(CircleShape)
                     .background(Color(0xFFF1F5FF)),
-                model = quest.imageId,
+                model = BuildConfig.IMAGE_URL + quest.imageId,
                 contentDescription = quest.missionTitle
             )
             Spacer(Modifier.width(8.dp))
@@ -147,9 +147,9 @@ fun QuestBottomSheetHeader(quest: Quest) {
             ) {
                 Text(
                     text =
-                        (QuestType.entries.find {
-                            it.name == quest.type
-                        }?.title ?: "기본") + " 퀘스트",
+                    (QuestType.entries.find {
+                        it.name == quest.type
+                    }?.title ?: "기본") + " 퀘스트",
                     style = questBottomSheetQuestTypeTextStyle
                 )
                 Text(
