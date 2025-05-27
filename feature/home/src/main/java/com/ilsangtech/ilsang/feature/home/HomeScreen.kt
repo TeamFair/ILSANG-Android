@@ -87,13 +87,20 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                                 saveState = true
                             }
                             launchSingleTop = true
+                            restoreState = true
                         }
                     },
                     navigateToSubmit = {
                         navController.navigate("Submit")
                     },
                     navigateToRankingTab = {
-                        navController.navigate(HomeTap.Ranking.name)
+                        navController.navigate(HomeTap.Ranking.name) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }
