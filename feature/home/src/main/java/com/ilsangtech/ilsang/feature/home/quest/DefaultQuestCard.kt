@@ -17,9 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -72,7 +70,8 @@ fun DefaultQuestCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = Color.White
-        )
+        ),
+        onClick = { showBottomSheet = true }
     ) {
         Row(
             modifier = Modifier
@@ -124,21 +123,14 @@ fun DefaultQuestCard(
                 RewardChips(quest.rewardList)
             }
             Spacer(Modifier.weight(1f))
-            FilledIconButton(
+            Icon(
                 modifier = Modifier
                     .size(26.dp)
                     .align(Alignment.CenterVertically),
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = Color(0x1A929292),
-                ),
-                onClick = { showBottomSheet = true }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.large_reward_quest_right_icon),
-                    tint = gray500,
-                    contentDescription = null
-                )
-            }
+                painter = painterResource(R.drawable.large_reward_quest_right_icon),
+                tint = gray500,
+                contentDescription = null
+            )
         }
     }
 }
