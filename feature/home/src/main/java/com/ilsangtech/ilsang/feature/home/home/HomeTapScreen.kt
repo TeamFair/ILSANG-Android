@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -57,6 +58,7 @@ fun HomeTapScreen(
 ) {
     val context = LocalContext.current
     val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val capturedImageFile = homeViewModel.capturedImageFile.collectAsStateWithLifecycle().value
     val capturedImageUri =
         remember(capturedImageFile) { FileManager.getUriForFile(capturedImageFile, context) }
@@ -96,6 +98,7 @@ fun HomeTapScreen(
             LazyColumn {
                 item {
                     HomeTapTopBar(
+                        imageId = userInfo?.profileImage,
                         onClickProfile = navigateToMyTab
                     )
                 }
@@ -156,6 +159,7 @@ fun HomeTapScreen(
 @Composable
 fun HomeTapTopBar(
     modifier: Modifier = Modifier,
+    imageId: String?,
     onClickProfile: () -> Unit
 ) {
     Row(
@@ -176,16 +180,18 @@ fun HomeTapTopBar(
             contentDescription = null
         )
         Spacer(Modifier.weight(1f))
-        Icon(
+        AsyncImage(
             modifier = Modifier
                 .size(36.dp)
+                .clip(CircleShape)
                 .clickable(
                     onClick = onClickProfile,
                     indication = null,
                     interactionSource = null
                 ),
-            painter = painterResource(id = R.drawable.default_user_profile),
-            tint = Color.Unspecified,
+            model = BuildConfig.IMAGE_URL + imageId,
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.default_user_profile),
             contentDescription = null
         )
     }
