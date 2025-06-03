@@ -1,10 +1,12 @@
 package com.ilsangtech.ilsang.feature.home.my
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -16,6 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -28,9 +34,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.NicknameEditContent
 import com.ilsangtech.ilsang.feature.home.my.component.NicknameEditHeader
+import com.ilsangtech.ilsang.feature.home.my.component.UserImageEditContent
 
 @Composable
 fun UserProfileEditScreen(
@@ -40,24 +48,25 @@ fun UserProfileEditScreen(
     val originUserInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
     val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
     val nicknameEditErrorMessage by homeViewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
-    val isNicknameEditSuccess by homeViewModel.isNicknameEditSuccess.collectAsStateWithLifecycle()
+    val isUserProfileEditSuccess by homeViewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isNicknameEditSuccess) {
-        if (isNicknameEditSuccess == true) {
+    LaunchedEffect(isUserProfileEditSuccess) {
+        if (isUserProfileEditSuccess != null) {
             navigateToMyTabMain()
-            homeViewModel.clearNicknameEditResult()
+            homeViewModel.resetUserProfileEditSuccess()
         }
     }
 
-    NicknameEditScreen(
+    UserProfileEditScreen(
         originNickname = originUserInfo?.nickname ?: "",
         nickname = nickname,
+        imageId = originUserInfo?.profileImage,
         nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = homeViewModel::changeNickname,
-        onEditButtonClick = homeViewModel::updateNickname,
+        onEditButtonClick = homeViewModel::updateUserProfile,
         navigateToMyTabMain = {
             navigateToMyTabMain()
-            homeViewModel.clearNicknameEditResult()
+            homeViewModel.resetUserProfileEditSuccess()
         }
     )
 }
@@ -66,19 +75,31 @@ fun UserProfileEditScreen(
 fun UserProfileEditScreen(
     originNickname: String,
     nickname: String,
+    imageId: String?,
     nicknameEditErrorMessage: String?,
     onNicknameChange: (String) -> Unit,
-    onEditButtonClick: () -> Unit,
+    onEditButtonClick: (Uri?) -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
+    var updatedImage by remember { mutableStateOf<Uri?>(null) }
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding(),
         color = Color.White
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             NicknameEditHeader(navigateToMyTabMain)
+            Spacer(Modifier.height(35.dp))
+            UserImageEditContent(
+                model = updatedImage ?: (BuildConfig.IMAGE_URL + imageId),
+                onSelectImage = { updatedImage = it },
+                onDeleteImage = {}
+            )
+            Spacer(Modifier.height(36.dp))
             NicknameEditContent(
                 nickname = nickname,
                 nicknameEditErrorMessage = nicknameEditErrorMessage,
@@ -89,8 +110,8 @@ fun UserProfileEditScreen(
                 modifier = Modifier
                     .imePadding()
                     .padding(horizontal = 20.dp),
-                enabled = originNickname != nickname && nicknameEditErrorMessage == null,
-                onClick = onEditButtonClick
+                enabled = (originNickname != nickname && nicknameEditErrorMessage == null) || updatedImage != null,
+                onClick = { onEditButtonClick(updatedImage) }
             )
         }
     }
@@ -135,6 +156,7 @@ fun UserProfileEditScreenPreview() {
     UserProfileEditScreen(
         originNickname = "닉네임",
         nickname = "닉네임",
+        imageId = null,
         nicknameEditErrorMessage = null,
         onNicknameChange = {},
         onEditButtonClick = {},
