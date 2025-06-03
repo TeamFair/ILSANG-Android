@@ -9,7 +9,7 @@ import com.ilsangtech.ilsang.feature.home.HomeTap
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
-import com.ilsangtech.ilsang.feature.home.my.NicknameEditScreen
+import com.ilsangtech.ilsang.feature.home.my.UserProfileEditScreen
 
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
@@ -43,7 +43,7 @@ fun NavGraphBuilder.myTabNavigation(
                 )
             }
         ) {
-            NicknameEditScreen(
+            UserProfileEditScreen(
                 homeViewModel = homeViewModel,
                 navigateToMyTabMain = navigateToMyTabMain
             )

@@ -33,7 +33,7 @@ import com.ilsangtech.ilsang.feature.home.my.component.NicknameEditContent
 import com.ilsangtech.ilsang.feature.home.my.component.NicknameEditHeader
 
 @Composable
-fun NicknameEditScreen(
+fun UserProfileEditScreen(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit
 ) {
@@ -63,7 +63,7 @@ fun NicknameEditScreen(
 }
 
 @Composable
-fun NicknameEditScreen(
+fun UserProfileEditScreen(
     originNickname: String,
     nickname: String,
     nicknameEditErrorMessage: String?,
@@ -131,8 +131,8 @@ private val editButtonTextStyle = TextStyle(
 
 @Preview(showBackground = true)
 @Composable
-fun NicknameEditScreenPreview() {
-    NicknameEditScreen(
+fun UserProfileEditScreenPreview() {
+    UserProfileEditScreen(
         originNickname = "닉네임",
         nickname = "닉네임",
         nicknameEditErrorMessage = null,
