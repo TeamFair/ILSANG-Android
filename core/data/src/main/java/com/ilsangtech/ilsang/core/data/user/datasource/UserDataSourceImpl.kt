@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
@@ -49,5 +50,9 @@ class UserDataSourceImpl @Inject constructor(
             authorization,
             UserImageUpdateRequest(imageId)
         )
+    }
+
+    override suspend fun deleteUserImage(authorization: String): UserImageDeleteResponse {
+        return userApiService.deleteUserImage(authorization)
     }
 }
