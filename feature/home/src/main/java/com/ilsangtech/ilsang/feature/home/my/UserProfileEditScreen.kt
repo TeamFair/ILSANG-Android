@@ -64,6 +64,7 @@ fun UserProfileEditScreen(
         nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = homeViewModel::changeNickname,
         onEditButtonClick = homeViewModel::updateUserProfile,
+        onDeleteUserImage = homeViewModel::deleteUserProfileImage,
         navigateToMyTabMain = {
             navigateToMyTabMain()
             homeViewModel.resetUserProfileEditSuccess()
@@ -79,6 +80,7 @@ fun UserProfileEditScreen(
     nicknameEditErrorMessage: String?,
     onNicknameChange: (String) -> Unit,
     onEditButtonClick: (Uri?) -> Unit,
+    onDeleteUserImage: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
     var updatedImage by remember { mutableStateOf<Uri?>(null) }
@@ -97,7 +99,7 @@ fun UserProfileEditScreen(
             UserImageEditContent(
                 model = updatedImage ?: (BuildConfig.IMAGE_URL + imageId),
                 onSelectImage = { updatedImage = it },
-                onDeleteImage = {}
+                onDeleteImage = onDeleteUserImage
             )
             Spacer(Modifier.height(36.dp))
             NicknameEditContent(
@@ -160,6 +162,7 @@ fun UserProfileEditScreenPreview() {
         nicknameEditErrorMessage = null,
         onNicknameChange = {},
         onEditButtonClick = {},
+        onDeleteUserImage = {},
         navigateToMyTabMain = {}
     )
 }
