@@ -17,5 +17,7 @@ interface UserRepository {
 
     suspend fun updateUserNickname(nickname: String)
 
+    suspend fun updateUserImage(imageData: ByteArray): Result<Unit>
+
     suspend fun completeOnBoarding()
 }

@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.user.repository
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
+import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
-    private val userDataStore: UserDataStore
+    private val userDataStore: UserDataStore,
+    private val imageRepository: ImageRepository
 ) : UserRepository {
     override var currentUser: UserInfo? = null
 
@@ -77,6 +79,22 @@ class UserRepositoryImpl @Inject constructor(
                 authorization = it,
                 nickname = nickname
             )
+        }
+    }
+
+    override suspend fun updateUserImage(imageData: ByteArray): Result<Unit> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                val imageId = imageRepository.uploadImage(
+                    authorization = it,
+                    type = "USER_PROFILE_IMAGE",
+                    imageBytes = imageData
+                )
+                userDataSource.updateUserImage(
+                    authorization = it,
+                    imageId = imageId
+                )
+            } ?: throw Exception("User is not logged in")
         }
     }
 
