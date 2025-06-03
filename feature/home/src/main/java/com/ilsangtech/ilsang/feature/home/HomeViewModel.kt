@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -183,8 +184,9 @@ class HomeViewModel @Inject constructor(
     private val _nicknameEditErrorMessage = MutableStateFlow<String?>(null)
     val nicknameEditErrorMessage = _nicknameEditErrorMessage.asStateFlow()
 
-    private val _isNicknameEditSuccess = MutableStateFlow<Boolean?>(null)
-    val isNicknameEditSuccess = _isNicknameEditSuccess.asStateFlow()
+    private val _isUserProfileEditSuccess = MutableStateFlow<Boolean?>(null)
+    val isUserProfileEditSuccess = _isUserProfileEditSuccess.asStateFlow()
+
 
     val userXpStats = flow {
         emit(userRepository.getUserXpStats())
@@ -208,25 +210,30 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname() {
+    fun updateUserProfile(uri: Uri?) {
         viewModelScope.launch {
             runCatching {
-                userRepository.updateUserNickname(editNickname.value)
+                if (uri != null) {
+                    val fileData = FileManager.getBytesFromUri(context, uri)
+                    userRepository.updateUserImage(fileData)
+                }
+                if (editNickname.value != userInfo.value?.nickname) {
+                    userRepository.updateUserNickname(editNickname.value)
+                }
             }.onSuccess {
                 userRepository.updateUserInfo()
-                _userInfo.value = userRepository.currentUser
-                _isNicknameEditSuccess.value = true
+                _userInfo.update { userRepository.currentUser }
+                _isUserProfileEditSuccess.update { true }
             }.onFailure {
-                _isNicknameEditSuccess.value = false
-                _nicknameEditErrorMessage.value = "입력하신 닉네임은 이미 사용중이에요.\n다른 닉네임을 입력해주세요."
+                _isUserProfileEditSuccess.update { false }
             }
         }
     }
 
-    fun clearNicknameEditResult() {
+    fun resetUserProfileEditSuccess() {
         _editNickname.value = _userInfo.value?.nickname ?: ""
-        _nicknameEditErrorMessage.value = null
-        _isNicknameEditSuccess.value = null
+        _nicknameEditErrorMessage.update { null }
+        _isUserProfileEditSuccess.update { null }
     }
 
     private val _selectedQuest = MutableStateFlow<Quest?>(null)
