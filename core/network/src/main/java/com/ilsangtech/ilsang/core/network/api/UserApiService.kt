@@ -2,6 +2,8 @@ package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
+import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import retrofit2.http.Body
@@ -28,4 +30,10 @@ interface UserApiService {
         @Header("authorization") authorization: String,
         @Body nicknameUpdateRequest: NicknameUpdateRequest
     ): NicknameUpdateResponse
+
+    @PUT("customer/user/image")
+    suspend fun updateUserImage(
+        @Header("authorization") authorization: String,
+        @Body imageUpdateRequest: UserImageUpdateRequest
+    ): UserImageUpdateResponse
 }
