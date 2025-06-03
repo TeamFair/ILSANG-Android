@@ -230,6 +230,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun deleteUserProfileImage() {
+        viewModelScope.launch {
+            userRepository.deleteUserImage()
+                .onSuccess {
+                    userRepository.updateUserInfo()
+                    _userInfo.update { userRepository.currentUser }
+                    _isUserProfileEditSuccess.update { true }
+                }.onFailure {
+                    _isUserProfileEditSuccess.update { false }
+                }
+        }
+    }
+
     fun resetUserProfileEditSuccess() {
         _editNickname.value = _userInfo.value?.nickname ?: ""
         _nicknameEditErrorMessage.update { null }
