@@ -98,6 +98,16 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteUserImage(): Result<Unit> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                userDataSource.deleteUserImage(
+                    authorization = it
+                )
+            } ?: throw Exception("User is not logged in")
+        }
+    }
+
     override suspend fun completeOnBoarding() {
         userDataStore.setShouldShowOnBoarding(false)
     }
