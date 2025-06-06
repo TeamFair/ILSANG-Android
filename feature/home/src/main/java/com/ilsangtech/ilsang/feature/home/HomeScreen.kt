@@ -33,7 +33,10 @@ import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
 import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToProfile: (String) -> Unit
+) {
     val navController = rememberNavController()
     val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
 
@@ -180,5 +183,5 @@ fun HomeBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen {}
 }
