@@ -34,7 +34,8 @@ class UserRepositoryImpl @Inject constructor(
             )
         )
         val userInfoResponse = userDataSource.getUserInfo(
-            authorization = userResponse.data.authorization
+            authorization = userResponse.data.authorization,
+            userId = null
         )
 
         currentUser = MyInfo(
@@ -53,7 +54,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateMyInfo() {
         currentUser?.authorization?.let {
             val userInfoResponse = userDataSource.getUserInfo(
-                authorization = it
+                authorization = it,
+                userId = null
             )
             currentUser = currentUser?.copy(
                 completeChallengeCount = userInfoResponse.userInfoNetworkModel.completeChallengeCount,

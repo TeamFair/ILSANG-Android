@@ -11,7 +11,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 interface UserDataSource {
     suspend fun login(loginRequest: LoginRequest): LoginResponse
 
-    suspend fun getUserInfo(authorization: String): UserInfoResponse
+    suspend fun getUserInfo(authorization: String, userId: String?): UserInfoResponse
 
     suspend fun getUserXpStats(authorization: String, customerId: String?): UserXpStatsResponse
 
