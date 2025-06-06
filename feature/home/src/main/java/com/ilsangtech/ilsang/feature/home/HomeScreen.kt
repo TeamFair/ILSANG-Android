@@ -35,7 +35,7 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination

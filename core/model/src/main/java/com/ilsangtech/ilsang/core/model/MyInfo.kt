@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.model
 
-data class UserInfo(
+data class MyInfo(
     val accessToken: String,
     val authorization: String? = null,
     val nickname: String? = null,

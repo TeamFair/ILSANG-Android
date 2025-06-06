@@ -58,7 +58,7 @@ fun HomeTapScreen(
 ) {
     val context = LocalContext.current
     val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
-    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
     val capturedImageFile = homeViewModel.capturedImageFile.collectAsStateWithLifecycle().value
     val capturedImageUri =
         remember(capturedImageFile) { FileManager.getUriForFile(capturedImageFile, context) }

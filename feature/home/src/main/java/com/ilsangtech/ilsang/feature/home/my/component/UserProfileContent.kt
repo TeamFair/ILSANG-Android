@@ -31,9 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
-import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -43,18 +42,18 @@ import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
 
 @Composable
 fun UserProfileContent(
-    userInfo: UserInfo,
+    myInfo: MyInfo,
     navigateToNicknameEdit: () -> Unit
 ) {
     MyInfoProfileContent(
-        userInfo = userInfo,
+        myInfo = myInfo,
         navigateToNicknameEdit = navigateToNicknameEdit
     )
 }
 
 @Composable
 fun MyInfoProfileContent(
-    userInfo: UserInfo,
+    myInfo: MyInfo,
     navigateToNicknameEdit: () -> Unit
 ) {
     Row(
@@ -72,7 +71,7 @@ fun MyInfoProfileContent(
                 modifier = Modifier
                     .size(57.dp)
                     .clip(CircleShape),
-                model = userInfo.profileImage?.let { BuildConfig.IMAGE_URL + it },
+                model = myInfo.profileImage?.let { BuildConfig.IMAGE_URL + it },
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(R.drawable.default_user_profile),
                 error = painterResource(R.drawable.default_user_profile),
@@ -97,11 +96,11 @@ fun MyInfoProfileContent(
         Spacer(Modifier.width(12.dp))
         Column {
             Text(
-                text = userInfo.nickname!!,
+                text = myInfo.nickname!!,
                 style = profileNicknameTextStyle,
             )
             Spacer(Modifier.height(4.dp))
-            UserLevelBadge(xpPoint = userInfo.xpPoint)
+            UserLevelBadge(xpPoint = myInfo.xpPoint)
         }
     }
 }
@@ -152,7 +151,7 @@ private val profileNicknameTextStyle = TextStyle(
 @Composable
 fun UserProfileCardPreview() {
     UserProfileContent(
-        UserInfo(
+        MyInfo(
             accessToken = "",
             authorization = "",
             nickname = "김일상1234",
@@ -170,7 +169,7 @@ fun UserProfileCardPreview() {
 @Composable
 fun MyInfoProfileContentPreview() {
     MyInfoProfileContent(
-        UserInfo(
+        MyInfo(
             accessToken = "",
             authorization = "",
             nickname = "김일상1234",

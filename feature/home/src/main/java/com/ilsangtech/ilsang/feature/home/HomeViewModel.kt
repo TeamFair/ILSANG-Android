@@ -17,7 +17,7 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
@@ -49,11 +49,11 @@ class HomeViewModel @Inject constructor(
     private val rankRepository: RankRepository,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    private val _userInfo: MutableStateFlow<UserInfo?> =
+    private val _myInfo: MutableStateFlow<MyInfo?> =
         MutableStateFlow(userRepository.currentUser)
-    val userInfo: StateFlow<UserInfo?> = _userInfo.asStateFlow()
+    val myInfo: StateFlow<MyInfo?> = _myInfo.asStateFlow()
 
-    val homeTapUiState: StateFlow<HomeTapUiState> = userInfo.map {
+    val homeTapUiState: StateFlow<HomeTapUiState> = myInfo.map {
         if (it == null) {
             HomeTapUiState.Loading
         } else {
@@ -178,7 +178,7 @@ class HomeViewModel @Inject constructor(
     private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
     val selectedChallenge = _selectedChallenge.asStateFlow()
 
-    private val _editNickname = MutableStateFlow(userInfo.value?.nickname ?: "")
+    private val _editNickname = MutableStateFlow(myInfo.value?.nickname ?: "")
     val editNickname = _editNickname.asStateFlow()
 
     private val _nicknameEditErrorMessage = MutableStateFlow<String?>(null)
@@ -217,12 +217,12 @@ class HomeViewModel @Inject constructor(
                     val fileData = FileManager.getBytesFromUri(context, uri)
                     userRepository.updateUserImage(fileData)
                 }
-                if (editNickname.value != userInfo.value?.nickname) {
+                if (editNickname.value != myInfo.value?.nickname) {
                     userRepository.updateUserNickname(editNickname.value)
                 }
             }.onSuccess {
-                userRepository.updateUserInfo()
-                _userInfo.update { userRepository.currentUser }
+                userRepository.updateMyInfo()
+                _myInfo.update { userRepository.currentUser }
                 _isUserProfileEditSuccess.update { true }
             }.onFailure {
                 _isUserProfileEditSuccess.update { false }
@@ -234,8 +234,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.deleteUserImage()
                 .onSuccess {
-                    userRepository.updateUserInfo()
-                    _userInfo.update { userRepository.currentUser }
+                    userRepository.updateMyInfo()
+                    _myInfo.update { userRepository.currentUser }
                     _isUserProfileEditSuccess.update { true }
                 }.onFailure {
                     _isUserProfileEditSuccess.update { false }
@@ -244,7 +244,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun resetUserProfileEditSuccess() {
-        _editNickname.value = _userInfo.value?.nickname ?: ""
+        _editNickname.value = _myInfo.value?.nickname ?: ""
         _nicknameEditErrorMessage.update { null }
         _isUserProfileEditSuccess.update { null }
     }

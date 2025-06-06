@@ -5,7 +5,7 @@ import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataStore: UserDataStore,
     private val imageRepository: ImageRepository
 ) : UserRepository {
-    override var currentUser: UserInfo? = null
+    override var currentUser: MyInfo? = null
 
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
@@ -37,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
             authorization = userResponse.data.authorization
         )
 
-        currentUser = UserInfo(
+        currentUser = MyInfo(
             authorization = userResponse.data.authorization,
             email = email,
             accessToken = accessToken,
@@ -50,7 +50,7 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateUserInfo() {
+    override suspend fun updateMyInfo() {
         currentUser?.authorization?.let {
             val userInfoResponse = userDataSource.getUserInfo(
                 authorization = it

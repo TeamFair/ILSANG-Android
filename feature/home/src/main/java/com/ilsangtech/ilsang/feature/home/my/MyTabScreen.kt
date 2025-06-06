@@ -22,7 +22,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.Challenge
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeContent
@@ -38,7 +38,7 @@ fun MyTabScreen(
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: () -> Unit
 ) {
-    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
     val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
     val challengePager = homeViewModel.challengePager.collectAsLazyPagingItems()
 
@@ -47,7 +47,7 @@ fun MyTabScreen(
     }
 
     MyTabScreen(
-        userInfo = userInfo,
+        myInfo = userInfo,
         userXpStats = userXpStats,
         challengePager = challengePager,
         navigateToNicknameEdit = navigateToNicknameEdit,
@@ -60,7 +60,7 @@ fun MyTabScreen(
 
 @Composable
 fun MyTabScreen(
-    userInfo: UserInfo?,
+    myInfo: MyInfo?,
     userXpStats: UserXpStats,
     challengePager: LazyPagingItems<Challenge>,
     navigateToNicknameEdit: () -> Unit,
@@ -80,7 +80,7 @@ fun MyTabScreen(
             MyTabHeader()
             Spacer(Modifier.height(5.dp))
             UserProfileContent(
-                userInfo = userInfo!!,
+                myInfo = myInfo!!,
                 navigateToNicknameEdit = navigateToNicknameEdit
             )
             Spacer(Modifier.height(16.dp))
@@ -98,7 +98,7 @@ fun MyTabScreen(
                 MyTabMenu.ACTIVITY -> {}
                 MyTabMenu.INFO -> {
                     MyInfoMenuContent(
-                        userInfo,
+                        myInfo,
                         userXpStats
                     )
                 }
@@ -111,7 +111,7 @@ fun MyTabScreen(
 @Composable
 fun MyTabScreenPreview() {
     MyTabScreen(
-        userInfo = UserInfo(
+        myInfo = MyInfo(
             accessToken = "",
             authorization = "",
             nickname = "김일상1234",
