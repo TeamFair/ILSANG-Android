@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.domain
 
 import com.ilsangtech.ilsang.core.model.MyInfo
+import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +13,8 @@ interface UserRepository {
     suspend fun login(email: String, accessToken: String)
 
     suspend fun updateMyInfo()
+
+    suspend fun getUserInfo(userId: String): Result<UserInfo>
 
     suspend fun getUserXpStats(customerId: String? = null): UserXpStats
 

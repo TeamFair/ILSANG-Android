@@ -1,11 +1,13 @@
 package com.ilsangtech.ilsang.core.data.user.repository
 
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
+import com.ilsangtech.ilsang.core.data.user.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
+import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import kotlinx.coroutines.flow.Flow
@@ -65,6 +67,19 @@ class UserRepositoryImpl @Inject constructor(
                 xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
                 status = userInfoResponse.userInfoNetworkModel.status
             )
+        }
+    }
+
+    override suspend fun getUserInfo(userId: String): Result<UserInfo> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                val userInfoResponse = userDataSource.getUserInfo(
+                    authorization = it,
+                    userId = userId
+                )
+                val userInfoNetworkModel = userInfoResponse.userInfoNetworkModel
+                userInfoNetworkModel.toUserInfo()
+            } ?: throw Exception("User is not logged in")
         }
     }
 
