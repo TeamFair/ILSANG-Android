@@ -31,4 +31,12 @@ object DateConverter {
         }
         return outputFormat.format(date)
     }
+
+    fun formatDate(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+
+        val date = inputFormat.parse(input)
+        return outputFormat.format(date!!)
+    }
 }
