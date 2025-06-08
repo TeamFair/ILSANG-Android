@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.util
+package com.ilsangtech.ilsang.core.util
 
 import java.text.SimpleDateFormat
 import java.util.Calendar

@@ -50,7 +50,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.util.DateConverter
+import com.ilsangtech.ilsang.core.util.DateConverter
 
 @Composable
 fun ApprovalItem(
