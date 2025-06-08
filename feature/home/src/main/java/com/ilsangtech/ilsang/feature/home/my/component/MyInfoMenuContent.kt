@@ -66,7 +66,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
+import com.ilsangtech.ilsang.core.util.XpLevelCalculator
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos

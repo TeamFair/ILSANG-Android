@@ -52,7 +52,7 @@ import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
+import com.ilsangtech.ilsang.core.util.XpLevelCalculator
 
 @Composable
 fun StatRankingTabRow(
