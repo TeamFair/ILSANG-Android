@@ -87,14 +87,13 @@ fun LoginTitle() {
                     color = title01.color
                 )
             ) {
-                append("특별한 하루를 위한\n작은 도전, ")
                 withStyle(SpanStyle(color = primary)) {
                     append("일")
                 }
                 withStyle(SpanStyle(color = secondary)) {
                     append("상")
                 }
-                append("!")
+                append("의 작은 행동이,\n지역을 바꿉니다")
             }
         },
         textAlign = TextAlign.Center
