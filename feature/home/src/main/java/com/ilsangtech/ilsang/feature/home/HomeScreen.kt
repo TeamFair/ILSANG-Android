@@ -117,7 +117,9 @@ fun HomeScreen(
                 )
             }
             composable(HomeTap.Approval.name) {
-                ApprovalScreen()
+                ApprovalScreen(
+                    navigateToProfile = navigateToProfile
+                )
             }
             composable(HomeTap.Ranking.name) {
                 RankingScreen(homeViewModel)

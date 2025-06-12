@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.home.approval
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,7 @@ import com.ilsangtech.ilsang.core.util.DateConverter
 @Composable
 fun ApprovalItem(
     challenge: RandomChallenge,
+    onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
     onHateButtonClick: () -> Unit
 ) {
@@ -74,7 +76,8 @@ fun ApprovalItem(
             ApprovalItemHeader(
                 userProfileImage = challenge.userProfileImage,
                 userNickname = challenge.userNickName,
-                createdAt = challenge.createdAt
+                createdAt = challenge.createdAt,
+                onProfileClick = onProfileClick
             )
             ApprovalItemBody(
                 title = challenge.missionTitle,
@@ -96,7 +99,8 @@ fun ApprovalItem(
 fun ApprovalItemHeader(
     userProfileImage: String?,
     userNickname: String,
-    createdAt: String
+    createdAt: String,
+    onProfileClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -105,7 +109,12 @@ fun ApprovalItemHeader(
         AsyncImage(
             modifier = Modifier
                 .clip(CircleShape)
-                .size(35.dp),
+                .size(35.dp)
+                .clickable(
+                    onClick = onProfileClick,
+                    indication = null,
+                    interactionSource = null
+                ),
             model = userProfileImage,
             contentDescription = null,
             error = painterResource(R.drawable.default_user_profile),
@@ -114,6 +123,11 @@ fun ApprovalItemHeader(
         Spacer(Modifier.width(10.dp))
         Column {
             Text(
+                modifier = Modifier.clickable(
+                    onClick = onProfileClick,
+                    indication = null,
+                    interactionSource = null
+                ),
                 text = userNickname,
                 style = approvalItemNicknameTextStyle
             )
@@ -304,6 +318,7 @@ fun ApprovalItemPreview() {
 
     ApprovalItem(
         challenge = challenge,
+        onProfileClick = {},
         onLikeButtonClick = {},
         onHateButtonClick = {}
     )
