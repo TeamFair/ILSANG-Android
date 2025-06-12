@@ -104,7 +104,8 @@ fun HomeScreen(
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }
+                    },
+                    navigateToProfile = navigateToProfile
                 )
             }
             composable(HomeTap.Quest.name) {

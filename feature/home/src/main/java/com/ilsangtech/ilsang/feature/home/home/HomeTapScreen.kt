@@ -54,7 +54,8 @@ fun HomeTapScreen(
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToSubmit: () -> Unit,
-    navigateToRankingTab: () -> Unit
+    navigateToRankingTab: () -> Unit,
+    navigateToProfile: (String) -> Unit
 ) {
     val context = LocalContext.current
     val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
@@ -147,7 +148,8 @@ fun HomeTapScreen(
                 item {
                     UserRankContent(
                         rankList = (homeTabUiState as HomeTapUiState.Success).data.topRankUsers,
-                        navigateToRankingTab = navigateToRankingTab
+                        navigateToRankingTab = navigateToRankingTab,
+                        navigateToProfile = navigateToProfile
                     )
                 }
                 item { Spacer(Modifier.height(84.dp)) }
@@ -233,6 +235,6 @@ fun HomeTapScreenPreview() {
     HomeTapScreen(
         "누구누구",
         hiltViewModel(),
-        {}, {}, {}, {}, {}
+        {}, {}, {}, {}, {}, {}
     )
 }
