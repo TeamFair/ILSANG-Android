@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ilsangtech.ilsang.feature.home.HomeScreen
 import com.ilsangtech.ilsang.feature.login.LoginScreen
+import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
@@ -41,6 +42,18 @@ fun ILSANGNavHost(
             )
         }
 
-        profileRoute(popBackStack = navController::popBackStack)
+        profileRoute(
+            navigateToChallenge = {
+                navController.navigate(
+                    ChallengeRoute(
+                        receiptImageId = it.receiptImageId,
+                        questImageId = it.questImage,
+                        likeCount = it.likeCnt,
+                        title = it.missionTitle
+                    )
+                )
+            },
+            popBackStack = navController::popBackStack
+        )
     }
 }
