@@ -167,13 +167,7 @@ class HomeViewModel @Inject constructor(
         _selectedSortType.value = sortType
     }
 
-    val challengePager = Pager(
-        PagingConfig(
-            pageSize = 10,
-            initialLoadSize = 10
-        )
-    ) { challengeRepository.getChallengePaging() }
-        .flow.cachedIn(scope = viewModelScope)
+    val challengePager = challengeRepository.getChallengePaging().cachedIn(viewModelScope)
 
     private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
     val selectedChallenge = _selectedChallenge.asStateFlow()
