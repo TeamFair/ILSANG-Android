@@ -105,7 +105,8 @@ fun StatRankingTabRow(
 @Composable
 fun StatRankingTabContent(
     selectedRewardType: RewardType,
-    userXpTypeRanks: List<UserXpTypeRank>
+    userXpTypeRanks: List<UserXpTypeRank>,
+    onItemClick: (String) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -120,7 +121,8 @@ fun StatRankingTabContent(
             StatRankingTabContentItem(
                 rank = index,
                 rewardType = selectedRewardType,
-                userXpTypeRank = userStatRank
+                userXpTypeRank = userStatRank,
+                onItemClick = { onItemClick(userStatRank.customerId) }
             )
         }
     }
@@ -130,11 +132,13 @@ fun StatRankingTabContent(
 fun StatRankingTabContentItem(
     rank: Int,
     rewardType: RewardType,
-    userXpTypeRank: UserXpTypeRank
+    userXpTypeRank: UserXpTypeRank,
+    onItemClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        onClick = onItemClick
     ) {
         Row(
             modifier = Modifier.padding(
@@ -294,6 +298,7 @@ private fun StatRankingTabContentsPreview() {
     }
     StatRankingTabContent(
         selectedRewardType = RewardType.CHARM,
-        userXpTypeRanks
+        userXpTypeRanks = userXpTypeRanks,
+        onItemClick = {}
     )
 }

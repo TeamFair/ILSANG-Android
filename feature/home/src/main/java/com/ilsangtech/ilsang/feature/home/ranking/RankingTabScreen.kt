@@ -32,13 +32,22 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 
 @Composable
-fun RankingScreen(homeViewModel: HomeViewModel) {
+fun RankingScreen(
+    homeViewModel: HomeViewModel,
+    navigateToProfile: (String) -> Unit
+) {
     val rankingUiState by homeViewModel.rankingUiState.collectAsStateWithLifecycle()
-    RankingScreen(rankingUiState)
+    RankingScreen(
+        rankingUiState = rankingUiState,
+        onRankingItemClick = navigateToProfile
+    )
 }
 
 @Composable
-fun RankingScreen(rankingUiState: Map<RewardType, List<UserXpTypeRank>>) {
+fun RankingScreen(
+    rankingUiState: Map<RewardType, List<UserXpTypeRank>>,
+    onRankingItemClick: (String) -> Unit
+) {
     var selectedRewardType by remember { mutableStateOf(RewardType.entries.first()) }
     Surface(
         modifier = Modifier
@@ -56,6 +65,7 @@ fun RankingScreen(rankingUiState: Map<RewardType, List<UserXpTypeRank>>) {
                 StatRankingTabContent(
                     selectedRewardType = selectedRewardType,
                     userXpTypeRanks = userXpTypeRanks,
+                    onItemClick = onRankingItemClick
                 )
             }
         }
@@ -91,5 +101,8 @@ fun RankingScreenHeader(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun RankingScreenPreview() {
-    RankingScreen(emptyMap())
+    RankingScreen(
+        rankingUiState = emptyMap(),
+        onRankingItemClick = {}
+    )
 }

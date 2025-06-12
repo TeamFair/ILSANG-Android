@@ -122,7 +122,10 @@ fun HomeScreen(
                 )
             }
             composable(HomeTap.Ranking.name) {
-                RankingScreen(homeViewModel)
+                RankingScreen(
+                    homeViewModel = homeViewModel,
+                    navigateToProfile = navigateToProfile
+                )
             }
             myTabNavigation(
                 homeViewModel = homeViewModel,
