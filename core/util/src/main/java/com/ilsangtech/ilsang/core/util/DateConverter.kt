@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.util
+package com.ilsangtech.ilsang.core.util
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -30,5 +30,13 @@ object DateConverter {
             else -> SimpleDateFormat("M월 d일", Locale.getDefault())
         }
         return outputFormat.format(date)
+    }
+
+    fun formatDate(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+
+        val date = inputFormat.parse(input)
+        return outputFormat.format(date!!)
     }
 }

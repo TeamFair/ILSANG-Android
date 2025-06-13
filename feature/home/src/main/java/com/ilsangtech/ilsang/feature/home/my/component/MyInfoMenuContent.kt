@@ -52,7 +52,7 @@ import androidx.core.graphics.times
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
@@ -66,7 +66,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.my.util.XpLevelCalculator
+import com.ilsangtech.ilsang.core.util.XpLevelCalculator
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
@@ -75,7 +75,7 @@ import kotlin.math.sin
 
 @Composable
 fun MyInfoMenuContent(
-    userInfo: UserInfo,
+    myInfo: MyInfo,
     userXpStats: UserXpStats
 ) {
     LazyColumn(
@@ -84,7 +84,7 @@ fun MyInfoMenuContent(
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         item {
-            MyInfoTotalXpPointContent(userInfo = userInfo)
+            MyInfoTotalXpPointContent(myInfo = myInfo)
         }
         item {
             MyInfoStatsXpPointContent(
@@ -95,7 +95,7 @@ fun MyInfoMenuContent(
 }
 
 @Composable
-fun MyInfoTotalXpPointContent(userInfo: UserInfo) {
+fun MyInfoTotalXpPointContent(myInfo: MyInfo) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -112,7 +112,7 @@ fun MyInfoTotalXpPointContent(userInfo: UserInfo) {
                 text = String.format(
                     locale = Locale.KOREA,
                     format = "%,d",
-                    userInfo.xpPoint
+                    myInfo.xpPoint
                 ) + "XP",
                 style = title01,
                 color = gray500
@@ -122,7 +122,7 @@ fun MyInfoTotalXpPointContent(userInfo: UserInfo) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp),
-                progress = { XpLevelCalculator.getLevelProgress(userInfo.xpPoint) },
+                progress = { XpLevelCalculator.getLevelProgress(myInfo.xpPoint) },
                 color = primary,
                 trackColor = Color(0xFFEDEBEB),
                 gapSize = (-5).dp,
@@ -135,21 +135,21 @@ fun MyInfoTotalXpPointContent(userInfo: UserInfo) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "LV.${XpLevelCalculator.getCurrentLevel(userInfo.xpPoint)}",
+                    text = "LV.${XpLevelCalculator.getCurrentLevel(myInfo.xpPoint)}",
                     fontFamily = FontFamily(Font(pretendard_bold)),
                     fontSize = 13.sp,
                     lineHeight = 12.sp,
                     color = gray200
                 )
                 Text(
-                    text = "다음 레벨까지 ${XpLevelCalculator.getRequiredXpPointForNextLevel(userInfo.xpPoint)}XP 남았어요!",
+                    text = "다음 레벨까지 ${XpLevelCalculator.getRequiredXpPointForNextLevel(myInfo.xpPoint)}XP 남았어요!",
                     fontFamily = FontFamily(Font(pretendard_regular)),
                     fontSize = 13.sp,
                     lineHeight = 12.sp,
                     color = gray400
                 )
                 Text(
-                    text = "LV.${XpLevelCalculator.getCurrentLevel(userInfo.xpPoint) + 1}",
+                    text = "LV.${XpLevelCalculator.getCurrentLevel(myInfo.xpPoint) + 1}",
                     fontFamily = FontFamily(Font(pretendard_bold)),
                     fontSize = 13.sp,
                     lineHeight = 12.sp,
@@ -489,7 +489,7 @@ private val statPopupTextStyle = TextStyle(
 @Composable
 fun MyInfoTotalXpPointContentPreview() {
     MyInfoTotalXpPointContent(
-        UserInfo(
+        MyInfo(
             accessToken = "",
             authorization = "",
             nickname = "김일상1234",

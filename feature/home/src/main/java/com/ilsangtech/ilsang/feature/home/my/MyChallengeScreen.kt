@@ -53,7 +53,7 @@ fun MyChallengeScreen(
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
                     model = BuildConfig.IMAGE_URL + challenge.receiptImageId,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillWidth,
                     contentDescription = null
                 )
                 MyChallengeInfoCard(

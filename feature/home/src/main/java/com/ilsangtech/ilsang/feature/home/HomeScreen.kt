@@ -33,9 +33,12 @@ import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
 import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToProfile: (String) -> Unit
+) {
     val navController = rememberNavController()
-    val userInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -101,7 +104,8 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }
+                    },
+                    navigateToProfile = navigateToProfile
                 )
             }
             composable(HomeTap.Quest.name) {
@@ -113,10 +117,15 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 )
             }
             composable(HomeTap.Approval.name) {
-                ApprovalScreen()
+                ApprovalScreen(
+                    navigateToProfile = navigateToProfile
+                )
             }
             composable(HomeTap.Ranking.name) {
-                RankingScreen(homeViewModel)
+                RankingScreen(
+                    homeViewModel = homeViewModel,
+                    navigateToProfile = navigateToProfile
+                )
             }
             myTabNavigation(
                 homeViewModel = homeViewModel,
@@ -180,5 +189,5 @@ fun HomeBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen {}
 }

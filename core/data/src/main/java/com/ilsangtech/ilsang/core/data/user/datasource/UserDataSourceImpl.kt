@@ -21,8 +21,8 @@ class UserDataSourceImpl @Inject constructor(
         return authApiService.login(loginRequest)
     }
 
-    override suspend fun getUserInfo(authorization: String): UserInfoResponse {
-        return userApiService.getUserInfo(authorization)
+    override suspend fun getUserInfo(authorization: String, userId: String?): UserInfoResponse {
+        return userApiService.getUserInfo(authorization, userId)
     }
 
     override suspend fun getUserXpStats(

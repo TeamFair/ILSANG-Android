@@ -17,7 +17,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.designsystem.theme.background
 
 @Composable
-fun ApprovalScreen(approvalViewModel: ApprovalViewModel = hiltViewModel()) {
+fun ApprovalScreen(
+    approvalViewModel: ApprovalViewModel = hiltViewModel(),
+    navigateToProfile: (String) -> Unit
+) {
     val randomChallenges = approvalViewModel.randomChallenges.collectAsLazyPagingItems()
 
     Surface(
@@ -37,6 +40,7 @@ fun ApprovalScreen(approvalViewModel: ApprovalViewModel = hiltViewModel()) {
                 randomChallenges[it]?.let { randomChallenge ->
                     ApprovalItem(
                         challenge = randomChallenge,
+                        onProfileClick = { navigateToProfile(randomChallenge.customerId) },
                         onLikeButtonClick = {
                             approvalViewModel.likeChallenge(randomChallenge)
                         },

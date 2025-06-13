@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.my.util
+package com.ilsangtech.ilsang.core.util
 
 import kotlin.math.max
 
