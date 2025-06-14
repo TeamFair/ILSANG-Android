@@ -56,13 +56,11 @@ fun LoginScreen(login: () -> Unit) {
                 Spacer(Modifier.height(28.dp))
                 AutoSlidePager(
                     pageList = listOf(
-                        { WaterQuestCard() },
-                        { MusicQuestCard() },
-                        { WeatherQuestCard() },
+                        { NightQuestCard() },
+                        { LunchQuestCard() },
                         { CoffeeQuestCard() },
-                        { EggQuestCard() },
-                        { WaterQuestCard() },
-                        { MusicQuestCard() }
+                        { EmojiQuestCard() },
+                        { TakeoutQuestCard() }
                     )
                 )
             }

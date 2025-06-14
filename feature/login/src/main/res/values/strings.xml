@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="music_quest_card_title">좋아하는 노래\n한 곡 듣기</string>
-    <string name="weather_quest_card_title">오늘의 날씨\n확인하기</string>
-    <string name="coffee_quest_card_title">디카페인\n아메리카 마시기</string>
-    <string name="egg_quest_card_title">계란 후라이\n완벽하게 만들기</string>
-    <string name="water_quest_card_title">일주일 동안 물\n2리터 마시기</string>
+    <string name="lunch_quest_card_title">점심 한 끼 인증</string>
+    <string name="night_quest_card_title">밤 감성 가게 사진</string>
+    <string name="coffee_quest_card_title">일상존 카페 가기</string>
+    <string name="emoji_quest_card_title">이모지로 가게 표현</string>
+    <string name="takeout_quest_card_title">테이크아웃 한 컷</string>
 </resources>
