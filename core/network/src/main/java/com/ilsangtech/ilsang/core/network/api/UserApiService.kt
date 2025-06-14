@@ -18,7 +18,7 @@ interface UserApiService {
     @GET("customer/user")
     suspend fun getUserInfo(
         @Header("authorization") authorization: String,
-        @Query("userId") userId: String = ""
+        @Query("customerId") customerId: String?
     ): UserInfoResponse
 
     @GET("customer/xpStats")

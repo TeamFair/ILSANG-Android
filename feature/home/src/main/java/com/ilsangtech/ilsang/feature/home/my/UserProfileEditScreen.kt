@@ -45,7 +45,7 @@ fun UserProfileEditScreen(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit
 ) {
-    val originUserInfo by homeViewModel.userInfo.collectAsStateWithLifecycle()
+    val originUserInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
     val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
     val nicknameEditErrorMessage by homeViewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
     val isUserProfileEditSuccess by homeViewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()

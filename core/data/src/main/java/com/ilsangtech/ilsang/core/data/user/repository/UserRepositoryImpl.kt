@@ -1,10 +1,12 @@
 package com.ilsangtech.ilsang.core.data.user.repository
 
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
+import com.ilsangtech.ilsang.core.data.user.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
@@ -16,7 +18,7 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataStore: UserDataStore,
     private val imageRepository: ImageRepository
 ) : UserRepository {
-    override var currentUser: UserInfo? = null
+    override var currentUser: MyInfo? = null
 
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
@@ -34,10 +36,11 @@ class UserRepositoryImpl @Inject constructor(
             )
         )
         val userInfoResponse = userDataSource.getUserInfo(
-            authorization = userResponse.data.authorization
+            authorization = userResponse.data.authorization,
+            userId = null
         )
 
-        currentUser = UserInfo(
+        currentUser = MyInfo(
             authorization = userResponse.data.authorization,
             email = email,
             accessToken = accessToken,
@@ -50,10 +53,11 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateUserInfo() {
+    override suspend fun updateMyInfo() {
         currentUser?.authorization?.let {
             val userInfoResponse = userDataSource.getUserInfo(
-                authorization = it
+                authorization = it,
+                userId = null
             )
             currentUser = currentUser?.copy(
                 completeChallengeCount = userInfoResponse.userInfoNetworkModel.completeChallengeCount,
@@ -63,6 +67,19 @@ class UserRepositoryImpl @Inject constructor(
                 xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
                 status = userInfoResponse.userInfoNetworkModel.status
             )
+        }
+    }
+
+    override suspend fun getUserInfo(userId: String): Result<UserInfo> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                val userInfoResponse = userDataSource.getUserInfo(
+                    authorization = it,
+                    userId = userId
+                )
+                val userInfoNetworkModel = userInfoResponse.userInfoNetworkModel
+                userInfoNetworkModel.toUserInfo()
+            } ?: throw Exception("User is not logged in")
         }
     }
 

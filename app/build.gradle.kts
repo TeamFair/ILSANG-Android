@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":feature:login"))
     implementation(project(":feature:tutorial"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:profile"))
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

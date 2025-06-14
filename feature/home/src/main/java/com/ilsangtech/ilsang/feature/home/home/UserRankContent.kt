@@ -46,7 +46,8 @@ import com.ilsangtech.ilsang.feature.home.R
 @Composable
 fun UserRankContent(
     rankList: List<UserRank>,
-    navigateToRankingTab: () -> Unit
+    navigateToRankingTab: () -> Unit,
+    navigateToProfile: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -79,7 +80,10 @@ fun UserRankContent(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(rankList) { userRank ->
-                UserRankCard(userRank)
+                UserRankCard(
+                    userRank = userRank,
+                    onClickRankCard = { navigateToProfile(userRank.customerId) }
+                )
             }
         }
     }
@@ -92,7 +96,10 @@ private val userRankContentTitleStyle = TextStyle(
 )
 
 @Composable
-fun UserRankCard(userRank: UserRank) {
+fun UserRankCard(
+    userRank: UserRank,
+    onClickRankCard: () -> Unit
+) {
     Card(
         modifier = Modifier.size(
             width = 150.dp,
@@ -100,6 +107,7 @@ fun UserRankCard(userRank: UserRank) {
         ),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape(12.dp),
+        onClick = onClickRankCard
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -203,13 +211,16 @@ private val userRankCardNicknameStyle = TextStyle(
 @Preview(showBackground = true)
 @Composable
 fun UserRankContentPreview() {
-    UserRankContent(
-        listOf(
-            UserRank(
-                "", "닉네임1", 300, null, 1
-            )
-        )
-    ) {}
+    UserRankContent((
+            listOf(
+                UserRank(
+                    customerId = "",
+                    nickname = "닉네임1",
+                    xpSum = 300,
+                    profileImageUrl = null,
+                    rank = 1
+                )
+            )), {}, {})
 }
 
 @Preview
@@ -219,5 +230,5 @@ fun UserRankCardPreview() {
         UserRank(
             "", "닉네임1", 300, null, 1
         )
-    )
+    ) {}
 }
