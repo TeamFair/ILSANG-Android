@@ -26,7 +26,7 @@ fun AutoSlidePager(
     pageList: List<@Composable () -> Unit>
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val actualPageCount = 5
+    val actualPageCount = pageList.size
     val fakePageCount = actualPageCount + 2
     val pagerState = rememberPagerState(initialPage = 1) { fakePageCount }
 
@@ -63,6 +63,7 @@ fun AutoSlidePager(
             }
         }
     }
+
     HorizontalPager(
         modifier = modifier.fillMaxWidth(),
         pageSize = PageSize.Fixed(180.dp),
@@ -74,6 +75,13 @@ fun AutoSlidePager(
         val scale = lerp(0.83f, 1f, 1f - pageOffset.absoluteValue.coerceIn(0f, 1f))
         val pageAlpha = lerp(0.2f, 1f, 1f - pageOffset.absoluteValue.coerceIn(0f, 1f))
 
+        val actualPageIndex =
+            when (pageIndex) {
+                0 -> actualPageCount - 1
+                fakePageCount - 1 -> 0
+                else -> pageIndex - 1
+            }
+
         Box(
             modifier = Modifier.graphicsLayer {
                 scaleX = scale
@@ -81,7 +89,7 @@ fun AutoSlidePager(
                 alpha = pageAlpha
             }
         ) {
-            pageList[pageIndex].invoke()
+            pageList[actualPageIndex].invoke()
         }
     }
 }
