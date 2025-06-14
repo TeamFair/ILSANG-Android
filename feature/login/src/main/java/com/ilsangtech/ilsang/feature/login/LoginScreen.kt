@@ -37,6 +37,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.secondary
 import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 fun LoginScreen(login: () -> Unit) {
@@ -56,13 +57,11 @@ fun LoginScreen(login: () -> Unit) {
                 Spacer(Modifier.height(28.dp))
                 AutoSlidePager(
                     pageList = listOf(
-                        { WaterQuestCard() },
-                        { MusicQuestCard() },
-                        { WeatherQuestCard() },
+                        { NightQuestCard() },
+                        { LunchQuestCard() },
                         { CoffeeQuestCard() },
-                        { EggQuestCard() },
-                        { WaterQuestCard() },
-                        { MusicQuestCard() }
+                        { EmojiQuestCard() },
+                        { TakeoutQuestCard() }
                     )
                 )
             }
@@ -80,21 +79,20 @@ fun LoginTitle() {
         text = buildAnnotatedString {
             withStyle(
                 SpanStyle(
-                    fontSize = title01.fontSize,
+                    fontSize = 23.dp.toSp(),
                     fontWeight = title01.fontWeight,
                     fontStyle = title01.fontStyle,
                     fontFamily = title01.fontFamily,
                     color = title01.color
                 )
             ) {
-                append("특별한 하루를 위한\n작은 도전, ")
                 withStyle(SpanStyle(color = primary)) {
                     append("일")
                 }
                 withStyle(SpanStyle(color = secondary)) {
                     append("상")
                 }
-                append("!")
+                append("의 작은 행동이,\n지역을 바꿉니다")
             }
         },
         textAlign = TextAlign.Center
@@ -127,14 +125,13 @@ fun LoginButton(login: () -> Unit) {
         Text(
             text = "Google로 로그인하기",
             color = Color.Black,
-            style = loginButtonTextStyle
+            style = loginButtonTextStyle.copy(fontSize = 15.dp.toSp())
         )
     }
 }
 
 private val loginButtonTextStyle = TextStyle(
     color = Color.Black,
-    fontSize = 15.sp,
     fontFamily = FontFamily(Font(pretendard_bold)),
     lineHeight = 24.sp,
 )

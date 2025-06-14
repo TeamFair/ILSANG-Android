@@ -1,12 +1,10 @@
 package com.ilsangtech.ilsang.feature.login
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,11 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.primary500
 import com.ilsangtech.ilsang.designsystem.theme.title02
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 fun QuestCard(
@@ -39,7 +37,10 @@ fun QuestCard(
 ) {
     Card(
         modifier = modifier
-            .size(width = 180.dp, height = 240.dp),
+            .size(
+                width = 180.dp,
+                height = 240.dp
+            ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor,
@@ -47,14 +48,14 @@ fun QuestCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 27.dp)
+                .fillMaxSize()
                 .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = title,
-                style = title02,
+                style = title02.copy(fontSize = 17.dp.toSp()),
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
@@ -66,18 +67,15 @@ fun QuestCard(
 
 @Preview
 @Composable
-fun WeatherQuestCard() {
+fun NightQuestCard() {
     QuestCard(
-        title = stringResource(R.string.weather_quest_card_title),
+        title = stringResource(R.string.night_quest_card_title),
         questLogo = {
-            Column {
-                Icon(
-                    painter = painterResource(R.drawable.quest_card_weather),
-                    tint = Color.Unspecified,
-                    contentDescription = null
-                )
-                Spacer(Modifier.height(27.dp))
-            }
+            Icon(
+                painter = painterResource(R.drawable.quest_card_night),
+                tint = Color.Unspecified,
+                contentDescription = null
+            )
         },
         cardBackgroundColor = primary,
     )
@@ -85,17 +83,16 @@ fun WeatherQuestCard() {
 
 @Preview
 @Composable
-fun MusicQuestCard() {
+fun LunchQuestCard() {
     QuestCard(
-        title = stringResource(R.string.music_quest_card_title),
+        title = stringResource(R.string.lunch_quest_card_title),
         questLogo = {
             Column {
                 Icon(
-                    painter = painterResource(R.drawable.quest_card_music),
+                    painter = painterResource(R.drawable.quest_card_lunch),
                     tint = Color.Unspecified,
                     contentDescription = null
                 )
-                Spacer(Modifier.height(27.dp))
             }
         },
         cardBackgroundColor = primary,
@@ -114,7 +111,6 @@ fun CoffeeQuestCard() {
                     tint = Color.Unspecified,
                     contentDescription = null
                 )
-                Spacer(Modifier.height(27.dp))
             }
         },
         cardBackgroundColor = primary300,
@@ -123,48 +119,16 @@ fun CoffeeQuestCard() {
 
 @Preview
 @Composable
-fun EggQuestCard() {
+fun EmojiQuestCard() {
     QuestCard(
-        title = stringResource(R.string.egg_quest_card_title),
+        title = stringResource(R.string.emoji_quest_card_title),
         questLogo = {
-            Column(
-                modifier = Modifier.offset(y = 3.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(Modifier.height(7.dp))
-                Icon(
-                    modifier = Modifier.zIndex(1f),
-                    painter = painterResource(R.drawable.quest_card_egg),
-                    tint = Color.Unspecified,
-                    contentDescription = null
-                )
-                Box(
-                    modifier = Modifier
-                        .offset(y = (-2).dp)
-                        .size(
-                            width = 12.dp,
-                            height = 14.dp
-                        )
-                        .background(
-                            color = gray300
-                        )
-                )
-                Box(
-                    modifier = Modifier
-                        .offset(y = (-3).dp)
-                        .size(
-                            width = 16.dp,
-                            height = 15.dp
-                        )
-                        .background(
-                            color = Color(0xFFBC6100),
-                            shape = RoundedCornerShape(
-                                topStart = 4.dp,
-                                topEnd = 4.dp
-                            )
-                        )
-                )
-            }
+            Icon(
+                modifier = Modifier.zIndex(1f),
+                painter = painterResource(R.drawable.quest_card_emoji),
+                tint = Color.Unspecified,
+                contentDescription = null
+            )
         },
         cardBackgroundColor = primary,
     )
@@ -172,16 +136,15 @@ fun EggQuestCard() {
 
 @Preview
 @Composable
-fun WaterQuestCard() {
+fun TakeoutQuestCard() {
     QuestCard(
-        title = stringResource(R.string.water_quest_card_title),
+        title = stringResource(R.string.takeout_quest_card_title),
         questLogo = {
             Icon(
-                painter = painterResource(R.drawable.quest_card_water),
+                painter = painterResource(R.drawable.quest_card_takeout),
                 tint = Color.Unspecified,
                 contentDescription = null
             )
-            Spacer(Modifier.height(27.dp))
         },
         cardBackgroundColor = primary500
     )
