@@ -26,6 +26,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.primary500
 import com.ilsangtech.ilsang.designsystem.theme.title02
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 fun QuestCard(
@@ -54,7 +55,7 @@ fun QuestCard(
         ) {
             Text(
                 text = title,
-                style = title02,
+                style = title02.copy(fontSize = 17.dp.toSp()),
                 color = Color.White,
                 textAlign = TextAlign.Center
             )

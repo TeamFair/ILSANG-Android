@@ -37,6 +37,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.secondary
 import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 fun LoginScreen(login: () -> Unit) {
@@ -78,7 +79,7 @@ fun LoginTitle() {
         text = buildAnnotatedString {
             withStyle(
                 SpanStyle(
-                    fontSize = title01.fontSize,
+                    fontSize = 23.dp.toSp(),
                     fontWeight = title01.fontWeight,
                     fontStyle = title01.fontStyle,
                     fontFamily = title01.fontFamily,
@@ -124,14 +125,13 @@ fun LoginButton(login: () -> Unit) {
         Text(
             text = "Google로 로그인하기",
             color = Color.Black,
-            style = loginButtonTextStyle
+            style = loginButtonTextStyle.copy(fontSize = 15.dp.toSp())
         )
     }
 }
 
 private val loginButtonTextStyle = TextStyle(
     color = Color.Black,
-    fontSize = 15.sp,
     fontFamily = FontFamily(Font(pretendard_bold)),
     lineHeight = 24.sp,
 )

@@ -1,10 +1,13 @@
 package com.ilsangtech.ilsang.designsystem.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.designsystem.R
 
@@ -128,3 +131,6 @@ val ilsangTypography = Typography(
     headlineSmall = heading03,
     bodyMedium = bodyTextStyle
 )
+
+@Composable
+fun Dp.toSp() = with(LocalDensity.current) { toSp() }
