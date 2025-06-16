@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -55,6 +56,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:util"))
 
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.paging.runtime)
