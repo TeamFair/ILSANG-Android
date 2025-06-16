@@ -9,13 +9,19 @@ import com.ilsangtech.ilsang.feature.home.HomeTap
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
+import com.ilsangtech.ilsang.feature.home.my.SettingScreen
 import com.ilsangtech.ilsang.feature.home.my.UserProfileEditScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object SettingRoute
 
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit,
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: () -> Unit,
+    navigateToSetting: () -> Unit
 ) {
     navigation(
         route = HomeTap.My.name,
@@ -25,7 +31,8 @@ fun NavGraphBuilder.myTabNavigation(
             MyTabScreen(
                 homeViewModel = homeViewModel,
                 navigateToNicknameEdit = navigateToNicknameEdit,
-                navigateToMyChallenge = navigateToMyChallenge
+                navigateToMyChallenge = navigateToMyChallenge,
+                navigateToSetting = navigateToSetting
             )
         }
         composable(
@@ -54,6 +61,10 @@ fun NavGraphBuilder.myTabNavigation(
                 homeViewModel = homeViewModel,
                 navigateToMyTabMain = navigateToMyTabMain
             )
+        }
+
+        composable<SettingRoute> {
+            SettingScreen(popBackStack = navigateToMyTabMain)
         }
     }
 }

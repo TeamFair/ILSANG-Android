@@ -36,7 +36,8 @@ import kotlinx.coroutines.flow.asFlow
 fun MyTabScreen(
     homeViewModel: HomeViewModel,
     navigateToNicknameEdit: () -> Unit,
-    navigateToMyChallenge: () -> Unit
+    navigateToMyChallenge: () -> Unit,
+    navigateToSetting: () -> Unit
 ) {
     val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
     val userXpStats by homeViewModel.userXpStats.collectAsStateWithLifecycle()
@@ -54,7 +55,8 @@ fun MyTabScreen(
         navigateToMyChallenge = {
             homeViewModel.selectChallenge(it)
             navigateToMyChallenge()
-        }
+        },
+        navigateToSetting = navigateToSetting
     )
 }
 
@@ -64,7 +66,8 @@ fun MyTabScreen(
     userXpStats: UserXpStats,
     challengePager: LazyPagingItems<Challenge>,
     navigateToNicknameEdit: () -> Unit,
-    navigateToMyChallenge: (Challenge) -> Unit
+    navigateToMyChallenge: (Challenge) -> Unit,
+    navigateToSetting: () -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -75,9 +78,9 @@ fun MyTabScreen(
         Column(
             modifier = Modifier
                 .statusBarsPadding()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 20.dp)
         ) {
-            MyTabHeader()
+            MyTabHeader(onSettingIconClick = navigateToSetting)
             Spacer(Modifier.height(5.dp))
             UserProfileContent(
                 myInfo = myInfo!!,
@@ -125,6 +128,7 @@ fun MyTabScreenPreview() {
         userXpStats = UserXpStats(),
         challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
         navigateToNicknameEdit = {},
-        navigateToMyChallenge = {}
+        navigateToMyChallenge = {},
+        navigateToSetting = {}
     )
 }

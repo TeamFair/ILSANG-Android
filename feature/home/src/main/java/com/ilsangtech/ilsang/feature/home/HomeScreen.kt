@@ -27,6 +27,7 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
@@ -135,6 +136,9 @@ fun HomeScreen(
                 navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") },
                 navigateToMyChallenge = {
                     navController.navigate("${HomeTap.My.name}/Challenge")
+                },
+                navigateToSetting = {
+                    navController.navigate(SettingRoute)
                 }
             )
             composable("Submit") {
