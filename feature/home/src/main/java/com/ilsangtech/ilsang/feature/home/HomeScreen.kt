@@ -28,6 +28,7 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.SettingRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
@@ -139,6 +140,9 @@ fun HomeScreen(
                 },
                 navigateToSetting = {
                     navController.navigate(SettingRoute)
+                },
+                navigateToWithdrawal = {
+                    navController.navigate(WithdrawalRoute)
                 }
             )
             composable("Submit") {

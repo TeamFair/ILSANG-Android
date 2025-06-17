@@ -12,6 +12,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +38,7 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 
 @Composable
 fun SettingScreen(
+    navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
     var showLogoutDialog by remember { mutableStateOf(false) }
@@ -58,9 +63,8 @@ fun SettingScreen(
             CustomerCenterItem {}
             TermsItem {}
             VersionItem()
-            LogoutItem {}
-            WithdrawalItem {}
             LogoutItem { showLogoutDialog = true }
+            WithdrawalItem(onWithdrawalItemClick = navigateToWithdrawal)
         }
     }
 }
@@ -105,5 +109,8 @@ private fun SettingScreenHeader(
 @Preview
 @Composable
 private fun SettingScreenPreview() {
-    SettingScreen {}
+    SettingScreen(
+        navigateToWithdrawal = {},
+        popBackStack = {}
+    )
 }
