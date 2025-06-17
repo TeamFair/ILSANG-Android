@@ -26,6 +26,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.my.component.CustomerCenterItem
+import com.ilsangtech.ilsang.feature.home.my.component.LogoutDialog
 import com.ilsangtech.ilsang.feature.home.my.component.LogoutItem
 import com.ilsangtech.ilsang.feature.home.my.component.TermsItem
 import com.ilsangtech.ilsang.feature.home.my.component.VersionItem
@@ -35,6 +36,19 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 fun SettingScreen(
     popBackStack: () -> Unit
 ) {
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    if (showLogoutDialog) {
+        LogoutDialog(
+            onLogoutButtonClick = {
+                showLogoutDialog = false
+            },
+            onDismissRequest = {
+                showLogoutDialog = false
+            }
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = background
@@ -46,6 +60,7 @@ fun SettingScreen(
             VersionItem()
             LogoutItem {}
             WithdrawalItem {}
+            LogoutItem { showLogoutDialog = true }
         }
     }
 }
