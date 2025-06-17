@@ -38,6 +38,7 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 
 @Composable
 fun SettingScreen(
+    navigateToCustomerCenter: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -60,7 +61,7 @@ fun SettingScreen(
     ) {
         Column {
             SettingScreenHeader(onBackButtonClick = popBackStack)
-            CustomerCenterItem {}
+            CustomerCenterItem(onCustomerCenterItemClick = navigateToCustomerCenter)
             TermsItem {}
             VersionItem()
             LogoutItem { showLogoutDialog = true }
@@ -110,6 +111,7 @@ private fun SettingScreenHeader(
 @Composable
 private fun SettingScreenPreview() {
     SettingScreen(
+        navigateToCustomerCenter = {},
         navigateToWithdrawal = {},
         popBackStack = {}
     )

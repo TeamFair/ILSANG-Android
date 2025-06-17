@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
 import com.ilsangtech.ilsang.feature.home.my.SettingScreen
 import com.ilsangtech.ilsang.feature.home.my.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.home.my.WithdrawalScreen
+import com.ilsangtech.ilsang.feature.home.my.component.CustomerCenterScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,12 +21,16 @@ data object SettingRoute
 @Serializable
 data object WithdrawalRoute
 
+@Serializable
+data object CustomerCenterRoute
+
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit,
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: () -> Unit,
     navigateToSetting: () -> Unit,
+    navigateToCustomerCenter: () -> Unit,
     navigateToWithdrawal: () -> Unit
 ) {
     navigation(
@@ -71,6 +76,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<SettingRoute> {
             SettingScreen(
                 popBackStack = navigateToMyTabMain,
+                navigateToCustomerCenter = navigateToCustomerCenter,
                 navigateToWithdrawal = navigateToWithdrawal
             )
         }
@@ -78,6 +84,12 @@ fun NavGraphBuilder.myTabNavigation(
         composable<WithdrawalRoute> {
             WithdrawalScreen(
                 onWithdrawalButtonClick = {},
+                onBackButtonClick = navigateToMyTabMain
+            )
+        }
+
+        composable<CustomerCenterRoute> {
+            CustomerCenterScreen(
                 onBackButtonClick = navigateToMyTabMain
             )
         }
