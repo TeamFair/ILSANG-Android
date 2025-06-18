@@ -36,6 +36,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
+    navigateToLicense: () -> Unit,
     navigateToWithdrawal: () -> Unit
 ) {
     navigation(
@@ -82,6 +83,7 @@ fun NavGraphBuilder.myTabNavigation(
             SettingScreen(
                 popBackStack = navigateToMyTabMain,
                 navigateToCustomerCenter = navigateToCustomerCenter,
+                navigateToLicense = navigateToLicense,
                 navigateToFaq = navigateToFaq,
                 navigateToWithdrawal = navigateToWithdrawal
             )

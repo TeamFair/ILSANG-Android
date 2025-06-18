@@ -31,6 +31,7 @@ import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.my.component.CustomerCenterItem
 import com.ilsangtech.ilsang.feature.home.my.component.FaqItem
+import com.ilsangtech.ilsang.feature.home.my.component.LicenseItem
 import com.ilsangtech.ilsang.feature.home.my.component.LogoutDialog
 import com.ilsangtech.ilsang.feature.home.my.component.LogoutItem
 import com.ilsangtech.ilsang.feature.home.my.component.TermsItem
@@ -41,6 +42,7 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 fun SettingScreen(
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
+    navigateToLicense: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -66,6 +68,7 @@ fun SettingScreen(
             CustomerCenterItem(onCustomerCenterItemClick = navigateToCustomerCenter)
             FaqItem(onFaqItemClick = navigateToFaq)
             TermsItem {}
+            LicenseItem(onLicenseItemClick = navigateToLicense)
             VersionItem()
             LogoutItem { showLogoutDialog = true }
             WithdrawalItem(onWithdrawalItemClick = navigateToWithdrawal)
@@ -117,6 +120,7 @@ private fun SettingScreenPreview() {
         navigateToCustomerCenter = {},
         navigateToFaq = {},
         navigateToWithdrawal = {},
+        navigateToLicense = {},
         popBackStack = {}
     )
 }

@@ -39,6 +39,7 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToLicense: () -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     val navController = rememberNavController()
@@ -149,6 +150,7 @@ fun HomeScreen(
                 navigateToFaq = {
                     navController.navigate(FaqRoute)
                 },
+                navigateToLicense = navigateToLicense,
                 navigateToWithdrawal = {
                     navController.navigate(WithdrawalRoute)
                 }
@@ -205,5 +207,8 @@ fun HomeBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen {}
+    HomeScreen(
+        navigateToLicense = {},
+        navigateToProfile = {}
+    )
 }
