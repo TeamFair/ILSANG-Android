@@ -152,6 +152,22 @@ internal fun WithdrawalItem(
 }
 
 @Composable
+internal fun LicenseItem(
+    onLicenseItemClick: () -> Unit
+) {
+    SettingItem(
+        title = {
+            Text(
+                text = "오픈소스 정보",
+                style = settingItemTextStyle
+            )
+        },
+        endContent = { SettingItemNextIcon() },
+        onItemClick = onLicenseItemClick
+    )
+}
+
+@Composable
 private fun SettingItemNextIcon() {
     Icon(
         painter = painterResource(R.drawable.icon_next),
