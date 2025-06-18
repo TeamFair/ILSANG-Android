@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.home.HomeTap
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
+import com.ilsangtech.ilsang.feature.home.my.FaqScreen
 import com.ilsangtech.ilsang.feature.home.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
 import com.ilsangtech.ilsang.feature.home.my.SettingScreen
@@ -22,6 +23,9 @@ data object SettingRoute
 data object WithdrawalRoute
 
 @Serializable
+data object FaqRoute
+
+@Serializable
 data object CustomerCenterRoute
 
 fun NavGraphBuilder.myTabNavigation(
@@ -31,6 +35,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToMyChallenge: () -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
+    navigateToFaq: () -> Unit,
     navigateToWithdrawal: () -> Unit
 ) {
     navigation(
@@ -77,8 +82,13 @@ fun NavGraphBuilder.myTabNavigation(
             SettingScreen(
                 popBackStack = navigateToMyTabMain,
                 navigateToCustomerCenter = navigateToCustomerCenter,
+                navigateToFaq = navigateToFaq,
                 navigateToWithdrawal = navigateToWithdrawal
             )
+        }
+
+        composable<FaqRoute> {
+            FaqScreen(onBackButtonClick = navigateToMyTabMain)
         }
 
         composable<WithdrawalRoute> {

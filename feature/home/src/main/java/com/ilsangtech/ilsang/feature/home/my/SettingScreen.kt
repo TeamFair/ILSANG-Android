@@ -30,6 +30,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.my.component.CustomerCenterItem
+import com.ilsangtech.ilsang.feature.home.my.component.FaqItem
 import com.ilsangtech.ilsang.feature.home.my.component.LogoutDialog
 import com.ilsangtech.ilsang.feature.home.my.component.LogoutItem
 import com.ilsangtech.ilsang.feature.home.my.component.TermsItem
@@ -39,6 +40,7 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 @Composable
 fun SettingScreen(
     navigateToCustomerCenter: () -> Unit,
+    navigateToFaq: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -62,6 +64,7 @@ fun SettingScreen(
         Column {
             SettingScreenHeader(onBackButtonClick = popBackStack)
             CustomerCenterItem(onCustomerCenterItemClick = navigateToCustomerCenter)
+            FaqItem(onFaqItemClick = navigateToFaq)
             TermsItem {}
             VersionItem()
             LogoutItem { showLogoutDialog = true }
@@ -112,6 +115,7 @@ private fun SettingScreenHeader(
 private fun SettingScreenPreview() {
     SettingScreen(
         navigateToCustomerCenter = {},
+        navigateToFaq = {},
         navigateToWithdrawal = {},
         popBackStack = {}
     )

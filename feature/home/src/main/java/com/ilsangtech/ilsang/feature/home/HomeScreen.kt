@@ -28,6 +28,7 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.CustomerCenterRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
@@ -144,6 +145,9 @@ fun HomeScreen(
                 },
                 navigateToCustomerCenter = {
                     navController.navigate(CustomerCenterRoute)
+                },
+                navigateToFaq = {
+                    navController.navigate(FaqRoute)
                 },
                 navigateToWithdrawal = {
                     navController.navigate(WithdrawalRoute)
