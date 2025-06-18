@@ -8,6 +8,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -70,6 +71,8 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:profile"))
 
+    implementation(libs.androidx.appcompat)
+    implementation(libs.play.services.oss.licenses)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.navigation.compose)
