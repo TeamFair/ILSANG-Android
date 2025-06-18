@@ -65,6 +65,22 @@ internal fun CustomerCenterItem(
 }
 
 @Composable
+internal fun FaqItem(
+    onFaqItemClick: () -> Unit
+) {
+    SettingItem(
+        title = {
+            Text(
+                text = "자주 물어보는 질문",
+                style = settingItemTextStyle
+            )
+        },
+        endContent = { SettingItemNextIcon() },
+        onItemClick = onFaqItemClick
+    )
+}
+
+@Composable
 internal fun TermsItem(
     onTermsItemClick: () -> Unit
 ) {
