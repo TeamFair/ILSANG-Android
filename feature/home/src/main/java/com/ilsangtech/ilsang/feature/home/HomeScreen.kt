@@ -30,6 +30,7 @@ import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.SettingRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
@@ -151,6 +152,9 @@ fun HomeScreen(
                     navController.navigate(FaqRoute)
                 },
                 navigateToLicense = navigateToLicense,
+                navigateToTerms = {
+                    navController.navigate(TermsRoute)
+                },
                 navigateToWithdrawal = {
                     navController.navigate(WithdrawalRoute)
                 }

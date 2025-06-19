@@ -11,6 +11,7 @@ import com.ilsangtech.ilsang.feature.home.my.FaqScreen
 import com.ilsangtech.ilsang.feature.home.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.home.my.MyTabScreen
 import com.ilsangtech.ilsang.feature.home.my.SettingScreen
+import com.ilsangtech.ilsang.feature.home.my.TermsScreen
 import com.ilsangtech.ilsang.feature.home.my.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.home.my.WithdrawalScreen
 import com.ilsangtech.ilsang.feature.home.my.component.CustomerCenterScreen
@@ -28,6 +29,9 @@ data object FaqRoute
 @Serializable
 data object CustomerCenterRoute
 
+@Serializable
+data object TermsRoute
+
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
     navigateToMyTabMain: () -> Unit,
@@ -37,6 +41,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToLicense: () -> Unit,
+    navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit
 ) {
     navigation(
@@ -85,6 +90,7 @@ fun NavGraphBuilder.myTabNavigation(
                 navigateToCustomerCenter = navigateToCustomerCenter,
                 navigateToLicense = navigateToLicense,
                 navigateToFaq = navigateToFaq,
+                navigateToTerms = navigateToTerms,
                 navigateToWithdrawal = navigateToWithdrawal
             )
         }
@@ -102,6 +108,12 @@ fun NavGraphBuilder.myTabNavigation(
 
         composable<CustomerCenterRoute> {
             CustomerCenterScreen(
+                onBackButtonClick = navigateToMyTabMain
+            )
+        }
+
+        composable<TermsRoute> {
+            TermsScreen(
                 onBackButtonClick = navigateToMyTabMain
             )
         }
