@@ -43,6 +43,7 @@ fun SettingScreen(
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToLicense: () -> Unit,
+    navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
@@ -67,7 +68,7 @@ fun SettingScreen(
             SettingScreenHeader(onBackButtonClick = popBackStack)
             CustomerCenterItem(onCustomerCenterItemClick = navigateToCustomerCenter)
             FaqItem(onFaqItemClick = navigateToFaq)
-            TermsItem {}
+            TermsItem(onTermsItemClick = navigateToTerms)
             LicenseItem(onLicenseItemClick = navigateToLicense)
             VersionItem()
             LogoutItem { showLogoutDialog = true }
@@ -120,6 +121,7 @@ private fun SettingScreenPreview() {
         navigateToCustomerCenter = {},
         navigateToFaq = {},
         navigateToWithdrawal = {},
+        navigateToTerms = {},
         navigateToLicense = {},
         popBackStack = {}
     )
