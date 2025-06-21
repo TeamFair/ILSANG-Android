@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.data.user.datasource
 
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
+import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
@@ -10,6 +11,8 @@ import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 
 interface UserDataSource {
     suspend fun login(loginRequest: LoginRequest): LoginResponse
+
+    suspend fun logout(authorization: String): LogoutResponse
 
     suspend fun getUserInfo(authorization: String, userId: String?): UserInfoResponse
 
