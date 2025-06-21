@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
 import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
+import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
@@ -24,6 +25,10 @@ class UserDataSourceImpl @Inject constructor(
 
     override suspend fun logout(authorization: String): LogoutResponse {
         return authApiService.logout(authorization)
+    }
+
+    override suspend fun withdraw(authorization: String): WithdrawalResponse {
+        return authApiService.withdraw(authorization)
     }
 
     override suspend fun getUserInfo(authorization: String, userId: String?): UserInfoResponse {
