@@ -22,10 +22,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -132,31 +131,43 @@ private fun PdfViewer(resId: Int) {
     val context = LocalContext.current
     val pdfFile = remember { copyPdfFromRawToCache(context, resId, "sample_$resId.pdf") }
 
-    val renderer by remember {
-        mutableStateOf(
-            PdfRenderer(ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY))
-        )
+    val renderer = remember {
+        PdfRenderer(ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY))
     }
 
-    var pageIndex by remember { mutableIntStateOf(0) }
+    DisposableEffect(Unit) {
+        onDispose {
+            renderer.close()
+            pdfFile.delete()
+        }
+    }
+
     val pageCount = renderer.pageCount
 
-    val bitmap by produceState<Bitmap?>(initialValue = null, pageIndex) {
-        val page = renderer.openPage(pageIndex)
-        val bmp = createBitmap(page.width, page.height)
-        page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-        page.close()
-        value = bmp
+    val bitmaps = remember {
+        mutableStateOf<List<Bitmap?>>(List(pageCount) { null })
+    }
+
+    LaunchedEffect(Unit) {
+        val renderedBitmaps = bitmaps.value.toMutableList()
+        for (i in 0 until pageCount) {
+            val page = renderer.openPage(i)
+            val bmp = createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+            page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+            page.close()
+            renderedBitmaps[i] = bmp
+        }
+        bitmaps.value = renderedBitmaps
     }
 
     val pagerState = rememberPagerState { pageCount }
     HorizontalPager(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.White),
+            .background(Color.White),
         state = pagerState
     ) { page ->
-        pageIndex = page
+        val bitmap = bitmaps.value.getOrNull(page)
         bitmap?.let {
             Image(
                 modifier = Modifier.fillMaxWidth(),
@@ -164,11 +175,7 @@ private fun PdfViewer(resId: Int) {
                 contentDescription = "PDF Page",
                 contentScale = ContentScale.FillWidth
             )
-        } ?: Text("Loading...", modifier = Modifier.fillMaxWidth())
-    }
-
-    DisposableEffect(Unit) {
-        onDispose { pdfFile.delete() }
+        }
     }
 }
 
