@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.feature.home.HomeScreen
 import com.ilsangtech.ilsang.feature.login.LoginScreen
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute

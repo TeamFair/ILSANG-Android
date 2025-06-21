@@ -103,8 +103,8 @@ fun NavGraphBuilder.myTabNavigation(
 
         composable<WithdrawalRoute> {
             WithdrawalScreen(
-                onWithdrawalButtonClick = {},
-                onBackButtonClick = navigateToMyTabMain
+                navigateToLogin = navigateToLogin,
+                navigateToMyMain = navigateToMyTabMain
             )
         }
 

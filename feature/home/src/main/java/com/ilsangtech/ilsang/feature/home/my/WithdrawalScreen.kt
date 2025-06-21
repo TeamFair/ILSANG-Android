@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.home.R
@@ -32,7 +35,27 @@ import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalContent
 import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalDialog
 
 @Composable
-fun WithdrawalScreen(
+internal fun WithdrawalScreen(
+    withdrawalViewModel: WithdrawalViewModel = hiltViewModel(),
+    navigateToMyMain: () -> Unit,
+    navigateToLogin: () -> Unit
+) {
+    val withdrawalState by withdrawalViewModel.withdrawalState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(withdrawalState) {
+        if (withdrawalState == true) {
+            navigateToLogin()
+        }
+    }
+
+    WithdrawalScreen(
+        onWithdrawalButtonClick = withdrawalViewModel::withdraw,
+        onBackButtonClick = navigateToMyMain
+    )
+}
+
+@Composable
+private fun WithdrawalScreen(
     onWithdrawalButtonClick: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
@@ -41,7 +64,10 @@ fun WithdrawalScreen(
     if (showWithdrawalDialog) {
         WithdrawalDialog(
             onDismissRequest = { showWithdrawalDialog = false },
-            onWithdrawalButtonClick = onWithdrawalButtonClick
+            onWithdrawalButtonClick = {
+                showWithdrawalDialog = false
+                onWithdrawalButtonClick()
+            }
         )
     }
 
