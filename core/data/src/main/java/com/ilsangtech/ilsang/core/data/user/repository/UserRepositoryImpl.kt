@@ -61,6 +61,14 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun withdraw(): Result<Unit> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                userDataSource.withdraw(it)
+            }
+        }
+    }
+
     override suspend fun updateMyInfo() {
         currentUser?.authorization?.let {
             val userInfoResponse = userDataSource.getUserInfo(

@@ -14,6 +14,8 @@ interface UserRepository {
 
     suspend fun logout(): Result<Unit>
 
+    suspend fun withdraw(): Result<Unit>
+
     suspend fun updateMyInfo()
 
     suspend fun getUserInfo(userId: String): Result<UserInfo>
