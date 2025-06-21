@@ -53,6 +53,14 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun logout(): Result<Unit> {
+        return runCatching {
+            currentUser?.authorization?.let {
+                userDataSource.logout(it)
+            }
+        }
+    }
+
     override suspend fun updateMyInfo() {
         currentUser?.authorization?.let {
             val userInfoResponse = userDataSource.getUserInfo(
