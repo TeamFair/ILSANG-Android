@@ -40,6 +40,12 @@ fun ILSANGNavHost(
         }
         composable("home") {
             HomeScreen(
+                navigateToLogin = {
+                    Firebase.auth.signOut()
+                    navController.navigate("login") {
+                        popUpTo("login")
+                    }
+                },
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },

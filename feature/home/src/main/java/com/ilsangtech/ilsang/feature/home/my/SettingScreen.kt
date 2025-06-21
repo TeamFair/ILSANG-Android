@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -39,7 +42,38 @@ import com.ilsangtech.ilsang.feature.home.my.component.VersionItem
 import com.ilsangtech.ilsang.feature.home.my.component.WithdrawalItem
 
 @Composable
-fun SettingScreen(
+internal fun SettingScreen(
+    settingViewModel: SettingViewModel = hiltViewModel(),
+    navigateToLogin: () -> Unit,
+    navigateToCustomerCenter: () -> Unit,
+    navigateToFaq: () -> Unit,
+    navigateToLicense: () -> Unit,
+    navigateToTerms: () -> Unit,
+    navigateToWithdrawal: () -> Unit,
+    popBackStack: () -> Unit
+) {
+    val logoutState by settingViewModel.logoutState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(logoutState) {
+        if (logoutState == true) {
+            navigateToLogin()
+        }
+    }
+
+    SettingScreen(
+        onLogoutButtonClick = settingViewModel::logout,
+        navigateToCustomerCenter = navigateToCustomerCenter,
+        navigateToFaq = navigateToFaq,
+        navigateToLicense = navigateToLicense,
+        navigateToTerms = navigateToTerms,
+        navigateToWithdrawal = navigateToWithdrawal,
+        popBackStack = popBackStack
+    )
+}
+
+@Composable
+private fun SettingScreen(
+    onLogoutButtonClick: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToLicense: () -> Unit,
@@ -52,6 +86,7 @@ fun SettingScreen(
     if (showLogoutDialog) {
         LogoutDialog(
             onLogoutButtonClick = {
+                onLogoutButtonClick()
                 showLogoutDialog = false
             },
             onDismissRequest = {
@@ -118,6 +153,7 @@ private fun SettingScreenHeader(
 @Composable
 private fun SettingScreenPreview() {
     SettingScreen(
+        onLogoutButtonClick = {},
         navigateToCustomerCenter = {},
         navigateToFaq = {},
         navigateToWithdrawal = {},

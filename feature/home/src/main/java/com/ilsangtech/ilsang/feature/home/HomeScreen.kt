@@ -40,6 +40,7 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToLogin: () -> Unit,
     navigateToLicense: () -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
@@ -135,6 +136,7 @@ fun HomeScreen(
             }
             myTabNavigation(
                 homeViewModel = homeViewModel,
+                navigateToLogin = navigateToLogin,
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
@@ -212,6 +214,7 @@ fun HomeBottomBar(
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
+        navigateToLogin = {},
         navigateToLicense = {},
         navigateToProfile = {}
     )

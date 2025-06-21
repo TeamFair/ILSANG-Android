@@ -34,6 +34,7 @@ data object TermsRoute
 
 fun NavGraphBuilder.myTabNavigation(
     homeViewModel: HomeViewModel,
+    navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: () -> Unit,
@@ -87,6 +88,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<SettingRoute> {
             SettingScreen(
                 popBackStack = navigateToMyTabMain,
+                navigateToLogin = navigateToLogin,
                 navigateToCustomerCenter = navigateToCustomerCenter,
                 navigateToLicense = navigateToLicense,
                 navigateToFaq = navigateToFaq,
