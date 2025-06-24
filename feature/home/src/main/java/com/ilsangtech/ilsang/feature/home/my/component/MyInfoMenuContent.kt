@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.feature.home.my.component
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.PointF
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -10,11 +12,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,11 +38,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -47,6 +57,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import androidx.core.content.FileProvider
 import androidx.core.graphics.plus
 import androidx.core.graphics.times
 import androidx.graphics.shapes.CornerRounding
@@ -54,9 +65,11 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
+import com.ilsangtech.ilsang.core.util.XpLevelCalculator
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
+import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray200
@@ -66,7 +79,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.core.util.XpLevelCalculator
+import java.io.File
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
@@ -78,17 +91,64 @@ fun MyInfoMenuContent(
     myInfo: MyInfo,
     userXpStats: UserXpStats
 ) {
+    val context = LocalContext.current
+    val graphicsLayer = rememberGraphicsLayer()
+    var isSharing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isSharing) {
+        if (isSharing) {
+            val imageBitmap = graphicsLayer.toImageBitmap()
+            val fileName = "user_profile_image.png"
+            val file = File(context.cacheDir, fileName).apply {
+                deleteOnExit()
+            }
+            val outputStream = file.outputStream()
+
+            imageBitmap.asAndroidBitmap()
+                .compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.close()
+
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                setDataAndType(uri, "image/png")
+            }
+            context.startActivity(Intent.createChooser(sendIntent, "공유하기"))
+            isSharing = false
+        }
+    }
+
     LazyColumn(
-        modifier = Modifier.padding(top = 12.dp),
+        modifier = Modifier
+            .padding(top = 12.dp)
+            .drawWithContent {
+                if (isSharing) {
+                    graphicsLayer.record {
+                        this@drawWithContent.drawContent()
+                    }
+                    drawLayer(graphicsLayer = graphicsLayer)
+                } else {
+                    drawContent()
+                }
+            }
+            .background(background),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = 24.dp)
+        contentPadding = PaddingValues(bottom = 24.dp),
     ) {
         item {
             MyInfoTotalXpPointContent(myInfo = myInfo)
         }
         item {
             MyInfoStatsXpPointContent(
-                userXpStats = userXpStats
+                userXpStats = userXpStats,
+                isSharing = isSharing,
+                onClick = { isSharing = true }
             )
         }
     }
@@ -161,9 +221,14 @@ fun MyInfoTotalXpPointContent(myInfo: MyInfo) {
 }
 
 @Composable
-fun MyInfoStatsXpPointContent(userXpStats: UserXpStats) {
+fun MyInfoStatsXpPointContent(
+    modifier: Modifier = Modifier,
+    userXpStats: UserXpStats,
+    isSharing: Boolean = false,
+    onClick: () -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -181,17 +246,19 @@ fun MyInfoStatsXpPointContent(userXpStats: UserXpStats) {
                 userXpStats = userXpStats
             )
             Spacer(Modifier.height(9.dp))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = primary),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(vertical = 16.dp),
-                onClick = {}
-            ) {
-                Text(
-                    text = "공유하기",
-                    style = shareButtonTextStyle,
-                )
+            if (!isSharing) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = primary),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    onClick = onClick
+                ) {
+                    Text(
+                        text = "공유하기",
+                        style = shareButtonTextStyle,
+                    )
+                }
             }
         }
     }
@@ -512,12 +579,13 @@ fun MyInfoTotalXpPointContentPreview() {
 @Composable
 fun MyInfoStatsXpPointContentPreview() {
     MyInfoStatsXpPointContent(
-        UserXpStats(
+        userXpStats = UserXpStats(
             charmStat = 0,
             funStat = 0,
             strengthStat = 100,
             sociabilityStat = 0,
             intellectStat = 0
         ),
+        onClick = {}
     )
 }
