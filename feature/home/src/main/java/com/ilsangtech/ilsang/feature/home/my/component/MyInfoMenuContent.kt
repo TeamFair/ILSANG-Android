@@ -236,7 +236,12 @@ fun UserStatsGraph(
             )
             Box(
                 modifier = Modifier
-                    .size(185.dp)
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .sizeIn(
+                        maxWidth = 185.dp,
+                        maxHeight = 185.dp
+                    )
                     .drawWithCache {
                         val center = size.center
                         val radius = size.minDimension / 2f
