@@ -144,6 +144,7 @@ fun ChallengeDropDownMenu(
             Icon(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 painter = painterResource(R.drawable.share),
+                tint = gray500,
                 contentDescription = null
             )
         }
@@ -174,6 +175,7 @@ fun ChallengeDropDownMenu(
             Icon(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 painter = painterResource(R.drawable.delete),
+                tint = gray500,
                 contentDescription = null
             )
         }
