@@ -112,15 +112,16 @@ fun ChallengeDropDownMenu(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 12.dp
-                )
                 .clickable(
-                    onClick = {},
+                    onClick = onShareButtonClick,
                     interactionSource = null,
                     indication = null
-                ),
+                )
+                .padding(
+                    top = 2.dp,
+                    bottom = 10.dp
+                )
+                .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -141,15 +142,16 @@ fun ChallengeDropDownMenu(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 12.dp
-                )
                 .clickable(
-                    onClick = {},
+                    onClick = onDeleteButtonClick,
                     interactionSource = null,
                     indication = null
-                ),
+                )
+                .padding(
+                    top = 10.dp,
+                    bottom = 2.dp
+                )
+                .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
