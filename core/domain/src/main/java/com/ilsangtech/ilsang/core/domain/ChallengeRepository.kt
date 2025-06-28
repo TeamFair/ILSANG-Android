@@ -20,4 +20,6 @@ interface ChallengeRepository {
         imageBytes: ByteArray,
         questId: String
     ): String
+
+    suspend fun deleteChallenge(challengeId: String): Result<Unit>
 }

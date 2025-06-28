@@ -105,4 +105,13 @@ class ChallengeRepositoryImpl(
             response.randomChallengeData.map(RandomChallengeNetworkModel::toRandomChallenge)
         return randomChallenges to totalSize
     }
+
+    override suspend fun deleteChallenge(challengeId: String): Result<Unit> {
+        return runCatching {
+            challengeDataSource.deleteChallenge(
+                authorization = userRepository.currentUser?.authorization!!,
+                challengeId = challengeId
+            )
+        }
+    }
 }
