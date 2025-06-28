@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
@@ -52,6 +53,16 @@ class ChallengeDataSourceImpl(
             authorization = authorization,
             page = page,
             size = size
+        )
+    }
+
+    override suspend fun deleteChallenge(
+        authorization: String,
+        challengeId: String
+    ): ChallengeDeleteResponse {
+        return challengeApiService.deleteChallenge(
+            authorization = authorization,
+            challengeId = challengeId
         )
     }
 }
