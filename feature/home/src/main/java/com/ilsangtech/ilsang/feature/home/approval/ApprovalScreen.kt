@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.designsystem.theme.background
 
@@ -22,6 +25,16 @@ fun ApprovalScreen(
     navigateToProfile: (String) -> Unit
 ) {
     val randomChallenges = approvalViewModel.randomChallenges.collectAsLazyPagingItems()
+    val isReportSuccess by approvalViewModel.isReportSuccess.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isReportSuccess) {
+        if (isReportSuccess == true) {
+            randomChallenges.refresh()
+        }
+        isReportSuccess?.let {
+            approvalViewModel.resetReportStatus()
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -46,7 +59,8 @@ fun ApprovalScreen(
                         },
                         onHateButtonClick = {
                             approvalViewModel.hateChallenge(randomChallenge)
-                        }
+                        },
+                        onReportButtonClick = { approvalViewModel.reportChallenge(randomChallenge) }
                     )
                 }
             }
