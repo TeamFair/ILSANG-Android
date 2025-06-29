@@ -78,11 +78,23 @@ fun ApprovalItem(
     challenge: RandomChallenge,
     onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit
+    onHateButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
     val context = LocalContext.current
     val graphicsLayer = rememberGraphicsLayer()
     var isSharing by remember { mutableStateOf(false) }
+    var showReportDialog by remember { mutableStateOf(false) }
+
+    if (showReportDialog) {
+        ChallengeReportDialog(
+            onReportButtonClick = {
+                showReportDialog = false
+                onReportButtonClick()
+            },
+            onDismissRequest = { showReportDialog = false }
+        )
+    }
 
     LaunchedEffect(isSharing) {
         if (isSharing) {
@@ -141,7 +153,8 @@ fun ApprovalItem(
                 userNickname = challenge.userNickName,
                 createdAt = challenge.createdAt,
                 onProfileClick = onProfileClick,
-                onShareButtonClick = { isSharing = true }
+                onShareButtonClick = { isSharing = true },
+                onReportButtonClick = { showReportDialog = true }
             )
             ApprovalItemBody(
                 title = challenge.missionTitle,
@@ -167,7 +180,8 @@ fun ApprovalItemHeader(
     userNickname: String,
     createdAt: String,
     onProfileClick: () -> Unit,
-    onShareButtonClick: () -> Unit
+    onShareButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
     var showDropDownMenu by remember { mutableStateOf(false) }
     Row(
@@ -221,7 +235,14 @@ fun ApprovalItemHeader(
             modifier = Modifier.align(Alignment.Bottom),
             showDropDownMenu = showDropDownMenu,
             onDismissRequest = { showDropDownMenu = false },
-            onShareButtonClick = onShareButtonClick
+            onShareButtonClick = {
+                onShareButtonClick()
+                showDropDownMenu = false
+            },
+            onReportButtonClick = {
+                onReportButtonClick()
+                showDropDownMenu = false
+            }
         )
     }
 }
@@ -365,13 +386,14 @@ private fun ApprovalDropDownMenu(
     modifier: Modifier = Modifier,
     showDropDownMenu: Boolean,
     onDismissRequest: () -> Unit,
-    onShareButtonClick: () -> Unit
+    onShareButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
     Box(modifier = modifier) {
         DropdownMenu(
             offset = DpOffset(
                 x = 0.dp,
-                y = 14.dp
+                y = 2.5.dp
             ),
             expanded = showDropDownMenu,
             onDismissRequest = onDismissRequest,
@@ -418,7 +440,7 @@ private fun ApprovalDropDownMenu(
                         .clickable(
                             indication = null,
                             interactionSource = null,
-                            onClick = {}
+                            onClick = onReportButtonClick
                         )
                         .padding(horizontal = 12.dp)
                         .padding(
@@ -489,6 +511,7 @@ fun ApprovalItemPreview() {
         challenge = challenge,
         onProfileClick = {},
         onLikeButtonClick = {},
-        onHateButtonClick = {}
+        onHateButtonClick = {},
+        onReportButtonClick = {}
     )
 }
