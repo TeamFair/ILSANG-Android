@@ -7,7 +7,6 @@ interface ImageDataSource {
     suspend fun getImage(imageId: String): ImageResponse
 
     suspend fun uploadImage(
-        authorization: String,
         type: String,
         imageBytes: ByteArray
     ): ImageUploadResponse
