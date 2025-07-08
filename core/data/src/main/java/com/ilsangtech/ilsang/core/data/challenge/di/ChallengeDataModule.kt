@@ -6,7 +6,6 @@ import com.ilsangtech.ilsang.core.data.challenge.repository.ChallengeRepositoryI
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.EmojiRepository
 import com.ilsangtech.ilsang.core.domain.ImageRepository
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
 import dagger.Module
 import dagger.Provides
@@ -28,13 +27,11 @@ object ChallengeDataModule {
     fun provideChallengeRepository(
         challengeDataSource: ChallengeDataSource,
         imageRepository: ImageRepository,
-        userRepository: UserRepository,
         emojiRepository: EmojiRepository
     ): ChallengeRepository {
         return ChallengeRepositoryImpl(
             challengeDataSource = challengeDataSource,
             imageRepository = imageRepository,
-            userRepository = userRepository,
             emojiRepository = emojiRepository
         )
     }

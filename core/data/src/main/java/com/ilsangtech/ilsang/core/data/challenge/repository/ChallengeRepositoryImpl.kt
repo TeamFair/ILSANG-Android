@@ -13,7 +13,6 @@ import com.ilsangtech.ilsang.core.data.challenge.toRandomChallenge
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.EmojiRepository
 import com.ilsangtech.ilsang.core.domain.ImageRepository
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.RandomChallenge
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeNetworkModel
@@ -22,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ChallengeRepositoryImpl(
-    private val userRepository: UserRepository,
     private val imageRepository: ImageRepository,
     private val challengeDataSource: ChallengeDataSource,
     private val emojiRepository: EmojiRepository
@@ -37,7 +35,6 @@ class ChallengeRepositoryImpl(
             pagingSourceFactory = {
                 ChallengePagingSource(
                     userId = userId,
-                    userRepository = userRepository,
                     challengeDataSource = challengeDataSource
                 )
             }
@@ -48,12 +45,10 @@ class ChallengeRepositoryImpl(
 
     override suspend fun submitChallenge(imageBytes: ByteArray, questId: String): String {
         val imageId = imageRepository.uploadImage(
-            authorization = userRepository.currentUser?.authorization!!,
             type = "RECEIPT",
             imageBytes = imageBytes
         )
         return challengeDataSource.submitChallenge(
-            authorization = userRepository.currentUser?.authorization!!,
             questId = questId,
             imageId = imageId
         ).challengeSubmitData.challengeId
@@ -96,7 +91,6 @@ class ChallengeRepositoryImpl(
         size: Int
     ): Pair<List<RandomChallenge>, Int> {
         val response = challengeDataSource.getRandomChallenges(
-            authorization = userRepository.currentUser?.authorization!!,
             page = page,
             size = size
         )
