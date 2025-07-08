@@ -4,7 +4,6 @@ import com.ilsangtech.ilsang.core.data.emoji.datasource.EmojiDataSource
 import com.ilsangtech.ilsang.core.data.emoji.datasource.EmojiDataSourceImpl
 import com.ilsangtech.ilsang.core.data.emoji.repository.EmojiRepositoryImpl
 import com.ilsangtech.ilsang.core.domain.EmojiRepository
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import dagger.Module
 import dagger.Provides
@@ -24,12 +23,8 @@ object EmojiModule {
     @Provides
     @Singleton
     fun provideEmojiRepository(
-        userRepository: UserRepository,
         emojiDataSource: EmojiDataSource
     ): EmojiRepository {
-        return EmojiRepositoryImpl(
-            userRepository = userRepository,
-            emojiDataSource = emojiDataSource
-        )
+        return EmojiRepositoryImpl(emojiDataSource)
     }
 }
