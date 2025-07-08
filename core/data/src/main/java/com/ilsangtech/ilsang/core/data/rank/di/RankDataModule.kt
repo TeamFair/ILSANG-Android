@@ -26,13 +26,9 @@ object RankDataModule {
     @Provides
     @Singleton
     fun provideRankRepository(
-        userRepository: UserRepository,
         rankDataSource: RankDataSource
     ): RankRepository {
-        return RankRepositoryImpl(
-            userRepository = userRepository,
-            rankDataSource = rankDataSource
-        )
+        return RankRepositoryImpl(rankDataSource)
     }
 
 }

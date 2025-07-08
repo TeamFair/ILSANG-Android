@@ -13,7 +13,6 @@ import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankNetworkModel
 import javax.inject.Inject
 
 class RankRepositoryImpl @Inject constructor(
-    private val userRepository: UserRepository,
     private val rankDataSource: RankDataSource
 ) : RankRepository {
     override suspend fun getTopRankUsers(): List<UserRank> {
@@ -23,7 +22,6 @@ class RankRepositoryImpl @Inject constructor(
 
     override suspend fun getXpTypeRank(rewardType: RewardType): List<UserXpTypeRank> {
         return rankDataSource.getXpTypeRank(
-            authorization = userRepository.currentUser!!.authorization!!,
             xpType = rewardType.name,
             size = 20
         )
