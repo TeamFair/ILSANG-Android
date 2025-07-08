@@ -13,10 +13,9 @@ class RankDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getXpTypeRank(
-        authorization: String,
         xpType: String,
         size: Int
     ): XpTypeRankResponse {
-        return rankApiService.getXpTypeRank(authorization, xpType, size)
+        return rankApiService.getXpTypeRank(xpType, size)
     }
 }
