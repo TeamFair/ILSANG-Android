@@ -28,8 +28,16 @@ import okhttp3.Response
 import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+ import javax.inject.Qualifier
 import javax.inject.Singleton
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AuthOkHttpClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BaseOkHttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -87,14 +95,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .client(OkHttpClient.Builder()
-                .addNetworkInterceptor(
-                    HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    }
-                ).build())
     fun provideAuthInterceptor(userDataStore: UserDataStore): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
@@ -107,6 +107,36 @@ object NetworkModule {
                 .build()
             chain.proceed(newRequest)
         }
+    }
+
+    @AuthOkHttpClient
+    @Provides
+    @Singleton
+    fun provideAuthOkHttpClient(
+        authenticator: Authenticator,
+        authInterceptor: Interceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .authenticator(authenticator)
+            .addNetworkInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            ).build()
+    }
+
+    @BaseOkHttpClient
+    @Provides
+    @Singleton
+    fun provideBaseOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            )
+            .build()
     }
 
             .baseUrl("${BuildConfig.SERVER_URL}/api/")
