@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.network.di
 
+import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
@@ -9,14 +10,21 @@ import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
+import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import okhttp3.Authenticator
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -25,6 +33,56 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    @Provides
+    @Singleton
+    fun provideAuthenticator(
+        userDataStore: UserDataStore,
+        authApiService: AuthApiService
+    ): Authenticator {
+        return object : Authenticator {
+            override fun authenticate(route: Route?, response: Response): Request? {
+                if (getResponseCount(response) >= 2) return null
+                return runBlocking {
+                    val accessToken =
+                        userDataStore.accessToken.first()
+                            ?: throw Exception("access token is null")
+                    val refreshToken =
+                        userDataStore.refreshToken.first()
+                            ?: throw Exception("refresh token is null")
+
+                    val tokenResponse = try {
+                        authApiService.oAuthRefresh(
+                            OAuthRefreshRequest(
+                                accessToken = accessToken,
+                                refreshToken = refreshToken
+                            )
+                        )
+                    } catch (e: Exception) {
+                        return@runBlocking null
+                    }
+
+                    userDataStore.setAccessToken(tokenResponse.data.authorization)
+                    tokenResponse.data.refreshToken?.let { token ->
+                        userDataStore.setRefreshToken(token)
+                    }
+
+                    response.request.newBuilder()
+                        .header("Authorization", tokenResponse.data.authorization)
+                        .build()
+                }
+            }
+
+            fun getResponseCount(response: Response?): Int {
+                var result = 1
+                var r = response?.priorResponse
+                while (r != null) {
+                    result += 1
+                    r = r.priorResponse
+                }
+                return result
+            }
+        }
+    }
 
     @Provides
     @Singleton
