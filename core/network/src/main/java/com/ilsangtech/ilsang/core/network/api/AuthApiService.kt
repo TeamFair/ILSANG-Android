@@ -1,7 +1,5 @@
 package com.ilsangtech.ilsang.core.network.api
 
-import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
-import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
@@ -14,11 +12,6 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthApiService {
-    @POST("open/login")
-    suspend fun login(
-        @Body loginRequest: LoginRequest
-    ): LoginResponse
-
     @POST("open/login/oauth")
     suspend fun oAuthLogin(
         @Body oAuthLoginRequest: OAuthLoginRequest
