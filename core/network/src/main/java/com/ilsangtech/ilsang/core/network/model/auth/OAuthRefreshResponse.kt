@@ -3,7 +3,8 @@ package com.ilsangtech.ilsang.core.network.model.auth
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthData(
-    val authorization: String,
-    val refreshToken: String? = null
+data class OAuthRefreshResponse(
+    val data: AuthNetworkModel,
+    val message: String,
+    val status: String
 )
