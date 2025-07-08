@@ -18,7 +18,6 @@ import retrofit2.http.Query
 interface ChallengeApiService {
     @GET("customer/challenge")
     suspend fun getChallenges(
-        @Header("authorization") authorization: String,
         @Query("status") status: String,
         @Query("userId") userId: String?,
         @Query("userDataOnly") userDataOnly: Boolean,
@@ -29,14 +28,12 @@ interface ChallengeApiService {
 
     @GET("customer/randomChallenge")
     suspend fun getRandomChallenges(
-        @Header("authorization") authorization: String,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): RandomChallengeResponse
 
     @POST("customer/challenge")
     suspend fun submitChallenge(
-        @Header("authorization") authorization: String,
         @Body challengeSubmitRequest: ChallengeSubmitRequest
     ): ChallengeSubmitResponse
 
