@@ -562,8 +562,6 @@ private val statPopupTextStyle = TextStyle(
 fun MyInfoTotalXpPointContentPreview() {
     MyInfoTotalXpPointContent(
         MyInfo(
-            accessToken = "",
-            authorization = "",
             nickname = "김일상1234",
             email = "",
             profileImage = null,
