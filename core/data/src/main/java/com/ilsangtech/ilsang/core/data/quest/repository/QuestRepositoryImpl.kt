@@ -3,17 +3,14 @@ package com.ilsangtech.ilsang.core.data.quest.repository
 import com.ilsangtech.ilsang.core.data.quest.datasource.QuestDataSource
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
 
 class QuestRepositoryImpl(
     private val questDataSource: QuestDataSource,
-    private val userRepository: UserRepository
 ) : QuestRepository {
     override suspend fun getPopularQuests(): List<Quest> {
         return questDataSource.getUncompletedTotalQuest(
-            authorization = userRepository.currentUser!!.authorization!!,
             popularYn = true,
             size = 8,
         ).data.map(QuestNetworkModel::toQuest)
@@ -21,7 +18,6 @@ class QuestRepositoryImpl(
 
     override suspend fun getRecommendedQuests(): List<Quest> {
         return questDataSource.getUncompletedTotalQuest(
-            authorization = userRepository.currentUser!!.authorization!!,
             popularYn = false,
             size = 10
         ).data.map(QuestNetworkModel::toQuest)
@@ -31,7 +27,6 @@ class QuestRepositoryImpl(
         val rewardContentList = listOf("INTELLECT", "SOCIABILITY", "STRENGTH", "FUN", "CHARM")
         return rewardContentList.associateWith { rewardContent ->
             questDataSource.getLargeRewardQuest(
-                authorization = userRepository.currentUser!!.authorization!!,
                 rewardContent = rewardContent,
                 size = 3
             ).data.map(QuestNetworkModel::toQuest)
@@ -40,7 +35,6 @@ class QuestRepositoryImpl(
 
     override suspend fun getUncompletedNormalQuests(): List<Quest> {
         return questDataSource.getUncompletedNormalQuest(
-            authorization = userRepository.currentUser!!.authorization!!,
             page = 0,
             size = 60
         ).data.map(QuestNetworkModel::toQuest)
@@ -48,7 +42,6 @@ class QuestRepositoryImpl(
 
     override suspend fun getUncompletedRepeatQuests(status: String): List<Quest> {
         return questDataSource.getUncompletedRepeatQuest(
-            authorization = userRepository.currentUser!!.authorization!!,
             page = 0,
             size = 60,
             status = status
@@ -57,7 +50,6 @@ class QuestRepositoryImpl(
 
     override suspend fun getUncompletedEventQuests(): List<Quest> {
         return questDataSource.getUncompletedEventQuest(
-            authorization = userRepository.currentUser!!.authorization!!,
             page = 0,
             size = 60
         ).data.map(QuestNetworkModel::toQuest)
