@@ -28,7 +28,7 @@ import okhttp3.Response
 import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
- import javax.inject.Qualifier
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Qualifier
@@ -52,32 +52,34 @@ object NetworkModule {
             override fun authenticate(route: Route?, response: Response): Request? {
                 if (getResponseCount(response) >= 2) return null
                 return runBlocking {
-                    val accessToken =
-                        userDataStore.accessToken.first()
-                            ?: throw Exception("access token is null")
-                    val refreshToken =
-                        userDataStore.refreshToken.first()
-                            ?: throw Exception("refresh token is null")
+                    try {
+                        val accessToken =
+                            userDataStore.accessToken.first()
+                                ?: throw Exception("access token is null")
+                        val refreshToken =
+                            userDataStore.refreshToken.first()
+                                ?: throw Exception("refresh token is null")
 
-                    val tokenResponse = try {
-                        authApiService.oAuthRefresh(
-                            OAuthRefreshRequest(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken
+                        val tokenResponse =
+                            authApiService.oAuthRefresh(
+                                OAuthRefreshRequest(
+                                    accessToken = accessToken,
+                                    refreshToken = refreshToken
+                                )
                             )
-                        )
+
+                        userDataStore.setAccessToken(tokenResponse.data.authorization)
+                        tokenResponse.data.refreshToken?.let { token ->
+                            userDataStore.setRefreshToken(token)
+                        }
+
+                        response.request.newBuilder()
+                            .header("Authorization", tokenResponse.data.authorization)
+                            .build()
+
                     } catch (e: Exception) {
                         return@runBlocking null
                     }
-
-                    userDataStore.setAccessToken(tokenResponse.data.authorization)
-                    tokenResponse.data.refreshToken?.let { token ->
-                        userDataStore.setRefreshToken(token)
-                    }
-
-                    response.request.newBuilder()
-                        .header("Authorization", tokenResponse.data.authorization)
-                        .build()
                 }
             }
 
