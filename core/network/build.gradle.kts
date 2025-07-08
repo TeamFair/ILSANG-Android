@@ -51,6 +51,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:datastore"))
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
