@@ -154,7 +154,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideBannerApiService(retrofit: Retrofit): BannerApiService {
     @BaseOkHttpClient
     fun provideBaseRetrofit(@BaseOkHttpClient okHttpClient: OkHttpClient): Retrofit {
         val json = Json { encodeDefaults = true }
@@ -165,48 +164,51 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideBannerApiService(@AuthOkHttpClient retrofit: Retrofit): BannerApiService {
         return retrofit.create(BannerApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideQuestApiService(retrofit: Retrofit): QuestApiService {
+    fun provideQuestApiService(@AuthOkHttpClient retrofit: Retrofit): QuestApiService {
         return retrofit.create(QuestApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
+    fun provideAuthApiService(@BaseOkHttpClient retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideRankApiService(retrofit: Retrofit): RankApiService {
+    fun provideRankApiService(@AuthOkHttpClient retrofit: Retrofit): RankApiService {
         return retrofit.create(RankApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideUserApiService(retrofit: Retrofit): UserApiService {
+    fun provideUserApiService(@AuthOkHttpClient retrofit: Retrofit): UserApiService {
         return retrofit.create(UserApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideChallengeApiService(retrofit: Retrofit): ChallengeApiService {
+    fun provideChallengeApiService(@AuthOkHttpClient retrofit: Retrofit): ChallengeApiService {
         return retrofit.create(ChallengeApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideImageApiService(retrofit: Retrofit): ImageApiService {
+    fun provideImageApiService(@AuthOkHttpClient retrofit: Retrofit): ImageApiService {
         return retrofit.create(ImageApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideEmojiApiService(retrofit: Retrofit): EmojiApiService {
+    fun provideEmojiApiService(@AuthOkHttpClient retrofit: Retrofit): EmojiApiService {
         return retrofit.create(EmojiApiService::class.java)
     }
 }
