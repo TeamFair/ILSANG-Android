@@ -139,6 +139,12 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    @AuthOkHttpClient
+    fun provideAuthRetrofit(@AuthOkHttpClient okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl("${BuildConfig.SERVER_URL}/api/")
             .addConverterFactory(
                 Json.asConverterFactory("application/json".toMediaType())
@@ -149,6 +155,16 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideBannerApiService(retrofit: Retrofit): BannerApiService {
+    @BaseOkHttpClient
+    fun provideBaseRetrofit(@BaseOkHttpClient okHttpClient: OkHttpClient): Retrofit {
+        val json = Json { encodeDefaults = true }
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl("${BuildConfig.SERVER_URL}/api/")
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+
         return retrofit.create(BannerApiService::class.java)
     }
 
