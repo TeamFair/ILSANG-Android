@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Authenticator
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -94,6 +95,20 @@ object NetworkModule {
                         level = HttpLoggingInterceptor.Level.BODY
                     }
                 ).build())
+    fun provideAuthInterceptor(userDataStore: UserDataStore): Interceptor {
+        return Interceptor { chain ->
+            val original = chain.request()
+            val token = runBlocking {
+                userDataStore.accessToken.first()
+            } ?: return@Interceptor chain.proceed(original)
+
+            val newRequest = original.newBuilder()
+                .header("Authorization", token)
+                .build()
+            chain.proceed(newRequest)
+        }
+    }
+
             .baseUrl("${BuildConfig.SERVER_URL}/api/")
             .addConverterFactory(
                 Json.asConverterFactory("application/json".toMediaType())
