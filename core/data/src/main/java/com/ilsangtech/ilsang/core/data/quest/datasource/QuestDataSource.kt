@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestRespo
 
 interface QuestDataSource {
     suspend fun getUncompletedTotalQuest(
-        authorization: String,
         popularYn: Boolean? = null,
         page: Int = 0,
         size: Int = 8,
@@ -16,7 +15,6 @@ interface QuestDataSource {
     ): UncompletedTotalQuestResponse
 
     suspend fun getLargeRewardQuest(
-        authorization: String,
         rewardContent: String,
         page: Int = 0,
         size: Int = 3,
@@ -24,20 +22,17 @@ interface QuestDataSource {
     ): LargeRewardQuestResponse
 
     suspend fun getUncompletedNormalQuest(
-        authorization: String,
         page: Int,
         size: Int
     ): UncompletedNormalQuestResponse
 
     suspend fun getUncompletedRepeatQuest(
-        authorization: String,
         page: Int,
         size: Int,
         status: String = "NONE"
     ): UncompletedRepeatQuestResponse
 
     suspend fun getUncompletedEventQuest(
-        authorization: String,
         page: Int,
         size: Int
     ): UncompletedEventQuestResponse
