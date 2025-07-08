@@ -2,12 +2,10 @@ package com.ilsangtech.ilsang.core.data.challenge.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeNetworkModel
 
 class ChallengePagingSource(
     private val userId: String? = null,
-    private val userRepository: UserRepository,
     private val challengeDataSource: ChallengeDataSource
 ) : PagingSource<Int, ChallengeNetworkModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ChallengeNetworkModel> {
@@ -15,7 +13,6 @@ class ChallengePagingSource(
             val pageNumber = params.key ?: 0
             val size = params.loadSize
             val challengesResponse = challengeDataSource.getChallenges(
-                authorization = userRepository.currentUser?.authorization!!,
                 status = "APPROVED",
                 userId = userId,
                 userDataOnly = true,

@@ -12,7 +12,6 @@ class ChallengeDataSourceImpl(
     private val challengeApiService: ChallengeApiService
 ) : ChallengeDataSource {
     override suspend fun getChallenges(
-        authorization: String,
         status: String,
         userId: String?,
         userDataOnly: Boolean,
@@ -21,7 +20,6 @@ class ChallengeDataSourceImpl(
         size: Int
     ): ChallengesResponse {
         return challengeApiService.getChallenges(
-            authorization = authorization,
             status = status,
             userId = userId,
             userDataOnly = userDataOnly,
@@ -32,12 +30,10 @@ class ChallengeDataSourceImpl(
     }
 
     override suspend fun submitChallenge(
-        authorization: String,
         questId: String,
         imageId: String
     ): ChallengeSubmitResponse {
         return challengeApiService.submitChallenge(
-            authorization = authorization,
             challengeSubmitRequest = ChallengeSubmitRequest(
                 questId = questId,
                 receiptImageId = imageId
@@ -46,12 +42,10 @@ class ChallengeDataSourceImpl(
     }
 
     override suspend fun getRandomChallenges(
-        authorization: String,
         page: Int,
         size: Int
     ): RandomChallengeResponse {
         return challengeApiService.getRandomChallenges(
-            authorization = authorization,
             page = page,
             size = size
         )
