@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.core.data.challenge.datasource
 
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeDeleteResponse
+import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeStatusUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengeSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.ChallengesResponse
 import com.ilsangtech.ilsang.core.network.model.challenge.RandomChallengeResponse
@@ -26,4 +28,14 @@ interface ChallengeDataSource {
         page: Int,
         size: Int
     ): RandomChallengeResponse
+
+    suspend fun deleteChallenge(
+        authorization: String,
+        challengeId: String
+    ): ChallengeDeleteResponse
+
+    suspend fun reportChallenge(
+        authorization: String,
+        challengeId: String
+    ): ChallengeStatusUpdateResponse
 }

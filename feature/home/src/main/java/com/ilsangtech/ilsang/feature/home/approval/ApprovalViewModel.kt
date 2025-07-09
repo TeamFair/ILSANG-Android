@@ -13,6 +13,7 @@ import com.ilsangtech.ilsang.core.model.EmojiType
 import com.ilsangtech.ilsang.core.model.RandomChallenge
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -72,6 +73,8 @@ class ApprovalViewModel @Inject constructor(
             }
         }
 
+    private val _isReportSuccess = MutableStateFlow<Boolean?>(null)
+    val isReportSuccess = _isReportSuccess.asStateFlow()
 
     fun likeChallenge(challenge: RandomChallenge) {
         viewModelScope.launch {
@@ -137,5 +140,21 @@ class ApprovalViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun reportChallenge(challenge: RandomChallenge) {
+        viewModelScope.launch {
+            runCatching {
+                challengeRepository.reportChallenge(challenge.challengeId)
+            }.onSuccess {
+                _isReportSuccess.update { true }
+            }.onFailure {
+                _isReportSuccess.update { false }
+            }
+        }
+    }
+
+    fun resetReportStatus() {
+        _isReportSuccess.update { null }
     }
 }

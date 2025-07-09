@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.BannerRepository
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
@@ -13,11 +11,11 @@ import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.Challenge
+import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
@@ -172,6 +170,9 @@ class HomeViewModel @Inject constructor(
     private val _selectedChallenge = MutableStateFlow<Challenge?>(null)
     val selectedChallenge = _selectedChallenge.asStateFlow()
 
+    private val _isChallengeDeleteSuccess = MutableStateFlow<Boolean?>(null)
+    val isChallengeDeleteSuccess = _isChallengeDeleteSuccess.asStateFlow()
+
     private val _editNickname = MutableStateFlow(myInfo.value?.nickname ?: "")
     val editNickname = _editNickname.asStateFlow()
 
@@ -287,6 +288,18 @@ class HomeViewModel @Inject constructor(
 
     fun selectChallenge(challenge: Challenge) {
         _selectedChallenge.value = challenge
+    }
+
+    fun deleteChallenge() {
+        viewModelScope.launch {
+            challengeRepository.deleteChallenge(
+                selectedChallenge.value!!.challengeId
+            ).onSuccess {
+                _isChallengeDeleteSuccess.update { true }
+            }.onFailure {
+                _isChallengeDeleteSuccess.update { false }
+            }
+        }
     }
 
     val rankingUiState = flow {

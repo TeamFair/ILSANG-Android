@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.feature.home.my
 
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,20 +9,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
+import com.ilsangtech.ilsang.feature.home.my.component.ChallengeDeleteDialog
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeHeader
 import com.ilsangtech.ilsang.feature.home.my.component.MyChallengeInfoCard
+import kotlinx.coroutines.launch
+import java.io.File
 
 @Composable
 fun MyChallengeScreen(
@@ -28,41 +44,106 @@ fun MyChallengeScreen(
     navigateToMyTabMain: () -> Unit
 ) {
     val challenge by homeViewModel.selectedChallenge.collectAsStateWithLifecycle()
+    val isChallengeDeleteSuccess by homeViewModel.isChallengeDeleteSuccess.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isChallengeDeleteSuccess) {
+        if (isChallengeDeleteSuccess == true) {
+            navigateToMyTabMain()
+        }
+    }
+
     MyChallengeScreen(
-        challenge = challenge!!,
+        challenge = challenge,
+        onDeleteButtonClick = homeViewModel::deleteChallenge,
         navigateToMyTabMain = navigateToMyTabMain
     )
 }
 
 @Composable
 fun MyChallengeScreen(
-    challenge: Challenge,
+    challenge: Challenge?,
+    onDeleteButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
+    val context = LocalContext.current
+    val graphicsLayer = rememberGraphicsLayer()
+    val coroutineScope = rememberCoroutineScope()
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteDialog) {
+        ChallengeDeleteDialog(
+            onDeleteButtonClick = {
+                onDeleteButtonClick()
+                showDeleteDialog = false
+            },
+            onDismissRequest = { showDeleteDialog = false }
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            MyChallengeHeader(onBackButtonClick = navigateToMyTabMain)
+            MyChallengeHeader(
+                onBackButtonClick = navigateToMyTabMain,
+                onShareButtonClick = {
+                    coroutineScope.launch {
+                        val imageBitmap = graphicsLayer.toImageBitmap()
+                        val fileName = "user_profile_image.png"
+                        val file = File(context.cacheDir, fileName).apply {
+                            deleteOnExit()
+                        }
+                        val outputStream = file.outputStream()
+
+                        imageBitmap.asAndroidBitmap()
+                            .compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                        outputStream.close()
+
+                        val uri = FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.fileprovider",
+                            file
+                        )
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "image/png"
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            setDataAndType(uri, "image/png")
+                        }
+                        context.startActivity(Intent.createChooser(sendIntent, "공유하기"))
+                    }
+                },
+                onDeleteButtonClick = { showDeleteDialog = true }
+            )
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
+                    .drawWithContent {
+                        graphicsLayer.record {
+                            this@drawWithContent.drawContent()
+                        }
+                        drawLayer(graphicsLayer = graphicsLayer)
+                    }
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = BuildConfig.IMAGE_URL + challenge.receiptImageId,
+                    model = BuildConfig.IMAGE_URL + challenge?.receiptImageId,
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null
                 )
-                MyChallengeInfoCard(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 16.dp)
-                        .padding(horizontal = 20.dp),
-                    challenge = challenge
-                )
+                challenge?.let {
+                    MyChallengeInfoCard(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 16.dp)
+                            .padding(horizontal = 20.dp),
+                        challenge = challenge
+                    )
+                }
             }
         }
     }
@@ -72,7 +153,7 @@ fun MyChallengeScreen(
 @Composable
 fun MyChallengeScreenPreview() {
     MyChallengeScreen(
-        Challenge(
+        challenge = Challenge(
             challengeId = "",
             createdAt = "",
             hateCnt = 12,
@@ -83,6 +164,8 @@ fun MyChallengeScreenPreview() {
             status = "",
             userNickName = "",
             viewCount = 1302
-        ), {}
+        ),
+        onDeleteButtonClick = {},
+        navigateToMyTabMain = {}
     )
 }
