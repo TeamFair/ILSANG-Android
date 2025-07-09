@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.feature.home.approval
 
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,25 +21,42 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.RandomChallenge
+import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -45,22 +64,78 @@ import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
+import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.core.util.DateConverter
+import java.io.File
 
 @Composable
 fun ApprovalItem(
     challenge: RandomChallenge,
     onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit
+    onHateButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val graphicsLayer = rememberGraphicsLayer()
+    var isSharing by remember { mutableStateOf(false) }
+    var showReportDialog by remember { mutableStateOf(false) }
+
+    if (showReportDialog) {
+        ChallengeReportDialog(
+            onReportButtonClick = {
+                showReportDialog = false
+                onReportButtonClick()
+            },
+            onDismissRequest = { showReportDialog = false }
+        )
+    }
+
+    LaunchedEffect(isSharing) {
+        if (isSharing) {
+            val imageBitmap = graphicsLayer.toImageBitmap()
+            val fileName = "approval_item.png"
+            val file = File(context.cacheDir, fileName).apply {
+                deleteOnExit()
+            }
+            val outputStream = file.outputStream()
+
+            imageBitmap.asAndroidBitmap()
+                .compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.close()
+
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                setDataAndType(uri, "image/png")
+            }
+            context.startActivity(Intent.createChooser(sendIntent, "공유하기"))
+            isSharing = false
+        }
+    }
+
     Surface(
+        modifier = Modifier.drawWithContent {
+            if (isSharing) {
+                graphicsLayer.record {
+                    this@drawWithContent.drawContent()
+                }
+                drawLayer(graphicsLayer)
+            } else {
+                drawContent()
+            }
+        },
         color = Color.White,
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -77,20 +152,24 @@ fun ApprovalItem(
                 userProfileImage = challenge.userProfileImage,
                 userNickname = challenge.userNickName,
                 createdAt = challenge.createdAt,
-                onProfileClick = onProfileClick
+                onProfileClick = onProfileClick,
+                onShareButtonClick = { isSharing = true },
+                onReportButtonClick = { showReportDialog = true }
             )
             ApprovalItemBody(
                 title = challenge.missionTitle,
-                challengeImage = challenge.receiptImageId
-            )
-            ApprovalItemFooter(
-                isLiked = challenge.emoji?.isLike == true,
-                isHated = challenge.emoji?.isHate == true,
+                challengeImage = challenge.receiptImageId,
                 likeCount = challenge.likeCnt,
-                hateCount = challenge.hateCnt,
-                onLikeButtonClick = onLikeButtonClick,
-                onHateButtonClick = onHateButtonClick
+                hateCount = challenge.hateCnt
             )
+            if (!isSharing) {
+                ApprovalItemFooter(
+                    isLiked = challenge.emoji?.isLike == true,
+                    isHated = challenge.emoji?.isHate == true,
+                    onLikeButtonClick = onLikeButtonClick,
+                    onHateButtonClick = onHateButtonClick
+                )
+            }
         }
     }
 }
@@ -100,8 +179,11 @@ fun ApprovalItemHeader(
     userProfileImage: String?,
     userNickname: String,
     createdAt: String,
-    onProfileClick: () -> Unit
+    onProfileClick: () -> Unit,
+    onShareButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
+    var showDropDownMenu by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -138,10 +220,29 @@ fun ApprovalItemHeader(
         }
         Spacer(Modifier.weight(1f))
         Icon(
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier
+                .size(30.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = { showDropDownMenu = true }
+                ),
             painter = painterResource(R.drawable.more_vertical),
             tint = gray500,
             contentDescription = null
+        )
+        ApprovalDropDownMenu(
+            modifier = Modifier.align(Alignment.Bottom),
+            showDropDownMenu = showDropDownMenu,
+            onDismissRequest = { showDropDownMenu = false },
+            onShareButtonClick = {
+                onShareButtonClick()
+                showDropDownMenu = false
+            },
+            onReportButtonClick = {
+                onReportButtonClick()
+                showDropDownMenu = false
+            }
         )
     }
 }
@@ -150,8 +251,9 @@ fun ApprovalItemHeader(
 fun ApprovalItemBody(
     title: String,
     challengeImage: String,
-
-    ) {
+    likeCount: Int,
+    hateCount: Int
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -170,22 +272,7 @@ fun ApprovalItemBody(
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
-    }
-}
 
-@Composable
-fun ApprovalItemFooter(
-    isLiked: Boolean,
-    isHated: Boolean,
-    likeCount: Int,
-    hateCount: Int,
-    onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
         Row(modifier = Modifier.height(24.dp)) {
             Box(modifier = Modifier.size(24.dp)) {
                 Icon(
@@ -219,7 +306,20 @@ fun ApprovalItemFooter(
                 color = gray200
             )
         }
+    }
+}
 
+@Composable
+fun ApprovalItemFooter(
+    isLiked: Boolean,
+    isHated: Boolean,
+    onLikeButtonClick: () -> Unit,
+    onHateButtonClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -281,6 +381,97 @@ fun ApprovalFeedbackButton(
     )
 }
 
+@Composable
+private fun ApprovalDropDownMenu(
+    modifier: Modifier = Modifier,
+    showDropDownMenu: Boolean,
+    onDismissRequest: () -> Unit,
+    onShareButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
+) {
+    Box(modifier = modifier) {
+        DropdownMenu(
+            offset = DpOffset(
+                x = 0.dp,
+                y = 2.5.dp
+            ),
+            expanded = showDropDownMenu,
+            onDismissRequest = onDismissRequest,
+            shape = RoundedCornerShape(12.dp),
+            containerColor = Color.White
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = onShareButtonClick
+                        )
+                        .padding(horizontal = 12.dp)
+                        .padding(
+                            top = 2.dp,
+                            bottom = 10.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.width(128.dp),
+                        text = "공유하기",
+                        style = TextStyle(
+                            fontFamily = pretendardFontFamily,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 15.sp,
+                            lineHeight = 1.3.em,
+                            color = gray500
+                        )
+                    )
+                    Icon(
+                        modifier = Modifier.size(18.dp),
+                        painter = painterResource(R.drawable.share),
+                        tint = gray500,
+                        contentDescription = null
+                    )
+                }
+                HorizontalDivider(color = gray100)
+                Row(
+                    modifier = Modifier
+                        .clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = onReportButtonClick
+                        )
+                        .padding(horizontal = 12.dp)
+                        .padding(
+                            top = 10.dp,
+                            bottom = 2.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.width(128.dp),
+                        text = "신고하기",
+                        style = TextStyle(
+                            fontFamily = pretendardFontFamily,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 15.sp,
+                            lineHeight = 1.3.em,
+                            color = gray500
+                        )
+                    )
+                    Icon(
+                        modifier = Modifier.size(18.dp),
+                        painter = painterResource(R.drawable.report),
+                        tint = gray500,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+    }
+}
 
 private val approvalItemNicknameTextStyle = TextStyle(
     fontFamily = FontFamily(Font(pretendard_semibold)),
@@ -320,6 +511,7 @@ fun ApprovalItemPreview() {
         challenge = challenge,
         onProfileClick = {},
         onLikeButtonClick = {},
-        onHateButtonClick = {}
+        onHateButtonClick = {},
+        onReportButtonClick = {}
     )
 }

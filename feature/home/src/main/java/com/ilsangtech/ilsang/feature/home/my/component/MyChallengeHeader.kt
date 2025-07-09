@@ -38,7 +38,9 @@ import com.ilsangtech.ilsang.feature.home.R
 @Composable
 fun MyChallengeHeader(
     modifier: Modifier = Modifier,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onShareButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -90,7 +92,15 @@ fun MyChallengeHeader(
             modifier = Modifier
                 .align(Alignment.BottomEnd),
             isExpanded = isExpanded,
-            onDismissRequest = { isExpanded = false }
+            onDismissRequest = { isExpanded = false },
+            onShareButtonClick = {
+                onShareButtonClick()
+                isExpanded = false
+            },
+            onDeleteButtonClick = {
+                onDeleteButtonClick()
+                isExpanded = false
+            }
         )
     }
 }
@@ -99,7 +109,9 @@ fun MyChallengeHeader(
 fun ChallengeDropDownMenu(
     modifier: Modifier = Modifier,
     isExpanded: Boolean,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onShareButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit
 ) {
     DropdownMenu(
         modifier = modifier.width(180.dp),
@@ -112,15 +124,16 @@ fun ChallengeDropDownMenu(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 12.dp
-                )
                 .clickable(
-                    onClick = {},
+                    onClick = onShareButtonClick,
                     interactionSource = null,
                     indication = null
-                ),
+                )
+                .padding(
+                    top = 2.dp,
+                    bottom = 10.dp
+                )
+                .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -131,6 +144,7 @@ fun ChallengeDropDownMenu(
             Icon(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 painter = painterResource(R.drawable.share),
+                tint = gray500,
                 contentDescription = null
             )
         }
@@ -141,15 +155,16 @@ fun ChallengeDropDownMenu(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 12.dp
-                )
                 .clickable(
-                    onClick = {},
+                    onClick = onDeleteButtonClick,
                     interactionSource = null,
                     indication = null
-                ),
+                )
+                .padding(
+                    top = 10.dp,
+                    bottom = 2.dp
+                )
+                .padding(horizontal = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -160,6 +175,7 @@ fun ChallengeDropDownMenu(
             Icon(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 painter = painterResource(R.drawable.delete),
+                tint = gray500,
                 contentDescription = null
             )
         }
@@ -183,7 +199,11 @@ private val myChallengeDropDownMenuTextStyle = TextStyle(
 @Preview(showBackground = true)
 @Composable
 fun MyChallengeHeaderPreview() {
-    MyChallengeHeader {}
+    MyChallengeHeader(
+        onBackButtonClick = {},
+        onShareButtonClick = {},
+        onDeleteButtonClick = {}
+    )
 }
 
 @Preview
@@ -191,6 +211,8 @@ fun MyChallengeHeaderPreview() {
 fun ChallengeDropDownMenuPreview() {
     ChallengeDropDownMenu(
         isExpanded = true,
-        onDismissRequest = {}
+        onDismissRequest = {},
+        onShareButtonClick = {},
+        onDeleteButtonClick = {}
     )
 }
