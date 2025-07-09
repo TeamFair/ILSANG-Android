@@ -27,6 +27,11 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.my.navigation.CustomerCenterRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.FaqRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.SettingRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.TermsRoute
+import com.ilsangtech.ilsang.feature.home.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.home.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
@@ -35,6 +40,8 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    navigateToLogin: () -> Unit,
+    navigateToLicense: () -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     val navController = rememberNavController()
@@ -129,12 +136,29 @@ fun HomeScreen(
             }
             myTabNavigation(
                 homeViewModel = homeViewModel,
+                navigateToLogin = navigateToLogin,
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
                 navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") },
                 navigateToMyChallenge = {
                     navController.navigate("${HomeTap.My.name}/Challenge")
+                },
+                navigateToSetting = {
+                    navController.navigate(SettingRoute)
+                },
+                navigateToCustomerCenter = {
+                    navController.navigate(CustomerCenterRoute)
+                },
+                navigateToFaq = {
+                    navController.navigate(FaqRoute)
+                },
+                navigateToLicense = navigateToLicense,
+                navigateToTerms = {
+                    navController.navigate(TermsRoute)
+                },
+                navigateToWithdrawal = {
+                    navController.navigate(WithdrawalRoute)
                 }
             )
             composable("Submit") {
@@ -189,5 +213,9 @@ fun HomeBottomBar(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen {}
+    HomeScreen(
+        navigateToLogin = {},
+        navigateToLicense = {},
+        navigateToProfile = {}
+    )
 }

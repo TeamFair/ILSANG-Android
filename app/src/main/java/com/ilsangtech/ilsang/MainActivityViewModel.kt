@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,10 +29,12 @@ class MainActivityViewModel @Inject constructor(
     )
 
     init {
-        if (Firebase.auth.currentUser != null) {
-            login(Firebase.auth.currentUser)
-        } else {
-            _isLoggedIn.value = false
+        Firebase.auth.addAuthStateListener { auth ->
+            if (auth.currentUser != null) {
+                login(auth.currentUser)
+            } else {
+                _isLoggedIn.update { false }
+            }
         }
     }
 

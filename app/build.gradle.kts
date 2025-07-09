@@ -8,6 +8,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -32,7 +33,7 @@ android {
         create("release") {
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
+            storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
             storePassword = keystoreProperties["storePassword"] as String
         }
     }
@@ -70,6 +71,8 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:profile"))
 
+    implementation(libs.androidx.appcompat)
+    implementation(libs.play.services.oss.licenses)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.navigation.compose)
