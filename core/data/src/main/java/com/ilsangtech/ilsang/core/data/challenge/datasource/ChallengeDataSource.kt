@@ -27,12 +27,10 @@ interface ChallengeDataSource {
     ): RandomChallengeResponse
 
     suspend fun deleteChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeDeleteResponse
 
     suspend fun reportChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeStatusUpdateResponse
 }

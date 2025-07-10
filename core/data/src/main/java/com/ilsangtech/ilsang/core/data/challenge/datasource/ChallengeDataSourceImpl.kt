@@ -52,21 +52,17 @@ class ChallengeDataSourceImpl(
     }
 
     override suspend fun deleteChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeDeleteResponse {
         return challengeApiService.deleteChallenge(
-            authorization = authorization,
             challengeId = challengeId
         )
     }
 
     override suspend fun reportChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeStatusUpdateResponse {
         return challengeApiService.updateChallengeStatus(
-            authorization = authorization,
             challengeId = challengeId,
             status = "REPORTED"
         )
