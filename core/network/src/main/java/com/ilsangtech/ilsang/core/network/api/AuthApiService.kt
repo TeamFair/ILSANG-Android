@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
 import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthApiService {
@@ -23,12 +22,8 @@ interface AuthApiService {
     ): OAuthRefreshResponse
 
     @GET("customer/logout")
-    suspend fun logout(
-        @Header("Authorization") accessToken: String
-    ): LogoutResponse
+    suspend fun logout(): LogoutResponse
 
     @GET("customer/withdraw")
-    suspend fun withdraw(
-        @Header("Authorization") accessToken: String
-    ): WithdrawalResponse
+    suspend fun withdraw(): WithdrawalResponse
 }
