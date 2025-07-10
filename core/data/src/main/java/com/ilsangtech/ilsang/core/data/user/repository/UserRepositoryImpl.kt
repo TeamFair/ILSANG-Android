@@ -61,19 +61,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(): Result<Unit> {
-        return runCatching {
-            currentUser?.authorization?.let {
-                userDataSource.logout(it)
-            }
-        }
+        return runCatching { userDataSource.logout() }
     }
 
     override suspend fun withdraw(): Result<Unit> {
-        return runCatching {
-            currentUser?.authorization?.let {
-                userDataSource.withdraw(it)
-            }
-        }
+        return runCatching { userDataSource.withdraw() }
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStats {
