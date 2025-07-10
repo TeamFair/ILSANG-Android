@@ -39,13 +39,11 @@ interface ChallengeApiService {
 
     @DELETE("customer/{challengeId}")
     suspend fun deleteChallenge(
-        @Header("authorization") authorization: String,
         @Path("challengeId") challengeId: String
     ): ChallengeDeleteResponse
 
     @PATCH("customer/status")
     suspend fun updateChallengeStatus(
-        @Header("authorization") authorization: String,
         @Query("challengeId") challengeId: String,
         @Query("status") status: String
     ): ChallengeStatusUpdateResponse
