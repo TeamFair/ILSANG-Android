@@ -102,19 +102,13 @@ class ChallengeRepositoryImpl(
 
     override suspend fun deleteChallenge(challengeId: String): Result<Unit> {
         return runCatching {
-            challengeDataSource.deleteChallenge(
-                authorization = userRepository.currentUser?.authorization!!,
-                challengeId = challengeId
-            )
+            challengeDataSource.deleteChallenge(challengeId = challengeId)
         }
     }
 
     override suspend fun reportChallenge(challengeId: String): Result<Unit> {
         return runCatching {
-            challengeDataSource.reportChallenge(
-                authorization = userRepository.currentUser?.authorization!!,
-                challengeId = challengeId
-            )
+            challengeDataSource.reportChallenge(challengeId = challengeId)
         }
     }
 }
