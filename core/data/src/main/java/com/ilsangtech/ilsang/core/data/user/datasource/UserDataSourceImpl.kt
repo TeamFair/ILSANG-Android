@@ -2,12 +2,10 @@ package com.ilsangtech.ilsang.core.data.user.datasource
 
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
-import com.ilsangtech.ilsang.core.network.model.auth.LoginRequest
-import com.ilsangtech.ilsang.core.network.model.auth.LoginResponse
 import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
-import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
+import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
@@ -29,16 +27,12 @@ class UserDataSourceImpl @Inject constructor(
         return userApiService.getUserInfo(userId)
     }
 
-    override suspend fun logout(authorization: String): LogoutResponse {
-        return authApiService.logout(authorization)
+    override suspend fun logout(): LogoutResponse {
+        return authApiService.logout()
     }
 
-    override suspend fun withdraw(authorization: String): WithdrawalResponse {
-        return authApiService.withdraw(authorization)
-    }
-
-    override suspend fun getUserInfo(authorization: String, userId: String?): UserInfoResponse {
-        return userApiService.getUserInfo(authorization, userId)
+    override suspend fun withdraw(): WithdrawalResponse {
+        return authApiService.withdraw()
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStatsResponse {
