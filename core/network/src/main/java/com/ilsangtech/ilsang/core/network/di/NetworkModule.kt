@@ -11,6 +11,7 @@ import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
+import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,8 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
@@ -46,7 +49,7 @@ object NetworkModule {
     @Singleton
     fun provideAuthenticator(
         userDataStore: UserDataStore,
-        authApiService: AuthApiService
+        @BaseOkHttpClient okHttpClient: OkHttpClient
     ): Authenticator {
         return object : Authenticator {
             override fun authenticate(route: Route?, response: Response): Request? {
@@ -60,21 +63,28 @@ object NetworkModule {
                             userDataStore.refreshToken.first()
                                 ?: throw Exception("refresh token is null")
 
-                        val tokenResponse =
-                            authApiService.oAuthRefresh(
-                                OAuthRefreshRequest(
-                                    accessToken = accessToken,
-                                    refreshToken = refreshToken
-                                )
-                            )
+                        val refreshRequestString =
+                            Json.encodeToString(OAuthRefreshRequest(accessToken, refreshToken))
 
-                        userDataStore.setAccessToken(tokenResponse.data.authorization)
-                        tokenResponse.data.refreshToken?.let { token ->
+                        val refreshResponse = Json.decodeFromString<OAuthRefreshResponse>(
+                            okHttpClient.newCall(
+                                Request.Builder()
+                                    .url(BuildConfig.SERVER_URL + "/api/open/login/oauth/refresh")
+                                    .post(
+                                        refreshRequestString
+                                            .toRequestBody("application/json".toMediaType())
+                                    )
+                                    .build()
+                            ).execute().body!!.string()
+                        )
+
+                        userDataStore.setAccessToken(refreshResponse.data.authorization)
+                        refreshResponse.data.refreshToken?.let { token ->
                             userDataStore.setRefreshToken(token)
                         }
 
                         response.request.newBuilder()
-                            .header("Authorization", tokenResponse.data.authorization)
+                            .header("Authorization", refreshResponse.data.authorization)
                             .build()
 
                     } catch (e: Exception) {
@@ -143,74 +153,62 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @AuthOkHttpClient
-    fun provideAuthRetrofit(@AuthOkHttpClient okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(@AuthOkHttpClient okHttpClient: OkHttpClient): Retrofit {
+        val json = Json { encodeDefaults = true }
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl("${BuildConfig.SERVER_URL}/api/")
             .addConverterFactory(
-                Json.asConverterFactory("application/json".toMediaType())
+                json.asConverterFactory("application/json".toMediaType())
             )
             .build()
     }
 
     @Provides
     @Singleton
-    @BaseOkHttpClient
-    fun provideBaseRetrofit(@BaseOkHttpClient okHttpClient: OkHttpClient): Retrofit {
-        val json = Json { encodeDefaults = true }
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl("${BuildConfig.SERVER_URL}/api/")
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideBannerApiService(@AuthOkHttpClient retrofit: Retrofit): BannerApiService {
+    fun provideBannerApiService(retrofit: Retrofit): BannerApiService {
         return retrofit.create(BannerApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideQuestApiService(@AuthOkHttpClient retrofit: Retrofit): QuestApiService {
+    fun provideQuestApiService(retrofit: Retrofit): QuestApiService {
         return retrofit.create(QuestApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAuthApiService(@BaseOkHttpClient retrofit: Retrofit): AuthApiService {
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideRankApiService(@AuthOkHttpClient retrofit: Retrofit): RankApiService {
+    fun provideRankApiService(retrofit: Retrofit): RankApiService {
         return retrofit.create(RankApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideUserApiService(@AuthOkHttpClient retrofit: Retrofit): UserApiService {
+    fun provideUserApiService(retrofit: Retrofit): UserApiService {
         return retrofit.create(UserApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideChallengeApiService(@AuthOkHttpClient retrofit: Retrofit): ChallengeApiService {
+    fun provideChallengeApiService(retrofit: Retrofit): ChallengeApiService {
         return retrofit.create(ChallengeApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideImageApiService(@AuthOkHttpClient retrofit: Retrofit): ImageApiService {
+    fun provideImageApiService(retrofit: Retrofit): ImageApiService {
         return retrofit.create(ImageApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideEmojiApiService(@AuthOkHttpClient retrofit: Retrofit): EmojiApiService {
+    fun provideEmojiApiService(retrofit: Retrofit): EmojiApiService {
         return retrofit.create(EmojiApiService::class.java)
     }
 }
