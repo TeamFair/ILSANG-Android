@@ -2,9 +2,6 @@ package com.ilsangtech.ilsang
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,34 +26,25 @@ class MainActivityViewModel @Inject constructor(
     )
 
     init {
-        Firebase.auth.addAuthStateListener { auth ->
-            if (auth.currentUser != null) {
-                login(auth.currentUser)
-            } else {
+        viewModelScope.launch {
+            try {
+                userRepository.updateMyInfo()
+                _isLoggedIn.update { true }
+            } catch (_: Exception) {
                 _isLoggedIn.update { false }
             }
         }
     }
 
-    fun login(newUser: FirebaseUser?) {
-        newUser?.getIdToken(false)?.addOnSuccessListener { result ->
-            val idToken = result.token
-            idToken?.let {
-                viewModelScope.launch {
-                    runCatching {
-                        userRepository.login(
-                            accessToken = idToken,
-                            email = newUser.email!!,
-                        )
-                    }.onSuccess {
-                        _isLoggedIn.value = true
-                    }.onFailure {
-                        _isLoggedIn.value = false
-                    }
-                }
+    fun login(idToken: String) {
+        viewModelScope.launch {
+            runCatching {
+                userRepository.login(idToken)
+            }.onSuccess {
+                _isLoggedIn.update { true }
+            }.onFailure {
+                _isLoggedIn.update { false }
             }
-        }?.addOnFailureListener {
-            _isLoggedIn.value = false
         }
     }
 
