@@ -11,10 +11,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,17 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            var shouldKeep = true
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    mainActivityViewModel.isLoggedIn.collect { isLoggedIn ->
-                        if (isLoggedIn != null) {
-                            shouldKeep = false
-                        }
-                    }
-                }
-            }
-            shouldKeep
+            mainActivityViewModel.isLoggedIn.value == null
         }
 
         super.onCreate(savedInstanceState)
