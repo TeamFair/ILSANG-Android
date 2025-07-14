@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.network.model.challenge.RandomChallengeRespons
 
 interface ChallengeDataSource {
     suspend fun getChallenges(
-        authorization: String,
         status: String,
         userId: String?,
         userDataOnly: Boolean,
@@ -18,24 +17,20 @@ interface ChallengeDataSource {
     ): ChallengesResponse
 
     suspend fun submitChallenge(
-        authorization: String,
         questId: String,
         imageId: String
     ): ChallengeSubmitResponse
 
     suspend fun getRandomChallenges(
-        authorization: String,
         page: Int,
         size: Int
     ): RandomChallengeResponse
 
     suspend fun deleteChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeDeleteResponse
 
     suspend fun reportChallenge(
-        authorization: String,
         challengeId: String
     ): ChallengeStatusUpdateResponse
 }

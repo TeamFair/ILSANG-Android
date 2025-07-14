@@ -25,6 +25,8 @@ import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
 import com.ilsangtech.ilsang.feature.home.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -55,22 +57,24 @@ class HomeViewModel @Inject constructor(
         if (it == null) {
             HomeTapUiState.Loading
         } else {
-            val banners = bannerRepository.getBanners()
-            val popularQuests = questRepository.getPopularQuests()
-            val recommendedQuest = questRepository.getRecommendedQuests()
-            val largeRewardQuests = questRepository.getLargeRewardQuests()
-            val topRankUsers = rankRepository.getTopRankUsers()
-
             try {
-                HomeTapUiState.Success(
-                    data = HomeTapSuccessData(
-                        banners = banners,
-                        popularQuests = popularQuests,
-                        recommendedQuests = recommendedQuest,
-                        largeRewardQuests = largeRewardQuests,
-                        topRankUsers = topRankUsers
+                coroutineScope {
+                    val banners = async { bannerRepository.getBanners() }
+                    val popularQuests = async { questRepository.getPopularQuests() }
+                    val recommendedQuest = async { questRepository.getRecommendedQuests() }
+                    val largeRewardQuests = async { questRepository.getLargeRewardQuests() }
+                    val topRankUsers = async { rankRepository.getTopRankUsers() }
+
+                    HomeTapUiState.Success(
+                        data = HomeTapSuccessData(
+                            banners = banners.await(),
+                            popularQuests = popularQuests.await(),
+                            recommendedQuests = recommendedQuest.await(),
+                            largeRewardQuests = largeRewardQuests.await(),
+                            topRankUsers = topRankUsers.await()
+                        )
                     )
-                )
+                }
             } catch (e: Exception) {
                 HomeTapUiState.Error(e)
             }

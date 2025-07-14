@@ -12,13 +12,11 @@ class ImageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadImage(
-        authorization: String,
         type: String,
         imageBytes: ByteArray
     ): String {
         return imageDataSource.uploadImage(
             type = type,
-            authorization = authorization,
             imageBytes = imageBytes
         ).imageUploadResponseData.imageId
     }

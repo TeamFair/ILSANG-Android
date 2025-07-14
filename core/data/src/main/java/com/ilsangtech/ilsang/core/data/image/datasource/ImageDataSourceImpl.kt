@@ -16,13 +16,11 @@ class ImageDataSourceImpl @Inject constructor(
     }
 
     override suspend fun uploadImage(
-        authorization: String,
         type: String,
         imageBytes: ByteArray
     ): ImageUploadResponse {
         val requestBody = imageBytes.toRequestBody("image/*".toMediaType())
         return imageApiService.uploadImage(
-            authorization = authorization,
             type = type,
             image = MultipartBody.Part.createFormData(
                 name = "file",

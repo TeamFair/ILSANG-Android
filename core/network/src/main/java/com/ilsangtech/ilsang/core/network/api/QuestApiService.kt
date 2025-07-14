@@ -6,13 +6,11 @@ import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResp
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface QuestApiService {
     @GET("customer/uncompletedTotalQuest")
     suspend fun getUncompletedTotalQuest(
-        @Header("authorization") authorization: String,
         @Query("popularYn") popularYn: Boolean? = null,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 8,
@@ -21,7 +19,6 @@ interface QuestApiService {
 
     @GET("customer/largeRewardQuest")
     suspend fun getLargeRewardQuest(
-        @Header("authorization") authorization: String,
         @Query("rewardContent") rewardContent: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3,
@@ -31,7 +28,6 @@ interface QuestApiService {
     // 미완료한 기본 퀘스트 목록 조회
     @GET("customer/uncompletedQuest")
     suspend fun getUncompletedNormalQuest(
-        @Header("authorization") authorization: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 60
     ): UncompletedNormalQuestResponse
@@ -39,7 +35,6 @@ interface QuestApiService {
     // 미완료한 반복 퀘스트 목록 조회
     @GET("customer/uncompletedRepeatQuest")
     suspend fun getUncompletedRepeatQuest(
-        @Header("authorization") authorization: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 60,
         @Query("status") status: String = "NONE"
@@ -48,7 +43,6 @@ interface QuestApiService {
     //미완료한 이벤트 퀘스트 목록 조회
     @GET("customer/uncompletedEventQuest")
     suspend fun getUncompletedEventQuest(
-        @Header("authorization") authorization: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 60
     ): UncompletedEventQuestResponse

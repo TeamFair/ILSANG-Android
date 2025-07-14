@@ -45,7 +45,7 @@ fun ILSANGNavHost(
                 navigateToLogin = {
                     Firebase.auth.signOut()
                     navController.navigate("login") {
-                        popUpTo("login")
+                        popUpTo("home") { inclusive = true }
                     }
                 },
                 navigateToProfile = {

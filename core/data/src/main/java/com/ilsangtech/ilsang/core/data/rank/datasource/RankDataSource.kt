@@ -6,7 +6,6 @@ import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankResponse
 interface RankDataSource {
     suspend fun getTopRankUsers(): TopUsersResponse
     suspend fun getXpTypeRank(
-        authorization: String,
         xpType: String,
         size: Int
     ): XpTypeRankResponse

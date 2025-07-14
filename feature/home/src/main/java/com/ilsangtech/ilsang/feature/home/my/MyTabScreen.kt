@@ -115,8 +115,6 @@ fun MyTabScreen(
 fun MyTabScreenPreview() {
     MyTabScreen(
         myInfo = MyInfo(
-            accessToken = "",
-            authorization = "",
             nickname = "김일상1234",
             email = "",
             profileImage = null,

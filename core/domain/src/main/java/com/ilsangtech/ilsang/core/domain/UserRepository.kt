@@ -10,7 +10,7 @@ interface UserRepository {
 
     val shouldShowOnBoarding: Flow<Boolean>
 
-    suspend fun login(email: String, accessToken: String)
+    suspend fun login(idToken: String)
 
     suspend fun logout(): Result<Unit>
 
