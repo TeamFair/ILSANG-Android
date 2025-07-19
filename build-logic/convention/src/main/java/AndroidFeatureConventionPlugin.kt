@@ -3,6 +3,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.ilsangtech.ilsang.configureCoilCompose
 import com.ilsangtech.ilsang.configureComposeAndroid
 import com.ilsangtech.ilsang.configureHiltAndroid
+import com.ilsangtech.ilsang.configureKotlinSerialization
 import com.ilsangtech.ilsang.findLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,10 +17,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             configureComposeAndroid()
             configureHiltAndroid()
             configureCoilCompose()
-
-            pluginManager.apply {
-                apply("org.jetbrains.kotlin.plugin.serialization")
-            }
+            configureKotlinSerialization()
 
             extensions.configure<LibraryExtension> {
                 buildFeatures {
