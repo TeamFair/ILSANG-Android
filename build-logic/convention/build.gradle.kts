@@ -20,3 +20,12 @@ dependencies {
     compileOnly(libs.compose.compiler.gradle.plugin)
     compileOnly(libs.plugin.kotlin.serializationPlugin)
 }
+
+gradlePlugin {
+    plugins {
+        register("androidFeature") {
+            id = "ilsang.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
+    }
+}
