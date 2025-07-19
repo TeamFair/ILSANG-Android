@@ -22,6 +22,7 @@ internal fun Project.configureComposeAndroid() {
 
             add("implementation", findLibrary("androidx-ui"))
             add("implementation", findLibrary("androidx-ui-tooling-preview"))
+            add("implementation", findLibrary("androidx-material3"))
             add("debugImplementation", findLibrary("androidx-ui-tooling"))
             add("androidTestImplementation", findLibrary("androidx-ui-test-manifest"))
             add("androidTestImplementation", findLibrary("androidx-ui-test-junit4"))
