@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ilsang.android.feature)
 }
 
 android {
@@ -33,7 +34,9 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.graphics.shapes)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
