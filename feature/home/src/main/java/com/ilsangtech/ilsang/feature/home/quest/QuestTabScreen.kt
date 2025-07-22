@@ -31,7 +31,7 @@ import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.home.LargeRewardQuestBadge
-import com.ilsangtech.ilsang.feature.home.util.FileManager
+import com.ilsangtech.ilsang.core.util.FileManager
 
 @Composable
 fun QuestTabScreen(
