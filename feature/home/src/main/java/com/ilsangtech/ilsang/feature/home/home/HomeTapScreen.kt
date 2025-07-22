@@ -44,7 +44,7 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.R
 import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
-import com.ilsangtech.ilsang.feature.home.util.FileManager
+import com.ilsangtech.ilsang.core.util.FileManager
 
 @Composable
 fun HomeTapScreen(

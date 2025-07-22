@@ -22,7 +22,7 @@ import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiData
 import com.ilsangtech.ilsang.feature.home.quest.QuestTabUiState
 import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
-import com.ilsangtech.ilsang.feature.home.util.FileManager
+import com.ilsangtech.ilsang.core.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async

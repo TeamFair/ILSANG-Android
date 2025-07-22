@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.util
+package com.ilsangtech.ilsang.core.util
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
+import androidx.core.graphics.scale
 
 object FileManager {
     fun createCacheFile(context: Context): File {
@@ -44,12 +45,7 @@ object FileManager {
 
             // 2. 그래도 크면 이미지 크기를 줄여서 재시도 (점진적 다운스케일)
             while (outputStream.toByteArray().size > maxSizeBytes) {
-                bitmap = Bitmap.createScaledBitmap(
-                    bitmap,
-                    (bitmap.width * 0.9f).toInt(),
-                    (bitmap.height * 0.9f).toInt(),
-                    true
-                )
+                bitmap = bitmap.scale((bitmap.width * 0.9f).toInt(), (bitmap.height * 0.9f).toInt())
                 quality = 90 // 다시 적절한 품질로 리셋
                 outputStream.reset()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
