@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,13 +21,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,19 +66,17 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
-import com.ilsangtech.ilsang.core.util.XpLevelCalculator
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray100
-import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.designsystem.theme.primary300
+import com.ilsangtech.ilsang.designsystem.theme.primary500
+import com.ilsangtech.ilsang.designsystem.theme.title02
 import com.ilsangtech.ilsang.feature.my.R
 import java.io.File
 import java.util.Locale
@@ -88,6 +87,7 @@ import kotlin.math.sin
 
 @Composable
 fun MyInfoMenuContent(
+    modifier: Modifier = Modifier,
     myInfo: MyInfo,
     userXpStats: UserXpStats
 ) {
@@ -125,7 +125,7 @@ fun MyInfoMenuContent(
     }
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 12.dp)
             .drawWithContent {
                 if (isSharing) {
@@ -142,7 +142,22 @@ fun MyInfoMenuContent(
         contentPadding = PaddingValues(bottom = 24.dp),
     ) {
         item {
-            MyInfoTotalXpPointContent(myInfo = myInfo)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    // 추후 구현할 카드 UI
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f)
+                        .background(Color.White),
+                )
+                MyInfoTotalXpPointContent(
+                    modifier = Modifier.weight(1f),
+                    xpPoint = myInfo.xpPoint
+                )
+            }
         }
         item {
             MyInfoStatsXpPointContent(
@@ -155,65 +170,84 @@ fun MyInfoMenuContent(
 }
 
 @Composable
-fun MyInfoTotalXpPointContent(myInfo: MyInfo) {
+private fun MyInfoTotalXpPointContent(
+    modifier: Modifier = Modifier,
+    xpPoint: Int
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(1f),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape(12.dp)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Text(
-                text = "총 포인트",
-                style = caption02,
-                color = gray400
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = String.format(
-                    locale = Locale.KOREA,
-                    format = "%,d",
-                    myInfo.xpPoint
-                ) + "XP",
-                style = title01,
-                color = gray500
-            )
-            Spacer(Modifier.height(14.dp))
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp),
-                progress = { XpLevelCalculator.getLevelProgress(myInfo.xpPoint) },
-                color = primary,
-                trackColor = Color(0xFFEDEBEB),
-                gapSize = (-5).dp,
-                drawStopIndicator = {}
-            )
-            Spacer(Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.padding(
+                    top = 20.dp,
+                    start = 20.dp
+                )
             ) {
                 Text(
-                    text = "LV.${XpLevelCalculator.getCurrentLevel(myInfo.xpPoint)}",
-                    fontFamily = FontFamily(Font(pretendard_bold)),
-                    fontSize = 13.sp,
-                    lineHeight = 12.sp,
-                    color = gray200
-                )
-                Text(
-                    text = "다음 레벨까지 ${XpLevelCalculator.getRequiredXpPointForNextLevel(myInfo.xpPoint)}XP 남았어요!",
-                    fontFamily = FontFamily(Font(pretendard_regular)),
-                    fontSize = 13.sp,
-                    lineHeight = 12.sp,
+                    text = "총 포인트",
+                    style = caption02,
                     color = gray400
                 )
+                Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "LV.${XpLevelCalculator.getCurrentLevel(myInfo.xpPoint) + 1}",
-                    fontFamily = FontFamily(Font(pretendard_bold)),
-                    fontSize = 13.sp,
-                    lineHeight = 12.sp,
-                    color = primary
+                    text = String.format(
+                        locale = Locale.KOREA,
+                        format = "%,d",
+                        xpPoint
+                    ) + "XP",
+                    style = title02,
+                    color = gray500
+                )
+                Spacer(Modifier.height(14.dp))
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(
+                        end = 16.5.dp,
+                        bottom = 18.dp
+                    ),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 10.dp,
+                            height = 54.dp
+                        )
+                        .background(
+                            color = primary500,
+                            shape = CircleShape
+                        )
+                )
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 10.dp,
+                            height = 41.dp
+                        )
+                        .background(
+                            color = primary,
+                            shape = CircleShape
+                        )
+                )
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 10.dp,
+                            height = 27.dp
+                        )
+                        .background(
+                            color = primary300,
+                            shape = CircleShape
+                        )
                 )
             }
         }
@@ -559,23 +593,13 @@ private val statPopupTextStyle = TextStyle(
 
 @Preview
 @Composable
-fun MyInfoTotalXpPointContentPreview() {
-    MyInfoTotalXpPointContent(
-        MyInfo(
-            nickname = "김일상1234",
-            email = "",
-            profileImage = null,
-            completeChallengeCount = 0,
-            couponCount = 0,
-            xpPoint = 16300,
-            status = ""
-        )
-    )
+private fun MyInfoTotalXpPointContentPreview() {
+    MyInfoTotalXpPointContent(xpPoint = 16300)
 }
 
 @Preview
 @Composable
-fun MyInfoStatsXpPointContentPreview() {
+private fun MyInfoStatsXpPointContentPreview() {
     MyInfoStatsXpPointContent(
         userXpStats = UserXpStats(
             charmStat = 0,

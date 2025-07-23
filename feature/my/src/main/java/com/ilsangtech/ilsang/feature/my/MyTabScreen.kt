@@ -109,8 +109,8 @@ fun MyTabScreen(
                 MyTabMenu.ACTIVITY -> {}
                 MyTabMenu.INFO -> {
                     MyInfoMenuContent(
-                        myInfo,
-                        userXpStats
+                        myInfo = myInfo,
+                        userXpStats = userXpStats
                     )
                 }
             }
@@ -128,7 +128,7 @@ fun MyTabScreenPreview() {
             profileImage = null,
             completeChallengeCount = 0,
             couponCount = 0,
-            xpPoint = 0,
+            xpPoint = 16300,
             status = ""
         ),
         userXpStats = UserXpStats(),
