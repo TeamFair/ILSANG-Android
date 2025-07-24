@@ -178,7 +178,8 @@ fun MyInfoProfileContentPreview() {
             completeChallengeCount = 0,
             couponCount = 0,
             xpPoint = 160,
-            status = ""
+            status = "",
+            title = null,
         )
     ) {}
 }

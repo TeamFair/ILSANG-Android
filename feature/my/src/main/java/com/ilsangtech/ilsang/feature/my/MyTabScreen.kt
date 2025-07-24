@@ -25,6 +25,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.MyInfo
+import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.my.component.MyChallengeContent
 import com.ilsangtech.ilsang.feature.my.component.MyInfoMenuContent
@@ -129,7 +130,14 @@ fun MyTabScreenPreview() {
             completeChallengeCount = 0,
             couponCount = 0,
             xpPoint = 16300,
-            status = ""
+            status = "",
+            title = Title(
+                id = "",
+                name = "세상을 움직이는 자",
+                type = "",
+                condition = null,
+                createdAt = ""
+            )
         ),
         userXpStats = UserXpStats(),
         challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
