@@ -33,6 +33,7 @@ import com.ilsangtech.ilsang.feature.login.LoginScreen
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
+import com.ilsangtech.ilsang.feature.my.navigation.MyEditRoute
 import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
@@ -63,7 +64,7 @@ fun ILSANGNavHost(
 
     Scaffold(
         bottomBar = {
-            if (currentDestination?.hierarchy?.any { it.route in topLevelDestinations } == true) {
+            if (currentDestination?.route in topLevelDestinations) {
                 HomeBottomBar(navController)
             }
         }
@@ -108,7 +109,7 @@ fun ILSANGNavHost(
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
-                navigateToNicknameEdit = { navController.navigate("${HomeTap.My.name}/Edit") },
+                navigateToNicknameEdit = { navController.navigate(MyEditRoute) },
                 navigateToMyChallenge = { id, receiptImageId, questImageId, title, viewCount, likeCount ->
                     navController.navigate(
                         MyChallengeRoute(

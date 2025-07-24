@@ -62,10 +62,10 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToWithdrawal: () -> Unit
 ) {
     navigation(
-        route = "My",
-        startDestination = "MyMain"
+        route = "MyNavigation",
+        startDestination = "My"
     ) {
-        composable(route = "MyMain") {
+        composable(route = "My") {
             MyTabScreen(
                 navigateToNicknameEdit = navigateToNicknameEdit,
                 navigateToMyChallenge = navigateToMyChallenge,
