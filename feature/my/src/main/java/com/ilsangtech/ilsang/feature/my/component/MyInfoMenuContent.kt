@@ -146,12 +146,10 @@ fun MyInfoMenuContent(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(
-                    // 추후 구현할 카드 UI
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .background(Color.White),
+                MyTitleCard(
+                    modifier = Modifier.weight(1f),
+                    titleName = myInfo.title?.name,
+                    onClick = {}
                 )
                 MyInfoTotalXpPointContent(
                     modifier = Modifier.weight(1f),
