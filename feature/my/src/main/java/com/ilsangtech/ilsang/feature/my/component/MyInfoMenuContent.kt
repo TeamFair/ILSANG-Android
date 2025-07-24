@@ -77,6 +77,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.primary500
 import com.ilsangtech.ilsang.designsystem.theme.title02
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.R
 import java.io.File
 import java.util.Locale
@@ -189,6 +190,7 @@ private fun MyInfoTotalXpPointContent(
                 Text(
                     text = "총 포인트",
                     style = caption02,
+                    fontSize = 12.dp.toSp(),
                     color = gray400
                 )
                 Spacer(Modifier.height(4.dp))
@@ -199,6 +201,7 @@ private fun MyInfoTotalXpPointContent(
                         xpPoint
                     ) + "XP",
                     style = title02,
+                    fontSize = 17.dp.toSp(),
                     color = gray500
                 )
                 Spacer(Modifier.height(14.dp))
