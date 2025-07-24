@@ -592,7 +592,7 @@ private val statPopupTextStyle = TextStyle(
     color = Color.White
 )
 
-@Preview
+@Preview(widthDp = 169)
 @Composable
 private fun MyInfoTotalXpPointContentPreview() {
     MyInfoTotalXpPointContent(xpPoint = 16300)
