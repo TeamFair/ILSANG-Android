@@ -21,7 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -78,6 +81,24 @@ private fun MyInfoProfileContent(
                         radius = ((115 - 9).dp.toPx() / 2),
                         color = gray100,
                         style = Stroke(width = 9.dp.toPx())
+                    )
+                    drawArc(
+                        size = Size(
+                            width = (115 - 9).dp.toPx(),
+                            height = (115 - 9).dp.toPx()
+                        ),
+                        topLeft = Offset(
+                            -this.center.x / 4,
+                            -this.center.y / 4
+                        ),
+                        color = primary500,
+                        startAngle = 43f,
+                        sweepAngle = -(267f * XpLevelCalculator.getLevelProgress(myInfo.xpPoint)),
+                        useCenter = false,
+                        style = Stroke(
+                            width = 9.dp.toPx(),
+                            cap = StrokeCap.Round,
+                        )
                     )
                 },
             contentAlignment = Alignment.Center
