@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,12 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.MyInfo
+import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.util.XpLevelCalculator
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
+import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.designsystem.theme.primary500
 import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.R
 
@@ -140,7 +144,12 @@ private fun MyInfoProfileContent(
                     contentDescription = null
                 )
             }
-
+        }
+        myInfo.title?.let { title ->
+            MyTitleBadge(
+                modifier = Modifier.padding(top = 8.dp),
+                title = title
+            )
         }
     }
 }
@@ -173,6 +182,45 @@ private fun UserLevelBadge(
     }
 }
 
+@Composable
+private fun MyTitleBadge(
+    modifier: Modifier = Modifier,
+    title: Title
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(1000.dp),
+        color = Color.White
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                vertical = 8.dp,
+                horizontal = 10.dp
+            ),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painterResource(
+                    when (title.type) {
+                        "STANDARD" -> R.drawable.icon_normal_title
+                        "RARE" -> R.drawable.icon_rare_title
+                        else -> R.drawable.icon_legend_title
+                    }
+                ),
+                contentDescription = "칭호 아이콘",
+                tint = Color.Unspecified
+            )
+            Text(
+                text = title.name,
+                style = badge01TextStyle,
+                color = gray500
+            )
+        }
+    }
+}
+
 private val userProfileCardLevelTextStyle = TextStyle(
     fontFamily = pretendardFontFamily,
     fontWeight = FontWeight.Bold,
@@ -188,7 +236,7 @@ private val profileNicknameTextStyle = TextStyle(
     color = gray500
 )
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 400)
 @Composable
 fun MyInfoProfileContentPreview() {
     MyInfoProfileContent(
@@ -198,9 +246,15 @@ fun MyInfoProfileContentPreview() {
             profileImage = null,
             completeChallengeCount = 0,
             couponCount = 0,
-            xpPoint = 160,
+            xpPoint = 52,
             status = "",
-            title = null,
+            title = Title(
+                id = "",
+                name = "세상을 움직이는 자",
+                type = "STANDARD",
+                condition = null,
+                createdAt = ""
+            ),
         )
     ) {}
 }
