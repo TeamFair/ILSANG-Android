@@ -74,7 +74,7 @@ fun LoginScreen(login: () -> Unit) {
 }
 
 @Composable
-fun LoginTitle() {
+private fun LoginTitle() {
     Text(
         text = buildAnnotatedString {
             withStyle(
@@ -100,7 +100,7 @@ fun LoginTitle() {
 }
 
 @Composable
-fun LoginButton(
+private fun LoginButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -137,18 +137,18 @@ private val loginButtonTextStyle = TextStyle(
 
 @Preview
 @Composable
-fun LoginScreenPreview() {
+private fun LoginScreenPreview() {
     LoginScreen {}
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginTitlePreview() {
+private fun LoginTitlePreview() {
     LoginTitle()
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginButtonPreview() {
+private fun LoginButtonPreview() {
     LoginButton {}
 }
