@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.login
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -24,16 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.background
-import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.secondary
 import com.ilsangtech.ilsang.designsystem.theme.title01
@@ -54,7 +50,7 @@ fun LoginScreen(login: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 LoginTitle()
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(48.dp))
                 AutoSlidePager(
                     pageList = listOf(
                         { NightQuestCard() },
@@ -67,8 +63,12 @@ fun LoginScreen(login: () -> Unit) {
             }
 
             Spacer(Modifier.weight(1f))
-            LoginButton(login = login)
-            Spacer(Modifier.height(38.dp))
+            LoginButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 106.dp),
+                onClick = login
+            )
         }
     }
 }
@@ -100,21 +100,19 @@ fun LoginTitle() {
 }
 
 @Composable
-fun LoginButton(login: () -> Unit) {
+fun LoginButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = background,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = background),
+        contentPadding = PaddingValues(
+            horizontal = 15.dp,
+            vertical = 10.dp
         ),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 18.dp),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = gray100
-        ),
-        onClick = login
+        shape = RoundedCornerShape(300.dp),
+        onClick = onClick
     ) {
         Icon(
             painter = painterResource(id = R.drawable.google_logo),
@@ -123,17 +121,18 @@ fun LoginButton(login: () -> Unit) {
         )
         Spacer(Modifier.width(16.dp))
         Text(
-            text = "Google로 로그인하기",
+            text = "sign in with google",
             color = Color.Black,
-            style = loginButtonTextStyle.copy(fontSize = 15.dp.toSp())
+            style = loginButtonTextStyle
         )
     }
 }
 
 private val loginButtonTextStyle = TextStyle(
     color = Color.Black,
-    fontFamily = FontFamily(Font(pretendard_bold)),
-    lineHeight = 24.sp,
+    fontWeight = FontWeight.Medium,
+    fontSize = 14.sp,
+    lineHeight = 20.sp
 )
 
 @Preview
