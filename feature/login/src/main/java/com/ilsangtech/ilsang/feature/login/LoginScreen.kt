@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,7 +34,6 @@ import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.secondary
 import com.ilsangtech.ilsang.designsystem.theme.title01
-import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 fun LoginScreen(login: () -> Unit) {
@@ -78,21 +78,25 @@ private fun LoginTitle() {
     Text(
         text = buildAnnotatedString {
             withStyle(
-                SpanStyle(
-                    fontSize = 23.dp.toSp(),
-                    fontWeight = title01.fontWeight,
-                    fontStyle = title01.fontStyle,
-                    fontFamily = title01.fontFamily,
-                    color = title01.color
-                )
+                ParagraphStyle(lineHeight = 24.sp)
             ) {
-                withStyle(SpanStyle(color = primary)) {
-                    append("일")
+                withStyle(
+                    SpanStyle(
+                        fontSize = 23.sp,
+                        fontWeight = title01.fontWeight,
+                        fontStyle = title01.fontStyle,
+                        fontFamily = title01.fontFamily,
+                        color = title01.color
+                    )
+                ) {
+                    withStyle(SpanStyle(color = primary)) {
+                        append("일")
+                    }
+                    withStyle(SpanStyle(color = secondary)) {
+                        append("상")
+                    }
+                    append("의 작은 행동이,\n지역을 바꿉니다")
                 }
-                withStyle(SpanStyle(color = secondary)) {
-                    append("상")
-                }
-                append("의 작은 행동이,\n지역을 바꿉니다")
             }
         },
         textAlign = TextAlign.Center
