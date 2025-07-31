@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,19 +85,21 @@ fun TutorialPager(
 fun TutorialBadge(index: Int) {
     Box(
         modifier = Modifier
-            .size(
-                width = 75.dp,
-                height = 25.dp
-            )
             .background(
                 color = primary300,
-                shape = RoundedCornerShape(12.dp)
+                shape = CircleShape
             ),
         contentAlignment = Alignment.Center
     ) {
         Text(
+            modifier = Modifier.padding(horizontal = 10.dp),
             text = "Step 0${index + 1}",
-            style = tapBoldTextStyle,
+            style = tapBoldTextStyle.copy(
+                lineHeightStyle = LineHeightStyle(
+                    alignment = LineHeightStyle.Alignment.Center,
+                    trim = LineHeightStyle.Trim.None
+                )
+            ),
             color = Color.White
         )
     }
