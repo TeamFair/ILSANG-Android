@@ -122,6 +122,6 @@ private fun SkipButton(
 
 @Preview(showBackground = true)
 @Composable
-fun TutorialScreenPreview() {
+private fun TutorialScreenPreview() {
     TutorialScreen {}
 }
