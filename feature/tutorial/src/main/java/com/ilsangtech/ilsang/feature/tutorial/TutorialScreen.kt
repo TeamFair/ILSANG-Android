@@ -1,28 +1,24 @@
 package com.ilsangtech.ilsang.feature.tutorial
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.ui.R.drawable.right_icon
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.tapBoldTextStyle
 
@@ -47,16 +43,18 @@ fun TutorialScreen(navigateToHome: () -> Unit) {
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(
-                        top = 20.dp,
-                        end = 20.dp
+                        top = 32.dp,
+                        end = 16.dp
                     ),
                 onClick = navigateToHome
             )
             Spacer(Modifier.height(48.dp))
             TutorialPager(
+                modifier = Modifier
+                    .weight(1f)
+                    .widthIn(max = LocalConfiguration.current.screenWidthDp.dp - 80.dp),
                 pages = pages,
-                pagerState = pagerState,
-                modifier = Modifier.weight(1f)
+                pagerState = pagerState
             )
             Spacer(Modifier.height(45.dp))
             TutorialPageIndicator(pagerState)
@@ -96,28 +94,21 @@ private fun SkipButton(
     Box(
         modifier = modifier.clickable(
             onClick = onClick,
-            interactionSource = remember { MutableInteractionSource() },
+            interactionSource = null,
             indication = null
         ),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "SKIP",
-                style = tapBoldTextStyle,
-                color = gray300
-            )
-            Icon(
-                painter = painterResource(id = right_icon),
-                contentDescription = null,
-                tint = gray300
-            )
-        }
+        Text(
+            text = "SKIP",
+            style = tapBoldTextStyle,
+            color = gray300
+        )
     }
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun TutorialScreenPreview() {
+private fun TutorialScreenPreview() {
     TutorialScreen {}
 }

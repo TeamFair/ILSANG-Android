@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +47,7 @@ import com.ilsangtech.ilsang.designsystem.theme.title01
 import kotlinx.coroutines.launch
 
 @Composable
-fun TutorialPager(
+internal fun TutorialPager(
     modifier: Modifier = Modifier,
     pages: List<TutorialPage>,
     pagerState: PagerState,
@@ -81,29 +82,31 @@ fun TutorialPager(
 }
 
 @Composable
-fun TutorialBadge(index: Int) {
+private fun TutorialBadge(index: Int) {
     Box(
         modifier = Modifier
-            .size(
-                width = 75.dp,
-                height = 25.dp
-            )
             .background(
                 color = primary300,
-                shape = RoundedCornerShape(12.dp)
+                shape = CircleShape
             ),
         contentAlignment = Alignment.Center
     ) {
         Text(
+            modifier = Modifier.padding(horizontal = 10.dp),
             text = "Step 0${index + 1}",
-            style = tapBoldTextStyle,
+            style = tapBoldTextStyle.copy(
+                lineHeightStyle = LineHeightStyle(
+                    alignment = LineHeightStyle.Alignment.Center,
+                    trim = LineHeightStyle.Trim.None
+                )
+            ),
             color = Color.White
         )
     }
 }
 
 @Composable
-fun TutorialPageIndicator(pagerState: PagerState) {
+internal fun TutorialPageIndicator(pagerState: PagerState) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -126,7 +129,7 @@ fun TutorialPageIndicator(pagerState: PagerState) {
 }
 
 @Composable
-fun TutorialButton(
+internal fun TutorialButton(
     pagerState: PagerState,
     onClick: () -> Unit
 ) {
