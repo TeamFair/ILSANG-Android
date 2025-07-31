@@ -47,7 +47,7 @@ import com.ilsangtech.ilsang.designsystem.theme.title01
 import kotlinx.coroutines.launch
 
 @Composable
-fun TutorialPager(
+internal fun TutorialPager(
     modifier: Modifier = Modifier,
     pages: List<TutorialPage>,
     pagerState: PagerState,
@@ -82,7 +82,7 @@ fun TutorialPager(
 }
 
 @Composable
-fun TutorialBadge(index: Int) {
+private fun TutorialBadge(index: Int) {
     Box(
         modifier = Modifier
             .background(
@@ -106,7 +106,7 @@ fun TutorialBadge(index: Int) {
 }
 
 @Composable
-fun TutorialPageIndicator(pagerState: PagerState) {
+internal fun TutorialPageIndicator(pagerState: PagerState) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -129,7 +129,7 @@ fun TutorialPageIndicator(pagerState: PagerState) {
 }
 
 @Composable
-fun TutorialButton(
+internal fun TutorialButton(
     pagerState: PagerState,
     onClick: () -> Unit
 ) {
