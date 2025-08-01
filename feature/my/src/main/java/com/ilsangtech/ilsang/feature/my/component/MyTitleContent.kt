@@ -14,10 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -149,7 +145,11 @@ private fun TypeTitleListItem(
     }
 }
 
-internal fun LazyListScope.typeTitleList(titleList: List<Title>) {
+internal fun LazyListScope.typeTitleList(
+    titleList: List<Title>,
+    selectedTitle: Title?,
+    onTitleSelect: (Title) -> Unit
+) {
     item {
         Row(
             modifier = Modifier
@@ -203,11 +203,14 @@ internal fun LazyListScope.typeTitleList(titleList: List<Title>) {
         items = titleList,
         key = { title -> title.id }
     ) { title ->
-        var checked by remember { mutableStateOf(false) }
         TypeTitleListItem(
             title = title,
-            checked = checked,
-            onCheckBoxClick = { checked = it }
+            checked = selectedTitle == title,
+            onCheckBoxClick = {
+                if (title.historyId != null) {
+                    onTitleSelect(title)
+                }
+            }
         )
     }
 }
@@ -231,7 +234,9 @@ private fun MyTitleContentPreview() {
                     condition = "일반 칭호 조건",
                     createdAt = ""
                 )
-            )
+            ),
+            selectedTitle = null,
+            onTitleSelect = {}
         )
     }
 }

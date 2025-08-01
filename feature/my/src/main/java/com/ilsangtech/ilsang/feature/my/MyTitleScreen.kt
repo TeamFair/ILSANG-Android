@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.my
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.component.MyTitleHeader
+import com.ilsangtech.ilsang.feature.my.component.MyTitleUpdateDialog
 import com.ilsangtech.ilsang.feature.my.component.TitleTypeChipRow
 import com.ilsangtech.ilsang.feature.my.component.TypeTitleListHeader
 import com.ilsangtech.ilsang.feature.my.component.typeTitleList
@@ -45,13 +47,29 @@ internal fun MyTitleScreen(
     onBackButtonClick: () -> Unit
 ) {
     val titleList by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
+    val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     var selectedType by remember { mutableStateOf("STANDARD") }
+    var showUpdateDialog by remember { mutableStateOf(false) }
+
+    BackHandler { showUpdateDialog = true }
+
+    if (showUpdateDialog) {
+        MyTitleUpdateDialog(
+            onUpdateButtonClick = {
+                myTitleViewModel.updateUserTitle()
+                onBackButtonClick()
+            },
+            onDismissRequest = { showUpdateDialog = false }
+        )
+    }
 
     MyTitleScreen(
         titleList = titleList,
         selectedType = selectedType,
+        selectedTitle = selectedTitle,
         onTypeChipClick = { selectedType = it },
-        onBackButtonClick = onBackButtonClick
+        onBackButtonClick = { showUpdateDialog = true },
+        onTitleSelect = myTitleViewModel::selectTitle
     )
 }
 
@@ -59,8 +77,10 @@ internal fun MyTitleScreen(
 private fun MyTitleScreen(
     titleList: List<Title>,
     selectedType: String,
+    selectedTitle: Title?,
     onBackButtonClick: () -> Unit,
-    onTypeChipClick: (String) -> Unit
+    onTypeChipClick: (String) -> Unit,
+    onTitleSelect: (Title) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -87,7 +107,9 @@ private fun MyTitleScreen(
                     )
                 }
                 typeTitleList(
-                    titleList = titleList.filter { it.type == selectedType }
+                    titleList = titleList.filter { it.type == selectedType },
+                    selectedTitle = selectedTitle,
+                    onTitleSelect = onTitleSelect
                 )
             }
         }
@@ -139,7 +161,9 @@ private fun MyTitleScreenPreview() {
     MyTitleScreen(
         titleList = emptyList(),
         selectedType = "STANDARD",
+        selectedTitle = null,
         onBackButtonClick = {},
+        onTitleSelect = {},
         onTypeChipClick = {}
     )
 }
