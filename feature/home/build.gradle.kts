@@ -65,7 +65,6 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.exifinterface)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.navigation.compose)
