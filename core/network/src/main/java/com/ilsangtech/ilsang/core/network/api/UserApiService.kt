@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -36,4 +37,9 @@ interface UserApiService {
 
     @DELETE("customer/user/image")
     suspend fun deleteUserImage(): UserImageDeleteResponse
+
+    @PUT("customer/user/title")
+    suspend fun updateUserTitle(
+        @Query("titleHistoryId") titleHistoryId: String
+    ): UserTitleUpdateResponse
 }
