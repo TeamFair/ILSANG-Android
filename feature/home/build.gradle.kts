@@ -55,7 +55,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:domain"))
     implementation(project(":core:util"))
-
+    implementation(project(":core:ui"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.graphics.shapes)
