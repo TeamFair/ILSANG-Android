@@ -29,4 +29,6 @@ interface UserRepository {
     suspend fun deleteUserImage(): Result<Unit>
 
     suspend fun completeOnBoarding()
+
+    suspend fun updateUserTitle(titleHistoryId: String): Result<Unit>
 }
