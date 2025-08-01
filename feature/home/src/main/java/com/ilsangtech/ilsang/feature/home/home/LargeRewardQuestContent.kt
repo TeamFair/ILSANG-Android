@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.home.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -34,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.RewardType
+import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
-import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -147,30 +145,6 @@ fun LargeRewardQuestsContent(
                 )
             }
         }
-    }
-}
-
-
-@Composable
-fun LargeRewardQuestBadge(
-    modifier: Modifier = Modifier,
-    xpSum: Int
-) {
-    Box(
-        modifier = modifier
-            .height(20.dp)
-            .background(
-                color = primary,
-                shape = RoundedCornerShape(20.dp)
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            modifier = Modifier.padding(horizontal = 6.dp),
-            text = "${xpSum}XP",
-            style = badge02TextStyle,
-            color = Color.White
-        )
     }
 }
 

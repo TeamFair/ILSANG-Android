@@ -34,6 +34,7 @@ import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
+import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray100
