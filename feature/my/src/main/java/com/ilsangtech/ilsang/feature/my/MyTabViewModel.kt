@@ -7,9 +7,7 @@ import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -19,8 +17,13 @@ class MyTabViewModel @Inject constructor(
     private val userRepository: UserRepository,
     challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    private val _myInfo = MutableStateFlow(userRepository.currentUser)
-    val myInfo = _myInfo.asStateFlow()
+    val myInfo = flow {
+        emit(userRepository.currentUser)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = userRepository.currentUser
+    )
 
     val challengePager = challengeRepository.getChallengePaging().cachedIn(viewModelScope)
 
