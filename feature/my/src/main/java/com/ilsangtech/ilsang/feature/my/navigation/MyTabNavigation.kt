@@ -66,7 +66,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToMyTitle: () -> Unit
+    navigateToMyTitle: (titleId: String?) -> Unit
 ) {
     navigation(
         route = "MyNavigation",

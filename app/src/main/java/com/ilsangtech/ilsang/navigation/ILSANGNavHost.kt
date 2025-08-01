@@ -143,7 +143,7 @@ fun ILSANGNavHost(
                     navController.navigate(WithdrawalRoute)
                 },
                 navigateToMyTitle = {
-                    navController.navigate(MyTitleRoute)
+                    navController.navigate(MyTitleRoute(it))
                 }
             )
 

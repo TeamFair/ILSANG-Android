@@ -40,7 +40,7 @@ fun MyTabScreen(
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
     navigateToSetting: () -> Unit,
-    navigateToMyTitle: () -> Unit
+    navigateToMyTitle: (titleId: String?) -> Unit
 ) {
     val userInfo by myTabViewModel.myInfo.collectAsStateWithLifecycle()
     val userXpStats by myTabViewModel.userXpStats.collectAsStateWithLifecycle()
@@ -66,7 +66,7 @@ fun MyTabScreen(
             )
         },
         navigateToSetting = navigateToSetting,
-        navigateToMyTitle = navigateToMyTitle
+        navigateToMyTitle = { navigateToMyTitle(userInfo?.title?.id) }
     )
 }
 
@@ -96,7 +96,8 @@ fun MyTabScreen(
             UserProfileContent(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 myInfo = myInfo!!,
-                navigateToNicknameEdit = navigateToNicknameEdit
+                navigateToNicknameEdit = navigateToNicknameEdit,
+                onMyTitleClick = navigateToMyTitle
             )
             Spacer(Modifier.height(16.dp))
             MyTabMenuContent(selectedMenu = selectedMenu) {
