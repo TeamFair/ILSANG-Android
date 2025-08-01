@@ -40,11 +40,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.quest.QuestBottomSheet
 
 @Composable
 fun HomeTapScreen(
