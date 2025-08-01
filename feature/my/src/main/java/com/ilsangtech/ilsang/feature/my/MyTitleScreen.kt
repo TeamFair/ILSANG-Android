@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,17 +49,24 @@ internal fun MyTitleScreen(
 ) {
     val titleList by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
+    val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
+
     var selectedType by remember { mutableStateOf("STANDARD") }
     var showUpdateDialog by remember { mutableStateOf(false) }
 
-    BackHandler { showUpdateDialog = true }
+    LaunchedEffect(isTitleUpdated) {
+        if (isTitleUpdated) {
+            onBackButtonClick()
+        }
+    }
+
+    BackHandler(myTitleViewModel.previousTitleId != selectedTitle?.id) {
+        showUpdateDialog = true
+    }
 
     if (showUpdateDialog) {
         MyTitleUpdateDialog(
-            onUpdateButtonClick = {
-                myTitleViewModel.updateUserTitle()
-                onBackButtonClick()
-            },
+            onUpdateButtonClick = myTitleViewModel::updateUserTitle,
             onDismissRequest = { showUpdateDialog = false }
         )
     }
@@ -68,7 +76,13 @@ internal fun MyTitleScreen(
         selectedType = selectedType,
         selectedTitle = selectedTitle,
         onTypeChipClick = { selectedType = it },
-        onBackButtonClick = { showUpdateDialog = true },
+        onBackButtonClick = {
+            if (myTitleViewModel.previousTitleId == selectedTitle?.id) {
+                onBackButtonClick()
+            } else {
+                showUpdateDialog = true
+            }
+        },
         onTitleSelect = myTitleViewModel::selectTitle
     )
 }
