@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -47,6 +48,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary500
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.R
 
@@ -54,12 +56,14 @@ import com.ilsangtech.ilsang.feature.my.R
 internal fun UserProfileContent(
     modifier: Modifier = Modifier,
     myInfo: MyInfo,
-    navigateToNicknameEdit: () -> Unit
+    navigateToNicknameEdit: () -> Unit,
+    onMyTitleClick: () -> Unit
 ) {
     MyInfoProfileContent(
         modifier = modifier,
         myInfo = myInfo,
-        navigateToNicknameEdit = navigateToNicknameEdit
+        navigateToNicknameEdit = navigateToNicknameEdit,
+        onMyTitleClick = onMyTitleClick
     )
 }
 
@@ -67,51 +71,82 @@ internal fun UserProfileContent(
 private fun MyInfoProfileContent(
     modifier: Modifier = Modifier,
     myInfo: MyInfo,
-    navigateToNicknameEdit: () -> Unit
+    navigateToNicknameEdit: () -> Unit,
+    onMyTitleClick: () -> Unit
 ) {
     Column(
-        modifier = modifier.clickable(
-            onClick = navigateToNicknameEdit,
-            indication = null,
-            interactionSource = null
-        ),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Column(
+            modifier = Modifier.clickable(
+                onClick = navigateToNicknameEdit,
+                indication = null,
+                interactionSource = null
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ProfileImageWithBadge(
+                profileImage = myInfo.profileImage,
+                xpPoint = myInfo.xpPoint
+            )
+            Spacer(Modifier.height(15.5.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = myInfo.nickname.orEmpty(),
+                    style = profileNicknameTextStyle
+                )
+                Box(
+                    modifier = Modifier
+                        .size(18.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black)
+                ) {
+                    Icon(
+                        modifier = Modifier.align(Alignment.Center),
+                        painter = painterResource(R.drawable.edit),
+                        tint = gray100,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+        myInfo.title?.let { title ->
+            MyTitleBadge(
+                modifier = Modifier.padding(top = 8.dp),
+                title = title,
+                onClick = onMyTitleClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProfileImageWithBadge(
+    modifier: Modifier = Modifier,
+    profileImage: String?,
+    xpPoint: Int
+) {
+    Box(
+        modifier = modifier
+            .size(115.dp),
+        contentAlignment = Alignment.Center
+    ) {
         Box(
-            modifier = Modifier
-                .drawBehind {
-                    drawCircle(
-                        radius = ((115 - 9).dp.toPx() / 2),
-                        color = gray100,
-                        style = Stroke(width = 9.dp.toPx())
-                    )
-                    drawArc(
-                        size = Size(
-                            width = (115 - 9).dp.toPx(),
-                            height = (115 - 9).dp.toPx()
-                        ),
-                        topLeft = Offset(
-                            -this.center.x / 4,
-                            -this.center.y / 4
-                        ),
-                        color = primary500,
-                        startAngle = 43f,
-                        sweepAngle = -(267f * XpLevelCalculator.getLevelProgress(myInfo.xpPoint)),
-                        useCenter = false,
-                        style = Stroke(
-                            width = 9.dp.toPx(),
-                            cap = StrokeCap.Round,
-                        )
-                    )
-                },
+            modifier = Modifier.drawBehind {
+                drawUserLevelProgress(xpPoint)
+            },
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
                 modifier = Modifier
                     .size(85.5.dp)
                     .clip(CircleShape),
-                model = myInfo.profileImage?.let { BuildConfig.IMAGE_URL + it },
+                model = profileImage?.let { BuildConfig.IMAGE_URL + it },
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(R.drawable.default_user_profile),
                 error = painterResource(R.drawable.default_user_profile),
@@ -119,38 +154,11 @@ private fun MyInfoProfileContent(
             )
         }
         UserLevelBadge(
-            modifier = Modifier.offset(y = (-15).dp),
-            xpPoint = myInfo.xpPoint
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 0.dp),
+            xpPoint = xpPoint
         )
-        Spacer(Modifier.width(15.5.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = myInfo.nickname.orEmpty(),
-                style = profileNicknameTextStyle
-            )
-            Box(
-                modifier = Modifier
-                    .size(18.dp)
-                    .clip(CircleShape)
-                    .background(Color.Black)
-            ) {
-                Icon(
-                    modifier = Modifier.align(Alignment.Center),
-                    painter = painterResource(R.drawable.edit),
-                    tint = gray100,
-                    contentDescription = null
-                )
-            }
-        }
-        myInfo.title?.let { title ->
-            MyTitleBadge(
-                modifier = Modifier.padding(top = 8.dp),
-                title = title
-            )
-        }
     }
 }
 
@@ -177,7 +185,9 @@ private fun UserLevelBadge(
     ) {
         Text(
             text = "Lv. " + XpLevelCalculator.getCurrentLevel(xpPoint),
-            style = userProfileCardLevelTextStyle
+            style = userProfileCardLevelTextStyle,
+            fontSize = 19.5.dp.toSp(),
+            lineHeight = 18.dp.toSp()
         )
     }
 }
@@ -185,12 +195,14 @@ private fun UserLevelBadge(
 @Composable
 private fun MyTitleBadge(
     modifier: Modifier = Modifier,
-    title: Title
+    title: Title,
+    onClick: () -> Unit
 ) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(1000.dp),
-        color = Color.White
+        color = Color.White,
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier.padding(
@@ -219,6 +231,32 @@ private fun MyTitleBadge(
             )
         }
     }
+}
+
+private fun DrawScope.drawUserLevelProgress(xpPoint: Int) {
+    drawCircle(
+        radius = ((115 - 9).dp.toPx() / 2),
+        color = gray100,
+        style = Stroke(width = 9.dp.toPx())
+    )
+    drawArc(
+        size = Size(
+            width = (115 - 9).dp.toPx(),
+            height = (115 - 9).dp.toPx()
+        ),
+        topLeft = Offset(
+            -this.center.x / 4,
+            -this.center.y / 4
+        ),
+        color = primary500,
+        startAngle = 43f,
+        sweepAngle = -(267f * XpLevelCalculator.getLevelProgress(xpPoint)),
+        useCenter = false,
+        style = Stroke(
+            width = 9.dp.toPx(),
+            cap = StrokeCap.Round,
+        )
+    )
 }
 
 private val userProfileCardLevelTextStyle = TextStyle(
@@ -255,6 +293,8 @@ fun MyInfoProfileContentPreview() {
                 condition = null,
                 createdAt = ""
             ),
-        )
-    ) {}
+        ),
+        navigateToNicknameEdit = {},
+        onMyTitleClick = {}
+    )
 }
