@@ -8,6 +8,7 @@ import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.FaqScreen
 import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.MyTabScreen
+import com.ilsangtech.ilsang.feature.my.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.SettingScreen
 import com.ilsangtech.ilsang.feature.my.TermsScreen
 import com.ilsangtech.ilsang.feature.my.UserProfileEditScreen
@@ -49,6 +50,9 @@ data class MyChallengeRoute(
 @Serializable
 data object TermsRoute
 
+@Serializable
+data object MyTitleRoute
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
@@ -59,7 +63,8 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToFaq: () -> Unit,
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
-    navigateToWithdrawal: () -> Unit
+    navigateToWithdrawal: () -> Unit,
+    navigateToMyTitle: () -> Unit
 ) {
     navigation(
         route = "MyNavigation",
@@ -69,7 +74,8 @@ fun NavGraphBuilder.myTabNavigation(
             MyTabScreen(
                 navigateToNicknameEdit = navigateToNicknameEdit,
                 navigateToMyChallenge = navigateToMyChallenge,
-                navigateToSetting = navigateToSetting
+                navigateToSetting = navigateToSetting,
+                navigateToMyTitle = navigateToMyTitle
             )
         }
         composable<MyEditRoute>(
@@ -128,6 +134,11 @@ fun NavGraphBuilder.myTabNavigation(
 
         composable<TermsRoute> {
             TermsScreen(
+                onBackButtonClick = navigateToMyTabMain
+            )
+        }
+        composable<MyTitleRoute> {
+            MyTitleScreen(
                 onBackButtonClick = navigateToMyTabMain
             )
         }

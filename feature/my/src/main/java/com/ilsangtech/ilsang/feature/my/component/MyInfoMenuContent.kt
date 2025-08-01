@@ -90,7 +90,8 @@ import kotlin.math.sin
 fun MyInfoMenuContent(
     modifier: Modifier = Modifier,
     myInfo: MyInfo,
-    userXpStats: UserXpStats
+    userXpStats: UserXpStats,
+    onMyTitleCardClick: () -> Unit
 ) {
     val context = LocalContext.current
     val graphicsLayer = rememberGraphicsLayer()
@@ -150,7 +151,7 @@ fun MyInfoMenuContent(
                 MyTitleCard(
                     modifier = Modifier.weight(1f),
                     titleName = myInfo.title?.name,
-                    onClick = {}
+                    onClick = onMyTitleCardClick
                 )
                 MyInfoTotalXpPointContent(
                     modifier = Modifier.weight(1f),

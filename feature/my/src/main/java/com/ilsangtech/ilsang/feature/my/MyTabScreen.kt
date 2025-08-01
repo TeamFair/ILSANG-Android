@@ -39,7 +39,8 @@ fun MyTabScreen(
     myTabViewModel: MyTabViewModel = hiltViewModel(),
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
-    navigateToSetting: () -> Unit
+    navigateToSetting: () -> Unit,
+    navigateToMyTitle: () -> Unit
 ) {
     val userInfo by myTabViewModel.myInfo.collectAsStateWithLifecycle()
     val userXpStats by myTabViewModel.userXpStats.collectAsStateWithLifecycle()
@@ -64,7 +65,8 @@ fun MyTabScreen(
                 it.likeCnt
             )
         },
-        navigateToSetting = navigateToSetting
+        navigateToSetting = navigateToSetting,
+        navigateToMyTitle = navigateToMyTitle
     )
 }
 
@@ -75,7 +77,8 @@ fun MyTabScreen(
     challengePager: LazyPagingItems<Challenge>,
     navigateToNicknameEdit: () -> Unit,
     navigateToMyChallenge: (Challenge) -> Unit,
-    navigateToSetting: () -> Unit
+    navigateToSetting: () -> Unit,
+    navigateToMyTitle: () -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -111,7 +114,8 @@ fun MyTabScreen(
                 MyTabMenu.INFO -> {
                     MyInfoMenuContent(
                         myInfo = myInfo,
-                        userXpStats = userXpStats
+                        userXpStats = userXpStats,
+                        onMyTitleCardClick = navigateToMyTitle
                     )
                 }
             }
@@ -143,6 +147,7 @@ fun MyTabScreenPreview() {
         challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
         navigateToNicknameEdit = {},
         navigateToMyChallenge = {},
-        navigateToSetting = {}
+        navigateToSetting = {},
+        navigateToMyTitle = {}
     )
 }

@@ -34,6 +34,7 @@ import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyEditRoute
+import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
 import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
@@ -140,6 +141,9 @@ fun ILSANGNavHost(
                 },
                 navigateToWithdrawal = {
                     navController.navigate(WithdrawalRoute)
+                },
+                navigateToMyTitle = {
+                    navController.navigate(MyTitleRoute)
                 }
             )
 
