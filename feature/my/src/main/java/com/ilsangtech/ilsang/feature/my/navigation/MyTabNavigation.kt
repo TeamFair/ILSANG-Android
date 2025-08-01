@@ -51,7 +51,9 @@ data class MyChallengeRoute(
 data object TermsRoute
 
 @Serializable
-data object MyTitleRoute
+data class MyTitleRoute(
+    val titleId: String?
+)
 
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
