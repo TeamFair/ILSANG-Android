@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
+import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
@@ -48,7 +49,16 @@ class UserRepositoryImpl @Inject constructor(
             nickname = userInfoResponse.userInfoNetworkModel.nickname,
             profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
             xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
-            status = userInfoResponse.userInfoNetworkModel.status
+            status = userInfoResponse.userInfoNetworkModel.status,
+            title = userInfoResponse.userInfoNetworkModel.title?.let { title ->
+                Title(
+                    id = title.id,
+                    name = title.name,
+                    type = title.type,
+                    condition = title.condition,
+                    createdAt = title.createdAt
+                )
+            }
         )
     }
 
@@ -96,5 +106,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun completeOnBoarding() {
         userDataStore.setShouldShowOnBoarding(false)
+    }
+
+    override suspend fun updateUserTitle(titleHistoryId: String): Result<Unit> {
+        return runCatching {
+            userDataSource.updateUserTitle(titleHistoryId)
+        }
     }
 }

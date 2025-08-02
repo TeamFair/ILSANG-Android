@@ -6,5 +6,6 @@ data class UserInfo(
     val nickname: String,
     val profileImage: String?,
     val status: String,
-    val xpPoint: Int
+    val xpPoint: Int,
+    val title: Title? = null
 )

@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.data.user
 
+import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoNetworkModel
 
@@ -10,6 +11,15 @@ internal fun UserInfoNetworkModel.toUserInfo(): UserInfo {
         nickname = nickname,
         profileImage = profileImage,
         status = status,
-        xpPoint = xpPoint
+        xpPoint = xpPoint,
+        title = title?.let { title ->
+            Title(
+                id = title.id,
+                name = title.name,
+                type = title.type,
+                condition = title.condition,
+                createdAt = title.createdAt
+            )
+        }
     )
 }

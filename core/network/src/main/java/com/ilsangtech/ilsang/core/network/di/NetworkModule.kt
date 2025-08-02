@@ -9,6 +9,7 @@ import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.api.RankApiService
+import com.ilsangtech.ilsang.core.network.api.TitleApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshResponse
@@ -25,7 +26,6 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.Route
@@ -210,5 +210,11 @@ object NetworkModule {
     @Singleton
     fun provideEmojiApiService(retrofit: Retrofit): EmojiApiService {
         return retrofit.create(EmojiApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTitleApiService(retrofit: Retrofit): TitleApiService {
+        return retrofit.create(TitleApiService::class.java)
     }
 }

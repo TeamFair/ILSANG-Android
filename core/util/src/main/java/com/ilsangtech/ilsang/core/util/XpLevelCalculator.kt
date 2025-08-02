@@ -20,18 +20,12 @@ object XpLevelCalculator {
         return max(0, currentLevel - 1)
     }
 
-    fun getXpPointInCurrentLevel(xpPoint: Int): Int {
-        val currentLevel = getCurrentLevel(xpPoint)
-        return xpPoint - getAccumulatedXp(currentLevel)
-    }
-
-    fun getRequiredXpPointForNextLevel(xpPoint: Int): Int {
-        val nextLevel = getCurrentLevel(xpPoint) + 1
-        return getAccumulatedXp(nextLevel) - xpPoint
-    }
-
     fun getLevelProgress(xpPoint: Int): Float {
-        val nextLevelXp = getAccumulatedXp(getCurrentLevel(xpPoint) + 1)
-        return xpPoint.toFloat() / nextLevelXp.toFloat()
+        val currentLevel = getCurrentLevel(xpPoint)
+        val currentLevelXp = getAccumulatedXp(currentLevel)
+        val nextLevelXp = getAccumulatedXp(currentLevel + 1)
+
+        val requiredXp = nextLevelXp - xpPoint
+        return 1f - (requiredXp.toFloat() / (nextLevelXp - currentLevelXp).toFloat())
     }
 }

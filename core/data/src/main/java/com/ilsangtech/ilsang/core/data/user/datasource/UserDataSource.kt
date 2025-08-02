@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 
 interface UserDataSource {
@@ -26,4 +27,6 @@ interface UserDataSource {
     suspend fun updateUserImage(imageId: String): UserImageUpdateResponse
 
     suspend fun deleteUserImage(): UserImageDeleteResponse
+
+    suspend fun updateUserTitle(titleHistoryId: String): UserTitleUpdateResponse
 }

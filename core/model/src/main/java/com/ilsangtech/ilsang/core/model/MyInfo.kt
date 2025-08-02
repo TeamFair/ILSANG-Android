@@ -7,5 +7,6 @@ data class MyInfo(
     val completeChallengeCount: Int,
     val couponCount: Int,
     val xpPoint: Int,
-    val status: String
+    val status: String,
+    val title: Title?
 )
