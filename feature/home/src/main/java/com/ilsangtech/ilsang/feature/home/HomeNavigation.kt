@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
-import com.ilsangtech.ilsang.feature.home.quest.QuestTabScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
 
 fun NavGraphBuilder.homeNavigation(
@@ -61,15 +60,6 @@ fun NavGraphBuilder.homeNavigation(
                     }
                 },
                 navigateToProfile = navigateToProfile
-            )
-        }
-        composable(HomeTap.Quest.name) { backStackEntry ->
-            val homeViewModel = hiltViewModel<HomeViewModel>(backStackEntry)
-            QuestTabScreen(
-                homeViewModel = homeViewModel,
-                navigateToSubmit = {
-                    navController.navigate("Submit")
-                }
             )
         }
         composable(HomeTap.Approval.name) {
