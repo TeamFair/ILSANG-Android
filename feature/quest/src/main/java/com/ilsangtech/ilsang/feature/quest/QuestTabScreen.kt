@@ -32,9 +32,9 @@ import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
+import com.ilsangtech.ilsang.core.ui.quest.QuestTypeBadge
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.quest.component.QuestTapHeader
-import com.ilsangtech.ilsang.feature.quest.component.QuestTypeBadge
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 
 @Composable
