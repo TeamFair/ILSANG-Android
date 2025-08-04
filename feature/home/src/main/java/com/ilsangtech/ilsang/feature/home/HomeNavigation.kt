@@ -29,7 +29,6 @@ fun NavGraphBuilder.homeNavigation(
                     homeViewModel.selectQuest(it)
                 },
                 navigateToQuestTab = {
-                    homeViewModel.selectSortType("포인트 높은 순")
                     navController.navigate(HomeTap.Quest.name) {
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
