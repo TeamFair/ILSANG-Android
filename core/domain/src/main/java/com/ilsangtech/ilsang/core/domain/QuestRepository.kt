@@ -18,4 +18,7 @@ interface QuestRepository {
     // 미완료한 이벤트 퀘스트 목록 조회
     suspend fun getUncompletedEventQuests(): List<Quest>
 
+    suspend fun registerFavoriteQuest(questId: String): Result<Unit>
+
+    suspend fun deleteFavoriteQuest(questId: String): Result<Unit>
 }

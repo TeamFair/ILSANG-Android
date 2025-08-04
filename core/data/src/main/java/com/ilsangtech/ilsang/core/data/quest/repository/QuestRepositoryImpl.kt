@@ -55,4 +55,15 @@ class QuestRepositoryImpl(
         ).data.map(QuestNetworkModel::toQuest)
     }
 
+    override suspend fun registerFavoriteQuest(questId: String): Result<Unit> {
+        return runCatching {
+            questDataSource.registerFavoriteQuest(questId)
+        }
+    }
+
+    override suspend fun deleteFavoriteQuest(questId: String): Result<Unit> {
+        return runCatching {
+            questDataSource.deleteFavoriteQuest(questId)
+        }
+    }
 }
