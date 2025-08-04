@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.feature.quest.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -102,7 +102,7 @@ fun RewardTypeTabRow(
                 TabRowDefaults.PrimaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(
                         currentTabPosition =
-                        tabPositions[RewardType.entries.indexOf(selectedRewardType)]
+                            tabPositions[RewardType.entries.indexOf(selectedRewardType)]
                     ),
                     color = primary,
                     shape = RectangleShape,

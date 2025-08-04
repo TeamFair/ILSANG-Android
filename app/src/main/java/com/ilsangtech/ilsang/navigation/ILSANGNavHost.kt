@@ -42,6 +42,7 @@ import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
+import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
 
 @Composable
@@ -97,6 +98,12 @@ fun ILSANGNavHost(
                 navController = navController,
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
+                }
+            )
+
+            questNavigation(
+                onNavigateToSubmit = {
+                    navController.navigate("Submit")
                 }
             )
 

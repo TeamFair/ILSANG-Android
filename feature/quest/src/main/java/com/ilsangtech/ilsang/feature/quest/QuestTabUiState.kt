@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.feature.quest
 
 import com.ilsangtech.ilsang.core.model.Quest
 

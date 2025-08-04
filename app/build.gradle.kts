@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:my"))
+    implementation(project(":feature:quest"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)

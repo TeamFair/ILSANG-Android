@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.feature.quest
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,34 +24,38 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.feature.home.HomeViewModel
-import com.ilsangtech.ilsang.feature.home.home.LargeRewardQuestBadge
+import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
+import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
+import com.ilsangtech.ilsang.core.ui.quest.QuestTypeBadge
 import com.ilsangtech.ilsang.core.util.FileManager
+import com.ilsangtech.ilsang.feature.quest.component.QuestTapHeader
+import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 
 @Composable
 fun QuestTabScreen(
-    homeViewModel: HomeViewModel,
+    questTabViewModel: QuestTabViewModel = hiltViewModel(),
     navigateToSubmit: () -> Unit
 ) {
-    val selectedQuestType by homeViewModel.selectedQuestType.collectAsStateWithLifecycle()
-    val selectedRewardType by homeViewModel.selectedRewardType.collectAsStateWithLifecycle()
-    val selectedRepeatPeriod by homeViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
-    val selectedSortType by homeViewModel.selectedSortType.collectAsStateWithLifecycle()
-    val questTabUiState by homeViewModel.questTabUiState.collectAsStateWithLifecycle()
+    val selectedQuestType by questTabViewModel.selectedQuestType.collectAsStateWithLifecycle()
+    val selectedRewardType by questTabViewModel.selectedRewardType.collectAsStateWithLifecycle()
+    val selectedRepeatPeriod by questTabViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
+    val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
+    val questTabUiState by questTabViewModel.questTabUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
-    val tempFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFile by questTabViewModel.capturedImageFile.collectAsStateWithLifecycle()
     val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
     val imageCaptureLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess) {
                 val imageUri = FileManager.getUriForFile(tempFile, context)
-                homeViewModel.setCapturedImageUri(imageUri)
+                questTabViewModel.setCapturedImageUri(imageUri)
                 navigateToSubmit()
             }
         }
@@ -62,12 +66,12 @@ fun QuestTabScreen(
         selectedRepeatPeriod = selectedRepeatPeriod,
         selectedSortType = selectedSortType,
         questTabUiState = questTabUiState,
-        onSelectQuestType = homeViewModel::selectQuestType,
-        onSelectRewardType = homeViewModel::selectRewardType,
-        onSelectRepeatPeriod = homeViewModel::selectRepeatPeriod,
-        onSelectSortType = homeViewModel::selectSortType,
+        onSelectQuestType = questTabViewModel::selectQuestType,
+        onSelectRewardType = questTabViewModel::selectRewardType,
+        onSelectRepeatPeriod = questTabViewModel::selectRepeatPeriod,
+        onSelectSortType = questTabViewModel::selectSortType,
         onApproveButtonClick = {
-            homeViewModel.selectQuest(it)
+            questTabViewModel.selectQuest(it)
             imageCaptureLauncher.launch(tempFileUri)
         }
     )

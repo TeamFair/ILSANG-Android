@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.feature.quest.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +37,7 @@ import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
-import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.quest.R
 
 @Composable
 fun SortTypeMenuContent(

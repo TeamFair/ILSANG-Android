@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

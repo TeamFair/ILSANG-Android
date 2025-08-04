@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.quest
+package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +45,8 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardType
+import com.ilsangtech.ilsang.core.ui.BuildConfig
+import com.ilsangtech.ilsang.core.ui.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -56,8 +58,6 @@ import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
-import com.ilsangtech.ilsang.feature.home.BuildConfig
-import com.ilsangtech.ilsang.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,9 +147,9 @@ fun QuestBottomSheetHeader(quest: Quest) {
             ) {
                 Text(
                     text =
-                    (QuestType.entries.find {
-                        it.name == quest.type
-                    }?.title ?: "기본") + " 퀘스트",
+                        (QuestType.entries.find {
+                            it.name == quest.type
+                        }?.title ?: "기본") + " 퀘스트",
                     style = questBottomSheetQuestTypeTextStyle
                 )
                 Text(
