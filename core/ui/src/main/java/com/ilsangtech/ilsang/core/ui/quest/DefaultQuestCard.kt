@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.quest.component
+package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,15 +39,14 @@ import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
-import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.BuildConfig
+import com.ilsangtech.ilsang.core.ui.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.quest.BuildConfig
-import com.ilsangtech.ilsang.feature.quest.R
 
 @Composable
 fun DefaultQuestCard(
