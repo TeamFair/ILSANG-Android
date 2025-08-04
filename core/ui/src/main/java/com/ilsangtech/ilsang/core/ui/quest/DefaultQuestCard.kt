@@ -33,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -136,7 +137,7 @@ fun DefaultQuestCard(
 }
 
 @Composable
-fun RewardChips(rewardList: List<Reward>) {
+private fun RewardChips(rewardList: List<Reward>) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -153,7 +154,7 @@ fun RewardChips(rewardList: List<Reward>) {
 }
 
 @Composable
-fun RewardChip(reward: Reward) {
+private fun RewardChip(reward: Reward) {
     Box(
         modifier = Modifier
             .height(25.dp)
@@ -212,3 +213,55 @@ private val defaultQuestCardWriterStyle = TextStyle(
     fontFamily = FontFamily(Font(pretendard_regular)),
     color = gray400
 )
+
+@Preview
+@Composable
+private fun DefaultQuestCardPreview() {
+    val quest = Quest(
+        createDate = "2023-10-26",
+        creatorRole = "USER",
+        expireDate = "2023-11-26",
+        favoriteYn = false,
+        imageId = "sample_image_id",
+        mainImageId = "sample_main_image_id",
+        marketId = "sample_market_id",
+        missionId = "sample_mission_id",
+        missionTitle = "퀘스트 타이틀 타이틀",
+        missionType = "DAILY",
+        popularYn = false,
+        questId = "sample_quest_id",
+        rewardList = listOf(
+            Reward(
+                content = "INTELLECT",
+                discountRate = null,
+                quantity = 10,
+                questId = "sample_quest_id",
+                rewardId = "reward1",
+                target = null,
+                title = null,
+                type = "POINT"
+            ),
+            Reward(
+                content = "SOCIABILITY",
+                discountRate = null,
+                quantity = 5,
+                questId = "sample_quest_id",
+                rewardId = "reward2",
+                target = null,
+                title = null,
+                type = "POINT"
+            )
+        ),
+        score = 100,
+        status = "ACTIVE",
+        target = "ALL",
+        type = "NORMAL",
+        writer = "퀘스트 작성자 작성자"
+    )
+    DefaultQuestCard(
+        quest = quest,
+        badge = {},
+        onApproveButtonClick = {}
+    )
+}
+
