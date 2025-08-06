@@ -32,14 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
-import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.home.component.LargeRewardQuestCard
 import kotlinx.coroutines.launch
 
 @Composable
@@ -109,16 +108,10 @@ fun LargeRewardQuestsContent(
         ) {
             Column {
                 largeRewardQuests[rewardTypeList[pagerState.currentPage].name]?.forEach {
-                    DefaultQuestCard(
+                    LargeRewardQuestCard(
                         modifier = Modifier.padding(bottom = 12.dp),
                         quest = it,
-                        badge = { modifier ->
-                            LargeRewardQuestBadge(
-                                modifier = modifier,
-                                xpSum = it.rewardList.sumOf { reward -> reward.quantity }
-                            )
-                        },
-                        onApproveButtonClick = { onApproveButtonClick(it) }
+                        onClick = navigateToQuestTab
                     )
                 }
             }
