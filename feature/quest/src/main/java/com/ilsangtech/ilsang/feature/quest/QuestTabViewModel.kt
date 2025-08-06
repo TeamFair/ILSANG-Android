@@ -12,13 +12,18 @@ import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +31,8 @@ class QuestTabViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val questRepository: QuestRepository
 ) : ViewModel() {
-    private val _selectedQuest = MutableStateFlow<Quest?>(null)
-    val selectedQuest = _selectedQuest.asStateFlow()
+    private val _selectedQuestId = MutableStateFlow<String?>(null)
+    private val selectedQuestId = _selectedQuestId.asStateFlow()
 
     private var _selectedQuestType = MutableStateFlow(QuestType.NORMAL)
     val selectedQuestType = _selectedQuestType.asStateFlow()
@@ -44,9 +49,12 @@ class QuestTabViewModel @Inject constructor(
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
     val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val questTabUiState: StateFlow<QuestTabUiState> = combine(
         selectedQuestType, selectedRepeatPeriod
-    ) { questType, repeatPeriod ->
+    ) { type, period ->
+        type to period
+    }.flatMapLatest { (questType, repeatPeriod) ->
         when (questType) {
             QuestType.NORMAL -> questRepository.getUncompletedNormalQuests()
             QuestType.REPEAT -> questRepository.getUncompletedRepeatQuests(
@@ -58,14 +66,14 @@ class QuestTabViewModel @Inject constructor(
             )
 
             QuestType.EVENT -> questRepository.getUncompletedEventQuests()
-            else -> emptyList()
+            else -> emptyFlow()
+        }
+    }.combine(selectedRewardType) { quests, rewardType ->
+        quests.filter { quest ->
+            quest.rewardList.any { it.content == rewardType.name }
         }
     }
-        .combine(selectedRewardType) { quests, rewardType ->
-            quests.filter { quest ->
-                quest.rewardList.find { it.content == rewardType.name } != null
-            }
-        }.combine<List<Quest>, String, QuestTabUiState>(selectedSortType) { quests, sortType ->
+        .combine<List<Quest>, String, QuestTabUiState>(selectedSortType) { quests, sortType ->
             val sortedQuests = quests.sortedBy { quest ->
                 when (sortType) {
                     "포인트 높은 순" -> {
@@ -85,23 +93,30 @@ class QuestTabViewModel @Inject constructor(
                     }
                 }
             }
-            QuestTabUiState.Success(
-                QuestTabUiData(
-                    questList = sortedQuests
-                )
-            )
+            QuestTabUiState.Success(QuestTabUiData(sortedQuests))
         }
-        .catch {
-            emit(QuestTabUiState.Error(it))
-        }
+        .catch { emit(QuestTabUiState.Error(it)) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = QuestTabUiState.Loading
         )
 
+    val selectedQuest = selectedQuestId.combine(questTabUiState) { questId, uiState ->
+        if (questId == null || uiState !is QuestTabUiState.Success) return@combine null
+        uiState.data.questList.find { it.questId == questId }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
+
     fun selectQuest(quest: Quest) {
-        _selectedQuest.value = quest
+        _selectedQuestId.update { quest.questId }
+    }
+
+    fun unselectQuest() {
+        _selectedQuestId.update { null }
     }
 
     fun selectQuestType(questType: QuestType) {
@@ -122,5 +137,15 @@ class QuestTabViewModel @Inject constructor(
 
     fun setCapturedImageUri(uri: Uri) {
         _capturedImageUri.value = uri
+    }
+
+    fun updateQuestFavoriteStatus(quest: Quest) {
+        viewModelScope.launch {
+            if (quest.favoriteYn) {
+                questRepository.deleteFavoriteQuest(quest.questId)
+            } else {
+                questRepository.registerFavoriteQuest(quest.questId)
+            }
+        }
     }
 }
