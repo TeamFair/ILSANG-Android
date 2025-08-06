@@ -44,8 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LargeRewardQuestsContent(
     largeRewardQuests: Map<String, List<Quest>>,
-    navigateToQuestTab: () -> Unit,
-    onApproveButtonClick: (Quest) -> Unit
+    navigateToQuestTab: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -157,7 +156,9 @@ private val largeRewardQuestTapStyle = TextStyle(
 
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
-fun LargeRewardQuestsContentPreview() {
-    LargeRewardQuestsContent(mapOf(), {}, {})
+    LargeRewardQuestsContent(
+        largeRewardQuests = mapOf(),
+        navigateToQuestTab = {}
+    )
 }
 

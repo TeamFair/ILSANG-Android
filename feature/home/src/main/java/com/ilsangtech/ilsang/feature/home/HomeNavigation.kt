@@ -25,9 +25,6 @@ fun NavGraphBuilder.homeNavigation(
             HomeTapScreen(
                 userNickname = userInfo?.nickname,
                 homeViewModel = homeViewModel,
-                onApproveButtonClick = {
-                    homeViewModel.selectQuest(it)
-                },
                 navigateToQuestTab = {
                     navController.navigate(HomeTap.Quest.name) {
                         popUpTo(navController.graph.startDestinationId) {
