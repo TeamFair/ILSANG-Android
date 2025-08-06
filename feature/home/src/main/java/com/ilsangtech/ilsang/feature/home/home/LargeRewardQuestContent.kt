@@ -42,7 +42,7 @@ import com.ilsangtech.ilsang.feature.home.home.component.LargeRewardQuestCard
 import kotlinx.coroutines.launch
 
 @Composable
-fun LargeRewardQuestsContent(
+internal fun LargeRewardQuestsContent(
     largeRewardQuests: Map<String, List<Quest>>,
     navigateToQuestTab: () -> Unit
 ) {
@@ -156,6 +156,7 @@ private val largeRewardQuestTapStyle = TextStyle(
 
 @Preview(showBackground = true, device = "id:small_phone")
 @Composable
+private fun LargeRewardQuestsContentPreview() {
     LargeRewardQuestsContent(
         largeRewardQuests = mapOf(),
         navigateToQuestTab = {}
