@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,19 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,84 +47,89 @@ import com.ilsangtech.ilsang.core.ui.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
+import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.heading02
+import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
+import com.ilsangtech.ilsang.designsystem.theme.primary300
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestBottomSheet(
     quest: Quest,
-    showBottomSheet: Boolean,
+    bottomSheetState: SheetState,
+    onFavoriteClick: () -> Unit,
     onApproveButtonClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
-
-    if (showBottomSheet) {
-        LaunchedEffect(Unit) {
-            bottomSheetState.show()
-        }
-    } else {
-        LaunchedEffect(Unit) {
-            bottomSheetState.hide()
-        }
-    }
-
-    ModalBottomSheet(
-        sheetState = bottomSheetState,
-        onDismissRequest = { onDismiss() },
-        containerColor = Color.White,
-        dragHandle = {
-            BottomSheetDefaults.DragHandle(
-                width = 30.dp,
-                height = 4.dp,
-                color = gray100,
-                shape = RoundedCornerShape(20.dp),
-            )
-        }
+    IlsangBottomSheet(
+        bottomSheetState = bottomSheetState,
+        onDismissRequest = onDismiss
     ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 15.dp),
-            text = "퀘스트 정보",
-            style = questBottomSheetTitleStyle,
-            textAlign = TextAlign.Center
+        QuestBottomSheetHeader(
+            isFavorite = quest.favoriteYn,
+            onFavoriteClick = onFavoriteClick
         )
-        Column(
-            modifier = Modifier.padding(
-                vertical = 10.dp,
-                horizontal = 20.dp
-            )
-        ) {
-            QuestBottomSheetHeader(quest)
-            HorizontalDivider(
-                thickness = 1.dp,
-                color = gray100
-            )
-            QuestBottomSheetContent(
-                quest = quest,
-                onApproveButtonClick = onApproveButtonClick
-            )
-        }
+        QuestBottomSheetContent(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            quest = quest,
+            onApproveButtonClick = onApproveButtonClick
+        )
     }
 }
 
 @Composable
-fun QuestBottomSheetHeader(quest: Quest) {
-    Column(
+private fun QuestBottomSheetHeader(
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit
+) {
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(
+                top = 14.dp,
+                bottom = 15.dp
+            )
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = "퀘스트 정보",
+            style = questBottomSheetTitleStyle
+        )
+        Icon(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 20.dp)
+                .clickable(
+                    onClick = onFavoriteClick,
+                    indication = null,
+                    interactionSource = null
+                ),
+            painter = painterResource(com.ilsangtech.ilsang.designsystem.R.drawable.icon_favorite),
+            contentDescription = "즐겨찾기",
+            tint = if (isFavorite) primary300 else gray100
+        )
+    }
+}
+
+@Composable
+private fun QuestBottomSheetContent(
+    modifier: Modifier = Modifier,
+    quest: Quest,
+    onApproveButtonClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 10.dp),
@@ -175,21 +177,7 @@ fun QuestBottomSheetHeader(quest: Quest) {
                 )
             }
         }
-    }
-}
 
-@Composable
-fun QuestBottomSheetContent(
-    quest: Quest,
-    onApproveButtonClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
         Box(
             modifier = Modifier
                 .background(
@@ -232,7 +220,7 @@ fun QuestBottomSheetContent(
 }
 
 @Composable
-fun ObtainableStatItemContent(rewardList: List<Reward>) {
+private fun ObtainableStatItemContent(rewardList: List<Reward>) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(32.dp)
@@ -257,7 +245,8 @@ fun ObtainableStatItemContent(rewardList: List<Reward>) {
         }
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val funReward = rewardList.find { it.content == RewardType.FUN.name }
-            val sociabilityReward = rewardList.find { it.content == RewardType.SOCIABILITY.name }
+            val sociabilityReward =
+                rewardList.find { it.content == RewardType.SOCIABILITY.name }
 
             ObtainableStatItem(
                 rewardType = RewardType.FUN,
@@ -272,7 +261,7 @@ fun ObtainableStatItemContent(rewardList: List<Reward>) {
 }
 
 @Composable
-fun ObtainableStatItem(rewardType: RewardType, xp: Int) {
+private fun ObtainableStatItem(rewardType: RewardType, xp: Int) {
     val painterResource = painterResource(
         when (rewardType) {
             RewardType.STRENGTH -> {
@@ -342,7 +331,8 @@ fun ObtainableStatItem(rewardType: RewardType, xp: Int) {
 }
 
 private val questBottomSheetTitleStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_bold)),
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.Bold,
     fontSize = 17.sp,
     lineHeight = 22.sp,
     color = gray500
@@ -388,73 +378,21 @@ private val questBottomSheetApproveButtonTextStyle = TextStyle(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun QuestBottomSheetPreview() {
-
-    ModalBottomSheet(
-        sheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Expanded
-        ),
-        onDismissRequest = { },
-        containerColor = Color.White,
-        dragHandle = {
-            BottomSheetDefaults.DragHandle(
-                width = 30.dp,
-                height = 4.dp,
-                color = gray100,
-                shape = RoundedCornerShape(20.dp),
-            )
-        }
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 15.dp),
-            text = "퀘스트 정보",
-            style = questBottomSheetTitleStyle,
-            textAlign = TextAlign.Center
-        )
-
-        Column(
-            modifier = Modifier.padding(
-                vertical = 10.dp,
-                horizontal = 20.dp
-            )
-        ) {
-            QuestBottomSheetHeader(previewQuest)
-            HorizontalDivider(
-                thickness = 1.dp,
-                color = gray100
-            )
-            QuestBottomSheetContent(
-                quest = previewQuest,
-                onApproveButtonClick = {}
-            )
-        }
-    }
+private fun QuestBottomSheetPreview() {
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    QuestBottomSheet(
+        quest = previewQuest,
+        bottomSheetState = bottomSheetState,
+        onFavoriteClick = {},
+        onApproveButtonClick = {},
+        onDismiss = {}
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun QuestBottomSheetHeaderPreview() {
-    QuestBottomSheetHeader(previewQuest)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun QuestBottomSheetContentPreview() {
+private fun QuestBottomSheetContentPreview() {
     QuestBottomSheetContent(quest = previewQuest) {}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ObtainableStatItemsPreview() {
-    Column {
-        ObtainableStatItem(RewardType.STRENGTH, 100)
-        ObtainableStatItem(RewardType.INTELLECT, 1000)
-        ObtainableStatItem(RewardType.CHARM, 500)
-        ObtainableStatItem(RewardType.FUN, 300)
-        ObtainableStatItem(RewardType.SOCIABILITY, 10)
-    }
 }
 
 private val previewReward = Reward(
