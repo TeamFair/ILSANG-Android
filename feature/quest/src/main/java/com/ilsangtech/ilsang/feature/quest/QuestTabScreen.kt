@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -30,13 +33,13 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
-import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
-import com.ilsangtech.ilsang.core.ui.quest.QuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
 import com.ilsangtech.ilsang.core.util.FileManager
+import com.ilsangtech.ilsang.feature.quest.component.QuestCardWithFavorite
 import com.ilsangtech.ilsang.feature.quest.component.QuestTapHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
@@ -46,6 +49,7 @@ fun QuestTabScreen(
     val selectedRewardType by questTabViewModel.selectedRewardType.collectAsStateWithLifecycle()
     val selectedRepeatPeriod by questTabViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
     val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
+    val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
     val questTabUiState by questTabViewModel.questTabUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
@@ -59,17 +63,23 @@ fun QuestTabScreen(
                 navigateToSubmit()
             }
         }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     QuestTabScreen(
+        bottomSheetState = bottomSheetState,
         selectedQuestType = selectedQuestType,
         selectedRewardType = selectedRewardType,
         selectedRepeatPeriod = selectedRepeatPeriod,
         selectedSortType = selectedSortType,
+        selectedQuest = selectedQuest,
         questTabUiState = questTabUiState,
         onSelectQuestType = questTabViewModel::selectQuestType,
         onSelectRewardType = questTabViewModel::selectRewardType,
         onSelectRepeatPeriod = questTabViewModel::selectRepeatPeriod,
         onSelectSortType = questTabViewModel::selectSortType,
+        onQuestClick = questTabViewModel::selectQuest,
+        onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
+        onDismissRequest = questTabViewModel::unselectQuest,
         onApproveButtonClick = {
             questTabViewModel.selectQuest(it)
             imageCaptureLauncher.launch(tempFileUri)
@@ -77,19 +87,35 @@ fun QuestTabScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestTabScreen(
+private fun QuestTabScreen(
+    bottomSheetState: SheetState,
     selectedQuestType: QuestType,
     selectedRewardType: RewardType,
     selectedRepeatPeriod: RepeatQuestPeriod,
     selectedSortType: String,
+    selectedQuest: Quest?,
     questTabUiState: QuestTabUiState,
     onSelectQuestType: (QuestType) -> Unit,
     onSelectRewardType: (RewardType) -> Unit,
     onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
     onSelectSortType: (String) -> Unit,
+    onQuestClick: (Quest) -> Unit,
+    onFavoriteClick: (Quest) -> Unit,
+    onDismissRequest: () -> Unit,
     onApproveButtonClick: (Quest) -> Unit
 ) {
+    if (selectedQuest != null) {
+        QuestBottomSheet(
+            bottomSheetState = bottomSheetState,
+            quest = selectedQuest,
+            onDismiss = onDismissRequest,
+            onFavoriteClick = { onFavoriteClick(selectedQuest) },
+            onApproveButtonClick = { onApproveButtonClick(selectedQuest) }
+        )
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -120,26 +146,10 @@ fun QuestTabScreen(
                 ) {
                     if (questTabUiState is QuestTabUiState.Success) {
                         items(questTabUiState.data.questList) { quest ->
-                            DefaultQuestCard(
+                            QuestCardWithFavorite(
                                 quest = quest,
-                                badge = { modifier ->
-                                    if (selectedQuestType == QuestType.REPEAT) {
-                                        QuestTypeBadge(
-                                            modifier = modifier,
-                                            repeatType = when (quest.target) {
-                                                "DAILY" -> "일간"
-                                                "WEEKLY" -> "주간"
-                                                else -> "월간"
-                                            }
-                                        )
-                                    } else {
-                                        LargeRewardQuestBadge(
-                                            modifier = modifier,
-                                            xpSum = quest.rewardList.sumOf { it.quantity },
-                                        )
-                                    }
-                                },
-                                onApproveButtonClick = { onApproveButtonClick(quest) }
+                                onFavoriteClick = { onFavoriteClick(quest) },
+                                onClick = { onQuestClick(quest) }
                             )
                         }
                         item {
@@ -152,14 +162,18 @@ fun QuestTabScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(backgroundColor = 0xFFF6F6F6)
 @Composable
-fun QuestTabScreenPreview() {
+private fun QuestTabScreenPreview() {
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     QuestTabScreen(
+        bottomSheetState = bottomSheetState,
         selectedQuestType = QuestType.NORMAL,
         selectedRewardType = RewardType.STRENGTH,
         selectedRepeatPeriod = RepeatQuestPeriod.DAILY,
         selectedSortType = "최신순",
+        selectedQuest = null,
         questTabUiState = QuestTabUiState.Success(
             QuestTabUiData(emptyList())
         ),
@@ -167,6 +181,9 @@ fun QuestTabScreenPreview() {
         onSelectRewardType = {},
         onSelectRepeatPeriod = {},
         onSelectSortType = {},
+        onQuestClick = {},
+        onFavoriteClick = {},
+        onDismissRequest = {},
         onApproveButtonClick = {}
     )
 }
