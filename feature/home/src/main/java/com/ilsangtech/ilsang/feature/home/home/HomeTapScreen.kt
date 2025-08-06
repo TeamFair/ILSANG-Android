@@ -239,7 +239,7 @@ fun BannerView(
 
 @Preview
 @Composable
-fun HomeTapScreenPreview() {
+private fun HomeTapScreenPreview() {
     HomeTapScreen(
         userNickname = "누구누구",
         homeViewModel = hiltViewModel(),
