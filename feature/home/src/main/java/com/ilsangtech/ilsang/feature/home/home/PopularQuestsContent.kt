@@ -35,7 +35,7 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
-import com.ilsangtech.ilsang.core.ui.quest.QuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -65,7 +65,7 @@ fun PopularQuestCard(
                     .padding(top = 16.dp, end = 16.dp)
             ) {
                 if (quest.type == QuestType.REPEAT.name) {
-                    QuestTypeBadge(
+                    RepeatQuestTypeBadge(
                         repeatType = QuestType.REPEAT.title
                     )
                 } else {

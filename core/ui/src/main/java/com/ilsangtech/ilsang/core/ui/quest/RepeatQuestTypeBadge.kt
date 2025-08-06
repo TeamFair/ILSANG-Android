@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 
 @Composable
-fun QuestTypeBadge(
+fun RepeatQuestTypeBadge(
     modifier: Modifier = Modifier,
     repeatType: String
 ) {
@@ -72,12 +72,12 @@ private val monthlyBadgeTextColor = Color(0xFF005E15)
 
 @Preview(showBackground = true)
 @Composable
-private fun QuestTypeBadgePreview() {
+private fun RepeatQuestTypeBadgePreview() {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        QuestTypeBadge(repeatType = "주간")
-        QuestTypeBadge(repeatType = "일간")
-        QuestTypeBadge(repeatType = "월간")
+        RepeatQuestTypeBadge(repeatType = "주간")
+        RepeatQuestTypeBadge(repeatType = "일간")
+        RepeatQuestTypeBadge(repeatType = "월간")
     }
 }
