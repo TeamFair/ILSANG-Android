@@ -89,26 +89,9 @@ fun HomeTapScreen(
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        var bottomSheetQuest by remember { mutableStateOf<Quest?>(null) }
-        var showBottomSheet by remember { mutableStateOf(false) }
-
-        if (showBottomSheet) {
-            bottomSheetQuest?.let {
-                QuestBottomSheet(
-                    quest = it,
-                    showBottomSheet = showBottomSheet,
-                    onDismiss = {
-                        showBottomSheet = false
-                        bottomSheetQuest = null
-                    },
-                    onApproveButtonClick = {
-                        imageCaptureLauncher.launch(capturedImageUri)
-                    }
-                )
-            }
-        }
-
         if (homeTabUiState is HomeTapUiState.Success) {
+            val (banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) =
+                (homeTabUiState as HomeTapUiState.Success).data
             LazyColumn {
                 item {
                     HomeTapTopBar(
@@ -118,44 +101,36 @@ fun HomeTapScreen(
                 }
                 item {
                     BannerView(
-                        banners = (homeTabUiState as HomeTapUiState.Success).data.banners,
+                        banners = banners,
                         onClick = navigateToQuestTab
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     PopularQuestsContent(
-                        popularQuests = (homeTabUiState as HomeTapUiState.Success).data.popularQuests,
-                        onPopularQuestClick = {
-                            bottomSheetQuest = it
-                            showBottomSheet = true
-                            onApproveButtonClick(it)
-                        }
+                        popularQuests = popularQuests,
+                        onPopularQuestClick = homeViewModel::selectQuest
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
                         userNickname = userNickname,
-                        recommendedQuests = (homeTabUiState as HomeTapUiState.Success).data.recommendedQuests,
-                        onRecommendedQuestClick = {
-                            bottomSheetQuest = it
-                            showBottomSheet = true
-                            onApproveButtonClick(it)
-                        }
+                        recommendedQuests = recommendedQuests,
+                        onRecommendedQuestClick = homeViewModel::selectQuest
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     LargeRewardQuestsContent(
-                        largeRewardQuests = (homeTabUiState as HomeTapUiState.Success).data.largeRewardQuests,
+                        largeRewardQuests = largeRewardQuests,
                         navigateToQuestTab = navigateToQuestTab
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     UserRankContent(
-                        rankList = (homeTabUiState as HomeTapUiState.Success).data.topRankUsers,
+                        rankList = topRankUsers,
                         navigateToRankingTab = navigateToRankingTab,
                         navigateToProfile = navigateToProfile
                     )
