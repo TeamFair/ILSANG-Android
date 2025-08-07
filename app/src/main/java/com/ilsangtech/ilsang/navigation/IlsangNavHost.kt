@@ -41,6 +41,7 @@ import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
+import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
 import com.ilsangtech.ilsang.feature.myzone.navigation.myZoneNavigation
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
@@ -103,6 +104,9 @@ fun IlsangNavHost(
                 },
                 navigateToSubmit = { questId ->
                     navController.navigate(SubmitRoute(questId))
+                },
+                onMyZoneClick = {
+                    navController.navigate(MyZoneBaseRoute)
                 }
             )
 

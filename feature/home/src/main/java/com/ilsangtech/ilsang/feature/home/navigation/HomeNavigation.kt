@@ -17,7 +17,8 @@ fun NavGraphBuilder.homeNavigation(
     navigateToRankingTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToSubmit: (String) -> Unit
+    navigateToSubmit: (String) -> Unit,
+    onMyZoneClick: () -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
@@ -26,7 +27,8 @@ fun NavGraphBuilder.homeNavigation(
                 navigateToMyTab = navigateToMyTab,
                 navigateToRankingTab = navigateToRankingTab,
                 navigateToSubmit = navigateToSubmit,
-                navigateToProfile = navigateToProfile
+                navigateToProfile = navigateToProfile,
+                onMyZoneClick = onMyZoneClick
             )
         }
     }
