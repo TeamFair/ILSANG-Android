@@ -32,11 +32,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
-import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.quest.component.QuestCardWithFavorite
-import com.ilsangtech.ilsang.feature.quest.component.QuestTapHeader
+import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +45,6 @@ fun QuestTabScreen(
     navigateToSubmit: () -> Unit
 ) {
     val selectedQuestType by questTabViewModel.selectedQuestType.collectAsStateWithLifecycle()
-    val selectedRewardType by questTabViewModel.selectedRewardType.collectAsStateWithLifecycle()
     val selectedRepeatPeriod by questTabViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
     val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
     val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
@@ -68,13 +66,11 @@ fun QuestTabScreen(
     QuestTabScreen(
         bottomSheetState = bottomSheetState,
         selectedQuestType = selectedQuestType,
-        selectedRewardType = selectedRewardType,
         selectedRepeatPeriod = selectedRepeatPeriod,
         selectedSortType = selectedSortType,
         selectedQuest = selectedQuest,
         questTabUiState = questTabUiState,
         onSelectQuestType = questTabViewModel::selectQuestType,
-        onSelectRewardType = questTabViewModel::selectRewardType,
         onSelectRepeatPeriod = questTabViewModel::selectRepeatPeriod,
         onSelectSortType = questTabViewModel::selectSortType,
         onQuestClick = questTabViewModel::selectQuest,
@@ -92,13 +88,11 @@ fun QuestTabScreen(
 private fun QuestTabScreen(
     bottomSheetState: SheetState,
     selectedQuestType: QuestType,
-    selectedRewardType: RewardType,
     selectedRepeatPeriod: RepeatQuestPeriod,
     selectedSortType: SortType,
     selectedQuest: Quest?,
     questTabUiState: QuestTabUiState,
     onSelectQuestType: (QuestType) -> Unit,
-    onSelectRewardType: (RewardType) -> Unit,
     onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
     onSelectSortType: (SortType) -> Unit,
     onQuestClick: (Quest) -> Unit,
@@ -123,11 +117,9 @@ private fun QuestTabScreen(
             .navigationBarsPadding()
     ) {
         Column {
-            QuestTapHeader(
+            QuestTabHeader(
                 selectedQuestType = selectedQuestType,
-                selectedRewardType = selectedRewardType,
-                onSelectQuestType = onSelectQuestType,
-                onSelectRewardType = onSelectRewardType
+                onSelectQuestType = onSelectQuestType
             )
             Box(modifier = Modifier.fillMaxWidth()) {
                 SortTypeMenuContent(
@@ -152,9 +144,7 @@ private fun QuestTabScreen(
                                 onClick = { onQuestClick(quest) }
                             )
                         }
-                        item {
-                            Spacer(Modifier.height(64.dp))
-                        }
+                        item { Spacer(Modifier.height(64.dp)) }
                     }
                 }
             }
@@ -170,7 +160,6 @@ private fun QuestTabScreenPreview() {
     QuestTabScreen(
         bottomSheetState = bottomSheetState,
         selectedQuestType = QuestType.NORMAL,
-        selectedRewardType = RewardType.STRENGTH,
         selectedRepeatPeriod = RepeatQuestPeriod.DAILY,
         selectedSortType = SortType.POPULAR,
         selectedQuest = null,
@@ -178,7 +167,6 @@ private fun QuestTabScreenPreview() {
             QuestTabUiData(emptyList())
         ),
         onSelectQuestType = {},
-        onSelectRewardType = {},
         onSelectRepeatPeriod = {},
         onSelectSortType = {},
         onQuestClick = {},

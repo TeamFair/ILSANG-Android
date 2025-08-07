@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
-import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -38,9 +37,6 @@ class QuestTabViewModel @Inject constructor(
     private var _selectedQuestType = MutableStateFlow(QuestType.NORMAL)
     val selectedQuestType = _selectedQuestType.asStateFlow()
 
-    private var _selectedRewardType = MutableStateFlow(RewardType.STRENGTH)
-    val selectedRewardType = _selectedRewardType.asStateFlow()
-
     private var _selectedRepeatPeriod = MutableStateFlow<RepeatQuestPeriod>(RepeatQuestPeriod.DAILY)
     val selectedRepeatPeriod = _selectedRepeatPeriod.asStateFlow()
 
@@ -69,11 +65,6 @@ class QuestTabViewModel @Inject constructor(
             QuestType.EVENT -> questRepository.getUncompletedEventQuests()
             else -> emptyFlow()
         }
-    }.combine(selectedRewardType) { quests, rewardType ->
-        quests.filter { quest ->
-            quest.rewardList.any { it.content == rewardType.name }
-        }
-    }
     }.combine<List<Quest>, SortType, QuestTabUiState>(selectedSortType) { quests, sortType ->
         val sortedQuests = when (sortType) {
             SortType.POINT_ASC -> {
@@ -124,10 +115,6 @@ class QuestTabViewModel @Inject constructor(
 
     fun selectQuestType(questType: QuestType) {
         _selectedQuestType.value = questType
-    }
-
-    fun selectRewardType(rewardType: RewardType) {
-        _selectedRewardType.value = rewardType
     }
 
     fun selectRepeatPeriod(repeatQuestPeriod: RepeatQuestPeriod) {
