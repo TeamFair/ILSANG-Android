@@ -54,7 +54,8 @@ val heading03 = TextStyle(
 )
 
 val subTitle01 = TextStyle(
-    fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.SemiBold,
     fontSize = 16.sp,
     lineHeight = 24.sp,
     letterSpacing = (-0.4).sp
