@@ -12,10 +12,12 @@ data object MyZoneBaseRoute
 @Serializable
 data object MyZoneRoute
 
-fun NavGraphBuilder.myZoneNavigation() {
+fun NavGraphBuilder.myZoneNavigation(
+    onBackButtonClick: () -> Unit
+) {
     navigation<MyZoneBaseRoute>(startDestination = MyZoneRoute) {
         composable<MyZoneRoute> {
-            MyZoneScreen()
+            MyZoneScreen(onBackButtonClick = onBackButtonClick)
         }
     }
 }
