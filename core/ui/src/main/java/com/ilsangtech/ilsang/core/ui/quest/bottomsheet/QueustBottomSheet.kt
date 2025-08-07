@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.ui.quest
+package com.ilsangtech.ilsang.core.ui.quest.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

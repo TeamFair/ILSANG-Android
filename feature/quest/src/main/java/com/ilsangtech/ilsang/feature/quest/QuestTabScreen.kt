@@ -32,7 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
-import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.quest.component.QuestCardWithFavorite
 import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
