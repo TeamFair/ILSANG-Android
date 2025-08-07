@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.feature.home
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -10,6 +11,7 @@ import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
+import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 fun NavGraphBuilder.homeNavigation(
     navController: NavHostController,
@@ -25,12 +27,9 @@ fun NavGraphBuilder.homeNavigation(
             HomeTapScreen(
                 userNickname = userInfo?.nickname,
                 homeViewModel = homeViewModel,
-                onApproveButtonClick = {
-                    homeViewModel.selectQuest(it)
-                },
                 navigateToQuestTab = {
                     navController.navigate(HomeTap.Quest.name) {
-                        popUpTo(navController.graph.startDestinationId) {
+                        popUpTo(HomeTap.Home.name) {
                             saveState = true
                         }
                         launchSingleTop = true
@@ -59,6 +58,16 @@ fun NavGraphBuilder.homeNavigation(
                     }
                 },
                 navigateToProfile = navigateToProfile
+            )
+        }
+        composable("Submit") { backStackEntry ->
+            val homeEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(HomeTap.Home.name)
+            }
+            val homeViewModel = hiltViewModel<HomeViewModel>(homeEntry)
+            SubmitScreen(
+                homeViewModel = homeViewModel,
+                onDismiss = navController::popBackStack
             )
         }
         composable(HomeTap.Approval.name) {

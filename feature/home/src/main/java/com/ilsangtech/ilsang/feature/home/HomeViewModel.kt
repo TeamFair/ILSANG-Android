@@ -18,15 +18,18 @@ import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,8 +46,8 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(userRepository.currentUser)
     val myInfo: StateFlow<MyInfo?> = _myInfo.asStateFlow()
 
-    private val _selectedQuest = MutableStateFlow<Quest?>(null)
-    val selectedQuest = _selectedQuest.asStateFlow()
+    private val _selectedQuestId = MutableStateFlow<String?>(null)
+    private val selectedQuestId = _selectedQuestId.asStateFlow()
 
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
     val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
@@ -52,37 +55,57 @@ class HomeViewModel @Inject constructor(
     private val _submitUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
     val submitUiState = _submitUiState.asStateFlow()
 
-    val homeTapUiState: StateFlow<HomeTapUiState> = myInfo.map {
-        if (it == null) {
-            HomeTapUiState.Loading
-        } else {
-            try {
-                coroutineScope {
-                    val banners = async { bannerRepository.getBanners() }
-                    val popularQuests = async { questRepository.getPopularQuests() }
-                    val recommendedQuest = async { questRepository.getRecommendedQuests() }
-                    val largeRewardQuests = async { questRepository.getLargeRewardQuests() }
-                    val topRankUsers = async { rankRepository.getTopRankUsers() }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val homeTapUiState: StateFlow<HomeTapUiState> =
+        myInfo.flatMapLatest { state ->
+            if (state == null) return@flatMapLatest flowOf(HomeTapUiState.Loading)
 
-                    HomeTapUiState.Success(
-                        data = HomeTapSuccessData(
-                            banners = banners.await(),
-                            popularQuests = popularQuests.await(),
-                            recommendedQuests = recommendedQuest.await(),
-                            largeRewardQuests = largeRewardQuests.await(),
-                            topRankUsers = topRankUsers.await()
-                        )
+            val bannersFlow = flow { emit(bannerRepository.getBanners()) }
+            val topRankUsersFlow = flow { emit(rankRepository.getTopRankUsers()) }
+
+            val popularFlow =
+                questRepository.getPopularQuests()
+            val recommendedFlow =
+                questRepository.getRecommendedQuests()
+            val largeRewardFlow =
+                questRepository.getLargeRewardQuests()
+
+            combine(
+                bannersFlow,
+                popularFlow,
+                recommendedFlow,
+                largeRewardFlow,
+                topRankUsersFlow
+            ) { banners, popular, recommended, largeReward, topRank ->
+                HomeTapUiState.Success(
+                    HomeTapSuccessData(
+                        banners = banners,
+                        popularQuests = popular,
+                        recommendedQuests = recommended,
+                        largeRewardQuests = largeReward,
+                        topRankUsers = topRank
                     )
-                }
-            } catch (e: Exception) {
-                HomeTapUiState.Error(e)
+                )
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = HomeTapUiState.Loading
-    )
+            .catch { e -> emit(HomeTapUiState.Error(e)) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = HomeTapUiState.Loading
+            )
+
+    val selectedQuest = selectedQuestId.combine(homeTapUiState) { questId, uiState ->
+        if (questId == null || uiState !is HomeTapUiState.Success) return@combine null
+        uiState.data.popularQuests.find { it.questId == questId }
+            ?: uiState.data.recommendedQuests.find { it.questId == questId }
+            ?: uiState.data.largeRewardQuests.values.flatten().find { it.questId == questId }
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     val rankingUiState = flow {
         emit(
@@ -95,20 +118,26 @@ class HomeViewModel @Inject constructor(
     )
 
     fun selectQuest(quest: Quest) {
-        _selectedQuest.value = quest
+        _selectedQuestId.update { quest.questId }
+    }
+
+    fun unselectQuest() {
+        _selectedQuestId.update { null }
     }
 
     fun submitApproveImage() {
         viewModelScope.launch {
             runCatching {
                 _submitUiState.value = SubmitUiState.Loading
-                challengeRepository.submitChallenge(
-                    questId = selectedQuest.value!!.questId,
-                    imageBytes = FileManager.getBytesFromUri(
-                        context,
-                        FileManager.getUriForFile(capturedImageFile.value, context)
+                selectedQuestId.value?.let { questId ->
+                    challengeRepository.submitChallenge(
+                        questId = questId,
+                        imageBytes = FileManager.getBytesFromUri(
+                            context,
+                            FileManager.getUriForFile(capturedImageFile.value, context)
+                        )
                     )
-                )
+                }
             }.onSuccess {
                 _submitUiState.value = SubmitUiState.Success
             }.onFailure {
@@ -120,7 +149,16 @@ class HomeViewModel @Inject constructor(
     fun completeSubmit() {
         _submitUiState.value = SubmitUiState.NotSubmitted
         _capturedImageUri.value = null
-        _selectedQuest.value = null
+        _selectedQuestId.update { null }
+    }
+
+    fun updateQuestFavoriteStatus() {
+        viewModelScope.launch {
+            selectedQuest.value?.let { quest ->
+                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.questId)
+                else questRepository.registerFavoriteQuest(quest.questId)
+            }
+        }
     }
 
     override fun onCleared() {

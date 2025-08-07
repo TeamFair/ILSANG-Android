@@ -1,11 +1,16 @@
 package com.ilsangtech.ilsang.core.network.api
 
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface QuestApiService {
@@ -46,4 +51,14 @@ interface QuestApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 60
     ): UncompletedEventQuestResponse
+
+    @POST("customer/quest/{questId}/favorite")
+    suspend fun registerFavoriteQuest(
+        @Path("questId") questId: String
+    ): FavoriteQuestRegistrationResponse
+
+    @DELETE("customer/quest/{questId}/favorite")
+    suspend fun deleteFavoriteQuest(
+        @Path("questId") questId: String
+    ): FavoriteQuestDeletionResponse
 }

@@ -19,13 +19,13 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,18 +39,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Banner
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.ui.quest.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTapScreen(
     userNickname: String?,
     homeViewModel: HomeViewModel,
-    onApproveButtonClick: (Quest) -> Unit,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToSubmit: () -> Unit,
@@ -58,9 +57,10 @@ fun HomeTapScreen(
     navigateToProfile: (String) -> Unit
 ) {
     val context = LocalContext.current
+    val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
     val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
     val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
-    val capturedImageFile = homeViewModel.capturedImageFile.collectAsStateWithLifecycle().value
+    val capturedImageFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
     val capturedImageUri =
         remember(capturedImageFile) { FileManager.getUriForFile(capturedImageFile, context) }
 
@@ -70,32 +70,28 @@ fun HomeTapScreen(
                 navigateToSubmit()
             }
         }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (selectedQuest != null) {
+        selectedQuest?.let { quest ->
+            QuestBottomSheet(
+                quest = quest,
+                bottomSheetState = bottomSheetState,
+                onDismiss = homeViewModel::unselectQuest,
+                onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
+                onApproveButtonClick = { imageCaptureLauncher.launch(capturedImageUri) }
+            )
+        }
+    }
 
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        var bottomSheetQuest by remember { mutableStateOf<Quest?>(null) }
-        var showBottomSheet by remember { mutableStateOf(false) }
-
-        if (showBottomSheet) {
-            bottomSheetQuest?.let {
-                QuestBottomSheet(
-                    quest = it,
-                    showBottomSheet = showBottomSheet,
-                    onDismiss = {
-                        showBottomSheet = false
-                        bottomSheetQuest = null
-                    },
-                    onApproveButtonClick = {
-                        imageCaptureLauncher.launch(capturedImageUri)
-                    }
-                )
-            }
-        }
-
         if (homeTabUiState is HomeTapUiState.Success) {
+            val (banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) =
+                (homeTabUiState as HomeTapUiState.Success).data
             LazyColumn {
                 item {
                     HomeTapTopBar(
@@ -105,49 +101,36 @@ fun HomeTapScreen(
                 }
                 item {
                     BannerView(
-                        banners = (homeTabUiState as HomeTapUiState.Success).data.banners,
+                        banners = banners,
                         onClick = navigateToQuestTab
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     PopularQuestsContent(
-                        popularQuests = (homeTabUiState as HomeTapUiState.Success).data.popularQuests,
-                        onPopularQuestClick = {
-                            bottomSheetQuest = it
-                            showBottomSheet = true
-                            onApproveButtonClick(it)
-                        }
+                        popularQuests = popularQuests,
+                        onPopularQuestClick = homeViewModel::selectQuest
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
                         userNickname = userNickname,
-                        recommendedQuests = (homeTabUiState as HomeTapUiState.Success).data.recommendedQuests,
-                        onRecommendedQuestClick = {
-                            bottomSheetQuest = it
-                            showBottomSheet = true
-                            onApproveButtonClick(it)
-                        }
+                        recommendedQuests = recommendedQuests,
+                        onRecommendedQuestClick = homeViewModel::selectQuest
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     LargeRewardQuestsContent(
-                        largeRewardQuests = (homeTabUiState as HomeTapUiState.Success).data.largeRewardQuests,
-                        navigateToQuestTab = navigateToQuestTab,
-                        onApproveButtonClick = {
-                            val imageUri = FileManager.getUriForFile(capturedImageFile, context)
-                            imageCaptureLauncher.launch(imageUri)
-                            onApproveButtonClick(it)
-                        }
+                        largeRewardQuests = largeRewardQuests,
+                        navigateToQuestTab = navigateToQuestTab
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     UserRankContent(
-                        rankList = (homeTabUiState as HomeTapUiState.Success).data.topRankUsers,
+                        rankList = topRankUsers,
                         navigateToRankingTab = navigateToRankingTab,
                         navigateToProfile = navigateToProfile
                     )
@@ -231,10 +214,14 @@ fun BannerView(
 
 @Preview
 @Composable
-fun HomeTapScreenPreview() {
+private fun HomeTapScreenPreview() {
     HomeTapScreen(
-        "누구누구",
-        hiltViewModel(),
-        {}, {}, {}, {}, {}, {}
+        userNickname = "누구누구",
+        homeViewModel = hiltViewModel(),
+        navigateToQuestTab = {},
+        navigateToMyTab = {},
+        navigateToSubmit = {},
+        navigateToRankingTab = {},
+        navigateToProfile = {},
     )
 }

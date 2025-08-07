@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
@@ -36,4 +38,12 @@ interface QuestDataSource {
         page: Int,
         size: Int
     ): UncompletedEventQuestResponse
+
+    suspend fun registerFavoriteQuest(
+        questId: String
+    ): FavoriteQuestRegistrationResponse
+
+    suspend fun deleteFavoriteQuest(
+        questId: String
+    ): FavoriteQuestDeletionResponse
 }
