@@ -26,17 +26,25 @@ object DateConverter {
         val dateYear = calendar.get(Calendar.YEAR)
 
         val outputFormat = when {
-            withYear && currentYear != dateYear -> SimpleDateFormat("yyyy년 M월 d일", Locale.getDefault())
+            withYear && currentYear != dateYear -> SimpleDateFormat(
+                "yyyy년 M월 d일",
+                Locale.getDefault()
+            )
+
             else -> SimpleDateFormat("M월 d일", Locale.getDefault())
         }
         return outputFormat.format(date)
     }
 
-    fun formatDate(input: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+    fun formatDate(input: String, outputPattern: String = "yyyy.MM.dd"): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
 
-        val date = inputFormat.parse(input)
-        return outputFormat.format(date!!)
+            val date = inputFormat.parse(input)
+            outputFormat.format(date!!)
+        } catch (_: Exception) {
+            "알 수 없음"
+        }
     }
 }
