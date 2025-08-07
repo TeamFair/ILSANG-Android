@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
@@ -63,7 +62,9 @@ class QuestTabViewModel @Inject constructor(
             )
 
             QuestType.EVENT -> questRepository.getUncompletedEventQuests()
-            else -> emptyFlow()
+            else -> {
+                flow { emit(emptyList()) }
+            }
         }
     }.combine<List<Quest>, SortType, QuestTabUiState>(selectedSortType) { quests, sortType ->
         val sortedQuests = when (sortType) {
