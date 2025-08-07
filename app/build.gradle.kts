@@ -75,6 +75,8 @@ dependencies {
     implementation(project(":feature:submit"))
     implementation(project(":feature:ranking"))
     implementation(project(":feature:approval"))
+    implementation(project(":feature:myzone"))
+
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)
     implementation(libs.hilt.android)
