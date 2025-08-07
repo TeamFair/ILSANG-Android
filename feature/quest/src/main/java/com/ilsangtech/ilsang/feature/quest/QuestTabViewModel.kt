@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class QuestTabViewModel @Inject constructor(
     private var _selectedRepeatPeriod = MutableStateFlow<RepeatQuestPeriod>(RepeatQuestPeriod.DAILY)
     val selectedRepeatPeriod = _selectedRepeatPeriod.asStateFlow()
 
-    private var _selectedSortType = MutableStateFlow("포인트 높은 순")
+    private var _selectedSortType = MutableStateFlow(SortType.POINT_DESC)
     val selectedSortType = _selectedSortType.asStateFlow()
 
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
@@ -73,28 +74,30 @@ class QuestTabViewModel @Inject constructor(
             quest.rewardList.any { it.content == rewardType.name }
         }
     }
-        .combine<List<Quest>, String, QuestTabUiState>(selectedSortType) { quests, sortType ->
-            val sortedQuests = quests.sortedBy { quest ->
-                when (sortType) {
-                    "포인트 높은 순" -> {
-                        quest.rewardList.sumOf { reward ->
-                            -reward.quantity
-                        }
-                    }
-
-                    "포인트 낮은 순" -> {
-                        quest.rewardList.sumOf { reward ->
-                            reward.quantity
-                        }
-                    }
-
-                    else -> {
-                        -quest.score
-                    }
+    }.combine<List<Quest>, SortType, QuestTabUiState>(selectedSortType) { quests, sortType ->
+        val sortedQuests = when (sortType) {
+            SortType.POINT_ASC -> {
+                quests.sortedBy { quest ->
+                    quest.rewardList.sumOf { it.quantity }
                 }
             }
-            QuestTabUiState.Success(QuestTabUiData(sortedQuests))
+
+            SortType.POINT_DESC -> {
+                quests.sortedByDescending { quest ->
+                    quest.rewardList.sumOf { it.quantity }
+                }
+            }
+
+            SortType.FAVORITE -> {
+                quests.filter { it.favoriteYn }
+            }
+
+            SortType.POPULAR -> {
+                quests.sortedByDescending { it.score }
+            }
         }
+        QuestTabUiState.Success(QuestTabUiData(sortedQuests))
+    }
         .catch { emit(QuestTabUiState.Error(it)) }
         .stateIn(
             scope = viewModelScope,
@@ -131,8 +134,8 @@ class QuestTabViewModel @Inject constructor(
         _selectedRepeatPeriod.value = repeatQuestPeriod
     }
 
-    fun selectSortType(sortType: String) {
-        _selectedSortType.value = sortType
+    fun selectSortType(sortType: SortType) {
+        _selectedSortType.update { sortType }
     }
 
     fun setCapturedImageUri(uri: Uri) {

@@ -37,16 +37,18 @@ import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.quest.R
+import com.ilsangtech.ilsang.feature.quest.SortType
 
 @Composable
-fun SortTypeMenuContent(
+internal fun SortTypeMenuContent(
     modifier: Modifier,
     questType: QuestType,
     selectedRepeatPeriod: RepeatQuestPeriod,
-    selectedSortType: String,
+    selectedSortType: SortType,
     onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
-    onSelectSortType: (String) -> Unit
+    onSelectSortType: (SortType) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -73,7 +75,7 @@ fun SortTypeMenuContent(
 }
 
 @Composable
-fun RepeatQuestSortTypeMenu(
+private fun RepeatQuestSortTypeMenu(
     repeatQuestPeriod: RepeatQuestPeriod,
     onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit
 ) {
@@ -84,7 +86,7 @@ fun RepeatQuestSortTypeMenu(
         RepeatQuestPeriod.MONTHLY -> "월간"
     }
 
-    DropDownMenu(
+    QuestFilterDropDownMenu(
         modifier = Modifier,
         width = 85.dp,
         titleList = questTypeList,
@@ -100,22 +102,26 @@ fun RepeatQuestSortTypeMenu(
 }
 
 @Composable
-fun QuestSortTypeMenu(
-    selectedSortType: String,
-    onSelectSortType: (String) -> Unit
+private fun QuestSortTypeMenu(
+    selectedSortType: SortType,
+    onSelectSortType: (SortType) -> Unit
 ) {
-    val questTypeList = remember { listOf("포인트 높은 순", "포인트 낮은 순", "인기순") }
-    DropDownMenu(
+    val sortTypeList = remember { SortType.entries }
+    QuestFilterDropDownMenu(
         modifier = Modifier,
         width = 150.dp,
-        titleList = questTypeList,
-        selectedTitle = selectedSortType,
-        onTitleSelected = onSelectSortType
+        titleList = sortTypeList.map { it.title },
+        selectedTitle = selectedSortType.title,
+        onTitleSelected = { title ->
+            onSelectSortType(
+                sortTypeList.find { it.title == title } ?: selectedSortType
+            )
+        }
     )
 }
 
 @Composable
-fun DropDownMenu(
+private fun QuestFilterDropDownMenu(
     modifier: Modifier,
     width: Dp,
     titleList: List<String>,
@@ -207,7 +213,7 @@ fun DropDownMenu(
                     ) {
                         Text(
                             text = title,
-                            style = dropdownMenuTitleStyle
+                            style = dropdownMenuTitleStyle.copy(fontSize = 15.dp.toSp())
                         )
                     }
                 }
@@ -229,12 +235,12 @@ private val dropdownMenuTitleStyle = TextStyle(
     heightDp = 200
 )
 @Composable
-fun SortTypeMenuContentPreview() {
+private fun SortTypeMenuContentPreview() {
     SortTypeMenuContent(
         modifier = Modifier,
         questType = QuestType.REPEAT,
         selectedRepeatPeriod = RepeatQuestPeriod.DAILY,
-        selectedSortType = "최신순",
+        selectedSortType = SortType.POPULAR,
         onSelectRepeatPeriod = {},
         onSelectSortType = {}
     )
