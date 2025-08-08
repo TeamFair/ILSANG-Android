@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.submit
+package com.ilsangtech.ilsang.feature.submit
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
@@ -34,54 +35,72 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.addLastModifiedToFileCacheKey
 import com.ilsangtech.ilsang.core.util.FileManager
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.designsystem.theme.title02
-import com.ilsangtech.ilsang.feature.home.HomeViewModel
-import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
+import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
+import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
 import java.io.File
 
 @Composable
 fun SubmitScreen(
-    homeViewModel: HomeViewModel,
+    submitViewModel: SubmitViewModel = hiltViewModel(),
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
-    val submitUiState by homeViewModel.submitUiState.collectAsStateWithLifecycle()
+    val submitUiState by submitViewModel.submitUiState.collectAsStateWithLifecycle()
 
-    val tempFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFile by submitViewModel.capturedImageFile.collectAsStateWithLifecycle()
     val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
     var lastModified by remember { mutableLongStateOf(tempFile.lastModified()) }
 
     val imageCaptureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { _ ->
-            lastModified = tempFile.lastModified()
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+            if (isSuccess) {
+                lastModified = tempFile.lastModified()
+            } else {
+                onDismiss()
+            }
         }
 
-    when (submitUiState) {
-        is SubmitUiState.Loading -> SubmitLoadingDialog()
-        is SubmitUiState.Success -> SubmitSuccessDialog(
-            quest = selectedQuest!!,
-            onDismiss = {
-                homeViewModel.completeSubmit()
-                onDismiss()
-            }
-        )
+    LaunchedEffect(Unit) {
+        imageCaptureLauncher.launch(tempFileUri)
+    }
 
-        is SubmitUiState.Error -> SubmitErrorDialog(
-            onDismissRequest = {
-                homeViewModel.completeSubmit()
-                onDismiss()
-            }
-        )
+    when (submitUiState) {
+        is SubmitUiState.Loading -> {
+            SubmitLoadingDialog()
+        }
+
+        is SubmitUiState.Success -> {
+            val rewardList = (submitUiState as SubmitUiState.Success).rewardList
+            SubmitSuccessDialog(
+                rewardList = rewardList,
+                onDismiss = {
+                    submitViewModel.completeSubmit()
+                    onDismiss()
+                }
+            )
+        }
+
+        is SubmitUiState.Error -> {
+            SubmitErrorDialog(
+                onDismissRequest = {
+                    submitViewModel.completeSubmit()
+                    onDismiss()
+                }
+            )
+        }
 
         else -> {}
     }
@@ -93,9 +112,7 @@ fun SubmitScreen(
         onRetakeButtonClick = {
             imageCaptureLauncher.launch(tempFileUri)
         },
-        onSubmitButtonClick = {
-            homeViewModel.submitApproveImage()
-        }
+        onSubmitButtonClick = submitViewModel::submitApproveImage
     )
 }
 
@@ -158,7 +175,7 @@ fun SubmitScreenHeader(
                     interactionSource = null,
                     onClick = onBackButtonClick
                 ),
-            painter = painterResource(R.drawable.back),
+            painter = painterResource(R.drawable.icon_back),
             contentDescription = "뒤로가기"
         )
         Text(
