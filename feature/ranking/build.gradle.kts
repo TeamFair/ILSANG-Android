@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -16,12 +19,19 @@ android {
     }
 
     buildTypes {
+        val properties = Properties()
+        properties.load(FileInputStream("local.properties"))
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "IMAGE_URL", properties.getProperty("RELEASE_IMAGE_URL"))
+        }
+        debug {
+            buildConfigField("String", "IMAGE_URL", properties.getProperty("DEBUG_IMAGE_URL"))
         }
     }
     compileOptions {
