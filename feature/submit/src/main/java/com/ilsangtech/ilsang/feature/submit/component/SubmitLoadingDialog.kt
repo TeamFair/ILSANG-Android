@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.submit
+package com.ilsangtech.ilsang.feature.submit.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.gray500
-import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
 fun SubmitLoadingDialog(
