@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.submit
+package com.ilsangtech.ilsang.feature.submit.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,21 +36,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardType
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
 fun SubmitSuccessDialog(
     modifier: Modifier = Modifier,
-    quest: Quest,
+    rewardList: List<Reward>,
     onDismiss: () -> Unit
 ) {
     Dialog(
@@ -68,11 +67,11 @@ fun SubmitSuccessDialog(
                 SubmitSuccessDialogIcon()
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "${quest.rewardList.sumOf { it.quantity }}XP가 상승했어요",
+                    text = "${rewardList.sumOf { it.quantity }}XP가 상승했어요",
                     style = submitSuccessDialogTitleStyle
                 )
                 Spacer(Modifier.height(12.dp))
-                SubmitSuccessStatsContent(quest.rewardList)
+                SubmitSuccessStatsContent(rewardList)
                 Spacer(Modifier.height(12.dp))
                 Button(
                     modifier = Modifier.width(228.dp),
