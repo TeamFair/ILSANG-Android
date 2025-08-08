@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.submit
+package com.ilsangtech.ilsang.feature.submit.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,13 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
 fun SubmitErrorDialog(
