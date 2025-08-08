@@ -162,6 +162,39 @@ fun ILSANGDialog(
     }
 }
 
+@Composable
+fun ILSANGDialog(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    buttonText: String,
+    content: @Composable () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            modifier = modifier,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(ilsangDialogRadius)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 28.dp, bottom = 16.dp)
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+                Spacer(Modifier.height(20.dp))
+                ILSANGButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = buttonText,
+                    onClick = onDismissRequest,
+                    colors = ButtonDefaults.buttonColors(containerColor = primary)
+                )
+            }
+        }
+    }
+}
+
 @Preview("ILSANGDialog1")
 @Composable
 fun ILSANGDialogPreview() {
@@ -188,4 +221,24 @@ fun ILSANGDialogPreview2() {
         onClickNegativeButton = {},
         onDismissRequest = {}
     )
+}
+
+@Preview("ILSANGDialog3")
+@Composable
+fun ILSANGDialogPreview3() {
+    ILSANGDialog(
+        onDismissRequest = {},
+        buttonText = "확인"
+    ) {
+        Text(
+            text = "커스텀 컨텐츠를 입력하세요",
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                letterSpacing = 0.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+            )
+        )
+    }
 }
