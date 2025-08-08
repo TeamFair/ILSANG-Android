@@ -1,16 +1,12 @@
 package com.ilsangtech.ilsang.feature.quest
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
-import com.ilsangtech.ilsang.core.util.FileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +23,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuestTabViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val questRepository: QuestRepository
 ) : ViewModel() {
     private val _selectedQuestId = MutableStateFlow<String?>(null)
@@ -41,9 +36,6 @@ class QuestTabViewModel @Inject constructor(
 
     private var _selectedSortType = MutableStateFlow(SortType.POINT_DESC)
     val selectedSortType = _selectedSortType.asStateFlow()
-
-    private val _capturedImageUri = MutableStateFlow<Uri?>(null)
-    val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val questTabUiState: StateFlow<QuestTabUiState> = combine(
@@ -124,10 +116,6 @@ class QuestTabViewModel @Inject constructor(
 
     fun selectSortType(sortType: SortType) {
         _selectedSortType.update { sortType }
-    }
-
-    fun setCapturedImageUri(uri: Uri) {
-        _capturedImageUri.value = uri
     }
 
     fun updateQuestFavoriteStatus(quest: Quest) {

@@ -1,23 +1,17 @@
 package com.ilsangtech.ilsang.feature.home
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilsangtech.ilsang.core.domain.BannerRepository
-import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
-import com.ilsangtech.ilsang.feature.home.submit.SubmitUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,12 +29,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val userRepository: UserRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
-    private val rankRepository: RankRepository,
-    private val challengeRepository: ChallengeRepository
+    private val rankRepository: RankRepository
 ) : ViewModel() {
     private val _myInfo: MutableStateFlow<MyInfo?> =
         MutableStateFlow(userRepository.currentUser)
@@ -48,12 +40,6 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedQuestId = MutableStateFlow<String?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
-
-    private val _capturedImageUri = MutableStateFlow<Uri?>(null)
-    val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
-
-    private val _submitUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
-    val submitUiState = _submitUiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTapUiState: StateFlow<HomeTapUiState> =
@@ -125,33 +111,6 @@ class HomeViewModel @Inject constructor(
         _selectedQuestId.update { null }
     }
 
-    fun submitApproveImage() {
-        viewModelScope.launch {
-            runCatching {
-                _submitUiState.value = SubmitUiState.Loading
-                selectedQuestId.value?.let { questId ->
-                    challengeRepository.submitChallenge(
-                        questId = questId,
-                        imageBytes = FileManager.getBytesFromUri(
-                            context,
-                            FileManager.getUriForFile(capturedImageFile.value, context)
-                        )
-                    )
-                }
-            }.onSuccess {
-                _submitUiState.value = SubmitUiState.Success
-            }.onFailure {
-                _submitUiState.value = SubmitUiState.Error
-            }
-        }
-    }
-
-    fun completeSubmit() {
-        _submitUiState.value = SubmitUiState.NotSubmitted
-        _capturedImageUri.value = null
-        _selectedQuestId.update { null }
-    }
-
     fun updateQuestFavoriteStatus() {
         viewModelScope.launch {
             selectedQuest.value?.let { quest ->
@@ -159,10 +118,5 @@ class HomeViewModel @Inject constructor(
                 else questRepository.registerFavoriteQuest(quest.questId)
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        capturedImageFile.value.delete()
     }
 }

@@ -6,7 +6,7 @@ import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.quest.QuestTabScreen
 
 fun NavGraphBuilder.questNavigation(
-    onNavigateToSubmit: () -> Unit
+    onNavigateToSubmit: (String) -> Unit
 ) {
     navigation(
         route = "QuestBaseRoute",

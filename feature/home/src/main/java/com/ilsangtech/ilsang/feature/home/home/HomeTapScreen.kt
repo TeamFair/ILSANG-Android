@@ -1,7 +1,5 @@
 package com.ilsangtech.ilsang.feature.home.home
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -25,13 +23,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,10 +37,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
-import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 import com.ilsangtech.ilsang.feature.home.HomeViewModel
 import com.ilsangtech.ilsang.feature.home.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,24 +49,15 @@ fun HomeTapScreen(
     homeViewModel: HomeViewModel,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: () -> Unit,
+    navigateToSubmit: (String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
-    val context = LocalContext.current
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
     val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
     val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
-    val capturedImageFile by homeViewModel.capturedImageFile.collectAsStateWithLifecycle()
-    val capturedImageUri =
-        remember(capturedImageFile) { FileManager.getUriForFile(capturedImageFile, context) }
 
-    val imageCaptureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) {
-                navigateToSubmit()
-            }
-        }
+    val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (selectedQuest != null) {
@@ -79,7 +67,13 @@ fun HomeTapScreen(
                 bottomSheetState = bottomSheetState,
                 onDismiss = homeViewModel::unselectQuest,
                 onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
-                onApproveButtonClick = { imageCaptureLauncher.launch(capturedImageUri) }
+                onApproveButtonClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.hide()
+                        homeViewModel.unselectQuest()
+                        navigateToSubmit(quest.questId)
+                    }
+                }
             )
         }
     }
