@@ -117,7 +117,7 @@ fun SubmitScreen(
 }
 
 @Composable
-fun SubmitScreen(
+private fun SubmitScreen(
     imageFile: File,
     lastModifyTime: Long,
     onBackButtonClick: () -> Unit,
@@ -156,7 +156,7 @@ fun SubmitScreen(
 }
 
 @Composable
-fun SubmitScreenHeader(
+private fun SubmitScreenHeader(
     onBackButtonClick: () -> Unit
 ) {
     Box(
@@ -188,7 +188,7 @@ fun SubmitScreenHeader(
 }
 
 @Composable
-fun SubmitScreenFooter(
+private fun SubmitScreenFooter(
     onRetakeButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit
 ) {
@@ -244,6 +244,6 @@ fun SubmitScreenFooter(
 
 @Preview
 @Composable
-fun SubmitScreenPreview() {
+private fun SubmitScreenPreview() {
     SubmitScreen(File.createTempFile("", ""), 0L, {}, {}, {})
 }

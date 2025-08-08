@@ -26,7 +26,7 @@ import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 
 @Composable
-fun SubmitLoadingDialog(
+internal fun SubmitLoadingDialog(
     modifier: Modifier = Modifier
 ) {
     Dialog(
@@ -70,6 +70,6 @@ fun SubmitLoadingDialog(
 
 @Preview
 @Composable
-fun SubmitLoadingDialogPreview() {
+private fun SubmitLoadingDialogPreview() {
     SubmitLoadingDialog()
 }

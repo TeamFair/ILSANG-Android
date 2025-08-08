@@ -47,7 +47,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 
 @Composable
-fun SubmitSuccessDialog(
+internal fun SubmitSuccessDialog(
     modifier: Modifier = Modifier,
     rewardList: List<Reward>,
     onDismiss: () -> Unit
@@ -152,7 +152,7 @@ fun SubmitSuccessDialogIcon() {
 }
 
 @Composable
-fun SubmitSuccessStatsContent(rewardList: List<Reward>) {
+private fun SubmitSuccessStatsContent(rewardList: List<Reward>) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
@@ -175,7 +175,7 @@ fun SubmitSuccessStatsContent(rewardList: List<Reward>) {
 }
 
 @Composable
-fun SubmitSuccessStatBox(reward: Reward) {
+private fun SubmitSuccessStatBox(reward: Reward) {
     val painterResource = painterResource(
         when (reward.content) {
             RewardType.STRENGTH.name -> {

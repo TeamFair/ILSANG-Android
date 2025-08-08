@@ -38,7 +38,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 
 @Composable
-fun SubmitErrorDialog(
+internal fun SubmitErrorDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -115,6 +115,6 @@ fun SubmitErrorDialog(
 
 @Preview
 @Composable
-fun SubmitErrorDialogPreview() {
+private fun SubmitErrorDialogPreview() {
     SubmitErrorDialog {}
 }
