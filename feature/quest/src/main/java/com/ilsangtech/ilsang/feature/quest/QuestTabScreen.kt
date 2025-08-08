@@ -1,7 +1,5 @@
 package com.ilsangtech.ilsang.feature.quest
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,9 +19,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -33,16 +30,16 @@ import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
-import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.quest.component.QuestCardWithFavorite
 import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: () -> Unit
+    navigateToSubmit: (String) -> Unit
 ) {
     val selectedQuestType by questTabViewModel.selectedQuestType.collectAsStateWithLifecycle()
     val selectedRepeatPeriod by questTabViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
@@ -50,17 +47,7 @@ fun QuestTabScreen(
     val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
     val questTabUiState by questTabViewModel.questTabUiState.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
-    val tempFile by questTabViewModel.capturedImageFile.collectAsStateWithLifecycle()
-    val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
-    val imageCaptureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) {
-                val imageUri = FileManager.getUriForFile(tempFile, context)
-                questTabViewModel.setCapturedImageUri(imageUri)
-                navigateToSubmit()
-            }
-        }
+    val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     QuestTabScreen(
@@ -77,8 +64,11 @@ fun QuestTabScreen(
         onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
         onDismissRequest = questTabViewModel::unselectQuest,
         onApproveButtonClick = {
-            questTabViewModel.selectQuest(it)
-            imageCaptureLauncher.launch(tempFileUri)
+            coroutineScope.launch {
+                bottomSheetState.hide()
+                questTabViewModel.unselectQuest()
+                navigateToSubmit(it.questId)
+            }
         }
     )
 }
