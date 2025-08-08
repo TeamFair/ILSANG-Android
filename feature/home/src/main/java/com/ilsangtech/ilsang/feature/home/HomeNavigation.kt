@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.feature.home
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -11,11 +10,11 @@ import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
 import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
-import com.ilsangtech.ilsang.feature.home.submit.SubmitScreen
 
 fun NavGraphBuilder.homeNavigation(
     navController: NavHostController,
-    navigateToProfile: (String) -> Unit
+    navigateToProfile: (String) -> Unit,
+    navigateToSubmit: (String) -> Unit
 ) {
     navigation(
         route = "home",
@@ -45,9 +44,7 @@ fun NavGraphBuilder.homeNavigation(
                         restoreState = true
                     }
                 },
-                navigateToSubmit = {
-                    navController.navigate("Submit")
-                },
+                navigateToSubmit = navigateToSubmit,
                 navigateToRankingTab = {
                     navController.navigate(HomeTap.Ranking.name) {
                         popUpTo(navController.graph.startDestinationId) {
@@ -58,16 +55,6 @@ fun NavGraphBuilder.homeNavigation(
                     }
                 },
                 navigateToProfile = navigateToProfile
-            )
-        }
-        composable("Submit") { backStackEntry ->
-            val homeEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(HomeTap.Home.name)
-            }
-            val homeViewModel = hiltViewModel<HomeViewModel>(homeEntry)
-            SubmitScreen(
-                homeViewModel = homeViewModel,
-                onDismiss = navController::popBackStack
             )
         }
         composable(HomeTap.Approval.name) {
