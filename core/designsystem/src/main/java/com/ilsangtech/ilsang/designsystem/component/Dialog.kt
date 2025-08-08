@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.designsystem.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -195,6 +196,65 @@ fun ILSANGDialog(
     }
 }
 
+@Composable
+fun ILSANGDialog(
+    modifier: Modifier = Modifier,
+    positiveButtonText: String,
+    negativeButtonText: String,
+    onDismissRequest: () -> Unit,
+    onPositiveButtonClick: (() -> Unit)? = null,
+    onNegativeButtonClick: (() -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            modifier = modifier,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(ilsangDialogRadius)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 28.dp, bottom = 16.dp)
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+                Spacer(Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    ILSANGButton(
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = background,
+                            contentColor = gray500
+                        ),
+                        text = negativeButtonText,
+                        onClick = {
+                            onNegativeButtonClick?.invoke()
+                            onDismissRequest()
+                        }
+                    )
+                    ILSANGButton(
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary,
+                            contentColor = Color.White
+                        ),
+                        text = positiveButtonText,
+                        onClick = {
+                            onPositiveButtonClick?.invoke()
+                            onDismissRequest()
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview("ILSANGDialog1")
 @Composable
 fun ILSANGDialogPreview() {
@@ -229,6 +289,29 @@ fun ILSANGDialogPreview3() {
     ILSANGDialog(
         onDismissRequest = {},
         buttonText = "확인"
+    ) {
+        Text(
+            text = "커스텀 컨텐츠를 입력하세요",
+            style = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                letterSpacing = 0.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
+            )
+        )
+    }
+}
+
+@Preview("ILSANGDialog4")
+@Composable
+fun ILSANGDialogPreview4() {
+    ILSANGDialog(
+        positiveButtonText = "확인",
+        negativeButtonText = "취소",
+        onDismissRequest = {},
+        onPositiveButtonClick = {},
+        onNegativeButtonClick = {}
     ) {
         Text(
             text = "커스텀 컨텐츠를 입력하세요",
