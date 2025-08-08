@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.ranking
+package com.ilsangtech.ilsang.feature.ranking
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,28 +23,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
-import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
+import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
-import com.ilsangtech.ilsang.feature.home.HomeViewModel
+import com.ilsangtech.ilsang.feature.ranking.component.StatRankingTabContent
+import com.ilsangtech.ilsang.feature.ranking.component.StatRankingTabRow
 
 @Composable
-fun RankingScreen(
-    homeViewModel: HomeViewModel,
+fun RankingTabScreen(
+    rankingViewModel: RankingTabViewModel = hiltViewModel(),
     navigateToProfile: (String) -> Unit
 ) {
-    val rankingUiState by homeViewModel.rankingUiState.collectAsStateWithLifecycle()
-    RankingScreen(
+    val rankingUiState by rankingViewModel.rankingUiState.collectAsStateWithLifecycle()
+    RankingTabScreen(
         rankingUiState = rankingUiState,
         onRankingItemClick = navigateToProfile
     )
 }
 
 @Composable
-fun RankingScreen(
+private fun RankingTabScreen(
     rankingUiState: Map<RewardType, List<UserXpTypeRank>>,
     onRankingItemClick: (String) -> Unit
 ) {
@@ -73,7 +75,7 @@ fun RankingScreen(
 }
 
 @Composable
-fun RankingScreenHeader(modifier: Modifier = Modifier) {
+private fun RankingScreenHeader(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -100,8 +102,8 @@ fun RankingScreenHeader(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun RankingScreenPreview() {
-    RankingScreen(
+private fun RankingTabScreenPreview() {
+    RankingTabScreen(
         rankingUiState = emptyMap(),
         onRankingItemClick = {}
     )
