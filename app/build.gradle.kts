@@ -72,7 +72,7 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:my"))
     implementation(project(":feature:quest"))
-
+    implementation(project(":feature:submit"))
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)
     implementation(libs.hilt.android)
