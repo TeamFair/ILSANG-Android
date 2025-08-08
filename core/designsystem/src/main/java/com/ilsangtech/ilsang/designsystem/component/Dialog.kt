@@ -157,7 +157,6 @@ fun ILSANGDialog(
                         colors = ButtonDefaults.buttonColors(containerColor = primary)
                     )
                 }
-
             }
         }
     }
