@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.myzone.component
+package com.ilsangtech.ilsang.core.ui.zone
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,7 +45,7 @@ import com.ilsangtech.ilsang.designsystem.theme.subTitle02
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
-internal fun MyZoneListContent(
+fun ZoneListContent(
     modifier: Modifier = Modifier,
     areaList: List<MetroArea>,
     selectedMetroArea: MetroArea?,
@@ -274,7 +274,7 @@ private fun MyZoneListContentPreview() {
         commericalAreaList = emptyList()
     )
 
-    MyZoneListContent(
+    ZoneListContent(
         modifier = Modifier.padding(horizontal = 20.dp),
         areaList = listOf(sampleMetroArea1, sampleMetroArea2),
         selectedMetroArea = sampleMetroArea1,

@@ -26,10 +26,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.area.CommercialArea
 import com.ilsangtech.ilsang.core.model.area.MetroArea
+import com.ilsangtech.ilsang.core.ui.zone.ZoneListContent
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.myzone.component.MyZoneHeader
-import com.ilsangtech.ilsang.feature.myzone.component.MyZoneListContent
 
 @Composable
 fun MyZoneScreen(
@@ -66,7 +66,7 @@ private fun MyZoneScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             MyZoneHeader(onBackButtonClick = onBackButtonClick)
             Box(modifier = Modifier.weight(1f)) {
-                MyZoneListContent(
+                ZoneListContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 20.dp),
