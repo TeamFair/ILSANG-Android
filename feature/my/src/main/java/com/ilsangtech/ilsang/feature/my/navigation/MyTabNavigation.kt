@@ -32,7 +32,7 @@ data object FaqRoute
 data object CustomerCenterRoute
 
 @Serializable
-data object MyMainRoute
+data object MyRoute
 
 @Serializable
 data object MyEditRoute
@@ -68,11 +68,8 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleId: String?) -> Unit
 ) {
-    navigation(
-        route = "MyNavigation",
-        startDestination = "My"
-    ) {
-        composable(route = "My") {
+    navigation<MyBaseRoute>(startDestination = MyRoute) {
+        composable<MyRoute> {
             MyTabScreen(
                 navigateToNicknameEdit = navigateToNicknameEdit,
                 navigateToMyChallenge = navigateToMyChallenge,

@@ -1,12 +1,14 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ilsang.android.feature)
 }
 
 android {
-    namespace = "com.ilsangtech.ilsang.feature.login"
+    namespace = "com.ilsangtech.ilsang.feature.approval"
     compileSdk = 35
 
     defaultConfig {
@@ -17,12 +19,19 @@ android {
     }
 
     buildTypes {
+        val properties = Properties()
+        properties.load(FileInputStream("local.properties"))
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "IMAGE_URL", properties.getProperty("RELEASE_IMAGE_URL"))
+        }
+        debug {
+            buildConfigField("String", "IMAGE_URL", properties.getProperty("DEBUG_IMAGE_URL"))
         }
     }
     compileOptions {
@@ -32,23 +41,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    debugImplementation(libs.androidx.ui.tooling)
-
+    implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

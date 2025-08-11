@@ -8,8 +8,6 @@ import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
-import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
