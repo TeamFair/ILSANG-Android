@@ -111,48 +111,35 @@ private fun MyZoneScreen(
 @Preview
 @Composable
 private fun MyZoneScreenPreview() {
-    val sampleMetroArea = MetroArea(
-        code = "01",
+    val sampleCommercialArea1 = CommercialArea(
+        code = "CA001",
+        areaName = "강남",
+        description = "Commercial hub in Seoul",
+        metroAreaCode = "MA001"
+    )
+    val sampleCommercialArea2 = CommercialArea(
+        code = "CA002",
+        areaName = "명동",
+        description = "Shopping district in Seoul",
+        metroAreaCode = "MA001"
+    )
+    val sampleMetroArea1 = MetroArea(
+        code = "MA001",
         areaName = "서울",
-        description = "서울특별시",
+        description = "Capital of South Korea",
+        commericalAreaList = listOf(sampleCommercialArea1, sampleCommercialArea2)
+    )
+    val sampleMetroArea2 = MetroArea(
+        code = "MA002",
+        areaName = "부산",
+        description = "Second largest city in South Korea",
         commericalAreaList = emptyList()
     )
-    val sampleCommercialArea = CommercialArea(
-        code = "1001491",
-        areaName = "명동",
-        description = "명동 거리",
-        metroAreaCode = "01"
-    )
+
     MyZoneScreen(
-        areaList = listOf(
-            MetroArea(
-                code = "01",
-                areaName = "서울",
-                description = "서울특별시",
-                commericalAreaList = listOf(
-                    CommercialArea(
-                        code = "1001491",
-                        areaName = "명동",
-                        description = "명동 거리",
-                        metroAreaCode = "01"
-                    ),
-                    CommercialArea(
-                        code = "1001492",
-                        areaName = "강남",
-                        description = "강남역",
-                        metroAreaCode = "01"
-                    )
-                )
-            ),
-            MetroArea(
-                code = "02",
-                areaName = "부산",
-                description = "부산광역시",
-                commericalAreaList = emptyList()
-            )
-        ),
-        selectedMetroArea = sampleMetroArea,
-        selectedCommercialArea = sampleCommercialArea,
+        areaList = listOf(sampleMetroArea1, sampleMetroArea2),
+        selectedMetroArea = sampleMetroArea1,
+        selectedCommercialArea = sampleCommercialArea2,
         onMetroAreaClick = {},
         onCommercialAreaClick = {},
         onSelectButtonClick = {},
