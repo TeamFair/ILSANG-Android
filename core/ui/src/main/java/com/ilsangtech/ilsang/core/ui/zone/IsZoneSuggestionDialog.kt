@@ -27,7 +27,7 @@ import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 
 @Composable
-fun MyZoneSuggestionDialog(
+fun IsZoneSuggestionDialog(
     onConfirm: () -> Unit,
     onCancel: (checked: Boolean) -> Unit,
     onDismissRequest: () -> Unit
@@ -90,8 +90,8 @@ fun MyZoneSuggestionDialog(
 
 @Preview
 @Composable
-private fun MyZoneSuggestionDialogPreview() {
-    MyZoneSuggestionDialog(
+private fun IsZoneSuggestionDialogPreview() {
+    IsZoneSuggestionDialog(
         onConfirm = {},
         onCancel = {},
         onDismissRequest = {}

@@ -13,7 +13,7 @@ import com.ilsangtech.ilsang.designsystem.component.ILSANGDialog
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 
 @Composable
-fun ZoneSelectDisabledDialog(
+fun IsZoneSelectDisabledDialog(
     onDismissRequest: () -> Unit
 ) {
     ILSANGDialog(
@@ -36,6 +36,6 @@ fun ZoneSelectDisabledDialog(
 
 @Preview
 @Composable
-private fun ZoneSelectDisabledDialogPreview() {
-    ZoneSelectDisabledDialog(onDismissRequest = {})
+private fun IsZoneSelectDisabledDialogPreview() {
+    IsZoneSelectDisabledDialog(onDismissRequest = {})
 }
