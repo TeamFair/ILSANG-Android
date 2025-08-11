@@ -30,6 +30,8 @@ import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
+import com.ilsangtech.ilsang.feature.iszone.navigation.IsZoneBaseRoute
+import com.ilsangtech.ilsang.feature.iszone.navigation.isZoneNavigation
 import com.ilsangtech.ilsang.feature.login.navigation.LoginRoute
 import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
@@ -41,6 +43,8 @@ import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
+import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
+import com.ilsangtech.ilsang.feature.myzone.navigation.myZoneNavigation
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
@@ -102,6 +106,12 @@ fun IlsangNavHost(
                 },
                 navigateToSubmit = { questId ->
                     navController.navigate(SubmitRoute(questId))
+                },
+                onMyZoneClick = {
+                    navController.navigate(MyZoneBaseRoute)
+                },
+                onIsZoneClick = {
+                    navController.navigate(IsZoneBaseRoute)
                 }
             )
 
@@ -183,6 +193,10 @@ fun IlsangNavHost(
             approvalNavigation(navigateToProfile = { id ->
                 navController.navigate(ProfileRoute(id))
             })
+
+            myZoneNavigation(onBackButtonClick = navController::popBackStack)
+
+            isZoneNavigation(onBackButtonClick = navController::popBackStack)
         }
     }
 }

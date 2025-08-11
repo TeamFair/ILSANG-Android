@@ -3,7 +3,7 @@ package com.ilsangtech.ilsang.feature.home.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ilsangtech.ilsang.feature.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.HomeTabScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,16 +17,20 @@ fun NavGraphBuilder.homeNavigation(
     navigateToRankingTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToSubmit: (String) -> Unit
+    navigateToSubmit: (String) -> Unit,
+    onMyZoneClick: () -> Unit,
+    onIsZoneClick: () -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
-            HomeTapScreen(
+            HomeTabScreen(
                 navigateToQuestTab = navigateToQuestTab,
                 navigateToMyTab = navigateToMyTab,
                 navigateToRankingTab = navigateToRankingTab,
                 navigateToSubmit = navigateToSubmit,
-                navigateToProfile = navigateToProfile
+                navigateToProfile = navigateToProfile,
+                onMyZoneClick = onMyZoneClick,
+                onIsZoneClick = onIsZoneClick
             )
         }
     }
