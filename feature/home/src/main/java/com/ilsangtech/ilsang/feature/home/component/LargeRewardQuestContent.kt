@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.home
+package com.ilsangtech.ilsang.feature.home.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -38,7 +38,6 @@ import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.feature.home.home.component.LargeRewardQuestCard
 import kotlinx.coroutines.launch
 
 @Composable

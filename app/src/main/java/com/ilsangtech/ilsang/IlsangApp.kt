@@ -2,7 +2,7 @@ package com.ilsangtech.ilsang
 
 import androidx.compose.runtime.Composable
 import com.ilsangtech.ilsang.designsystem.theme.ILSANGTheme
-import com.ilsangtech.ilsang.feature.home.HomeBaseRoute
+import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.login.navigation.LoginBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
 import com.ilsangtech.ilsang.navigation.IlsangNavHost

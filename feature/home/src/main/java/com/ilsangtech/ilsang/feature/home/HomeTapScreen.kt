@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.home
+package com.ilsangtech.ilsang.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,9 +37,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
-import com.ilsangtech.ilsang.feature.home.BuildConfig
-import com.ilsangtech.ilsang.feature.home.HomeViewModel
-import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.home.component.LargeRewardQuestsContent
+import com.ilsangtech.ilsang.feature.home.component.PopularQuestsContent
+import com.ilsangtech.ilsang.feature.home.component.RecommendedQuestsContent
+import com.ilsangtech.ilsang.feature.home.component.UserRankContent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

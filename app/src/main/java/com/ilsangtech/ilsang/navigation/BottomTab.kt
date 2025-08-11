@@ -4,7 +4,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalRoute
-import com.ilsangtech.ilsang.feature.home.HomeRoute
+import com.ilsangtech.ilsang.feature.home.navigation.HomeRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.QuestRoute
 import com.ilsangtech.ilsang.feature.ranking.navigation.RankingRoute

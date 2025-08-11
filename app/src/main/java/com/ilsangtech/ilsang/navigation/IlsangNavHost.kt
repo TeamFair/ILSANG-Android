@@ -28,8 +28,8 @@ import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
-import com.ilsangtech.ilsang.feature.home.HomeBaseRoute
-import com.ilsangtech.ilsang.feature.home.homeNavigation
+import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
+import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
 import com.ilsangtech.ilsang.feature.login.navigation.LoginRoute
 import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute

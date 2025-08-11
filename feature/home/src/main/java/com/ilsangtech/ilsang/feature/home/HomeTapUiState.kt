@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.home
+package com.ilsangtech.ilsang.feature.home
 
 import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.model.Quest

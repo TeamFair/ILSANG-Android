@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.home
+package com.ilsangtech.ilsang.feature.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

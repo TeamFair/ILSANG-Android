@@ -1,9 +1,9 @@
-package com.ilsangtech.ilsang.feature.home
+package com.ilsangtech.ilsang.feature.home.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
+import com.ilsangtech.ilsang.feature.home.HomeTapScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
