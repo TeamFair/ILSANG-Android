@@ -16,10 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -27,9 +27,11 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
-import com.ilsangtech.ilsang.feature.home.HomeTap
+import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
+import com.ilsangtech.ilsang.feature.home.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.homeNavigation
-import com.ilsangtech.ilsang.feature.login.LoginScreen
+import com.ilsangtech.ilsang.feature.login.navigation.LoginRoute
+import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
@@ -46,11 +48,13 @@ import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
 import com.ilsangtech.ilsang.feature.submit.navigation.SubmitRoute
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
-import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
+import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
+import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
+import kotlin.reflect.KClass
 
 @Composable
 fun ILSANGNavHost(
-    startDestination: String,
+    startDestination: KClass<*>,
     login: () -> Unit,
     completeOnBoarding: () -> Unit
 ) {
@@ -59,18 +63,12 @@ fun ILSANGNavHost(
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
-    val topLevelDestinations = listOf(
-        HomeTap.Home.name,
-        HomeTap.Quest.name,
-        HomeTap.Approval.name,
-        HomeTap.Ranking.name,
-        HomeTap.My.name
-    )
+    val topLevelDestinations = BottomTab.entries
 
     Scaffold(
         bottomBar = {
-            if (currentDestination?.route in topLevelDestinations) {
-                HomeBottomBar(navController)
+            if (topLevelDestinations.any { currentDestination?.hasRoute(it.route) == true }) {
+                BottomBarNavigation(navController)
             }
         }
     ) { paddingValues ->
@@ -84,21 +82,21 @@ fun ILSANGNavHost(
             navController = navController,
             startDestination = startDestination
         ) {
-            composable("login") {
-                LoginScreen(login = login)
-            }
+            loginNavigation(navigateToHome = login)
 
-            composable("tutorial") {
-                TutorialScreen {
+            tutorialNavigation(
+                navigateToHome = {
                     completeOnBoarding()
-                    navController.navigate("home") {
-                        popUpTo("tutorial") { inclusive = true }
+                    navController.navigate(HomeBaseRoute) {
+                        popUpTo(TutorialBaseRoute) { inclusive = true }
                     }
                 }
-            }
+            )
 
             homeNavigation(
-                navController = navController,
+                navigateToQuestTab = { navController.navigateToTopLevelDestination(BottomTab.Quest) },
+                navigateToMyTab = { navController.navigateToTopLevelDestination(BottomTab.My) },
+                navigateToRankingTab = { navController.navigateToTopLevelDestination(BottomTab.Ranking) },
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },
@@ -116,8 +114,8 @@ fun ILSANGNavHost(
             myTabNavigation(
                 navigateToLogin = {
                     Firebase.auth.signOut()
-                    navController.navigate("login") {
-                        popUpTo("home") { inclusive = true }
+                    navController.navigate(LoginRoute) {
+                        popUpTo(HomeBaseRoute) { inclusive = true }
                     }
                 },
                 navigateToMyTabMain = {
@@ -181,45 +179,39 @@ fun ILSANGNavHost(
                     navController.navigate(ProfileRoute(id))
                 }
             )
+
+            approvalNavigation(navigateToProfile = { id ->
+                navController.navigate(ProfileRoute(id))
+            })
         }
     }
 }
 
 @Composable
-fun HomeBottomBar(
-    navController: NavHostController,
-) {
+fun BottomBarNavigation(navController: NavHostController) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentNavBackStackEntry?.destination
-    val homeTaps = HomeTap.entries
+    val bottomTabs = BottomTab.entries
     ILSANGNavigationBar {
-        homeTaps.forEach { tap ->
+        bottomTabs.forEach { tab ->
             ILSANGNavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route == tap.name } == true,
+                selected = currentDestination?.hierarchy?.any { it.hasRoute(tab.route) } == true,
                 icon = {
                     Icon(
-                        painter = painterResource(id = tap.defaultIconRes),
+                        painter = painterResource(id = tab.defaultIconRes),
                         tint = Color.Unspecified,
-                        contentDescription = tap.title,
+                        contentDescription = tab.title,
                     )
                 },
                 selectedIcon = {
                     Icon(
-                        painter = painterResource(id = tap.selectedIconRes),
+                        painter = painterResource(id = tab.selectedIconRes),
                         tint = Color.Unspecified,
-                        contentDescription = tap.title,
+                        contentDescription = tab.title,
                     )
                 },
-                label = tap.title,
-                onClick = {
-                    navController.navigate(tap.name) {
-                        popUpTo(HomeTap.Home.name) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                label = tab.title,
+                onClick = { navController.navigateToTopLevelDestination(tab) }
             )
         }
     }
