@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isLoggedIn by mainActivityViewModel.isLoggedIn.collectAsStateWithLifecycle()
             val shouldShowOnBoarding by mainActivityViewModel.shouldShowOnBoarding.collectAsStateWithLifecycle()
-            ILSANGApp(
+            IlsangApp(
                 isLoggedIn = isLoggedIn,
                 shouldShowOnBoarding = shouldShowOnBoarding,
                 completeOnBoarding = mainActivityViewModel::completeOnBoarding,

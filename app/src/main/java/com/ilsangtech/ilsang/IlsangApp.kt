@@ -5,10 +5,10 @@ import com.ilsangtech.ilsang.designsystem.theme.ILSANGTheme
 import com.ilsangtech.ilsang.feature.home.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.login.navigation.LoginBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
-import com.ilsangtech.ilsang.navigation.ILSANGNavHost
+import com.ilsangtech.ilsang.navigation.IlsangNavHost
 
 @Composable
-fun ILSANGApp(
+fun IlsangApp(
     isLoggedIn: Boolean?,
     shouldShowOnBoarding: Boolean,
     completeOnBoarding: () -> Unit,
@@ -16,7 +16,7 @@ fun ILSANGApp(
 ) {
     ILSANGTheme {
         isLoggedIn?.let {
-            ILSANGNavHost(
+            IlsangNavHost(
                 startDestination =
                     when {
                         !isLoggedIn -> LoginBaseRoute::class

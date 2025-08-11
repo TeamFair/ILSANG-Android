@@ -26,7 +26,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
-import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBarItem
+import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.home.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.homeNavigation
@@ -53,7 +53,7 @@ import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
 import kotlin.reflect.KClass
 
 @Composable
-fun ILSANGNavHost(
+fun IlsangNavHost(
     startDestination: KClass<*>,
     login: () -> Unit,
     completeOnBoarding: () -> Unit
@@ -194,7 +194,7 @@ fun BottomBarNavigation(navController: NavHostController) {
     val bottomTabs = BottomTab.entries
     ILSANGNavigationBar {
         bottomTabs.forEach { tab ->
-            ILSANGNavigationBarItem(
+            IlsangNavigationBarItem(
                 selected = currentDestination?.hierarchy?.any { it.hasRoute(tab.route) } == true,
                 icon = {
                     Icon(

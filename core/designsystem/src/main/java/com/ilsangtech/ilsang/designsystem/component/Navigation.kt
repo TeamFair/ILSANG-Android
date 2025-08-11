@@ -37,7 +37,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 
 @Composable
-fun ILSANGNavigationBarItem(
+fun IlsangNavigationBarItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
     icon: @Composable () -> Unit,
@@ -102,7 +102,7 @@ fun ILSANGNavigationBar(
 
 @Preview(showBackground = true)
 @Composable
-fun ILSANGNavigationBarPreview() {
+private fun IlsangNavigationBarPreview() {
     val labels = listOf(
         "홈", "퀘스트", "인증", "랭킹", "마이"
     )
@@ -127,7 +127,7 @@ fun ILSANGNavigationBarPreview() {
             bottomBar = {
                 ILSANGNavigationBar {
                     labels.forEachIndexed { index, label ->
-                        ILSANGNavigationBarItem(
+                        IlsangNavigationBarItem(
                             selected = selectedIndex == index,
                             icon = {
                                 Icon(
