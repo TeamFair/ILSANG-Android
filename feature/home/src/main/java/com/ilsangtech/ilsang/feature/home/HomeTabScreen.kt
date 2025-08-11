@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTapScreen(
+fun HomeTabScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
@@ -46,7 +46,7 @@ fun HomeTapScreen(
     onMyZoneClick: () -> Unit
 ) {
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
-    val homeTabUiState by homeViewModel.homeTapUiState.collectAsStateWithLifecycle()
+    val homeTabUiState by homeViewModel.homeTabUiState.collectAsStateWithLifecycle()
     val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
@@ -75,9 +75,9 @@ fun HomeTapScreen(
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        if (homeTabUiState is HomeTapUiState.Success) {
+        if (homeTabUiState is HomeTabUiState.Success) {
             val (banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) =
-                (homeTabUiState as HomeTapUiState.Success).data
+                (homeTabUiState as HomeTabUiState.Success).data
             LazyColumn {
                 item {
                     HomeTabHeader(
@@ -162,8 +162,8 @@ fun BannerView(
 
 @Preview
 @Composable
-private fun HomeTapScreenPreview() {
-    HomeTapScreen(
+private fun HomeTabScreenPreview() {
+    HomeTabScreen(
         homeViewModel = hiltViewModel(),
         navigateToQuestTab = {},
         navigateToMyTab = {},

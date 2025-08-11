@@ -39,9 +39,9 @@ class HomeViewModel @Inject constructor(
     private val selectedQuestId = _selectedQuestId.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val homeTapUiState: StateFlow<HomeTapUiState> =
+    val homeTabUiState: StateFlow<HomeTabUiState> =
         myInfo.flatMapLatest { state ->
-            if (state == null) return@flatMapLatest flowOf(HomeTapUiState.Loading)
+            if (state == null) return@flatMapLatest flowOf(HomeTabUiState.Loading)
 
             val bannersFlow = flow { emit(bannerRepository.getBanners()) }
             val topRankUsersFlow = flow { emit(rankRepository.getTopRankUsers()) }
@@ -60,8 +60,8 @@ class HomeViewModel @Inject constructor(
                 largeRewardFlow,
                 topRankUsersFlow
             ) { banners, popular, recommended, largeReward, topRank ->
-                HomeTapUiState.Success(
-                    HomeTapSuccessData(
+                HomeTabUiState.Success(
+                    HomeTabSuccessData(
                         banners = banners,
                         popularQuests = popular,
                         recommendedQuests = recommended,
@@ -71,15 +71,15 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-            .catch { e -> emit(HomeTapUiState.Error(e)) }
+            .catch { e -> emit(HomeTabUiState.Error(e)) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
-                initialValue = HomeTapUiState.Loading
+                initialValue = HomeTabUiState.Loading
             )
 
-    val selectedQuest = selectedQuestId.combine(homeTapUiState) { questId, uiState ->
-        if (questId == null || uiState !is HomeTapUiState.Success) return@combine null
+    val selectedQuest = selectedQuestId.combine(homeTabUiState) { questId, uiState ->
+        if (questId == null || uiState !is HomeTabUiState.Success) return@combine null
         uiState.data.popularQuests.find { it.questId == questId }
             ?: uiState.data.recommendedQuests.find { it.questId == questId }
             ?: uiState.data.largeRewardQuests.values.flatten().find { it.questId == questId }
