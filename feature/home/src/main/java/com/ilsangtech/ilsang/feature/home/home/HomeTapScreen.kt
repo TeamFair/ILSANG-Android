@@ -45,8 +45,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTapScreen(
-    userNickname: String?,
-    homeViewModel: HomeViewModel,
+    homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToSubmit: (String) -> Unit,
@@ -109,7 +108,7 @@ fun HomeTapScreen(
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
-                        userNickname = userNickname,
+                        userNickname = userInfo?.nickname,
                         recommendedQuests = recommendedQuests,
                         onRecommendedQuestClick = homeViewModel::selectQuest
                     )
@@ -210,7 +209,6 @@ fun BannerView(
 @Composable
 private fun HomeTapScreenPreview() {
     HomeTapScreen(
-        userNickname = "누구누구",
         homeViewModel = hiltViewModel(),
         navigateToQuestTab = {},
         navigateToMyTab = {},
