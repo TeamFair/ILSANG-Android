@@ -15,11 +15,10 @@ data object RankingRoute
 fun NavGraphBuilder.rankingNavigation(
     navigateToProfile: (String) -> Unit
 ) {
-    navigation(
-        route = "RankingBaseRoute",
-        startDestination = "Ranking"
+    navigation<RankingBaseRoute>(
+        startDestination = RankingRoute
     ) {
-        composable(route = "Ranking") {
+        composable<RankingRoute> {
             RankingTabScreen(navigateToProfile = navigateToProfile)
         }
     }
