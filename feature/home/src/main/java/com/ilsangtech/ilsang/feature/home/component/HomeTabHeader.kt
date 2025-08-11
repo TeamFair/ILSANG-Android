@@ -39,7 +39,8 @@ internal fun HomeTabHeader(
     metroName: String?,
     areaName: String?,
     onProfileClick: () -> Unit,
-    onMyZoneClick: () -> Unit
+    onMyZoneClick: () -> Unit,
+    onIsZoneClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -57,7 +58,8 @@ internal fun HomeTabHeader(
         MyZoneSelectionRow(
             metroName = metroName,
             areaName = areaName,
-            onMyZoneClick = onMyZoneClick
+            onMyZoneClick = onMyZoneClick,
+            onIsZoneClick = onIsZoneClick
         )
     }
 }
@@ -98,7 +100,8 @@ private fun LogoAndProfileImage(
 private fun MyZoneSelectionRow(
     metroName: String?,
     areaName: String?,
-    onMyZoneClick: () -> Unit
+    onMyZoneClick: () -> Unit,
+    onIsZoneClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -128,7 +131,7 @@ private fun MyZoneSelectionRow(
                 contentDescription = "광역 지역"
             )
             Text(
-                text = metroName ?: "일상존을 선택하세요",
+                text = metroName ?: "내 지역을 선택하세요",
                 style = tapBoldTextStyle,
                 color = gray500
             )
@@ -140,7 +143,7 @@ private fun MyZoneSelectionRow(
         }
         Row(
             modifier = Modifier.clickable(
-                onClick = onMyZoneClick,
+                onClick = onIsZoneClick,
                 indication = null,
                 interactionSource = null
             ),
@@ -191,6 +194,7 @@ private fun HomeTabHeaderPreview() {
         metroName = "성남",
         areaName = null,
         onProfileClick = {},
-        onMyZoneClick = {}
+        onMyZoneClick = {},
+        onIsZoneClick = {}
     )
 }

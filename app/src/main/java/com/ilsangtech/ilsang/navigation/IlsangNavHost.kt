@@ -30,6 +30,8 @@ import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
+import com.ilsangtech.ilsang.feature.iszone.navigation.IsZoneBaseRoute
+import com.ilsangtech.ilsang.feature.iszone.navigation.isZoneNavigation
 import com.ilsangtech.ilsang.feature.login.navigation.LoginRoute
 import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
@@ -107,6 +109,9 @@ fun IlsangNavHost(
                 },
                 onMyZoneClick = {
                     navController.navigate(MyZoneBaseRoute)
+                },
+                onIsZoneClick = {
+                    navController.navigate(IsZoneBaseRoute)
                 }
             )
 
@@ -190,6 +195,8 @@ fun IlsangNavHost(
             })
 
             myZoneNavigation(onBackButtonClick = navController::popBackStack)
+
+            isZoneNavigation(onBackButtonClick = navController::popBackStack)
         }
     }
 }

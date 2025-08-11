@@ -34,7 +34,8 @@ fun HomeTabScreen(
     navigateToSubmit: (String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    onMyZoneClick: () -> Unit
+    onMyZoneClick: () -> Unit,
+    onIsZoneClick: () -> Unit
 ) {
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
     val homeTabUiState by homeViewModel.homeTabUiState.collectAsStateWithLifecycle()
@@ -76,7 +77,8 @@ fun HomeTabScreen(
                         metroName = null,
                         areaName = null,
                         onProfileClick = navigateToMyTab,
-                        onMyZoneClick = onMyZoneClick
+                        onMyZoneClick = onMyZoneClick,
+                        onIsZoneClick = onIsZoneClick
                     )
                 }
                 item {
@@ -131,6 +133,7 @@ private fun HomeTabScreenPreview() {
         navigateToSubmit = {},
         navigateToRankingTab = {},
         navigateToProfile = {},
-        onMyZoneClick = {}
+        onMyZoneClick = {},
+        onIsZoneClick = {}
     )
 }
