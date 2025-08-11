@@ -44,7 +44,7 @@ fun MyZoneScreen(
         selectedCommercialArea = myZoneUiState.selectedCommercialArea,
         onMetroAreaClick = myZoneViewModel::updateSelectedMetroArea,
         onCommercialAreaClick = myZoneViewModel::updateSelectedCommercialArea,
-        onSelectButtonClick = {},
+        onSelectButtonClick = myZoneViewModel::selectMyZone,
         onBackButtonClick = onBackButtonClick
     )
 }
@@ -76,31 +76,32 @@ private fun MyZoneScreen(
                     onMetroAreaClick = onMetroAreaClick,
                     onCommercialAreaClick = onCommercialAreaClick
                 )
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .padding(horizontal = 20.dp)
-                        .padding(bottom = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = primary,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp),
-                    enabled = selectedMetroArea != null && selectedCommercialArea != null,
-                    onClick = onSelectButtonClick
-                ) {
-                    Text(
-                        text = "내 일상존 선택하기",
-                        style = TextStyle(
-                            fontFamily = pretendardFontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
-                            lineHeight = 18.sp
+                if (selectedMetroArea != null && selectedCommercialArea != null) {
+                    Button(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(horizontal = 20.dp)
+                            .padding(bottom = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp),
+                        onClick = onSelectButtonClick
+                    ) {
+                        Text(
+                            text = "내 지역 선택하기",
+                            style = TextStyle(
+                                fontFamily = pretendardFontFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
