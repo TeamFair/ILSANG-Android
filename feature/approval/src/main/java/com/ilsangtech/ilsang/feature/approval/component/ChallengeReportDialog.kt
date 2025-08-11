@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.approval
+package com.ilsangtech.ilsang.feature.approval.component
 
 import androidx.compose.runtime.Composable
 import com.ilsangtech.ilsang.designsystem.component.ILSANGDialog

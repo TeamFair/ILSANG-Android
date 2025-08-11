@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.approval
+package com.ilsangtech.ilsang.feature.approval.component
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -57,6 +57,7 @@ import androidx.core.content.FileProvider
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.RandomChallenge
 import com.ilsangtech.ilsang.core.util.DateConverter
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -69,8 +70,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.title01
-import com.ilsangtech.ilsang.feature.home.BuildConfig
-import com.ilsangtech.ilsang.feature.home.R
+import com.ilsangtech.ilsang.feature.approval.BuildConfig
 import java.io.File
 
 @Composable

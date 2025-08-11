@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.approval
+package com.ilsangtech.ilsang.feature.approval
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

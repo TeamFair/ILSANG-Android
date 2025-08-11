@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.approval
+package com.ilsangtech.ilsang.feature.approval
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.approval.component.ApprovalItem
 
 @Composable
 fun ApprovalScreen(
