@@ -43,6 +43,7 @@ import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
+import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
 import com.ilsangtech.ilsang.feature.submit.navigation.SubmitRoute
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
 import com.ilsangtech.ilsang.feature.tutorial.TutorialScreen
@@ -174,6 +175,12 @@ fun ILSANGNavHost(
             )
 
             submitNavigation(popBackStack = navController::popBackStack)
+
+            rankingNavigation(
+                navigateToProfile = { id ->
+                    navController.navigate(ProfileRoute(id))
+                }
+            )
         }
     }
 }
