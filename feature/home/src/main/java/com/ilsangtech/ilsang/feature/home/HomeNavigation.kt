@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.home.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.home.home.HomeTapScreen
-import com.ilsangtech.ilsang.feature.home.ranking.RankingScreen
 
 fun NavGraphBuilder.homeNavigation(
     navController: NavHostController,
@@ -59,13 +58,6 @@ fun NavGraphBuilder.homeNavigation(
         }
         composable(HomeTap.Approval.name) {
             ApprovalScreen(
-                navigateToProfile = navigateToProfile
-            )
-        }
-        composable(HomeTap.Ranking.name) { backStackEntry ->
-            val homeViewModel = hiltViewModel<HomeViewModel>(backStackEntry)
-            RankingScreen(
-                homeViewModel = homeViewModel,
                 navigateToProfile = navigateToProfile
             )
         }

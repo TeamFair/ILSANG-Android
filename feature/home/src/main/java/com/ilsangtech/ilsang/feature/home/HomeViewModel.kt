@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.feature.home.home.HomeTapSuccessData
 import com.ilsangtech.ilsang.feature.home.home.HomeTapUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -92,16 +91,6 @@ class HomeViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = null
         )
-
-    val rankingUiState = flow {
-        emit(
-            RewardType.entries.associateWith { rankRepository.getXpTypeRank(it) }
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyMap()
-    )
 
     fun selectQuest(quest: Quest) {
         _selectedQuestId.update { quest.questId }

@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.home.ranking
+package com.ilsangtech.ilsang.feature.ranking.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +42,8 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
+import com.ilsangtech.ilsang.core.util.XpLevelCalculator
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -50,9 +52,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.home.BuildConfig
-import com.ilsangtech.ilsang.feature.home.R
-import com.ilsangtech.ilsang.core.util.XpLevelCalculator
+import com.ilsangtech.ilsang.feature.ranking.BuildConfig
 
 @Composable
 fun StatRankingTabRow(
