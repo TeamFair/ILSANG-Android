@@ -12,7 +12,7 @@ internal fun MyZoneSuccessDialog(
 ) {
     ILSANGDialog(
         modifier = Modifier.fillMaxWidth(),
-        title = "일상존이 설정되었습니다.",
+        title = "내 지역이 설정되었습니다.",
         content = "퀘스트를 수행하러 가 볼까요?",
         buttonText = "확인",
         onDismissRequest = onDismissRequest,

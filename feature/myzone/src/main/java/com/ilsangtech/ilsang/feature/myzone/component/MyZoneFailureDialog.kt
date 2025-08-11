@@ -40,7 +40,7 @@ internal fun MyZoneFailureDialog(
                 contentDescription = null
             )
             Text(
-                text = "일상존 변경에 실패했습니다",
+                text = "내 지역 변경에 실패했습니다",
                 style = title02,
                 color = Color.Black
             )
