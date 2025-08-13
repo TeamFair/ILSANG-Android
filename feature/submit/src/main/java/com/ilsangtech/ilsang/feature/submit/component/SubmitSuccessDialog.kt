@@ -28,23 +28,115 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.ilsangtech.ilsang.core.model.Reward
+import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.RewardType
+import com.ilsangtech.ilsang.core.ui.quest.RewardPointIcon
 import com.ilsangtech.ilsang.designsystem.R
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
+import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.designsystem.theme.toSp
+
+@Composable
+internal fun SubmitSuccessDialog(
+    modifier: Modifier = Modifier,
+    rewardPoints: List<RewardPoint>,
+    onDismissRequest: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            modifier = modifier,
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SubmitSuccessDialogIcon()
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "${rewardPoints.sumOf { it.point }}P가 상승했어요",
+                    style = submitSuccessDialogTitleStyle()
+                )
+                Spacer(Modifier.height(12.dp))
+                SubmitRewardPointsRow(
+                    modifier = Modifier.width(228.dp),
+                    rewardPoints = rewardPoints
+                )
+                Spacer(Modifier.height(12.dp))
+                Button(
+                    modifier = Modifier.width(228.dp),
+                    onClick = onDismissRequest,
+                    contentPadding = PaddingValues(vertical = 16.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = primary)
+                ) {
+                    Text(
+                        text = "확인",
+                        style = buttonTextStyle
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SubmitRewardPointsRow(
+    modifier: Modifier = Modifier,
+    rewardPoints: List<RewardPoint>
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(background),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                vertical = 8.dp,
+                horizontal = 16.dp
+            ),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            rewardPoints.forEach { rewardPoint ->
+                SubmitRewardPointItem(rewardPoint)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SubmitRewardPointItem(rewardPoint: RewardPoint) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RewardPointIcon(
+            modifier = Modifier.size(25.dp),
+            rewardPoint = rewardPoint
+        )
+        Text(
+            text = "${rewardPoint.point}P",
+            style = submitSuccessStatTextStyle()
+        )
+        Spacer(Modifier.width(2.dp))
+        Icon(
+            painter = painterResource(R.drawable.icon_reward_point_up),
+            tint = Color.Unspecified,
+            contentDescription = null
+        )
+    }
+}
 
 @Composable
 internal fun SubmitSuccessDialog(
@@ -68,7 +160,7 @@ internal fun SubmitSuccessDialog(
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = "${rewardList.sumOf { it.quantity }}XP가 상승했어요",
-                    style = submitSuccessDialogTitleStyle
+                    style = submitSuccessDialogTitleStyle()
                 )
                 Spacer(Modifier.height(12.dp))
                 SubmitSuccessStatsContent(rewardList)
@@ -214,72 +306,40 @@ private fun SubmitSuccessStatBox(reward: Reward) {
                 modifier = Modifier.padding(horizontal = 7.dp),
                 text = "${reward.quantity}P",
                 textAlign = TextAlign.Center,
-                style = submitSuccessStatTextStyle
+                style = submitSuccessStatTextStyle()
             )
         }
     }
 }
 
-private val submitSuccessDialogTitleStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_bold)),
-    fontSize = 17.sp,
-    lineHeight = 18.sp,
+@Composable
+private fun submitSuccessDialogTitleStyle() = TextStyle(
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 17.dp.toSp(),
+    lineHeight = 18.dp.toSp(),
     color = gray500
 )
 
-private val submitSuccessStatTextStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_semibold)),
-    fontSize = 11.sp,
+@Composable
+private fun submitSuccessStatTextStyle() = TextStyle(
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 11.dp.toSp(),
     lineHeight = 1.3.em,
     color = primary
 )
 
 @Preview
 @Composable
-private fun SubmitSuccessDialogPreview() {
-    val previewReward = Reward(
-        content = "",
-        quantity = 200,
-        rewardId = "",
-        type = "INTELLECT",
-        discountRate = 0,
-        questId = "",
-        target = "",
-        title = ""
+private fun SubmitSuccessDialogPreviewWithRewardPoints() {
+    val rewardPoints = listOf(
+        RewardPoint.Metro(5),
+        RewardPoint.Commerical(5),
+        RewardPoint.Contribute(5)
     )
-    Card(colors = CardDefaults.cardColors(containerColor = Color.White)) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            SubmitSuccessDialogIcon()
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = "200XP가 상승했어요",
-                style = submitSuccessDialogTitleStyle
-            )
-            Spacer(Modifier.height(12.dp))
-            SubmitSuccessStatsContent(
-                listOf(
-                    previewReward.copy(content = RewardType.STRENGTH.name),
-                    previewReward.copy(content = RewardType.INTELLECT.name),
-                    previewReward.copy(content = RewardType.CHARM.name),
-                    previewReward.copy(content = RewardType.FUN.name),
-                    previewReward.copy(content = RewardType.SOCIABILITY.name),
-                )
-            )
-            Spacer(Modifier.height(12.dp))
-            Button(
-                modifier = Modifier.width(228.dp),
-                onClick = {},
-                contentPadding = PaddingValues(vertical = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = primary)
-            ) {
-                Text(
-                    text = "확인",
-                    style = buttonTextStyle
-                )
-            }
-        }
-    }
+    SubmitSuccessDialog(
+        rewardPoints = rewardPoints,
+        onDismissRequest = {}
+    )
 }

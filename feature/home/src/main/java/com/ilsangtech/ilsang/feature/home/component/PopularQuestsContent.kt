@@ -28,12 +28,16 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.QuestType
+import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
@@ -42,6 +46,89 @@ import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.home.BuildConfig
+
+@Composable
+fun PopularQuestCard(
+    modifier: Modifier = Modifier,
+    quest: PopularQuest,
+    onCardClick: () -> Unit
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        onClick = onCardClick
+    ) {
+        Box {
+            Box(
+                modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.TopEnd)
+                    .padding(top = 16.dp, end = 16.dp)
+            ) {
+                if (quest.questType is NewQuestType.Repeat) {
+                    RepeatQuestTypeBadge(
+                        repeatType = quest.questType as NewQuestType.Repeat
+                    )
+                } else if (quest.questType is NewQuestType.Event) {
+                    EventQuestTypeBadge()
+                }
+            }
+
+            Column {
+                AsyncImage(
+                    modifier = Modifier.height(160.dp),
+                    model = BuildConfig.IMAGE_URL + quest.mainImageId,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = quest.title
+                )
+                Spacer(Modifier.height(9.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth()
+                        .height(
+                            popularQuestCardTitleStyle.lineHeight.value.dp * 2
+                                    + popularQuestCardWriterStyle.lineHeight.value.dp
+                        )
+                ) {
+                    Text(
+                        text = quest.title,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = popularQuestCardTitleStyle
+                    )
+                    Text(
+                        text = quest.writerName,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = popularQuestCardWriterStyle
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(widthDp = 200)
+@Composable
+private fun PopularQuestCardPreview() {
+    val quest = PopularQuest(
+        questId = 1,
+        expireDate = "2023-12-31",
+        imageId = "imageId",
+        mainImageId = "mainImageId",
+        questType = NewQuestType.Event,
+        title = "퀘스트 제목입니다. 퀘스트 제목은 두 줄까지 표시될 수 있습니다. 퀘스트 제목입니다.",
+        writerName = "작성자 이름"
+    )
+
+    PopularQuestCard(
+        quest = quest,
+        onCardClick = {}
+    )
+}
 
 @Composable
 fun PopularQuestCard(

@@ -24,11 +24,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -59,6 +61,67 @@ fun RecommendedQuestsContent(
             }
         }
     }
+}
+
+@Composable
+internal fun RecommendQuestCard(
+    quest: RecommendedQuest,
+    onCardClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.size(
+            width = 152.dp,
+            height = 172.dp
+        ),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+        ),
+        onClick = onCardClick
+    ) {
+
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = quest.title,
+                style = recommendedQuestTitleStyle,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = quest.writerName,
+                style = recommendedQuestWriterStyle,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+            Spacer(Modifier.weight(1f))
+            AsyncImage(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(recommendedQuestImageColor),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(BuildConfig.IMAGE_URL + quest.imageId)
+                    .build(),
+                contentDescription = quest.title,
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun RecommendQuestCardPreview() {
+    val quest = RecommendedQuest(
+        questId = 1,
+        imageId = "sample_image_id",
+        mainImageId = "sample_main_image_id",
+        title = "Sample Quest Title",
+        writerName = "Sample Writer"
+    )
+    RecommendQuestCard(quest = quest, onCardClick = {})
 }
 
 @Composable
