@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.quest.component
+package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -12,15 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestContent
-import com.ilsangtech.ilsang.core.ui.quest.QuestImageWithBadge
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary300
 
 @Composable
-internal fun QuestCardWithFavorite(
+fun QuestCardWithFavorite(
     modifier: Modifier = Modifier,
     quest: Quest,
     onFavoriteClick: () -> Unit,
@@ -67,7 +64,7 @@ internal fun QuestCardWithFavorite(
 
 @Preview
 @Composable
-internal fun QuestCardWithFavoritePreview() {
+private fun QuestCardWithFavoritePreview() {
     val quest = Quest(
         createDate = "2023-10-27",
         creatorRole = "Admin",

@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.quest.component
+package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,15 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestCard
-import com.ilsangtech.ilsang.core.ui.quest.DefaultQuestContent
-import com.ilsangtech.ilsang.core.ui.quest.QuestImageWithBadge
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
-internal fun CompletedQuestCard(
+fun CompletedQuestCard(
     modifier: Modifier = Modifier,
     quest: Quest,
     onClick: () -> Unit
