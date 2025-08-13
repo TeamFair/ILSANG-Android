@@ -47,7 +47,7 @@ internal fun ObtainablePointContent(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        QuestBottomSheetTextChip(text = "획득 가능 스텟")
+        QuestBottomSheetTextChip(text = "획득 가능 포인트")
         Row(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
