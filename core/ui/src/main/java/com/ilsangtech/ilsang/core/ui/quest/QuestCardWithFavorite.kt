@@ -12,9 +12,84 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
+import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.quest.NewQuest
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary300
+
+@Composable
+fun QuestCardWithFavorite(
+    modifier: Modifier = Modifier,
+    quest: NewQuest,
+    onFavoriteClick: () -> Unit,
+    onClick: () -> Unit
+) {
+    DefaultQuestCard(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            DefaultQuestContent(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(
+                        horizontal = 23.dp,
+                        vertical = 20.dp
+                    ),
+                title = quest.title,
+                writer = quest.writerName,
+                rewardPoints = quest.rewards,
+                questImage = {
+                    QuestImageWithBadge(
+                        imageId = quest.imageId,
+                        contentDescription = "퀘스트 이미지"
+                    )
+                }
+            )
+            Icon(
+                modifier = modifier
+                    .padding(
+                        top = 16.dp,
+                        end = 16.dp
+                    )
+                    .clickable(
+                        onClick = onFavoriteClick,
+                        indication = null,
+                        interactionSource = null
+                    ),
+                painter = painterResource(R.drawable.icon_favorite),
+                tint = if (quest.favoriteYn) primary300 else gray100,
+                contentDescription = "즐겨찾기"
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun QuestCardWithFavoritePreviewNew() {
+    val quest = NewQuest(
+        expireDate = "2023-12-31",
+        favoriteYn = true,
+        imageId = "sample_image_id",
+        mainImageId = "sample_main_image_id",
+        questId = 1,
+        rewards = listOf(
+            RewardPoint.Metro(10),
+            RewardPoint.Commerical(5),
+            RewardPoint.Contribute(20)
+        ),
+        title = "Sample Quest Title",
+        writerName = "Sample Writer"
+    )
+    QuestCardWithFavorite(
+        quest = quest,
+        onFavoriteClick = {},
+        onClick = {}
+    )
+}
+
 
 @Composable
 fun QuestCardWithFavorite(
