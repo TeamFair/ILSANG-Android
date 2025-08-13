@@ -5,8 +5,61 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.ilsangtech.ilsang.core.model.NewQuestType
+
+@Composable
+fun QuestImageWithBadge(
+    modifier: Modifier = Modifier,
+    imageId: String?,
+    questType: NewQuestType,
+    contentDescription: String
+) {
+    Box(modifier = modifier) {
+        if (questType is NewQuestType.Repeat) {
+            RepeatQuestTypeBadge(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .zIndex(2f)
+                    .offset(x = 10.dp, y = (-10).dp),
+                repeatType = questType
+            )
+        } else if (questType is NewQuestType.Event) {
+            EventQuestTypeBadge(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .zIndex(2f)
+                    .offset(x = 10.dp, y = (-10).dp)
+            )
+        }
+        DefaultQuestImage(
+            imageId = imageId,
+            contentDescription = contentDescription
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun QuestImageWithBadgeRepeatPreview() {
+    QuestImageWithBadge(
+        imageId = null,
+        questType = NewQuestType.Repeat.Daily,
+        contentDescription = "Quest Image"
+    )
+}
+
+@Preview
+@Composable
+private fun QuestImageWithBadgeEventPreview() {
+    QuestImageWithBadge(
+        imageId = null,
+        questType = NewQuestType.Event,
+        contentDescription = "Quest Image"
+    )
+}
 
 @Composable
 fun QuestImageWithBadge(
