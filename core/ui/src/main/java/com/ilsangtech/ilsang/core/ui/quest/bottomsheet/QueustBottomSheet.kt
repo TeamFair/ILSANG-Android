@@ -31,8 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
+import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
@@ -60,6 +63,33 @@ fun QuestBottomSheet(
             onFavoriteClick = onFavoriteClick
         )
         QuestBottomSheetContent(quest = quest)
+        Spacer(Modifier.height(16.dp))
+        QuestBottomSheetFooter(onClick = onApproveButtonClick)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun QuestBottomSheet(
+    quest: QuestDetail,
+    bottomSheetState: SheetState,
+    onFavoriteClick: () -> Unit,
+    onMissionImageClick: () -> Unit,
+    onApproveButtonClick: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    IlsangBottomSheet(
+        bottomSheetState = bottomSheetState,
+        onDismissRequest = onDismiss
+    ) {
+        QuestBottomSheetHeader(
+            isFavorite = quest.favoriteYn,
+            onFavoriteClick = onFavoriteClick
+        )
+        QuestBottomSheetContent(
+            quest = quest,
+            onImageClick = onMissionImageClick
+        )
         Spacer(Modifier.height(16.dp))
         QuestBottomSheetFooter(onClick = onApproveButtonClick)
     }
@@ -96,6 +126,35 @@ private fun QuestBottomSheetHeader(
             contentDescription = "즐겨찾기",
             tint = if (isFavorite) primary300 else gray100
         )
+    }
+}
+
+@Composable
+private fun QuestBottomSheetContent(
+    modifier: Modifier = Modifier,
+    quest: QuestDetail,
+    onImageClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        QuestInfoContent(quest = quest)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            QuestApprovalExample(
+                modifier = Modifier.weight(1f),
+                imageId = quest.missions.firstOrNull()?.exampleImageIds?.firstOrNull(),
+                onImageClick = onImageClick
+            )
+            MyQuestRank(
+                modifier = Modifier.weight(1f),
+                rank = quest.userRank
+            )
+        }
+        ObtainablePointContent(rewardPoints = quest.rewards)
     }
 }
 
@@ -180,6 +239,37 @@ private val questBottomSheetApproveButtonTextStyle = TextStyle(
     lineHeight = 18.sp,
     color = Color.White
 )
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun QuestBottomSheetPreviewQuestDetail() {
+    val quest = QuestDetail(
+        id = 1,
+        expireDate = "2023-12-31",
+        favoriteYn = true,
+        imageId = "imageId",
+        mainImageId = "mainImageId",
+        missions = emptyList(),
+        questType = NewQuestType.Repeat.Weekly,
+        rewards = listOf(
+            RewardPoint.Metro(2),
+            RewardPoint.Commerical(5),
+            RewardPoint.Contribute(10)
+        ),
+        title = "Sample Quest",
+        userRank = 1
+    )
+    val bottomSheetState = rememberStandardBottomSheetState()
+    QuestBottomSheet(
+        quest = quest,
+        bottomSheetState = bottomSheetState,
+        onFavoriteClick = {},
+        onMissionImageClick = {},
+        onApproveButtonClick = {},
+        onDismiss = {}
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
