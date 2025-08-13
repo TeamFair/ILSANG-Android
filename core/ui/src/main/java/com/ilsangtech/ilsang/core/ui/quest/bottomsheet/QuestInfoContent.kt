@@ -22,9 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
+import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.mission.Mission
+import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.ui.BuildConfig
+import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -32,6 +38,71 @@ import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.designsystem.theme.title02
+
+@Composable
+internal fun QuestInfoContent(
+    modifier: Modifier = Modifier,
+    quest: QuestDetail
+) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFF1F5FF)),
+            model = BuildConfig.IMAGE_URL + quest.imageId,
+            contentDescription = quest.title
+        )
+        Spacer(Modifier.width(8.dp))
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                if (quest.questType is NewQuestType.Repeat) {
+                    RepeatQuestTypeBadge(repeatType = quest.questType as NewQuestType.Repeat)
+                } else if (quest.questType is NewQuestType.Event) {
+                    EventQuestTypeBadge()
+                }
+            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = quest.title,
+                style = title02,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+            Text(
+                text = DateConverter.formatDate(
+                    input = "",
+                    outputPattern = "MM.dd"
+                ) + " ~ " + DateConverter.formatDate(
+                    input = quest.expireDate,
+                    outputPattern = "MM.dd"
+                ),
+                style = caption02,
+                color = gray400
+            )
+        }
+        Box(
+            modifier = Modifier
+                .background(
+                    color = primary100,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(10.dp)
+        ) {
+            Text(
+                text = "${quest.rewards.sumOf { it.point }}P",
+                style = heading01,
+                color = primary,
+            )
+        }
+    }
+}
 
 @Composable
 internal fun QuestInfoContent(
@@ -139,3 +210,40 @@ internal fun QuestInfoContentPreview() {
     QuestInfoContent(quest = quest)
 }
 
+@Preview(showBackground = true)
+@Composable
+internal fun QuestDetailInfoContentPreview() {
+    val questDetail = QuestDetail(
+        id = 1,
+        expireDate = "2023-12-31",
+        favoriteYn = true,
+        imageId = "sample_image_id",
+        mainImageId = "sample_main_image_id",
+        missions = listOf(
+            Mission(
+                id = 101,
+                exampleImageIds = listOf("example1.jpg", "example2.jpg"),
+                title = "Complete task A",
+                type = "TASK"
+            ),
+            Mission(
+                id = 102,
+                exampleImageIds = listOf("example3.jpg"),
+                title = "Review document B",
+                type = "REVIEW"
+            )
+        ),
+        questType = NewQuestType.Event,
+        rewards = listOf(
+            RewardPoint.Metro(2),
+            RewardPoint.Commerical(5),
+            RewardPoint.Contribute(10)
+        ),
+        title = "일상 공유하고 포인트 받기",
+        userRank = 5
+    )
+    QuestInfoContent(
+        modifier = Modifier,
+        quest = questDetail
+    )
+}
