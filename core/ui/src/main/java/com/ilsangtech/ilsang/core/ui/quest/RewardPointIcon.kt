@@ -10,7 +10,7 @@ import com.ilsangtech.ilsang.designsystem.R
 
 
 @Composable
-internal fun RewardPointIcon(
+fun RewardPointIcon(
     modifier: Modifier = Modifier,
     rewardPoint: RewardPoint
 ) {
