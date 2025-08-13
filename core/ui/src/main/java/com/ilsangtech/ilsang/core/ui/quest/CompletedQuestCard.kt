@@ -23,9 +23,138 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
+import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.quest.BannerQuest
+import com.ilsangtech.ilsang.core.model.quest.NewQuest
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
+
+@Composable
+fun CompletedQuestCard(
+    modifier: Modifier = Modifier,
+    quest: BannerQuest,
+    onClick: () -> Unit = {}
+) {
+    CompletedQuestCard(
+        modifier = modifier,
+        title = quest.title,
+        writer = quest.writerName,
+        rewardPoints = quest.rewards,
+        imageId = quest.imageId,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun CompletedQuestCard(
+    modifier: Modifier = Modifier,
+    quest: NewQuest,
+    onClick: () -> Unit = {}
+) {
+    CompletedQuestCard(
+        modifier = modifier,
+        title = quest.title,
+        writer = quest.writerName,
+        rewardPoints = quest.rewards,
+        imageId = quest.imageId,
+        onClick = onClick
+    )
+}
+
+@Composable
+private fun CompletedQuestCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    writer: String,
+    rewardPoints: List<RewardPoint>,
+    imageId: String?,
+    onClick: () -> Unit
+) {
+    DefaultQuestCard(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 13.5.dp,
+                    vertical = 20.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DefaultQuestContent(
+                modifier = Modifier.weight(1f),
+                title = title,
+                writer = writer,
+                rewardPoints = rewardPoints,
+                questImage = {
+                    QuestImageWithBadge(
+                        imageId = imageId,
+                        contentDescription = "퀘스트 이미지"
+                    )
+                }
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(26.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFFECFAF1))
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(
+                            top = 9.dp,
+                            bottom = 6.64.dp,
+                            start = 6.dp,
+                            end = 6.37.dp
+                        ),
+                        painter = painterResource(R.drawable.icon_completed_quest_checkmark),
+                        contentDescription = "퀘스트 완료 체크",
+                        tint = Color.Unspecified
+                    )
+                }
+                Text(
+                    text = "적립완료",
+                    style = TextStyle(
+                        fontFamily = pretendardFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.dp.toSp(),
+                        lineHeight = 16.dp.toSp(),
+                        letterSpacing = -0.3.dp.toSp(),
+                        color = Color(0xFF3FCC6F)
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun CompletedQuestCardNewQuestPreview() {
+    CompletedQuestCard(
+        quest = NewQuest(
+            expireDate = "2023-12-31",
+            favoriteYn = false,
+            imageId = "sample_image_id_new",
+            mainImageId = "sample_main_image_id_new",
+            questId = 123,
+            rewards = listOf(
+                RewardPoint.Metro(5),
+                RewardPoint.Commerical(10),
+                RewardPoint.Contribute(15)
+            ),
+            title = "새로운 퀘스트 타이틀",
+            writerName = "새로운 작성자"
+        ),
+        onClick = {}
+    )
+}
 
 @Composable
 fun CompletedQuestCard(
