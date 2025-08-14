@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.model
 
 data class Banner(
+    val id: Int,
     val title: String,
     val imageId: String,
     val imageUrl: String,

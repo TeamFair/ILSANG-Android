@@ -11,7 +11,7 @@ data object BannerBaseRoute
 
 @Serializable
 data class BannerDetailRoute(
-    val id: String,
+    val id: Int,
     val title: String,
     val description: String,
     val imageId: String

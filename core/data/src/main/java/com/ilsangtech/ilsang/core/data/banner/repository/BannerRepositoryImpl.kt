@@ -11,6 +11,7 @@ class BannerRepositoryImpl @Inject constructor(
     override suspend fun getBanners(): List<Banner> {
         return bannerDataSource.getBanners().bannerList.map { networkBanner ->
             Banner(
+                id = networkBanner.id,
                 title = networkBanner.title,
                 imageId = networkBanner.image.imageId,
                 imageUrl = networkBanner.image.location,

@@ -3,7 +3,7 @@ package com.ilsangtech.ilsang.feature.banner
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 
 data class BannerDetailUiState(
-    val id: String,
+    val id: Int,
     val title: String,
     val description: String,
     val imageId: String,
