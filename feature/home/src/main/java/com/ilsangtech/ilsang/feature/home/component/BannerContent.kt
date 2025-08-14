@@ -19,7 +19,7 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 internal fun BannerContent(
     modifier: Modifier = Modifier,
     banners: List<Banner>,
-    onClick: () -> Unit
+    onClick: (Banner) -> Unit
 ) {
     val pagerState = rememberPagerState { banners.size }
     HorizontalPager(
@@ -32,11 +32,7 @@ internal fun BannerContent(
                 .aspectRatio(11 / 10f)
                 .clip(RoundedCornerShape(12.dp))
                 .clickable(
-                    onClick = {
-                        if (banners[page].description.contains("quest")) {
-                            onClick()
-                        }
-                    },
+                    onClick = { onClick(banners[page]) },
                     indication = null,
                     interactionSource = null
                 ),

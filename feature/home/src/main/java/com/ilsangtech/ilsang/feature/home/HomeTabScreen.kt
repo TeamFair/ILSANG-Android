@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.feature.home.component.BannerContent
 import com.ilsangtech.ilsang.feature.home.component.HomeTabHeader
@@ -34,6 +35,7 @@ fun HomeTabScreen(
     navigateToSubmit: (String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
 ) {
@@ -84,7 +86,7 @@ fun HomeTabScreen(
                 item {
                     BannerContent(
                         banners = banners,
-                        onClick = navigateToQuestTab
+                        onClick = onBannerClick
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
@@ -133,6 +135,7 @@ private fun HomeTabScreenPreview() {
         navigateToSubmit = {},
         navigateToRankingTab = {},
         navigateToProfile = {},
+        onBannerClick = {},
         onMyZoneClick = {},
         onIsZoneClick = {}
     )
