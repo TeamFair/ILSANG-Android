@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":feature:approval"))
     implementation(project(":feature:myzone"))
     implementation(project(":feature:iszone"))
+    implementation(project(":feature:banner"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)
