@@ -5,7 +5,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 internal fun BannerDetailScreen(
-    bannerDetailViewModel: BannerDetailViewModel = hiltViewModel()
+    bannerDetailViewModel: BannerDetailViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit
 ) {
 
 }
