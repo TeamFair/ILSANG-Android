@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.designsystem.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -44,7 +45,7 @@ fun <T> DropDownMenu(
     var expanded by remember { mutableStateOf(false) }
     val unselectedList = list.filter { it != selectedItem }
 
-    Column(modifier = modifier.width(150.dp)) {
+    Box(modifier = modifier.width(150.dp)) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,40 +87,41 @@ fun <T> DropDownMenu(
                 )
             }
         }
-        AnimatedVisibility(visible = expanded) {
-            Column {
-                unselectedList.forEachIndexed { index, item ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(
-                                shape = if (index == unselectedList.lastIndex) {
-                                    RoundedCornerShape(
-                                        bottomStart = 8.dp,
-                                        bottomEnd = 8.dp
+        if (expanded) {
+            Box(modifier = Modifier.align(Alignment.BottomStart)) {
+                Popup(
+                    properties = PopupProperties(focusable = true, clippingEnabled = false),
+                    onDismissRequest = { expanded = false }
+                ) {
+                    Column(modifier = Modifier.width(150.dp)) {
+                        unselectedList.forEachIndexed { index, item ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(
+                                        shape = if (index == unselectedList.lastIndex) {
+                                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                                        } else {
+                                            RectangleShape
+                                        }
                                     )
-                                } else {
-                                    RectangleShape
-                                }
-                            )
-                            .background(Color.White)
-                            .clickable(
-                                onClick = {
-                                    onItemSelected(item)
-                                    expanded = !expanded
-                                },
-                                indication = null,
-                                interactionSource = null
-                            )
-                            .padding(
-                                vertical = 10.dp,
-                                horizontal = 12.dp
-                            )
-                    ) {
-                        Text(
-                            text = item.toString(),
-                            style = dropDownMenuTextStyle()
-                        )
+                                    .background(Color.White)
+                                    .clickable(
+                                        onClick = {
+                                            onItemSelected(item)
+                                            expanded = false
+                                        },
+                                        indication = null,
+                                        interactionSource = null
+                                    )
+                                    .padding(vertical = 10.dp, horizontal = 12.dp)
+                            ) {
+                                Text(
+                                    text = item.toString(),
+                                    style = dropDownMenuTextStyle()
+                                )
+                            }
+                        }
                     }
                 }
             }
