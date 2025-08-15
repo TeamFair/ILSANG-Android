@@ -1,0 +1,174 @@
+package com.ilsangtech.ilsang.feature.banner.component
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.quest.BannerQuest
+import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
+import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
+import com.ilsangtech.ilsang.designsystem.component.DropDownMenu
+import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.designsystem.theme.gray300
+import com.ilsangtech.ilsang.designsystem.theme.gray500
+import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.designsystem.theme.title02
+import com.ilsangtech.ilsang.designsystem.theme.toSp
+import com.ilsangtech.ilsang.feature.banner.BannerDetailQuestType
+import com.ilsangtech.ilsang.feature.banner.BannerDetailSortType
+import com.ilsangtech.ilsang.feature.banner.BannerQuestUiState
+
+internal fun LazyListScope.bannerDetailQuestsContent(
+    bannerQuestUiState: BannerQuestUiState,
+    selectedQuestType: BannerDetailQuestType,
+    selectedSortType: BannerDetailSortType,
+    onQuestClick: (BannerQuest) -> Unit,
+    onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
+    onSortTypeChanged: (BannerDetailSortType) -> Unit
+) {
+    item {
+        TabRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+            containerColor = Color.Transparent,
+            contentColor = primary,
+            selectedTabIndex = BannerDetailQuestType.entries.indexOf(selectedQuestType),
+            indicator = { tabPositions ->
+                if (BannerDetailQuestType.entries.indexOf(selectedQuestType) < tabPositions.size) {
+                    TabRowDefaults.PrimaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(
+                            tabPositions[BannerDetailQuestType.entries.indexOf(selectedQuestType)]
+                        ),
+                        width = 127.dp,
+                        height = 3.dp,
+                        color = primary
+                    )
+                }
+            },
+            divider = { HorizontalDivider(color = gray100) }
+        ) {
+            BannerDetailQuestType.entries.forEach { bannerDetailQuestType ->
+                Tab(
+                    selected = selectedQuestType == bannerDetailQuestType,
+                    unselectedContentColor = gray300,
+                    selectedContentColor = gray500,
+                    onClick = { onQuestTypeChanged(bannerDetailQuestType) },
+                    text = {
+                        Text(
+                            text = bannerDetailQuestType.toString(),
+                            style = TextStyle(
+                                fontFamily = pretendardFontFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.dp.toSp(),
+                                lineHeight = 24.dp.toSp()
+                            )
+                        )
+                    }
+                )
+            }
+        }
+    }
+    item {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+                .padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier.padding(
+                    top = 4.dp,
+                    start = 2.dp
+                ),
+                text = "특별 퀘스트 모음",
+                style = title02
+            )
+            DropDownMenu(
+                list = BannerDetailSortType.entries,
+                selectedItem = selectedSortType,
+                onItemSelected = onSortTypeChanged,
+            )
+        }
+    }
+    item { Spacer(Modifier.height(11.dp)) }
+    if (bannerQuestUiState is BannerQuestUiState.Success) {
+        val bannerQuests = if (selectedQuestType == BannerDetailQuestType.OnGoing) {
+            bannerQuestUiState.onGoingQuests
+        } else {
+            bannerQuestUiState.completedQuests
+        }
+        itemsIndexed(bannerQuests) { index, bannerQuest ->
+            Column {
+                if (selectedQuestType == BannerDetailQuestType.OnGoing) {
+                    QuestCardWithArrow(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        quest = bannerQuest,
+                        onClick = { onQuestClick(bannerQuest) }
+                    )
+                } else {
+                    CompletedQuestCard(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        quest = bannerQuest,
+                        onClick = { onQuestClick(bannerQuest) }
+                    )
+                }
+                if (bannerQuests.lastIndex != index) {
+                    Spacer(Modifier.height(12.dp))
+                } else {
+                    Spacer(
+                        Modifier
+                            .padding(bottom = 72.dp)
+                            .navigationBarsPadding()
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BannerDetailQuestsContentPreview() {
+    var selectedQuestType by remember { mutableStateOf(BannerDetailQuestType.OnGoing) }
+    var selectedSortType by remember { mutableStateOf(BannerDetailSortType.ExpiredDate) }
+    LazyColumn {
+        bannerDetailQuestsContent(
+            bannerQuestUiState = BannerQuestUiState.Success(
+                onGoingQuests = emptyList(),
+                completedQuests = emptyList()
+            ),
+            selectedQuestType = selectedQuestType,
+            selectedSortType = selectedSortType,
+            onQuestClick = {},
+            onQuestTypeChanged = { selectedQuestType = it },
+            onSortTypeChanged = { selectedSortType = it }
+        )
+    }
+}
