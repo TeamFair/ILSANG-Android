@@ -78,7 +78,7 @@ private fun QuestCardWithArrow(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             DefaultQuestContent(
-                modifier = modifier,
+                modifier = Modifier,
                 title = title,
                 writer = writer,
                 rewardPoints = rewardPoints,
