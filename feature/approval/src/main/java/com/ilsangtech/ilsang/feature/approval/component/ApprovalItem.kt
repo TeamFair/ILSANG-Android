@@ -6,9 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,9 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -62,13 +57,9 @@ import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray200
-import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
-import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.designsystem.theme.primary100
-import com.ilsangtech.ilsang.designsystem.theme.primary300
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.approval.BuildConfig
 import java.io.File
@@ -163,7 +154,7 @@ fun ApprovalItem(
                 hateCount = challenge.hateCnt
             )
             if (!isSharing) {
-                ApprovalItemFooter(
+                ApprovalFeedbackButtonRow(
                     isLiked = challenge.emoji?.isLike == true,
                     isHated = challenge.emoji?.isHate == true,
                     onLikeButtonClick = onLikeButtonClick,
@@ -307,78 +298,6 @@ fun ApprovalItemBody(
             )
         }
     }
-}
-
-@Composable
-fun ApprovalItemFooter(
-    isLiked: Boolean,
-    isHated: Boolean,
-    onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            ApprovalFeedbackButton(
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(top = 11.dp, bottom = 9.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isHated) primary100 else gray100,
-                    contentColor = if (isHated) primary300 else gray300
-                ),
-                onClick = onHateButtonClick
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(vertical = 3.dp)
-                        .padding(start = 2.dp, end = 1.dp),
-                    painter = painterResource(R.drawable.thumbs_down),
-                    contentDescription = null
-                )
-            }
-
-            ApprovalFeedbackButton(
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(top = 9.dp, bottom = 11.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isLiked) primary else gray100,
-                    contentColor = if (isLiked) Color.White else gray300
-                ),
-                onClick = onLikeButtonClick
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(vertical = 3.dp)
-                        .padding(start = 1.dp, end = 2.dp),
-                    painter = painterResource(R.drawable.thumbs_up),
-                    contentDescription = null
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ApprovalFeedbackButton(
-    modifier: Modifier,
-    onClick: () -> Unit,
-    contentPadding: PaddingValues,
-    colors: ButtonColors,
-    content: @Composable RowScope.() -> Unit
-) {
-    Button(
-        modifier = modifier.fillMaxWidth(),
-        content = content,
-        contentPadding = contentPadding,
-        colors = colors,
-        shape = RoundedCornerShape(12.dp),
-        onClick = onClick
-    )
 }
 
 @Composable
