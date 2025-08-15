@@ -28,6 +28,8 @@ import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
+import com.ilsangtech.ilsang.feature.banner.navigation.bannerNavigation
+import com.ilsangtech.ilsang.feature.banner.navigation.navigateToBannerDetail
 import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
 import com.ilsangtech.ilsang.feature.iszone.navigation.IsZoneBaseRoute
@@ -107,6 +109,7 @@ fun IlsangNavHost(
                 navigateToSubmit = { questId ->
                     navController.navigate(SubmitRoute(questId))
                 },
+                onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
                     navController.navigate(MyZoneBaseRoute)
                 },
@@ -197,6 +200,8 @@ fun IlsangNavHost(
             myZoneNavigation(onBackButtonClick = navController::popBackStack)
 
             isZoneNavigation(onBackButtonClick = navController::popBackStack)
+
+            bannerNavigation(onBackButtonClick = navController::popBackStack)
         }
     }
 }
