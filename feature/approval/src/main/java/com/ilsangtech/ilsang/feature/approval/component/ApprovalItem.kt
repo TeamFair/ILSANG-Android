@@ -65,7 +65,7 @@ import com.ilsangtech.ilsang.feature.approval.BuildConfig
 import java.io.File
 
 @Composable
-fun ApprovalItem(
+internal fun ApprovalItem(
     challenge: RandomChallenge,
     onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
@@ -410,7 +410,7 @@ private val approvalItemTimeTextStyle = TextStyle(
 
 @Preview(showBackground = true)
 @Composable
-fun ApprovalItemPreview() {
+private fun ApprovalItemPreview() {
     val challenge = RandomChallenge(
         challengeId = "",
         createdAt = "3시간전",
