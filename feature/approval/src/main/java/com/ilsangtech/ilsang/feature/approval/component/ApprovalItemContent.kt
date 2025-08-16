@@ -85,6 +85,7 @@ internal fun ApprovalItemContent(
                 color = gray500
             )
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(
