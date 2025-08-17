@@ -105,7 +105,7 @@ internal fun WordsQuizSubmitCard(
                 state = wordsQuizUiState.answer,
                 textStyle = caption01.copy(color = Color.Black),
                 decorator = { innerTextField ->
-                    Row(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
