@@ -59,9 +59,13 @@ internal fun UserRankItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Box(modifier = Modifier.size(30.dp)) {
+            Box(
+                modifier = Modifier.size(30.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 if (rank <= 3) {
                     Icon(
+                        modifier = Modifier.padding(2.dp),
                         painter = painterResource(
                             when (rank) {
                                 1 -> R.drawable.rank_gold
@@ -73,7 +77,13 @@ internal fun UserRankItem(
                         contentDescription = null
                     )
                 } else {
-
+                    Text(
+                        text = rank.toString(),
+                        style = heading02.copy(
+                            fontSize = 15.dp.toSp(),
+                            lineHeight = 18.dp.toSp()
+                        )
+                    )
                 }
             }
             DefaultUserRankContent(
