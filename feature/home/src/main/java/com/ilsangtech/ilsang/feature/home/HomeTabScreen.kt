@@ -20,7 +20,7 @@ import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.feature.home.component.BannerContent
 import com.ilsangtech.ilsang.feature.home.component.HomeTabHeader
-import com.ilsangtech.ilsang.feature.home.component.LargeRewardQuestsContent
+import com.ilsangtech.ilsang.feature.home.component.LargeRewardQuestContent
 import com.ilsangtech.ilsang.feature.home.component.PopularQuestsContent
 import com.ilsangtech.ilsang.feature.home.component.RecommendedQuestsContent
 import com.ilsangtech.ilsang.feature.home.component.UserRankContent
@@ -106,9 +106,10 @@ fun HomeTabScreen(
                 }
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
-                    LargeRewardQuestsContent(
+                    LargeRewardQuestContent(
                         largeRewardQuests = largeRewardQuests,
-                        navigateToQuestTab = navigateToQuestTab
+                        onQuestClick = { questId -> /*TODO 상세보기 적용할 퀘스트 아이디 선택 */ },
+                        onMoreButtonClick = navigateToQuestTab
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
