@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.domain
 
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import kotlinx.coroutines.flow.Flow
 
 interface QuestRepository {
@@ -8,7 +9,7 @@ interface QuestRepository {
 
     suspend fun getRecommendedQuests(): Flow<List<Quest>>
 
-    suspend fun getLargeRewardQuests(): Flow<Map<String, List<Quest>>>
+    suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
 
     // 미완료한 기본 퀘스트 목록 조회
     suspend fun getUncompletedNormalQuests(): Flow<List<Quest>>

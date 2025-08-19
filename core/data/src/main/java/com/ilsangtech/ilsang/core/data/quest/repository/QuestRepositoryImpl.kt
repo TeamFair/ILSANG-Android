@@ -1,9 +1,12 @@
 package com.ilsangtech.ilsang.core.data.quest.repository
 
 import com.ilsangtech.ilsang.core.data.quest.datasource.QuestDataSource
+import com.ilsangtech.ilsang.core.data.quest.mapper.toLargeRewardQuest
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
+import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,23 +45,15 @@ class QuestRepositoryImpl(
         }
     }
 
-    override suspend fun getLargeRewardQuests(): Flow<Map<String, List<Quest>>> = flow {
-        val rewardContentList = listOf("INTELLECT", "SOCIABILITY", "STRENGTH", "FUN", "CHARM")
-        emit(
-            rewardContentList.associateWith { rewardContent ->
+    override suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>> =
+        flow {
+            val largeRewardQuests =
                 questDataSource.getLargeRewardQuest(
-                    rewardContent = rewardContent,
+                    commercialAreaCode = commercialAreaCode,
                     size = 3
-                ).data.map(QuestNetworkModel::toQuest)
-            }
-        )
-    }.combine(questCache) { quests, questCache ->
-        quests.mapValues { (_, quests) ->
-            quests.map { quest ->
-                quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
-            }
+                ).content.map(LargeRewardQuestNetworkModel::toLargeRewardQuest)
+            emit(largeRewardQuests)
         }
-    }
 
     override suspend fun getUncompletedNormalQuests(): Flow<List<Quest>> = flow {
         emit(
