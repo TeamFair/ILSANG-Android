@@ -29,14 +29,26 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import com.ilsangtech.ilsang.core.ui.zone.ZoneListContent
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.iszone.component.IsZoneFailureDialog
 import com.ilsangtech.ilsang.feature.iszone.component.IsZoneHeader
+import com.ilsangtech.ilsang.feature.iszone.component.IsZoneSuccessDialog
 
 @Composable
 internal fun IsZoneScreen(
     isZoneViewModel: IsZoneViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
-    val isZoneUiState by isZoneViewModel.myZoneUiState.collectAsStateWithLifecycle()
+    val isZoneUiState by isZoneViewModel.isZoneUiState.collectAsStateWithLifecycle()
+
+    if (isZoneUiState.isIsZoneUpdateSuccess == true) {
+        IsZoneSuccessDialog(onDismissRequest = {
+            isZoneViewModel.resetIsZoneUpdateStatus()
+            onBackButtonClick()
+        })
+    } else if (isZoneUiState.isIsZoneUpdateSuccess == false) {
+        IsZoneFailureDialog(onDismissRequest = isZoneViewModel::resetIsZoneUpdateStatus)
+    }
+
     IsZoneScreen(
         selectedMetroArea = isZoneUiState.selectedMetroArea,
         selectedCommercialArea = isZoneUiState.selectedCommercialArea,
@@ -125,14 +137,12 @@ private fun IsZoneScreenPreview() {
     val sampleMetroArea1 = MetroArea(
         code = "MA001",
         areaName = "서울",
-        description = "Capital of South Korea",
-        commericalAreaList = listOf(sampleCommercialArea1, sampleCommercialArea2)
+        commercialAreaList = listOf(sampleCommercialArea1, sampleCommercialArea2)
     )
     val sampleMetroArea2 = MetroArea(
         code = "MA002",
         areaName = "부산",
-        description = "Second largest city in South Korea",
-        commericalAreaList = emptyList()
+        commercialAreaList = emptyList()
     )
 
     IsZoneScreen(

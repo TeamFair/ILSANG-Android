@@ -19,6 +19,11 @@ class UserDataStore(context: Context) {
         preferences[shouldShowOnBoardingKey] ?: true
     }
 
+    private val userMyZoneKey = stringPreferencesKey("user_my_zone")
+    val userMyZone = userDataStore.data.map { preferences ->
+        preferences[userMyZoneKey]
+    }
+
     private val accessTokenKey = stringPreferencesKey("access_token")
     val accessToken = userDataStore.data.map { preferences ->
         preferences[accessTokenKey]
@@ -32,6 +37,12 @@ class UserDataStore(context: Context) {
     suspend fun setShouldShowOnBoarding(shouldShow: Boolean) {
         userDataStore.edit { preferences ->
             preferences[shouldShowOnBoardingKey] = shouldShow
+        }
+    }
+
+    suspend fun setUserMyZone(commericalAreaCode: String) {
+        userDataStore.edit { preferences ->
+            preferences[userMyZoneKey] = commericalAreaCode
         }
     }
 

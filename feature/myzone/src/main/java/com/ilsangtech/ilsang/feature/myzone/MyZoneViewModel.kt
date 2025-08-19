@@ -2,6 +2,8 @@ package com.ilsangtech.ilsang.feature.myzone
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ilsangtech.ilsang.core.domain.AreaRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.area.CommercialArea
 import com.ilsangtech.ilsang.core.model.area.MetroArea
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,18 +17,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyZoneViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    areaRepository: AreaRepository
 ) : ViewModel() {
     private val _selectedMetroArea = MutableStateFlow<MetroArea?>(null)
     private val _selectedCommercialArea = MutableStateFlow<CommercialArea?>(null)
 
+    private val _isMyZoneUpdateSuccess = MutableStateFlow<Boolean?>(null)
     val myZoneUiState = combine(
         _selectedCommercialArea,
-        _selectedMetroArea
-    ) { selectedCommercialArea, selectedMetroArea ->
+        _selectedMetroArea,
+        areaRepository.getAreaList(),
+        _isMyZoneUpdateSuccess
+    ) { selectedCommercialArea, selectedMetroArea, areaList, isMyZoneUpdateSuccess ->
         MyZoneUiState(
             selectedCommercialArea = selectedCommercialArea,
             selectedMetroArea = selectedMetroArea,
-            areaList = emptyList()
+            areaList = areaList,
+            isMyZoneUpdateSuccess = isMyZoneUpdateSuccess
         )
     }.stateIn(
         scope = viewModelScope,
@@ -46,12 +54,19 @@ class MyZoneViewModel @Inject constructor(
         _selectedCommercialArea.update { commercialArea }
     }
 
+    fun resetMyZoneUpdateStatus() {
+        _isMyZoneUpdateSuccess.update { null }
+    }
+
     fun selectMyZone() {
         viewModelScope.launch {
-            if (myZoneUiState.value.selectedMetroArea != null
-                && myZoneUiState.value.selectedCommercialArea != null
-            ) {
-                //TODO 내 일상존 선택 확정
+            myZoneUiState.value.selectedCommercialArea?.let { commercialArea ->
+                userRepository.updateUserMyZone(commercialArea.code)
+                    .onSuccess {
+                        _isMyZoneUpdateSuccess.update { true }
+                    }.onFailure {
+                        _isMyZoneUpdateSuccess.update { false }
+                    }
             }
         }
     }
