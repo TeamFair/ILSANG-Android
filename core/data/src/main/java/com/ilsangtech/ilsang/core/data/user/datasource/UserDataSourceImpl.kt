@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import javax.inject.Inject
@@ -54,5 +55,9 @@ class UserDataSourceImpl @Inject constructor(
 
     override suspend fun updateUserTitle(titleHistoryId: String): UserTitleUpdateResponse {
         return userApiService.updateUserTitle(titleHistoryId)
+    }
+
+    override suspend fun updateUserIsZone(commericalAreaCode: String): UserInfoResponse {
+        return userApiService.updateUserIsZone(UserIsZoneUpdateRequest(commericalAreaCode))
     }
 }
