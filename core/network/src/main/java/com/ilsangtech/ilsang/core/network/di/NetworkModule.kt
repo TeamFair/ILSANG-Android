@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.network.di
 
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.network.BuildConfig
+import com.ilsangtech.ilsang.core.network.api.AreaApiService
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
@@ -216,5 +217,11 @@ object NetworkModule {
     @Singleton
     fun provideTitleApiService(retrofit: Retrofit): TitleApiService {
         return retrofit.create(TitleApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAreaApiService(retrofit: Retrofit): AreaApiService {
+        return retrofit.create(AreaApiService::class.java)
     }
 }
