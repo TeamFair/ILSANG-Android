@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
@@ -20,6 +21,20 @@ class QuestDataSourceImpl @Inject constructor(
         sort: List<String>
     ): UncompletedTotalQuestResponse {
         return questApiService.getUncompletedTotalQuest(
+            page = page,
+            size = size,
+            sort = sort
+        )
+    }
+
+    override suspend fun getPopularQuest(
+        commercialAreaCode: String,
+        page: Int,
+        size: Int,
+        sort: List<String>
+    ): PopularQuestResponse {
+        return questApiService.getPopularQuest(
+            commercialAreaCode = commercialAreaCode,
             page = page,
             size = size,
             sort = sort
