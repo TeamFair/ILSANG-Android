@@ -113,4 +113,10 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.updateUserTitle(titleHistoryId)
         }
     }
+
+    override suspend fun updateUserIsZone(commericalAreaCode: String): Result<Unit> {
+        return runCatching {
+            userDataSource.updateUserIsZone(commericalAreaCode)
+        }
+    }
 }

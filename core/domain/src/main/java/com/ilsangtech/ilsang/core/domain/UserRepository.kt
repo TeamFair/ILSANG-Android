@@ -31,4 +31,6 @@ interface UserRepository {
     suspend fun completeOnBoarding()
 
     suspend fun updateUserTitle(titleHistoryId: String): Result<Unit>
+
+    suspend fun updateUserIsZone(commericalAreaCode: String): Result<Unit>
 }
