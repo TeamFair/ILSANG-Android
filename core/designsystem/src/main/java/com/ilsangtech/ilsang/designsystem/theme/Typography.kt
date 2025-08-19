@@ -18,6 +18,19 @@ val pretendardFontFamily = FontFamily(
     Font(R.font.pretendard_medium, FontWeight.Medium)
 )
 
+val payboocFontFamily = FontFamily(
+    Font(R.font.paybooc_extrabold, FontWeight.ExtraBold),
+    Font(R.font.paybooc_bold, FontWeight.Bold),
+    Font(R.font.paybooc_medium, FontWeight.Medium),
+    Font(R.font.paybooc_light, FontWeight.Light),
+)
+
+val gmarketSansFontFamily = FontFamily(
+    Font(R.font.gmarket_sans_bold, FontWeight.Bold),
+    Font(R.font.gmarket_sans_medium, FontWeight.Medium),
+    Font(R.font.gmarket_sans_light, FontWeight.Light)
+)
+
 val title01 = TextStyle(
     fontFamily = FontFamily(Font(R.font.pretendard_bold)),
     fontSize = 23.sp,
