@@ -36,7 +36,7 @@ internal fun IsZoneScreen(
     isZoneViewModel: IsZoneViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
-    val isZoneUiState by isZoneViewModel.myZoneUiState.collectAsStateWithLifecycle()
+    val isZoneUiState by isZoneViewModel.isZoneUiState.collectAsStateWithLifecycle()
     IsZoneScreen(
         selectedMetroArea = isZoneUiState.selectedMetroArea,
         selectedCommercialArea = isZoneUiState.selectedCommercialArea,

@@ -2,6 +2,8 @@ package com.ilsangtech.ilsang.feature.iszone
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ilsangtech.ilsang.core.domain.AreaRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.area.CommercialArea
 import com.ilsangtech.ilsang.core.model.area.MetroArea
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,18 +17,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IsZoneViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    areaRepository: AreaRepository
 ) : ViewModel() {
     private val _selectedMetroArea = MutableStateFlow<MetroArea?>(null)
     private val _selectedCommercialArea = MutableStateFlow<CommercialArea?>(null)
 
-    val myZoneUiState = combine(
+    private val _isIsZoneUpdateSuccess = MutableStateFlow<Boolean?>(null)
+    val isZoneUiState = combine(
         _selectedCommercialArea,
-        _selectedMetroArea
-    ) { selectedCommercialArea, selectedMetroArea ->
+        _selectedMetroArea,
+        areaRepository.getAreaList(),
+        _isIsZoneUpdateSuccess
+    ) { selectedCommercialArea, selectedMetroArea, areaList, isIsZoneUpdateSuccess ->
         IsZoneUiState(
             selectedCommercialArea = selectedCommercialArea,
             selectedMetroArea = selectedMetroArea,
-            areaList = emptyList()
+            areaList = areaList,
+            isIsZoneUpdateSuccess = isIsZoneUpdateSuccess
         )
     }.stateIn(
         scope = viewModelScope,
@@ -46,9 +54,20 @@ class IsZoneViewModel @Inject constructor(
         _selectedCommercialArea.update { commercialArea }
     }
 
+    fun resetIsZoneUpdateStatus() {
+        _isIsZoneUpdateSuccess.update { null }
+    }
+
     fun selectIsZone() {
         viewModelScope.launch {
-            //TODO 내 일상존 선택 확정
+            isZoneUiState.value.selectedCommercialArea?.let { commercialArea ->
+                userRepository.updateUserIsZone(commercialArea.code)
+                    .onSuccess {
+                        _isIsZoneUpdateSuccess.update { true }
+                    }.onFailure {
+                        _isIsZoneUpdateSuccess.update { false }
+                    }
+            }
         }
     }
 }
