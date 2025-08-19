@@ -17,7 +17,7 @@ interface QuestDataSource {
     ): UncompletedTotalQuestResponse
 
     suspend fun getLargeRewardQuest(
-        rewardContent: String,
+        commercialAreaCode: String,
         page: Int = 0,
         size: Int = 3,
         sort: List<String> = emptyList()

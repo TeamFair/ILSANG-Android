@@ -27,13 +27,13 @@ class QuestDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getLargeRewardQuest(
-        rewardContent: String,
+        commercialAreaCode: String,
         page: Int,
         size: Int,
         sort: List<String>
     ): LargeRewardQuestResponse {
         return questApiService.getLargeRewardQuest(
-            rewardContent = rewardContent,
+            commercialAreaCode = commercialAreaCode,
             page = page,
             size = size,
             sort = sort
