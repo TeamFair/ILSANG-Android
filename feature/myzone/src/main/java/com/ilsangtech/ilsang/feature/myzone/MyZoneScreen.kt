@@ -29,7 +29,9 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import com.ilsangtech.ilsang.core.ui.zone.ZoneListContent
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.myzone.component.MyZoneFailureDialog
 import com.ilsangtech.ilsang.feature.myzone.component.MyZoneHeader
+import com.ilsangtech.ilsang.feature.myzone.component.MyZoneSuccessDialog
 
 @Composable
 fun MyZoneScreen(
@@ -37,6 +39,15 @@ fun MyZoneScreen(
     onBackButtonClick: () -> Unit
 ) {
     val myZoneUiState by myZoneViewModel.myZoneUiState.collectAsStateWithLifecycle()
+
+    if (myZoneUiState.isMyZoneUpdateSuccess == true) {
+        MyZoneSuccessDialog(onDismissRequest = {
+            myZoneViewModel.resetMyZoneUpdateStatus()
+            onBackButtonClick()
+        })
+    } else if (myZoneUiState.isMyZoneUpdateSuccess == false) {
+        MyZoneFailureDialog(onDismissRequest = myZoneViewModel::resetMyZoneUpdateStatus)
+    }
 
     MyZoneScreen(
         areaList = myZoneUiState.areaList,
