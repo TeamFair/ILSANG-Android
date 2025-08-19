@@ -23,6 +23,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
+    override val myZone: Flow<String?> = userDataStore.userMyZone
+
     override suspend fun login(idToken: String) {
         val loginResponse = userDataSource.login(
             OAuthLoginRequest(
@@ -111,6 +113,12 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUserTitle(titleHistoryId: String): Result<Unit> {
         return runCatching {
             userDataSource.updateUserTitle(titleHistoryId)
+        }
+    }
+
+    override suspend fun updateUserMyZone(commericalAreaCode: String): Result<Unit> {
+        return runCatching {
+            userDataStore.setUserMyZone(commericalAreaCode)
         }
     }
 
