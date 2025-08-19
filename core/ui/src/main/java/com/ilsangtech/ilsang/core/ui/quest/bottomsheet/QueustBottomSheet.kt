@@ -254,7 +254,7 @@ fun QuestBottomSheetPreviewQuestDetail() {
         questType = NewQuestType.Repeat.Weekly,
         rewards = listOf(
             RewardPoint.Metro(2),
-            RewardPoint.Commerical(5),
+            RewardPoint.Commercial(5),
             RewardPoint.Contribute(10)
         ),
         title = "Sample Quest",

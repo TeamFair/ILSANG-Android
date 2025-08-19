@@ -236,7 +236,7 @@ internal fun QuestDetailInfoContentPreview() {
         questType = NewQuestType.Event,
         rewards = listOf(
             RewardPoint.Metro(2),
-            RewardPoint.Commerical(5),
+            RewardPoint.Commercial(5),
             RewardPoint.Contribute(10)
         ),
         title = "일상 공유하고 포인트 받기",

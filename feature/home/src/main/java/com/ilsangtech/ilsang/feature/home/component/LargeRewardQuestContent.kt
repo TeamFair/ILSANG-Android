@@ -112,7 +112,7 @@ internal fun LargeRewardQuestContentPreview() {
             mainImageId = "sample_main_image_1",
             rewards = listOf(
                 RewardPoint.Metro(5),
-                RewardPoint.Commerical(10),
+                RewardPoint.Commercial(10),
                 RewardPoint.Contribute(15)
             ),
             title = "Sample Quest 1",
@@ -125,7 +125,7 @@ internal fun LargeRewardQuestContentPreview() {
             mainImageId = "sample_main_image_2",
             rewards = listOf(
                 RewardPoint.Metro(3),
-                RewardPoint.Commerical(8),
+                RewardPoint.Commercial(8),
                 RewardPoint.Contribute(12)
             ),
             title = "Sample Quest 2",
@@ -138,7 +138,7 @@ internal fun LargeRewardQuestContentPreview() {
             mainImageId = "sample_main_image_3",
             rewards = listOf(
                 RewardPoint.Metro(3),
-                RewardPoint.Commerical(8),
+                RewardPoint.Commercial(8),
                 RewardPoint.Contribute(12)
             ),
             title = "Sample Quest 2",

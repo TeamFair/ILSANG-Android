@@ -80,7 +80,7 @@ private fun rewardPointChipTextStyle() = TextStyle(
 private fun RewardPointChipsPreview() {
     val rewardPointList = listOf(
         RewardPoint.Metro(2),
-        RewardPoint.Commerical(5),
+        RewardPoint.Commercial(5),
         RewardPoint.Contribute(10)
     )
     RewardPointChips(rewardPointList)
