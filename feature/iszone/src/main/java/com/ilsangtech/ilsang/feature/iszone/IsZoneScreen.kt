@@ -29,7 +29,9 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import com.ilsangtech.ilsang.core.ui.zone.ZoneListContent
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.iszone.component.IsZoneFailureDialog
 import com.ilsangtech.ilsang.feature.iszone.component.IsZoneHeader
+import com.ilsangtech.ilsang.feature.iszone.component.IsZoneSuccessDialog
 
 @Composable
 internal fun IsZoneScreen(
@@ -37,6 +39,16 @@ internal fun IsZoneScreen(
     onBackButtonClick: () -> Unit
 ) {
     val isZoneUiState by isZoneViewModel.isZoneUiState.collectAsStateWithLifecycle()
+
+    if (isZoneUiState.isIsZoneUpdateSuccess == true) {
+        IsZoneSuccessDialog(onDismissRequest = {
+            isZoneViewModel.resetIsZoneUpdateStatus()
+            onBackButtonClick()
+        })
+    } else if (isZoneUiState.isIsZoneUpdateSuccess == false) {
+        IsZoneFailureDialog(onDismissRequest = isZoneViewModel::resetIsZoneUpdateStatus)
+    }
+
     IsZoneScreen(
         selectedMetroArea = isZoneUiState.selectedMetroArea,
         selectedCommercialArea = isZoneUiState.selectedCommercialArea,
