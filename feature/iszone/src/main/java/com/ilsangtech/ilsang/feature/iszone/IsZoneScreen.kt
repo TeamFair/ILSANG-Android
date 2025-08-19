@@ -125,14 +125,12 @@ private fun IsZoneScreenPreview() {
     val sampleMetroArea1 = MetroArea(
         code = "MA001",
         areaName = "서울",
-        description = "Capital of South Korea",
-        commericalAreaList = listOf(sampleCommercialArea1, sampleCommercialArea2)
+        commercialAreaList = listOf(sampleCommercialArea1, sampleCommercialArea2)
     )
     val sampleMetroArea2 = MetroArea(
         code = "MA002",
         areaName = "부산",
-        description = "Second largest city in South Korea",
-        commericalAreaList = emptyList()
+        commercialAreaList = emptyList()
     )
 
     IsZoneScreen(
