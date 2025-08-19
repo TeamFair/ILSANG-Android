@@ -22,9 +22,9 @@ interface QuestApiService {
         @Query("sort") sort: List<String> = emptyList()
     ): UncompletedTotalQuestResponse
 
-    @GET("customer/largeRewardQuest")
+    @GET("api/v1/quest/user/search/reward")
     suspend fun getLargeRewardQuest(
-        @Query("rewardContent") rewardContent: String,
+        @Query("commercialAreaCode") commercialAreaCode: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3,
         @Query("sort") sort: List<String> = emptyList()
