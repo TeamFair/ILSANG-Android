@@ -7,7 +7,6 @@ import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.Quest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +34,7 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(userRepository.currentUser)
     val myInfo: StateFlow<MyInfo?> = _myInfo.asStateFlow()
 
-    private val _selectedQuestId = MutableStateFlow<String?>(null)
+    private val _selectedQuestId = MutableStateFlow<Int?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -78,20 +77,17 @@ class HomeViewModel @Inject constructor(
                 initialValue = HomeTabUiState.Loading
             )
 
-    val selectedQuest = selectedQuestId.combine(homeTabUiState) { questId, uiState ->
-        if (questId == null || uiState !is HomeTabUiState.Success) return@combine null
-        uiState.data.popularQuests.find { it.questId == questId }
-            ?: uiState.data.recommendedQuests.find { it.questId == questId }
-            ?: uiState.data.largeRewardQuests.values.flatten().find { it.questId == questId }
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
-        )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val selectedQuest = selectedQuestId.flatMapLatest { questId ->
+        questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
-    fun selectQuest(quest: Quest) {
-        _selectedQuestId.update { quest.questId }
+    fun selectQuest(questId: Int) {
+        _selectedQuestId.update { questId }
     }
 
     fun unselectQuest() {
@@ -101,8 +97,8 @@ class HomeViewModel @Inject constructor(
     fun updateQuestFavoriteStatus() {
         viewModelScope.launch {
             selectedQuest.value?.let { quest ->
-                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.questId)
-                else questRepository.registerFavoriteQuest(quest.questId)
+                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.id)
+                else questRepository.registerFavoriteQuest(quest.id)
             }
         }
     }
