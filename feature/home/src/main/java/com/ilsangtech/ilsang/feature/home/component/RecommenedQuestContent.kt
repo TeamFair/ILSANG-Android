@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -37,10 +36,10 @@ import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 
 @Composable
-fun RecommendedQuestsContent(
+internal fun RecommendedQuestsContent(
     userNickname: String?,
-    recommendedQuests: List<Quest>,
-    onRecommendedQuestClick: (Quest) -> Unit
+    recommendedQuests: List<RecommendedQuest>,
+    onRecommendedQuestClick: (questId: Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
@@ -54,9 +53,9 @@ fun RecommendedQuestsContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(recommendedQuests) { quest ->
-                RecommendedQuestView(
+                RecommendQuestCard(
                     quest = quest,
-                    onCardClick = { onRecommendedQuestClick(quest) }
+                    onCardClick = { onRecommendedQuestClick(quest.questId) }
                 )
             }
         }
@@ -64,7 +63,7 @@ fun RecommendedQuestsContent(
 }
 
 @Composable
-internal fun RecommendQuestCard(
+private fun RecommendQuestCard(
     quest: RecommendedQuest,
     onCardClick: () -> Unit
 ) {
@@ -111,68 +110,6 @@ internal fun RecommendQuestCard(
     }
 }
 
-@Preview
-@Composable
-private fun RecommendQuestCardPreview() {
-    val quest = RecommendedQuest(
-        questId = 1,
-        imageId = "sample_image_id",
-        mainImageId = "sample_main_image_id",
-        title = "Sample Quest Title",
-        writerName = "Sample Writer"
-    )
-    RecommendQuestCard(quest = quest, onCardClick = {})
-}
-
-@Composable
-fun RecommendedQuestView(
-    quest: Quest,
-    onCardClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier.size(
-            width = 152.dp,
-            height = 172.dp
-        ),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-        ),
-        onClick = onCardClick
-    ) {
-
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = quest.missionTitle,
-                style = recommendedQuestTitleStyle,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = quest.writer,
-                style = recommendedQuestWriterStyle,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-            Spacer(Modifier.weight(1f))
-            AsyncImage(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(recommendedQuestImageColor),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(BuildConfig.IMAGE_URL + quest.imageId)
-                    .build(),
-                contentDescription = quest.missionTitle,
-            )
-
-        }
-    }
-}
-
 private val recommendedQuestsContentTitleStyle = TextStyle(
     fontSize = 19.sp,
     lineHeight = 22.sp,
@@ -196,3 +133,16 @@ private val recommendedQuestWriterStyle = TextStyle(
     color = gray400,
     fontFamily = FontFamily(Font(pretendard_regular))
 )
+
+@Preview
+@Composable
+private fun RecommendQuestCardPreview() {
+    val quest = RecommendedQuest(
+        questId = 1,
+        imageId = "sample_image_id",
+        mainImageId = "sample_main_image_id",
+        title = "Sample Quest Title",
+        writerName = "Sample Writer"
+    )
+    RecommendQuestCard(quest = quest, onCardClick = {})
+}
