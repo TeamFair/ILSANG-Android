@@ -47,7 +47,7 @@ import com.ilsangtech.ilsang.feature.home.BuildConfig
 @Composable
 internal fun PopularQuestsContent(
     popularQuests: List<PopularQuest>,
-    onPopularQuestClick: (PopularQuest) -> Unit
+    onPopularQuestClick: (Int) -> Unit
 ) {
     val pageCount = popularQuests.size / 4
     val pagerState = rememberPagerState { pageCount }
@@ -76,13 +76,13 @@ internal fun PopularQuestsContent(
                         PopularQuestCard(
                             modifier = Modifier.weight(1f),
                             quest = questSubList[index],
-                            onCardClick = { onPopularQuestClick(questSubList[index]) }
+                            onCardClick = { onPopularQuestClick(questSubList[index].questId) }
                         )
                         Spacer(Modifier.width(8.dp))
                         PopularQuestCard(
                             modifier = Modifier.weight(1f),
                             quest = questSubList[index + 1],
-                            onCardClick = { onPopularQuestClick(questSubList[index + 1]) }
+                            onCardClick = { onPopularQuestClick(questSubList[index + 1].questId) }
                         )
                     }
                     if (index != questSubList.size - 1) {
