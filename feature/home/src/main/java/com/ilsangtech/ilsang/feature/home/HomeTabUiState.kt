@@ -1,10 +1,10 @@
 package com.ilsangtech.ilsang.feature.home
 
 import com.ilsangtech.ilsang.core.model.Banner
-import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.UserRank
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 
 sealed interface HomeTabUiState {
     data object Loading : HomeTabUiState
@@ -15,7 +15,7 @@ sealed interface HomeTabUiState {
 data class HomeTabSuccessData(
     val banners: List<Banner>,
     val popularQuests: List<PopularQuest>,
-    val recommendedQuests: List<Quest>,
+    val recommendedQuests: List<RecommendedQuest>,
     val largeRewardQuests: List<LargeRewardQuest>,
     val topRankUsers: List<UserRank>,
 )
