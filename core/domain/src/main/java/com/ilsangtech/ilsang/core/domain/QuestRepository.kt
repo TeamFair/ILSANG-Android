@@ -3,12 +3,13 @@ package com.ilsangtech.ilsang.core.domain
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import kotlinx.coroutines.flow.Flow
 
 interface QuestRepository {
     suspend fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>>
 
-    suspend fun getRecommendedQuests(): Flow<List<Quest>>
+    suspend fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
 
     suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
 

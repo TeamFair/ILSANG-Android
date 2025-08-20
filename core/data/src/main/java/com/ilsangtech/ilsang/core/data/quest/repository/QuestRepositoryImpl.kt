@@ -3,14 +3,17 @@ package com.ilsangtech.ilsang.core.data.quest.repository
 import com.ilsangtech.ilsang.core.data.quest.datasource.QuestDataSource
 import com.ilsangtech.ilsang.core.data.quest.mapper.toLargeRewardQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toPopularQuest
+import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
+import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,18 +33,14 @@ class QuestRepositoryImpl(
             )
         }
 
-    override suspend fun getRecommendedQuests(): Flow<List<Quest>> = flow {
-        emit(
-            questDataSource.getUncompletedTotalQuest(
-                popularYn = false,
-                size = 10
-            ).data.map(QuestNetworkModel::toQuest)
-        )
-    }.combine(questCache) { quests, questCache ->
-        quests.map { quest ->
-            quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
+    override suspend fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>> =
+        flow {
+            emit(
+                questDataSource.getRecommendedQuest(
+                    commercialAreaCode = commercialAreaCode
+                ).content.map(RecommendedQuestNetworkModel::toRecommendedQuest)
+            )
         }
-    }
 
     override suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>> =
         flow {
