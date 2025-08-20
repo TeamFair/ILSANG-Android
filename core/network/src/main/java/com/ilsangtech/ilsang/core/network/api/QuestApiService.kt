@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRespo
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
@@ -69,6 +70,11 @@ interface QuestApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 60
     ): UncompletedEventQuestResponse
+
+    @GET("api/v1/quest/user/{questId}")
+    suspend fun getQuestDetail(
+        @Path("questId") questId: Int
+    ): QuestDetailResponse
 
     @POST("customer/quest/{questId}/favorite")
     suspend fun registerFavoriteQuest(
