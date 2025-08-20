@@ -1,8 +1,8 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
@@ -107,15 +107,15 @@ class QuestDataSourceImpl @Inject constructor(
         return questApiService.getQuestDetail(questId)
     }
 
-    override suspend fun registerFavoriteQuest(
-        questId: String
-    ): FavoriteQuestRegistrationResponse {
-        return questApiService.registerFavoriteQuest(questId)
+    override suspend fun registerFavoriteQuest(questId: Int) {
+        return questApiService.registerFavoriteQuest(
+            FavoriteQuestRegistrationRequest(questId)
+        )
     }
 
-    override suspend fun deleteFavoriteQuest(
-        questId: String
-    ): FavoriteQuestDeletionResponse {
-        return questApiService.deleteFavoriteQuest(questId)
+    override suspend fun deleteFavoriteQuest(questId: Int) {
+        return questApiService.deleteFavoriteQuest(
+            FavoriteQuestDeletionRequest(questId)
+        )
     }
 }
