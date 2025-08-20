@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestRespo
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -76,13 +77,13 @@ interface QuestApiService {
         @Path("questId") questId: Int
     ): QuestDetailResponse
 
-    @POST("customer/quest/{questId}/favorite")
+    @POST("api/v1/quest/user/favorite")
     suspend fun registerFavoriteQuest(
-        @Path("questId") questId: String
-    ): FavoriteQuestRegistrationResponse
+        @Body favoriteQuestRegistrationRequest: FavoriteQuestRegistrationRequest
+    )
 
-    @DELETE("customer/quest/{questId}/favorite")
+    @DELETE("api/v1/quest/user/favorite")
     suspend fun deleteFavoriteQuest(
-        @Path("questId") questId: String
-    ): FavoriteQuestDeletionResponse
+        @Body favoriteQuestDeletionRequest: FavoriteQuestDeletionRequest
+    )
 }
