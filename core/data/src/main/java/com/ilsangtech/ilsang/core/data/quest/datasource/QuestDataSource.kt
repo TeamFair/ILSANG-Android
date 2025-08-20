@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRespo
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
@@ -23,6 +24,13 @@ interface QuestDataSource {
         size: Int = 8,
         sort: List<String> = emptyList()
     ): PopularQuestResponse
+
+    suspend fun getRecommendedQuest(
+        commercialAreaCode: String,
+        page: Int = 0,
+        size: Int = 10,
+        sort: List<String> = emptyList()
+    ): RecommendedQuestResponse
 
     suspend fun getLargeRewardQuest(
         commercialAreaCode: String,
