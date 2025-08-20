@@ -93,7 +93,7 @@ fun HomeTabScreen(
                 item {
                     PopularQuestsContent(
                         popularQuests = popularQuests,
-                        onPopularQuestClick = { questId -> /*TODO 상세보기 적용할 퀘스트 아이디 선택 */ },
+                        onPopularQuestClick = homeViewModel::selectQuest,
                     )
                 }
                 item { Spacer(Modifier.height(36.dp)) }
@@ -108,7 +108,7 @@ fun HomeTabScreen(
                 item {
                     LargeRewardQuestContent(
                         largeRewardQuests = largeRewardQuests,
-                        onQuestClick = { questId -> /*TODO 상세보기 적용할 퀘스트 아이디 선택 */ },
+                        onQuestClick = homeViewModel::selectQuest,
                         onMoreButtonClick = navigateToQuestTab
                     )
                 }
