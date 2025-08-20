@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.domain
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import kotlinx.coroutines.flow.Flow
 
@@ -21,6 +22,8 @@ interface QuestRepository {
 
     // 미완료한 이벤트 퀘스트 목록 조회
     suspend fun getUncompletedEventQuests(): Flow<List<Quest>>
+
+    suspend fun getQuestDetail(questId: Int): Flow<QuestDetail>
 
     suspend fun registerFavoriteQuest(questId: String)
 

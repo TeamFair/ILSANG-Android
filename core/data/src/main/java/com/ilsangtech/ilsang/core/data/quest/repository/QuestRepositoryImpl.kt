@@ -3,12 +3,14 @@ package com.ilsangtech.ilsang.core.data.quest.repository
 import com.ilsangtech.ilsang.core.data.quest.datasource.QuestDataSource
 import com.ilsangtech.ilsang.core.data.quest.mapper.toLargeRewardQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toPopularQuest
+import com.ilsangtech.ilsang.core.data.quest.mapper.toQuestDetail
 import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
@@ -90,6 +92,12 @@ class QuestRepositoryImpl(
         quests.map { quest ->
             quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
         }
+    }
+
+    override suspend fun getQuestDetail(questId: Int): Flow<QuestDetail> = flow {
+        emit(
+            questDataSource.getQuestDetail(questId).toQuestDetail()
+        )
     }
 
     override suspend fun registerFavoriteQuest(questId: String) {
