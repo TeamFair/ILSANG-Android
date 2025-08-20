@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.update
 class QuestRepositoryImpl(
     private val questDataSource: QuestDataSource,
 ) : QuestRepository {
-    private val questCache = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    private val questCache = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
 
     override suspend fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>> =
         flow {
@@ -98,9 +98,11 @@ class QuestRepositoryImpl(
         emit(
             questDataSource.getQuestDetail(questId).toQuestDetail()
         )
+    }.combine(questCache) { quest, questCache ->
+        quest.copy(favoriteYn = questCache[quest.id] ?: quest.favoriteYn)
     }
 
-    override suspend fun registerFavoriteQuest(questId: String) {
+    override suspend fun registerFavoriteQuest(questId: Int) {
         runCatching {
             questDataSource.registerFavoriteQuest(questId)
         }.onSuccess {
@@ -108,7 +110,7 @@ class QuestRepositoryImpl(
         }
     }
 
-    override suspend fun deleteFavoriteQuest(questId: String) {
+    override suspend fun deleteFavoriteQuest(questId: Int) {
         runCatching {
             questDataSource.deleteFavoriteQuest(questId)
         }.onSuccess {
