@@ -1,11 +1,12 @@
 package com.ilsangtech.ilsang.core.model
 
 data class UserInfo(
-    val completeChallengeCount: Int,
-    val couponCount: Int,
+    val id: String,
+    val channel: String,
+    val commercialAreaCode: String,
+    val email: String,
     val nickname: String,
-    val profileImage: String?,
+    val profileImageId: String,
     val status: String,
-    val xpPoint: Int,
-    val title: Title? = null
+    val statusUpdatedAt: String
 )
