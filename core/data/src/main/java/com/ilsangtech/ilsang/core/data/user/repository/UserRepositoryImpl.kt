@@ -10,7 +10,6 @@ import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
-import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -22,23 +21,6 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
-    override suspend fun login(idToken: String) {
-        val loginResponse = userDataSource.login(
-            OAuthLoginRequest(
-                idToken = idToken,
-                pushToken = "",
-                deviceUuid = "",
-                provider = "GOOGLE",
-                osType = "AOS"
-            )
-        )
-        val (accessToken, refreshToken) = loginResponse.data
-        with(userDataStore) {
-            setAccessToken(accessToken)
-            refreshToken?.let { setRefreshToken(refreshToken) }
-        }
-    }
-
     override fun getMyInfo(): Flow<MyInfo> =
         userDataStore.userMyZone.map { myZoneCommercialAreaCode ->
             val userInfoResponse = userDataSource.getUserInfo(userId = null)
@@ -49,14 +31,6 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userDataSource.getUserInfo(userId = userId).toUserInfo()
         }
-    }
-
-    override suspend fun logout(): Result<Unit> {
-        return runCatching { userDataSource.logout() }
-    }
-
-    override suspend fun withdraw(): Result<Unit> {
-        return runCatching { userDataSource.withdraw() }
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStats {

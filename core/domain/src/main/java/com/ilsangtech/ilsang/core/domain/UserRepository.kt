@@ -8,12 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     val shouldShowOnBoarding: Flow<Boolean>
 
-    suspend fun login(idToken: String)
-
-    suspend fun logout(): Result<Unit>
-
-    suspend fun withdraw(): Result<Unit>
-
     fun getMyInfo(): Flow<MyInfo>
 
     suspend fun getUserInfo(userId: String): Result<UserInfo>
