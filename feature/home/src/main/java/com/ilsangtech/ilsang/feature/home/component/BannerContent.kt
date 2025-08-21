@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.Banner
+import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp

@@ -2,7 +2,7 @@ package com.ilsangtech.ilsang.core.data.banner.repository
 
 import com.ilsangtech.ilsang.core.data.banner.datasource.BannerDataSource
 import com.ilsangtech.ilsang.core.domain.BannerRepository
-import com.ilsangtech.ilsang.core.model.Banner
+import com.ilsangtech.ilsang.core.model.banner.Banner
 import javax.inject.Inject
 
 class BannerRepositoryImpl @Inject constructor(

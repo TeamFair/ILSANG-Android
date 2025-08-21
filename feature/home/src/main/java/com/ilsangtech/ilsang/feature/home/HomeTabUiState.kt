@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.feature.home
 
 import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.model.UserRank
+import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest

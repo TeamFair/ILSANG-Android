@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.model
+package com.ilsangtech.ilsang.core.model.banner
 
 data class Banner(
     val id: Int,
