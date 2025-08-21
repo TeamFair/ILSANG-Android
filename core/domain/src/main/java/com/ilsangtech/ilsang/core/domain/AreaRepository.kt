@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.domain
 
+import com.ilsangtech.ilsang.core.model.area.CommercialArea
 import com.ilsangtech.ilsang.core.model.area.MetroArea
 import kotlinx.coroutines.flow.Flow
 
@@ -9,4 +10,6 @@ interface AreaRepository {
     fun getCommercialName(commericalCode: String): Flow<String>
 
     suspend fun getMetroArea(metroAreaCode: String): MetroArea
+
+    suspend fun getCommercialArea(commercialAreaCode: String): CommercialArea
 }
