@@ -54,7 +54,7 @@ internal fun BannerContent(
                         interactionSource = null
                     ),
                 contentScale = ContentScale.Crop,
-                model = BuildConfig.IMAGE_URL + banners[page].imageId,
+                model = BuildConfig.IMAGE_URL + banners[page].bannerImageId,
                 contentDescription = banners[page].description
             )
         }
@@ -117,19 +117,19 @@ private fun BannerContentPreview() {
     val banners = listOf(
         Banner(
             id = 1,
-            title = "Banner 1",
-            imageId = "imageId1",
-            imageUrl = "imageUrl1",
-            description = "Description 1",
-            activeYn = "Y"
+            bannerImageId = "sample_banner_1.png",
+            description = "Sample Banner 1 Description",
+            navigationTitle = "Go to Sample 1",
+            title = "Sample Banner 1",
+            useYn = true
         ),
         Banner(
             id = 2,
-            title = "Banner 2",
-            imageId = "imageId2",
-            imageUrl = "imageUrl2",
-            description = "Description 2",
-            activeYn = "Y"
+            bannerImageId = "sample_banner_2.png",
+            description = "Sample Banner 2 Description",
+            navigationTitle = "Go to Sample 2",
+            title = "Sample Banner 2",
+            useYn = true
         )
     )
     BannerContent(banners = banners, onClick = {})
