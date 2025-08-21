@@ -47,9 +47,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(userId: String): Result<UserInfo> {
         return runCatching {
-            val userInfoResponse = userDataSource.getUserInfo(userId = userId)
-            val userInfoNetworkModel = userInfoResponse.userInfoNetworkModel
-            userInfoNetworkModel.toUserInfo()
+            userDataSource.getUserInfo(userId = userId).toUserInfo()
         }
     }
 
