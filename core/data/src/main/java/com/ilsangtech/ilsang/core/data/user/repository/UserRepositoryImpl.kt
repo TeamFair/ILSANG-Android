@@ -1,17 +1,18 @@
 package com.ilsangtech.ilsang.core.data.user.repository
 
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
-import com.ilsangtech.ilsang.core.data.user.toUserInfo
+import com.ilsangtech.ilsang.core.data.user.mapper.toMyInfo
+import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -19,11 +20,7 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataStore: UserDataStore,
     private val imageRepository: ImageRepository
 ) : UserRepository {
-    override var currentUser: MyInfo? = null
-
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
-
-    override val myZone: Flow<String?> = userDataStore.userMyZone
 
     override suspend fun login(idToken: String) {
         val loginResponse = userDataSource.login(
@@ -40,29 +37,13 @@ class UserRepositoryImpl @Inject constructor(
             setAccessToken(accessToken)
             refreshToken?.let { setRefreshToken(refreshToken) }
         }
-        updateMyInfo()
     }
 
-    override suspend fun updateMyInfo() {
-        val userInfoResponse = userDataSource.getUserInfo(userId = null)
-        currentUser = MyInfo(
-            completeChallengeCount = userInfoResponse.userInfoNetworkModel.completeChallengeCount,
-            couponCount = userInfoResponse.userInfoNetworkModel.couponCount,
-            nickname = userInfoResponse.userInfoNetworkModel.nickname,
-            profileImage = userInfoResponse.userInfoNetworkModel.profileImage,
-            xpPoint = userInfoResponse.userInfoNetworkModel.xpPoint,
-            status = userInfoResponse.userInfoNetworkModel.status,
-            title = userInfoResponse.userInfoNetworkModel.title?.let { title ->
-                Title(
-                    id = title.id,
-                    name = title.name,
-                    type = title.type,
-                    condition = title.condition,
-                    createdAt = title.createdAt
-                )
-            }
-        )
-    }
+    override fun getMyInfo(): Flow<MyInfo> =
+        userDataStore.userMyZone.map { myZoneCommercialAreaCode ->
+            val userInfoResponse = userDataSource.getUserInfo(userId = null)
+            userInfoResponse.toMyInfo(myZoneCommercialAreaCode)
+        }
 
     override suspend fun getUserInfo(userId: String): Result<UserInfo> {
         return runCatching {
