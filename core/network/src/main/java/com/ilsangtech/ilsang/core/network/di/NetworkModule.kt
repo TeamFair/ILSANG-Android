@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.api.RankApiService
+import com.ilsangtech.ilsang.core.network.api.SeasonApiService
 import com.ilsangtech.ilsang.core.network.api.TitleApiService
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
@@ -223,5 +224,11 @@ object NetworkModule {
     @Singleton
     fun provideAreaApiService(retrofit: Retrofit): AreaApiService {
         return retrofit.create(AreaApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSeasonApiService(retrofit: Retrofit): SeasonApiService {
+        return retrofit.create(SeasonApiService::class.java)
     }
 }
