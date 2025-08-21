@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.area.datasource
 
 import com.ilsangtech.ilsang.core.network.api.AreaApiService
+import com.ilsangtech.ilsang.core.network.model.area.CommercialAreaNetworkModel
 import com.ilsangtech.ilsang.core.network.model.area.MetroAreaNetworkModel
 
 class AreaDataSourceImpl(
@@ -12,5 +13,9 @@ class AreaDataSourceImpl(
 
     override suspend fun getMetroArea(metroAreaCode: String): MetroAreaNetworkModel {
         return areaApiService.getMetroAreaDetail(metroAreaCode)
+    }
+
+    override suspend fun geetCommercialArea(commercialAreaCode: String): CommercialAreaNetworkModel {
+        return areaApiService.getCommercialAreaDetail(commercialAreaCode)
     }
 }
