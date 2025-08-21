@@ -53,11 +53,14 @@ fun HomeTabScreen(
                 bottomSheetState = bottomSheetState,
                 onDismiss = homeViewModel::unselectQuest,
                 onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
+                onMissionImageClick = {
+                    //TODO 퀘스트 인증 예시 화면으로 이동
+                },
                 onApproveButtonClick = {
                     coroutineScope.launch {
                         bottomSheetState.hide()
                         homeViewModel.unselectQuest()
-                        navigateToSubmit(quest.questId)
+                        //TODO 제출 화면으로 이동 구현
                     }
                 }
             )
