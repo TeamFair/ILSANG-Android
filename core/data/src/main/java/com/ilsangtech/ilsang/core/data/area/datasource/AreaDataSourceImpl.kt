@@ -9,4 +9,8 @@ class AreaDataSourceImpl(
     override suspend fun getMetroAreaList(): List<MetroAreaNetworkModel> {
         return areaApiService.getMetroAreaList()
     }
+
+    override suspend fun getMetroArea(metroAreaCode: String): MetroAreaNetworkModel {
+        return areaApiService.getMetroAreaDetail(metroAreaCode)
+    }
 }
