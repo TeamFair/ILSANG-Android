@@ -6,7 +6,5 @@ import kotlinx.serialization.Serializable
 data class OAuthLoginRequest(
     val provider: String = "GOOGLE",
     val osType: String = "AOS",
-    val idToken: String,
-    val pushToken: String,
-    val deviceUuid: String
+    val idToken: String
 )
