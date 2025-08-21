@@ -6,11 +6,7 @@ import com.ilsangtech.ilsang.core.model.UserXpStats
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    var currentUser: MyInfo?
-
     val shouldShowOnBoarding: Flow<Boolean>
-
-    val myZone: Flow<String?>
 
     suspend fun login(idToken: String)
 
@@ -18,7 +14,7 @@ interface UserRepository {
 
     suspend fun withdraw(): Result<Unit>
 
-    suspend fun updateMyInfo()
+    fun getMyInfo(): Flow<MyInfo>
 
     suspend fun getUserInfo(userId: String): Result<UserInfo>
 

@@ -1,8 +1,9 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
+import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
@@ -16,8 +17,22 @@ interface QuestDataSource {
         sort: List<String> = emptyList()
     ): UncompletedTotalQuestResponse
 
+    suspend fun getPopularQuest(
+        commercialAreaCode: String,
+        page: Int = 0,
+        size: Int = 8,
+        sort: List<String> = emptyList()
+    ): PopularQuestResponse
+
+    suspend fun getRecommendedQuest(
+        commercialAreaCode: String,
+        page: Int = 0,
+        size: Int = 10,
+        sort: List<String> = emptyList()
+    ): RecommendedQuestResponse
+
     suspend fun getLargeRewardQuest(
-        rewardContent: String,
+        commercialAreaCode: String,
         page: Int = 0,
         size: Int = 3,
         sort: List<String> = emptyList()
@@ -39,11 +54,9 @@ interface QuestDataSource {
         size: Int
     ): UncompletedEventQuestResponse
 
-    suspend fun registerFavoriteQuest(
-        questId: String
-    ): FavoriteQuestRegistrationResponse
+    suspend fun getQuestDetail(questId: Int): QuestDetailResponse
 
-    suspend fun deleteFavoriteQuest(
-        questId: String
-    ): FavoriteQuestDeletionResponse
+    suspend fun registerFavoriteQuest(questId: Int)
+
+    suspend fun deleteFavoriteQuest(questId: Int)
 }

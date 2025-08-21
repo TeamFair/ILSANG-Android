@@ -163,7 +163,7 @@ fun DefaultQuestContentPreview2() {
     val writer = "퀘스트 작성자 작성자"
     val rewardPoints = listOf(
         RewardPoint.Metro(2),
-        RewardPoint.Commerical(5),
+        RewardPoint.Commercial(5),
         RewardPoint.Contribute(10)
     )
 

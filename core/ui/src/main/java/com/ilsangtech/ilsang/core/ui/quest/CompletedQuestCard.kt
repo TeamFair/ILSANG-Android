@@ -146,7 +146,7 @@ private fun CompletedQuestCardNewQuestPreview() {
             questId = 123,
             rewards = listOf(
                 RewardPoint.Metro(5),
-                RewardPoint.Commerical(10),
+                RewardPoint.Commercial(10),
                 RewardPoint.Contribute(15)
             ),
             title = "새로운 퀘스트 타이틀",

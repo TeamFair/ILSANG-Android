@@ -36,8 +36,8 @@ import com.ilsangtech.ilsang.feature.home.R
 internal fun HomeTabHeader(
     modifier: Modifier = Modifier,
     profileImageId: String?,
-    metroName: String?,
-    areaName: String?,
+    myCommercialAreaName: String?,
+    isCommercialAreaName: String?,
     onProfileClick: () -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
@@ -56,8 +56,8 @@ internal fun HomeTabHeader(
             onProfileClick = onProfileClick
         )
         MyZoneSelectionRow(
-            metroName = metroName,
-            areaName = areaName,
+            myCommercialAreaName = myCommercialAreaName,
+            isCommercialAreaName = isCommercialAreaName,
             onMyZoneClick = onMyZoneClick,
             onIsZoneClick = onIsZoneClick
         )
@@ -98,8 +98,8 @@ private fun LogoAndProfileImage(
 
 @Composable
 private fun MyZoneSelectionRow(
-    metroName: String?,
-    areaName: String?,
+    myCommercialAreaName: String?,
+    isCommercialAreaName: String?,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
 ) {
@@ -131,7 +131,7 @@ private fun MyZoneSelectionRow(
                 contentDescription = "광역 지역"
             )
             Text(
-                text = metroName ?: "내 지역을 선택하세요",
+                text = myCommercialAreaName ?: "내 지역을 선택하세요",
                 style = tapBoldTextStyle,
                 color = gray500
             )
@@ -166,11 +166,11 @@ private fun MyZoneSelectionRow(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = areaName ?: "선택하기",
+                        text = isCommercialAreaName ?: "선택하기",
                         style = caption02,
                         color = Color.White
                     )
-                    if (areaName == null) {
+                    if (isCommercialAreaName == null) {
                         Icon(
                             modifier = Modifier.size(16.dp),
                             painter = painterResource(
@@ -191,8 +191,8 @@ private fun MyZoneSelectionRow(
 private fun HomeTabHeaderPreview() {
     HomeTabHeader(
         profileImageId = "your_image_id",
-        metroName = "성남",
-        areaName = null,
+        myCommercialAreaName = "성남",
+        isCommercialAreaName = null,
         onProfileClick = {},
         onMyZoneClick = {},
         onIsZoneClick = {}

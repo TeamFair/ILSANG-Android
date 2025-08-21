@@ -2,12 +2,15 @@ package com.ilsangtech.ilsang.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.BannerRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.feature.home.model.HomeTabSuccessData
+import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
+import com.ilsangtech.ilsang.feature.home.model.MyInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +19,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -26,32 +29,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
+    private val areaRepository: AreaRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
     private val rankRepository: RankRepository
 ) : ViewModel() {
-    private val _myInfo: MutableStateFlow<MyInfo?> =
-        MutableStateFlow(userRepository.currentUser)
-    val myInfo: StateFlow<MyInfo?> = _myInfo.asStateFlow()
-
-    private val _selectedQuestId = MutableStateFlow<String?>(null)
+    private val _selectedQuestId = MutableStateFlow<Int?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
-        myInfo.flatMapLatest { state ->
-            if (state == null) return@flatMapLatest flowOf(HomeTabUiState.Loading)
+        userRepository.getMyInfo().flatMapLatest<MyInfo, HomeTabUiState> { myInfo ->
+            val myAreaCode = myInfo.myCommericalAreaCode.orEmpty()
+            val isAreaCode = myInfo.isCommercialAreaCode.orEmpty()
 
-            val bannersFlow = flow { emit(bannerRepository.getBanners()) }
-            val topRankUsersFlow = flow { emit(rankRepository.getTopRankUsers()) }
+            val myCommercialAreaName = areaRepository.getCommercialName(myAreaCode).first()
+            val isCommercialAreaName = areaRepository.getCommercialName(isAreaCode).first()
 
+            val bannersFlow = bannerRepository.getBanners()
             val popularFlow =
-                questRepository.getPopularQuests()
+                questRepository.getPopularQuests(myAreaCode)
             val recommendedFlow =
-                questRepository.getRecommendedQuests()
+                questRepository.getRecommendedQuests(myAreaCode)
             val largeRewardFlow =
-                questRepository.getLargeRewardQuests()
+                questRepository.getLargeRewardQuests(myAreaCode)
+            val topRankUsersFlow =
+                rankRepository.getTotalTopRankUsers(myAreaCode)
 
             combine(
                 bannersFlow,
@@ -62,6 +66,12 @@ class HomeViewModel @Inject constructor(
             ) { banners, popular, recommended, largeReward, topRank ->
                 HomeTabUiState.Success(
                     HomeTabSuccessData(
+                        myInfo = MyInfoUiModel(
+                            nickname = myInfo.nickname,
+                            profileImageId = myInfo.profileImageId,
+                            myCommercialAreaName = myCommercialAreaName,
+                            isCommericalAreaName = isCommercialAreaName
+                        ),
                         banners = banners,
                         popularQuests = popular,
                         recommendedQuests = recommended,
@@ -78,20 +88,17 @@ class HomeViewModel @Inject constructor(
                 initialValue = HomeTabUiState.Loading
             )
 
-    val selectedQuest = selectedQuestId.combine(homeTabUiState) { questId, uiState ->
-        if (questId == null || uiState !is HomeTabUiState.Success) return@combine null
-        uiState.data.popularQuests.find { it.questId == questId }
-            ?: uiState.data.recommendedQuests.find { it.questId == questId }
-            ?: uiState.data.largeRewardQuests.values.flatten().find { it.questId == questId }
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
-        )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val selectedQuest = selectedQuestId.flatMapLatest { questId ->
+        questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
-    fun selectQuest(quest: Quest) {
-        _selectedQuestId.update { quest.questId }
+    fun selectQuest(questId: Int) {
+        _selectedQuestId.update { questId }
     }
 
     fun unselectQuest() {
@@ -101,8 +108,8 @@ class HomeViewModel @Inject constructor(
     fun updateQuestFavoriteStatus() {
         viewModelScope.launch {
             selectedQuest.value?.let { quest ->
-                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.questId)
-                else questRepository.registerFavoriteQuest(quest.questId)
+                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.id)
+                else questRepository.registerFavoriteQuest(quest.id)
             }
         }
     }

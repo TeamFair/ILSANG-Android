@@ -4,9 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TitleNetworkModel(
-    val id: String,
     val name: String,
-    val type: String,
-    val condition: String?,
-    val createdAt: String
+    val grade: String,
+    val type: String
 )

@@ -77,7 +77,7 @@ private fun QuestCardWithFavoritePreviewNew() {
         questId = 1,
         rewards = listOf(
             RewardPoint.Metro(10),
-            RewardPoint.Commerical(5),
+            RewardPoint.Commercial(5),
             RewardPoint.Contribute(20)
         ),
         title = "Sample Quest Title",

@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ilsangtech.ilsang.core.model.Banner
+import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.feature.banner.BannerDetailScreen
 import kotlinx.serialization.Serializable
 

@@ -34,11 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
-import com.ilsangtech.ilsang.core.ui.quest.LargeRewardQuestBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -48,7 +45,78 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.home.BuildConfig
 
 @Composable
-fun PopularQuestCard(
+internal fun PopularQuestsContent(
+    popularQuests: List<PopularQuest>,
+    onPopularQuestClick: (Int) -> Unit
+) {
+    val pageCount = popularQuests.size / 4
+    val pagerState = rememberPagerState { pageCount }
+
+    Column {
+        Text(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            text = "이번달 인기 퀘스트 모음",
+            style = TextStyle(
+                fontSize = 19.sp,
+                lineHeight = 22.sp,
+                fontFamily = FontFamily(Font(pretendard_semibold)),
+            )
+        )
+        Spacer(Modifier.height(12.dp))
+        HorizontalPager(
+            state = pagerState
+        ) {
+            val questSubList =
+                popularQuests.subList(it * 4, minOf((it + 1) * 4, popularQuests.size))
+            Column {
+                repeat(questSubList.size / 2) { index ->
+                    Row(
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    ) {
+                        PopularQuestCard(
+                            modifier = Modifier.weight(1f),
+                            quest = questSubList[index],
+                            onCardClick = { onPopularQuestClick(questSubList[index].questId) }
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        PopularQuestCard(
+                            modifier = Modifier.weight(1f),
+                            quest = questSubList[index + 1],
+                            onCardClick = { onPopularQuestClick(questSubList[index + 1].questId) }
+                        )
+                    }
+                    if (index != questSubList.size - 1) {
+                        Spacer(Modifier.height(8.dp))
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            repeat(pageCount) {
+                val color = if (pagerState.currentPage == it) {
+                    gray500
+                } else {
+                    gray100
+                }
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .background(
+                            color = color,
+                            shape = CircleShape
+                        )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PopularQuestCard(
     modifier: Modifier = Modifier,
     quest: PopularQuest,
     onCardClick: () -> Unit
@@ -111,6 +179,71 @@ fun PopularQuestCard(
     }
 }
 
+private val popularQuestCardTitleStyle = TextStyle(
+    fontSize = 15.sp,
+    lineHeight = 18.sp,
+    fontFamily = FontFamily(
+        Font(pretendard_semibold)
+    ),
+    lineBreak = LineBreak.Heading
+)
+
+private val popularQuestCardWriterStyle = TextStyle(
+    fontSize = 11.sp,
+    lineHeight = 16.sp,
+    fontFamily = FontFamily(
+        Font(pretendard_regular)
+    ),
+    color = gray400
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun PopularQuestsContentPreview() {
+    val popularQuests = listOf(
+        PopularQuest(
+            questId = 1,
+            expireDate = "2023-12-31",
+            imageId = "imageId1",
+            mainImageId = "mainImageId1",
+            questType = NewQuestType.Event,
+            title = "첫 번째 인기 퀘스트",
+            writerName = "작가 1"
+        ),
+        PopularQuest(
+            questId = 2,
+            expireDate = "2024-01-15",
+            imageId = "imageId2",
+            mainImageId = "mainImageId2",
+            questType = NewQuestType.Repeat.Daily,
+            title = "두 번째 인기 퀘스트 - 이것은 매우 긴 제목으로 두 줄을 넘을 수 있습니다. 확인해 보세요.",
+            writerName = "작가 2"
+        ),
+        PopularQuest(
+            questId = 3,
+            expireDate = "2024-02-28",
+            imageId = "imageId3",
+            mainImageId = "mainImageId3",
+            questType = NewQuestType.Normal,
+            title = "세 번째 인기 퀘스트",
+            writerName = "작가 3"
+        ),
+        PopularQuest(
+            questId = 4,
+            expireDate = "2024-03-10",
+            imageId = "imageId4",
+            mainImageId = "mainImageId4",
+            questType = NewQuestType.Event,
+            title = "네 번째 인기 퀘스트",
+            writerName = "작가 4"
+        )
+    )
+    PopularQuestsContent(
+        popularQuests = popularQuests + popularQuests,
+        onPopularQuestClick = {}
+    )
+}
+
 @Preview(widthDp = 200)
 @Composable
 private fun PopularQuestCardPreview() {
@@ -129,160 +262,3 @@ private fun PopularQuestCardPreview() {
         onCardClick = {}
     )
 }
-
-@Composable
-fun PopularQuestCard(
-    modifier: Modifier = Modifier,
-    quest: Quest,
-    onCardClick: () -> Unit
-) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        onClick = onCardClick
-    ) {
-        Box {
-            Box(
-                modifier = Modifier
-                    .zIndex(1f)
-                    .align(Alignment.TopEnd)
-                    .padding(top = 16.dp, end = 16.dp)
-            ) {
-                if (quest.type == QuestType.REPEAT.name) {
-                    RepeatQuestTypeBadge(
-                        repeatType = QuestType.REPEAT.title
-                    )
-                } else {
-                    LargeRewardQuestBadge(
-                        xpSum = quest.rewardList.sumOf { it.quantity }
-                    )
-                }
-            }
-
-            Column {
-                AsyncImage(
-                    modifier = Modifier.height(160.dp),
-                    model = BuildConfig.IMAGE_URL + quest.mainImageId,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = quest.missionTitle
-                )
-                Spacer(Modifier.height(9.dp))
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp)
-                        .fillMaxWidth()
-                        .height(
-                            popularQuestCardTitleStyle.lineHeight.value.dp * 2
-                                    + popularQuestCardWriterStyle.lineHeight.value.dp
-                        )
-                ) {
-                    Text(
-                        text = quest.missionTitle,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = popularQuestCardTitleStyle
-                    )
-                    Text(
-                        text = quest.writer,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = popularQuestCardWriterStyle
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun PopularQuestsContent(
-    popularQuests: List<Quest>,
-    onPopularQuestClick: (Quest) -> Unit
-) {
-    val pageCount = popularQuests.size / 4
-    val pagerState = rememberPagerState { pageCount }
-
-    Column {
-        Text(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            text = "이번달 인기 퀘스트 모음",
-            style = TextStyle(
-                fontSize = 19.sp,
-                lineHeight = 22.sp,
-                fontFamily = FontFamily(Font(pretendard_semibold)),
-            )
-        )
-        Spacer(Modifier.height(12.dp))
-        HorizontalPager(
-            state = pagerState
-        ) {
-            val questSubList =
-                popularQuests.subList(it * 4, minOf((it + 1) * 4, popularQuests.size))
-            Column {
-                repeat(questSubList.size / 2) { index ->
-                    Row(
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    ) {
-                        PopularQuestCard(
-                            modifier = Modifier.weight(1f),
-                            quest = questSubList[index],
-                            onCardClick = { onPopularQuestClick(questSubList[index]) }
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        PopularQuestCard(
-                            modifier = Modifier.weight(1f),
-                            quest = questSubList[index + 1],
-                            onCardClick = { onPopularQuestClick(questSubList[index + 1]) }
-                        )
-                    }
-                    if (index != questSubList.size - 1) {
-                        Spacer(Modifier.height(8.dp))
-                    }
-                }
-            }
-        }
-        Spacer(Modifier.height(12.dp))
-        Row(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            repeat(pageCount) {
-                val color = if (pagerState.currentPage == it) {
-                    gray500
-                } else {
-                    gray100
-                }
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(
-                            color = color,
-                            shape = CircleShape
-                        )
-                )
-            }
-        }
-    }
-}
-
-private val popularQuestCardTitleStyle = TextStyle(
-    fontSize = 15.sp,
-    lineHeight = 18.sp,
-    fontFamily = FontFamily(
-        Font(pretendard_semibold)
-    ),
-    lineBreak = LineBreak.Heading
-)
-
-private val popularQuestCardWriterStyle = TextStyle(
-    fontSize = 11.sp,
-    lineHeight = 16.sp,
-    fontFamily = FontFamily(
-        Font(pretendard_regular)
-    ),
-    color = gray400
-)

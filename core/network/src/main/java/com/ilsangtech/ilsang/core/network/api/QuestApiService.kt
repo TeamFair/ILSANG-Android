@@ -1,12 +1,16 @@
 package com.ilsangtech.ilsang.core.network.api
 
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionResponse
-import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationResponse
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
+import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
+import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -22,9 +26,25 @@ interface QuestApiService {
         @Query("sort") sort: List<String> = emptyList()
     ): UncompletedTotalQuestResponse
 
-    @GET("customer/largeRewardQuest")
+    @GET("api/v1/quest/user/search/popular")
+    suspend fun getPopularQuest(
+        @Query("commercialAreaCode") commercialAreaCode: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String>
+    ): PopularQuestResponse
+
+    @GET("api/v1/quest/user/search/recommended")
+    suspend fun getRecommendedQuest(
+        @Query("commercialAreaCode") commercialAreaCode: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String>
+    ): RecommendedQuestResponse
+
+    @GET("api/v1/quest/user/search/reward")
     suspend fun getLargeRewardQuest(
-        @Query("rewardContent") rewardContent: String,
+        @Query("commercialAreaCode") commercialAreaCode: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3,
         @Query("sort") sort: List<String> = emptyList()
@@ -52,13 +72,18 @@ interface QuestApiService {
         @Query("size") size: Int = 60
     ): UncompletedEventQuestResponse
 
-    @POST("customer/quest/{questId}/favorite")
-    suspend fun registerFavoriteQuest(
-        @Path("questId") questId: String
-    ): FavoriteQuestRegistrationResponse
+    @GET("api/v1/quest/user/{questId}")
+    suspend fun getQuestDetail(
+        @Path("questId") questId: Int
+    ): QuestDetailResponse
 
-    @DELETE("customer/quest/{questId}/favorite")
+    @POST("api/v1/quest/user/favorite")
+    suspend fun registerFavoriteQuest(
+        @Body favoriteQuestRegistrationRequest: FavoriteQuestRegistrationRequest
+    )
+
+    @DELETE("api/v1/quest/user/favorite")
     suspend fun deleteFavoriteQuest(
-        @Path("questId") questId: String
-    ): FavoriteQuestDeletionResponse
+        @Body favoriteQuestDeletionRequest: FavoriteQuestDeletionRequest
+    )
 }

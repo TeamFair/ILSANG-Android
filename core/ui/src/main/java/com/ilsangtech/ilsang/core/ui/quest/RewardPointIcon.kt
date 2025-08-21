@@ -19,7 +19,7 @@ fun RewardPointIcon(
         painter = painterResource(
             when (rewardPoint) {
                 is RewardPoint.Metro -> R.drawable.icon_metro_reward
-                is RewardPoint.Commerical -> R.drawable.icon_commercial_reward
+                is RewardPoint.Commercial -> R.drawable.icon_commercial_reward
                 is RewardPoint.Contribute -> R.drawable.icon_contribute_reward
             }
         ),

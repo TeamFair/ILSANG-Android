@@ -1,11 +1,15 @@
 package com.ilsangtech.ilsang.core.network.model.user
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserInfoResponse(
-    @SerialName("data") val userInfoNetworkModel: UserInfoNetworkModel,
-    val message: String,
-    val status: String
+    val id: String,
+    val channel: String,
+    val commercialAreaCode: String,
+    val email: String,
+    val nickname: String,
+    val profileImageId: String,
+    val status: String,
+    val statusUpdatedAt: String
 )

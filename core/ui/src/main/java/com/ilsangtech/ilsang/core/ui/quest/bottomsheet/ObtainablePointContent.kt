@@ -78,7 +78,7 @@ private fun ObtainablePointItem(rewardPoint: RewardPoint) {
             Text(
                 text = when (rewardPoint) {
                     is RewardPoint.Metro -> "일상지역"
-                    is RewardPoint.Commerical -> "일상존"
+                    is RewardPoint.Commercial -> "일상존"
                     is RewardPoint.Contribute -> "기여도"
                 },
                 style = TextStyle(
@@ -248,7 +248,7 @@ private val questBottomSheetRewardPointTextStyle = TextStyle(
 private fun ObtainablePointContentPreview() {
     val rewardPoints = listOf(
         RewardPoint.Metro(point = 10),
-        RewardPoint.Commerical(point = 20),
+        RewardPoint.Commercial(point = 20),
         RewardPoint.Contribute(point = 30)
     )
     ObtainablePointContent(rewardPoints = rewardPoints)

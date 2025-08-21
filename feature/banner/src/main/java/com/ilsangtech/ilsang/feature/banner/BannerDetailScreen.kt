@@ -81,7 +81,7 @@ private fun BannerDetailScreenPreview() {
         mainImageId = "",
         rewards = listOf(
             RewardPoint.Metro(5),
-            RewardPoint.Commerical(10),
+            RewardPoint.Commercial(10),
             RewardPoint.Contribute(15)
         ),
         title = "예시 퀘스트 타이틀",
