@@ -1,9 +1,12 @@
 package com.ilsangtech.ilsang.core.model
 
+import com.ilsangtech.ilsang.core.model.title.Title
+
 data class UserRank(
-    val customerId: String,
-    val nickname: String,
-    val xpSum: Int,
-    val profileImageUrl: String? = null,
-    val rank: Int
+    val userId: String,
+    val nickName: String,
+    val point: Int,
+    val profileImageId: String,
+    val rank: Int,
+    val title: Title
 )
