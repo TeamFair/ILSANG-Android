@@ -2,9 +2,9 @@ package com.ilsangtech.ilsang.core.model.banner
 
 data class Banner(
     val id: Int,
-    val title: String,
-    val imageId: String,
-    val imageUrl: String,
+    val bannerImageId: String,
     val description: String,
-    val activeYn: String
+    val navigationTitle: String,
+    val title: String,
+    val useYn: Boolean
 )
