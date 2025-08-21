@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.core.network.api
 
-import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
@@ -21,8 +20,8 @@ interface AuthApiService {
         @Body oAuthRefreshRequest: OAuthRefreshRequest
     ): OAuthRefreshResponse
 
-    @GET("customer/logout")
-    suspend fun logout(): LogoutResponse
+    @GET("api/v1/logout")
+    suspend fun logout()
 
     @GET("customer/withdraw")
     suspend fun withdraw(): WithdrawalResponse
