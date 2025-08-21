@@ -1,8 +1,8 @@
 package com.ilsangtech.ilsang.core.domain
 
 import com.ilsangtech.ilsang.core.model.RewardType
-import com.ilsangtech.ilsang.core.model.UserRank
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
+import com.ilsangtech.ilsang.core.model.rank.UserRank
 import kotlinx.coroutines.flow.Flow
 
 interface RankRepository {

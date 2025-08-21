@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.model
+package com.ilsangtech.ilsang.core.model.rank
 
 import com.ilsangtech.ilsang.core.model.title.Title
 
