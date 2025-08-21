@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.data.rank.datasource
 
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
+import com.ilsangtech.ilsang.core.network.model.rank.ContributionTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
@@ -27,6 +28,12 @@ class RankDataSourceImpl @Inject constructor(
         commercialAreaCode: String
     ): CommercialTopRankUsersResponse {
         return rankApiService.getCommercialTopRankUsers(seasonId, commercialAreaCode)
+    }
+
+    override suspend fun getContributionTopRankUsers(
+        seasonId: Int?
+    ): ContributionTopRankUsersResponse {
+        return rankApiService.getContributionTopRankUsers(seasonId)
     }
 
     override suspend fun getTopRankUsers(): TopUsersResponse {
