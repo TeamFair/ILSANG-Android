@@ -8,4 +8,8 @@ class AuthDataSourceImpl(private val authApiService: AuthApiService) : AuthDataS
     override suspend fun login(idToken: String): OAuthLoginResponse {
         return authApiService.oAuthLogin(OAuthLoginRequest(idToken = idToken))
     }
+
+    override suspend fun logout() {
+        return authApiService.logout()
+    }
 }

@@ -4,4 +4,6 @@ import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
 
 interface AuthDataSource {
     suspend fun login(idToken: String): OAuthLoginResponse
+
+    suspend fun logout()
 }
