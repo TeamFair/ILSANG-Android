@@ -24,6 +24,7 @@ import com.ilsangtech.ilsang.feature.home.component.LargeRewardQuestContent
 import com.ilsangtech.ilsang.feature.home.component.PopularQuestsContent
 import com.ilsangtech.ilsang.feature.home.component.RecommendedQuestsContent
 import com.ilsangtech.ilsang.feature.home.component.UserRankContent
+import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,6 +1,5 @@
-package com.ilsangtech.ilsang.feature.home
+package com.ilsangtech.ilsang.feature.home.model
 
-import com.ilsangtech.ilsang.core.model.Banner
 import com.ilsangtech.ilsang.core.model.UserRank
 import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
