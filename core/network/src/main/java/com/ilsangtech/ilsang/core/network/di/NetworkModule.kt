@@ -85,7 +85,7 @@ object NetworkModule {
                         }
 
                         response.request.newBuilder()
-                            .header("Authorization", refreshResponse.data.authorization)
+                            .header("Authorization", "Bearer ${refreshResponse.data.authorization}")
                             .build()
 
                     } catch (e: Exception) {
@@ -116,7 +116,7 @@ object NetworkModule {
             } ?: return@Interceptor chain.proceed(original)
 
             val newRequest = original.newBuilder()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer $token")
                 .build()
             chain.proceed(newRequest)
         }
@@ -158,7 +158,7 @@ object NetworkModule {
         val json = Json { encodeDefaults = true }
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("${BuildConfig.SERVER_URL}/api/")
+            .baseUrl("${BuildConfig.SERVER_URL}/")
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType())
             )
