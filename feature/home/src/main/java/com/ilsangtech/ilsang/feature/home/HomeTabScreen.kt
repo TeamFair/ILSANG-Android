@@ -42,7 +42,6 @@ fun HomeTabScreen(
 ) {
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
     val homeTabUiState by homeViewModel.homeTabUiState.collectAsStateWithLifecycle()
-    val userInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -71,12 +70,12 @@ fun HomeTabScreen(
             .navigationBarsPadding()
     ) {
         if (homeTabUiState is HomeTabUiState.Success) {
-            val (banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) =
+            val (userInfo, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) =
                 (homeTabUiState as HomeTabUiState.Success).data
             LazyColumn {
                 item {
                     HomeTabHeader(
-                        profileImageId = userInfo?.profileImage,
+                        profileImageId = userInfo.profileImageId,
                         metroName = null,
                         areaName = null,
                         onProfileClick = navigateToMyTab,
@@ -100,7 +99,7 @@ fun HomeTabScreen(
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     RecommendedQuestsContent(
-                        userNickname = userInfo?.nickname,
+                        userNickname = userInfo.nickname,
                         recommendedQuests = recommendedQuests,
                         onRecommendedQuestClick = homeViewModel::selectQuest
                     )
