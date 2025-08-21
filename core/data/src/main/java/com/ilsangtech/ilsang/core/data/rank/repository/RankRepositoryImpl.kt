@@ -9,11 +9,22 @@ import com.ilsangtech.ilsang.core.model.UserRank
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankNetworkModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RankRepositoryImpl @Inject constructor(
     private val rankDataSource: RankDataSource
 ) : RankRepository {
+    override suspend fun getTotalTopRankUsers(commercialAreaCode: String): Flow<List<UserRank>> {
+        return flow {
+            emit(
+                rankDataSource.getTotalTopRankUsers(commercialAreaCode)
+                    .map(UserRankNetworkModel::toUserRank)
+            )
+        }
+    }
+
     override suspend fun getTopRankUsers(): List<UserRank> {
         return rankDataSource.getTopRankUsers()
             .data.map(UserRankNetworkModel::toUserRank)
