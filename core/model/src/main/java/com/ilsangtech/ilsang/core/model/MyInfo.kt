@@ -1,12 +1,13 @@
 package com.ilsangtech.ilsang.core.model
 
 data class MyInfo(
-    val nickname: String? = null,
-    val email: String? = null,
-    val profileImage: String? = null,
-    val completeChallengeCount: Int,
-    val couponCount: Int,
-    val xpPoint: Int,
+    val id: String,
+    val channel: String,
+    val isCommercialAreaCode: String,
+    val myCommericalAreaCode: String?,
+    val email: String,
+    val nickname: String,
+    val profileImageId: String,
     val status: String,
-    val title: Title?
+    val statusUpdatedAt: String
 )
