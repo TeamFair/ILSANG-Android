@@ -1,7 +1,9 @@
 package com.ilsangtech.ilsang.core.data.rank.datasource
 
+import com.ilsangtech.ilsang.core.network.model.rank.CommercialAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.ContributionTopRankUsersResponse
+import com.ilsangtech.ilsang.core.network.model.rank.MetroAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
@@ -23,6 +25,10 @@ interface RankDataSource {
     suspend fun getContributionTopRankUsers(
         seasonId: Int?
     ): ContributionTopRankUsersResponse
+
+    suspend fun getMetroTopRankAreas(seasonId: Int?): List<MetroAreaRankNetworkModel>
+
+    suspend fun getCommercialTopRankAreas(seasonId: Int?): List<CommercialAreaRankNetworkModel>
 
     suspend fun getTopRankUsers(): TopUsersResponse
     suspend fun getXpTypeRank(
