@@ -6,4 +6,6 @@ interface AuthDataSource {
     suspend fun login(idToken: String): OAuthLoginResponse
 
     suspend fun logout()
+
+    suspend fun withdraw()
 }

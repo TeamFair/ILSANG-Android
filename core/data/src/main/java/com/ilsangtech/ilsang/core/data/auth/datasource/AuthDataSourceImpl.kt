@@ -12,4 +12,8 @@ class AuthDataSourceImpl(private val authApiService: AuthApiService) : AuthDataS
     override suspend fun logout() {
         return authApiService.logout()
     }
+
+    override suspend fun withdraw() {
+        return authApiService.withdraw()
+    }
 }
