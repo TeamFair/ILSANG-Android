@@ -2,7 +2,6 @@ package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
-import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -16,6 +15,6 @@ interface AuthApiService {
     @GET("api/v1/logout")
     suspend fun logout()
 
-    @GET("customer/withdraw")
-    suspend fun withdraw(): WithdrawalResponse
+    @GET("api/v1/withdraw")
+    suspend fun withdraw()
 }
