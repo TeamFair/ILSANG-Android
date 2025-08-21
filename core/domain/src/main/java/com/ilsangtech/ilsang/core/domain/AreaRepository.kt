@@ -7,4 +7,6 @@ interface AreaRepository {
     fun getMetroAreaList(): Flow<List<MetroArea>>
 
     fun getCommercialName(commericalCode: String): Flow<String>
+
+    suspend fun getMetroArea(metroAreaCode: String): MetroArea
 }

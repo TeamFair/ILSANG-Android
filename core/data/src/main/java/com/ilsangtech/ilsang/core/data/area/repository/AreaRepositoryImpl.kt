@@ -28,4 +28,8 @@ class AreaRepositoryImpl(
             commericalAreaList.first { it.code == commericalCode }.areaName
         }
     }
+
+    override suspend fun getMetroArea(metroAreaCode: String): MetroArea {
+        return areaDataSource.getMetroArea(metroAreaCode).toMetroArea()
+    }
 }
