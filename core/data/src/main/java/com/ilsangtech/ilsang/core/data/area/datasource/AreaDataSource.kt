@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.area.datasource
 
-import com.ilsangtech.ilsang.core.network.model.area.AreaListResponse
+import com.ilsangtech.ilsang.core.network.model.area.MetroAreaNetworkModel
 
 interface AreaDataSource {
-    suspend fun getAreaList(): AreaListResponse
+    suspend fun getMetroAreaList(): List<MetroAreaNetworkModel>
 }
