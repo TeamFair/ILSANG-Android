@@ -127,8 +127,8 @@ private fun HomeTabScreen(
                 item {
                     HomeTabHeader(
                         profileImageId = userInfo.profileImageId,
-                        metroName = null,
-                        areaName = null,
+                        myCommercialAreaName = userInfo.myCommercialAreaName,
+                        isCommercialAreaName = userInfo.isCommericalAreaName,
                         onProfileClick = navigateToMyTab,
                         onMyZoneClick = onMyZoneClick,
                         onIsZoneClick = onIsZoneClick
