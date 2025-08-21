@@ -5,19 +5,21 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import com.ilsangtech.ilsang.core.network.model.area.CommercialAreaNetworkModel
 import com.ilsangtech.ilsang.core.network.model.area.MetroAreaNetworkModel
 
-fun CommercialAreaNetworkModel.toCommercialArea(): CommercialArea {
+internal fun CommercialAreaNetworkModel.toCommercialArea(): CommercialArea {
     return CommercialArea(
         code = code,
         areaName = areaName,
         description = description,
-        metroAreaCode = metroAreaCode
+        metroAreaCode = metroAreaCode,
+        images = images
     )
 }
 
-fun MetroAreaNetworkModel.toMetroArea(): MetroArea {
+internal fun MetroAreaNetworkModel.toMetroArea(): MetroArea {
     return MetroArea(
         code = code,
         areaName = areaName,
-        commercialAreaList = commercialAreaNetworkModel.map { it.toCommercialArea() }
+        images = images,
+        commercialAreaList = commercialAreas.map { it.toCommercialArea() }
     )
 }

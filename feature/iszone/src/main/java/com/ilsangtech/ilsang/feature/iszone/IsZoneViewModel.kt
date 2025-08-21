@@ -27,7 +27,7 @@ class IsZoneViewModel @Inject constructor(
     val isZoneUiState = combine(
         _selectedCommercialArea,
         _selectedMetroArea,
-        areaRepository.getAreaList(),
+        areaRepository.getMetroAreaList(),
         _isIsZoneUpdateSuccess
     ) { selectedCommercialArea, selectedMetroArea, areaList, isIsZoneUpdateSuccess ->
         IsZoneUiState(

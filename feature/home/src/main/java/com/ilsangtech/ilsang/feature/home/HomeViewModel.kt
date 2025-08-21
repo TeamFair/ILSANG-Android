@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
@@ -44,8 +43,10 @@ class HomeViewModel @Inject constructor(
             val myAreaCode = myInfo.myCommericalAreaCode.orEmpty()
             val isAreaCode = myInfo.isCommercialAreaCode.orEmpty()
 
-            val myCommercialAreaName = areaRepository.getCommercialName(myAreaCode).first()
-            val isCommercialAreaName = areaRepository.getCommercialName(isAreaCode).first()
+            val myCommercialAreaName =
+                areaRepository.getCommercialArea(myAreaCode).areaName
+            val isCommercialAreaName =
+                areaRepository.getCommercialArea(isAreaCode).areaName
 
             val bannersFlow = bannerRepository.getBanners()
             val popularFlow =
