@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
+import com.ilsangtech.ilsang.core.network.model.rank.ContributionTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TotalTopRankUsersResponse
@@ -25,6 +26,11 @@ interface RankApiService {
         @Query("seasonId") seasonId: Int?,
         @Query("commercialAreaCode") commercialAreaCode: String
     ): CommercialTopRankUsersResponse
+
+    @GET("api/v1/rank/user/contribution")
+    suspend fun getContributionTopRankUsers(
+        @Query("seasonId") seasonId: Int?
+    ): ContributionTopRankUsersResponse
 
     @GET("open/v1/rank/top-users")
     suspend fun getTopRankUsers(): TopUsersResponse
