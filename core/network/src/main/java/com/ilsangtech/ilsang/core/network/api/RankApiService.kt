@@ -8,7 +8,9 @@ import retrofit2.http.Query
 
 interface RankApiService {
     @GET("api/v1/rank/user/total")
-    suspend fun getTotalTopRankUsers(commercialAreaCode: String): TotalTopRankUsersResponse
+    suspend fun getTotalTopRankUsers(
+        @Query("commercialAreaCode") commercialAreaCode: String
+    ): TotalTopRankUsersResponse
 
     @GET("open/v1/rank/top-users")
     suspend fun getTopRankUsers(): TopUsersResponse
