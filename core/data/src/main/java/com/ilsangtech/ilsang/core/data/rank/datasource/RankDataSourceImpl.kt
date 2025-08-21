@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.rank.datasource
 
 import com.ilsangtech.ilsang.core.network.api.RankApiService
+import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
@@ -19,6 +20,13 @@ class RankDataSourceImpl @Inject constructor(
         metroAreaCode: String
     ): MetroTopRankUsersResponse {
         return rankApiService.getMetroTopRankUsers(seasonId, metroAreaCode)
+    }
+
+    override suspend fun getCommercialTopRankUsers(
+        seasonId: Int?,
+        commercialAreaCode: String
+    ): CommercialTopRankUsersResponse {
+        return rankApiService.getCommercialTopRankUsers(seasonId, commercialAreaCode)
     }
 
     override suspend fun getTopRankUsers(): TopUsersResponse {
