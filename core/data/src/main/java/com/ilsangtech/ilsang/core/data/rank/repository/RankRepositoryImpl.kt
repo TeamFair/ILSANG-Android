@@ -1,10 +1,9 @@
 package com.ilsangtech.ilsang.core.data.rank.repository
 
 import com.ilsangtech.ilsang.core.data.rank.datasource.RankDataSource
-import com.ilsangtech.ilsang.core.data.rank.toUserRank
+import com.ilsangtech.ilsang.core.data.rank.mapper.toUserRank
 import com.ilsangtech.ilsang.core.data.rank.toUserXpTypeRank
 import com.ilsangtech.ilsang.core.domain.RankRepository
-import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.model.UserRank
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
