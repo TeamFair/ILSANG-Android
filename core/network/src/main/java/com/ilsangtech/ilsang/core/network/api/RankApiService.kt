@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersRespo
 import com.ilsangtech.ilsang.core.network.model.rank.ContributionTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
-import com.ilsangtech.ilsang.core.network.model.rank.TotalTopRankUsersResponse
+import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,7 +13,7 @@ interface RankApiService {
     @GET("api/v1/rank/user/total")
     suspend fun getTotalTopRankUsers(
         @Query("commercialAreaCode") commercialAreaCode: String
-    ): TotalTopRankUsersResponse
+    ): List<UserRankNetworkModel>
 
     @GET("api/v1/rank/user/metro")
     suspend fun getMetroTopRankUsers(
