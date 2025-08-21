@@ -2,28 +2,19 @@ package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
-import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshRequest
-import com.ilsangtech.ilsang.core.network.model.auth.OAuthRefreshResponse
-import com.ilsangtech.ilsang.core.network.model.auth.LogoutResponse
-import com.ilsangtech.ilsang.core.network.model.auth.WithdrawalResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthApiService {
-    @POST("open/login/oauth")
+    @POST("api/v1/open/login/oauth")
     suspend fun oAuthLogin(
         @Body oAuthLoginRequest: OAuthLoginRequest
     ): OAuthLoginResponse
 
-    @POST("open/login/oauth/refresh")
-    suspend fun oAuthRefresh(
-        @Body oAuthRefreshRequest: OAuthRefreshRequest
-    ): OAuthRefreshResponse
+    @GET("api/v1/logout")
+    suspend fun logout()
 
-    @GET("customer/logout")
-    suspend fun logout(): LogoutResponse
-
-    @GET("customer/withdraw")
-    suspend fun withdraw(): WithdrawalResponse
+    @GET("api/v1/withdraw")
+    suspend fun withdraw()
 }

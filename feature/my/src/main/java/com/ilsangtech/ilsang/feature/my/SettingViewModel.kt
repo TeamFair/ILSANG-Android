@@ -2,7 +2,7 @@ package com.ilsangtech.ilsang.feature.my
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.domain.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _logoutState = MutableStateFlow<Boolean?>(false)
     val logoutState = _logoutState.asStateFlow()
 
     fun logout() {
         viewModelScope.launch {
-            userRepository.logout().onSuccess {
+            authRepository.logout().onSuccess {
                 _logoutState.update { true }
             }.onFailure {
                 _logoutState.update { false }
