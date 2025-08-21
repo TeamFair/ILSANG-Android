@@ -17,4 +17,8 @@ class AuthRepositoryImpl(
             }
         }
     }
+
+    override suspend fun logout(): Result<Unit> {
+        return runCatching { authDataSource.logout() }
+    }
 }
