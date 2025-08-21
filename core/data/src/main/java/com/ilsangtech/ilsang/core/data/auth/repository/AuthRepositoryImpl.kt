@@ -21,4 +21,8 @@ class AuthRepositoryImpl(
     override suspend fun logout(): Result<Unit> {
         return runCatching { authDataSource.logout() }
     }
+
+    override suspend fun withdraw(): Result<Unit> {
+        return runCatching { authDataSource.withdraw() }
+    }
 }
