@@ -12,18 +12,18 @@ import kotlinx.coroutines.flow.map
 class AreaRepositoryImpl(
     private val areaDataSource: AreaDataSource
 ) : AreaRepository {
-    private var areaList: List<MetroArea> = emptyList()
+    private var metroAreaList: List<MetroArea> = emptyList()
 
-    override fun getAreaList(): Flow<List<MetroArea>> = flow {
-        if (areaList.isEmpty()) {
-            areaDataSource.getAreaList().metroAreaList
+    override fun getMetroAreaList(): Flow<List<MetroArea>> = flow {
+        if (metroAreaList.isEmpty()) {
+            metroAreaList = areaDataSource.getMetroAreaList()
                 .map(MetroAreaNetworkModel::toMetroArea)
         }
-        emit(areaList)
+        emit(metroAreaList)
     }
 
     override fun getCommercialName(commericalCode: String): Flow<String> {
-        return getAreaList().map { areaList ->
+        return getMetroAreaList().map { areaList ->
             val commericalAreaList = areaList.flatMap { it.commercialAreaList }
             commericalAreaList.first { it.code == commericalCode }.areaName
         }

@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import kotlinx.coroutines.flow.Flow
 
 interface AreaRepository {
-    fun getAreaList(): Flow<List<MetroArea>>
+    fun getMetroAreaList(): Flow<List<MetroArea>>
 
     fun getCommercialName(commericalCode: String): Flow<String>
 }
