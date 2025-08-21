@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserRankNetworkModel(
-    val customerId: String,
-    val lank: Int,
-    val nickname: String,
-    val profileImage: String?,
-    val xpSum: Int,
-    val title: TitleNetworkModel? = null
+    val userId: String,
+    val nickName: String,
+    val point: Int,
+    val profileImageId: String,
+    val rank: Int,
+    val title: TitleNetworkModel
 )
