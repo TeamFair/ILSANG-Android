@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class OAuthLoginResponse(
-    val authorization: String,
+    val accessToken: String,
     val refreshToken: String?
 )
