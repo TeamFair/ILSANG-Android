@@ -70,7 +70,7 @@ object NetworkModule {
                         val refreshResponse = Json.decodeFromString<OAuthRefreshResponse>(
                             okHttpClient.newCall(
                                 Request.Builder()
-                                    .url(BuildConfig.SERVER_URL + "/api/open/login/oauth/refresh")
+                                    .url(BuildConfig.SERVER_URL + "/api/v1/open/login/refresh")
                                     .post(
                                         refreshRequestString
                                             .toRequestBody("application/json".toMediaType())
@@ -79,13 +79,13 @@ object NetworkModule {
                             ).execute().body!!.string()
                         )
 
-                        userDataStore.setAccessToken(refreshResponse.data.authorization)
-                        refreshResponse.data.refreshToken?.let { token ->
+                        userDataStore.setAccessToken(refreshResponse.accessToken)
+                        refreshResponse.refreshToken?.let { token ->
                             userDataStore.setRefreshToken(token)
                         }
 
                         response.request.newBuilder()
-                            .header("Authorization", "Bearer ${refreshResponse.data.authorization}")
+                            .header("Authorization", "Bearer ${refreshResponse.accessToken}")
                             .build()
 
                     } catch (e: Exception) {
