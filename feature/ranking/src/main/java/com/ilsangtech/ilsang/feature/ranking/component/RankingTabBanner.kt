@@ -117,6 +117,7 @@ internal fun RankingTabBanner(
 @Composable
 private fun RankingTabBannerPreview() {
     val season = SeasonUiModel.Season(
+        seasonId = 1,
         seasonNumber = 1,
         startDate = "2023.01.01",
         endDate = "2023.03.31"

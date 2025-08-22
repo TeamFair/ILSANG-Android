@@ -47,7 +47,7 @@ import java.util.Locale
 @Composable
 internal fun UserRankItem(
     modifier: Modifier = Modifier,
-    imageId: String,
+    imageId: String?,
     nickname: String,
     titleName: String,
     titleGrade: TitleGrade,
@@ -100,7 +100,7 @@ internal fun UserRankItem(
 @Composable
 internal fun MyRankCard(
     modifier: Modifier = Modifier,
-    imageId: String,
+    imageId: String?,
     nickname: String,
     titleName: String,
     titleGrade: TitleGrade,
@@ -186,7 +186,7 @@ private fun DefaultUserRankCard(
 @Composable
 private fun DefaultUserRankContent(
     modifier: Modifier = Modifier,
-    imageId: String,
+    imageId: String?,
     nickname: String,
     titleName: String,
     titleGrade: TitleGrade,

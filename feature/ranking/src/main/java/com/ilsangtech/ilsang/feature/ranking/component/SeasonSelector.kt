@@ -106,11 +106,13 @@ private fun SeasonSelectorPreview() {
     val seasonList = listOf(
         SeasonUiModel.Total,
         SeasonUiModel.Season(
+            seasonId = 1,
             seasonNumber = 1,
             startDate = "2023-01-01",
             endDate = "2023-03-31"
         ),
         SeasonUiModel.Season(
+            seasonId = 1,
             seasonNumber = 2,
             startDate = "2023-04-01",
             endDate = "2023-06-30"

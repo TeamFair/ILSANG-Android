@@ -188,9 +188,10 @@ fun IlsangNavHost(
             submitNavigation(popBackStack = navController::popBackStack)
 
             rankingNavigation(
-                navigateToProfile = { id ->
-                    navController.navigate(ProfileRoute(id))
-                }
+                navigateToRankingDetail = { rankingDetailRoute ->
+                    navController.navigate(rankingDetailRoute)
+                },
+                onBackButtonClick = navController::popBackStack
             )
 
             approvalNavigation(navigateToProfile = { id ->

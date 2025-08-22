@@ -163,6 +163,7 @@ internal fun RankingDetailAreaInfoCard(
 private fun RankingDetailAreaInfoCardPreview() {
     RankingDetailAreaInfoCard(
         areaRankUiModel = AreaRankUiModel(
+            areaCode = "",
             areaName = "경기 남부",
             rank = 1,
             point = 123456789,

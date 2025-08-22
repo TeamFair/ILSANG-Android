@@ -13,12 +13,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.heading02
@@ -28,10 +31,33 @@ import com.ilsangtech.ilsang.feature.ranking.component.RankingDetailHeader
 import com.ilsangtech.ilsang.feature.ranking.component.TimeRemainingCard
 import com.ilsangtech.ilsang.feature.ranking.component.UserRankItem
 import com.ilsangtech.ilsang.feature.ranking.model.AreaRankUiModel
+import com.ilsangtech.ilsang.feature.ranking.model.RankingDetailUiState
 import com.ilsangtech.ilsang.feature.ranking.model.SeasonUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.UserRankUiModel
 import java.text.SimpleDateFormat
 import java.util.Locale
+
+@Composable
+fun RankingDetailScreen(
+    rankingDetailViewModel: RankingDetailViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit
+) {
+    val rankingDetailUiState by
+    rankingDetailViewModel.rankingDetailUiState.collectAsStateWithLifecycle()
+
+    if (rankingDetailUiState is RankingDetailUiState.Success) {
+        val rankingDetailUiState = rankingDetailUiState as RankingDetailUiState.Success
+
+        RankingDetailScreen(
+            currentSeason = rankingDetailUiState.currentSeason,
+            areaRankUiModel = rankingDetailUiState.areaRankUiModel,
+            myRankUiModel = rankingDetailUiState.myRankUiModel,
+            userRankList = rankingDetailUiState.userRankList,
+            onBackButtonClick = onBackButtonClick,
+            onSeasonFinished = rankingDetailViewModel::refreshSeason
+        )
+    }
+}
 
 @Composable
 private fun RankingDetailScreen(
@@ -158,6 +184,7 @@ private fun RankingDetailScreenPreview() {
     )
     RankingDetailScreen(
         currentSeason = SeasonUiModel.Season(
+            seasonId = 1,
             seasonNumber = 1,
             startDate = "2023-01-01",
             endDate = "2025-10-31"
