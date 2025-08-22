@@ -4,4 +4,6 @@ import com.ilsangtech.ilsang.core.model.season.Season
 
 interface SeasonRepository {
     suspend fun getSeasonList(): List<Season>
+
+    suspend fun getCurrentSeason(): Season
 }
