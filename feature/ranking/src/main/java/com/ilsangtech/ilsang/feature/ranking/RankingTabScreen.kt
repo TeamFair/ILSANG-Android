@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,16 +23,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
@@ -91,6 +96,18 @@ private fun RankingTabScreen(
                 .parse(currentSeason.endDate)
         }
     }
+    var popupOffset by remember { mutableStateOf(Offset(0f, 0f)) }
+
+    if (expanded) {
+        Popup {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset { IntOffset(popupOffset.x.toInt(), popupOffset.y.toInt()) }
+                    .background(Color.Black.copy(alpha = 0.3f))
+            )
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -101,20 +118,22 @@ private fun RankingTabScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             RankingScreenHeader()
             SeasonSelector(
+                modifier = Modifier.onGloballyPositioned { coordinates ->
+                    popupOffset =
+                        Offset(
+                            x = 0f,
+                            y = coordinates.positionInWindow().y
+                                    + coordinates.size.height.toFloat()
+                        )
+
+                },
                 expanded = expanded,
                 seasonList = seasonList,
                 selectedSeason = selectedSeason,
                 onSeasonSelected = onSeasonSelected,
                 onExpandedChange = { expanded = it }
             )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .drawWithContent {
-                        drawContent()
-                        if (expanded) drawRect(color = Color.Black.copy(alpha = 0.3f))
-                    }
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
                 currentSeason?.let {
                     RankingTabBanner(
                         modifier = Modifier
