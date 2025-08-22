@@ -2,11 +2,13 @@ package com.ilsangtech.ilsang.core.data.rank.repository
 
 import com.ilsangtech.ilsang.core.data.rank.datasource.RankDataSource
 import com.ilsangtech.ilsang.core.data.rank.mapper.toUserRank
+import com.ilsangtech.ilsang.core.data.rank.mapper.toUserRanksWithMyRank
 import com.ilsangtech.ilsang.core.data.rank.toUserXpTypeRank
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.model.RewardType
 import com.ilsangtech.ilsang.core.model.UserXpTypeRank
 import com.ilsangtech.ilsang.core.model.rank.UserRank
+import com.ilsangtech.ilsang.core.model.rank.UserRanksWithMyRank
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankNetworkModel
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +23,18 @@ class RankRepositoryImpl @Inject constructor(
             emit(
                 rankDataSource.getTotalTopRankUsers(commercialAreaCode)
                     .map(UserRankNetworkModel::toUserRank)
+            )
+        }
+    }
+
+    override suspend fun getMetroTopRankUsers(
+        seasonId: Int?,
+        metroAreaCode: String
+    ): Flow<UserRanksWithMyRank> {
+        return flow {
+            emit(
+                rankDataSource.getMetroTopRankUsers(seasonId, metroAreaCode)
+                    .toUserRanksWithMyRank()
             )
         }
     }
