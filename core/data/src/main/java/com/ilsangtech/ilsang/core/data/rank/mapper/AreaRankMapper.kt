@@ -16,7 +16,7 @@ internal fun MetroAreaRankNetworkModel.toMetroAreaRank(): MetroAreaRank {
 
 internal fun CommercialAreaRankNetworkModel.toCommercialAreaRank(): CommercialAreaRank {
     return CommercialAreaRank(
-        commericalAreaCode = commercialCode,
+        commercialAreaCode = commercialCode,
         areaName = areaName,
         point = point,
         images = images
