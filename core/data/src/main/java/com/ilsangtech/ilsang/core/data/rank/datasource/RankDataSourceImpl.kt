@@ -3,7 +3,6 @@ package com.ilsangtech.ilsang.core.data.rank.datasource
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
-import com.ilsangtech.ilsang.core.network.model.rank.ContributionTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
@@ -34,7 +33,7 @@ class RankDataSourceImpl @Inject constructor(
 
     override suspend fun getContributionTopRankUsers(
         seasonId: Int?
-    ): ContributionTopRankUsersResponse {
+    ): List<UserRankNetworkModel> {
         return rankApiService.getContributionTopRankUsers(seasonId)
     }
 
