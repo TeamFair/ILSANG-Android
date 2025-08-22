@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface SeasonApiService {
     @GET("api/v1/season")
-    fun getSeasonList(): List<SeasonNetworkModel>
+    suspend fun getSeasonList(): List<SeasonNetworkModel>
 }
