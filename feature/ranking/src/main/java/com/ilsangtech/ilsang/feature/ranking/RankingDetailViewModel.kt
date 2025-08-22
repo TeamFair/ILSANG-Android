@@ -59,6 +59,7 @@ class RankingDetailViewModel @Inject constructor(
 
             RankingDetailUiState.Success(
                 currentSeason = SeasonUiModel.Season(
+                    seasonId = currentSeason.id,
                     seasonNumber = currentSeason.seasonNumber,
                     startDate = DateConverter.formatDate(
                         input = currentSeason.startDate,

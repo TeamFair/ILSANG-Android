@@ -8,6 +8,7 @@ sealed interface SeasonUiModel {
     }
 
     data class Season(
+        val seasonId: Int,
         val seasonNumber: Int,
         val startDate: String,
         val endDate: String
