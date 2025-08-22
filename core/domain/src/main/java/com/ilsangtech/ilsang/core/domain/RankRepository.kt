@@ -23,7 +23,7 @@ interface RankRepository {
 
     fun getContributionTopRankUsers(
         seasonId: Int?
-    ): Flow<UserRanksWithMyRank>
+    ): Flow<List<UserRank>>
 
     fun getMetroTopRankAreas(
         seasonId: Int?

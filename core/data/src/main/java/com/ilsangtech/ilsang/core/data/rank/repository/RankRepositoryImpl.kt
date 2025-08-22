@@ -57,11 +57,11 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getContributionTopRankUsers(seasonId: Int?): Flow<UserRanksWithMyRank> {
+    override fun getContributionTopRankUsers(seasonId: Int?): Flow<List<UserRank>> {
         return flow {
             emit(
                 rankDataSource.getContributionTopRankUsers(seasonId)
-                    .toUserRanksWithMyRank()
+                    .map(UserRankNetworkModel::toUserRank)
             )
         }
     }
