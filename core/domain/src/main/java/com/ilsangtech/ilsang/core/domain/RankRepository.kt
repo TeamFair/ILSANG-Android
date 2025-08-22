@@ -18,6 +18,10 @@ interface RankRepository {
         seasonId: Int?,
         commercialAreaCode: String
     ): Flow<UserRanksWithMyRank>
+    
+    suspend fun getContributionTopRankUsers(
+        seasonId: Int?
+    ): Flow<UserRanksWithMyRank>
 
     suspend fun getTopRankUsers(): List<UserRank>
     suspend fun getXpTypeRank(rewardType: RewardType): List<UserXpTypeRank>
