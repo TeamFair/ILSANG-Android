@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestsResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
@@ -41,6 +42,19 @@ interface QuestApiService {
         @Query("size") size: Int,
         @Query("sort") sort: List<String>
     ): RecommendedQuestResponse
+
+    @GET("api/v1/quest/user/search/type")
+    suspend fun getTypedQuests(
+        @Query("commercialAreaCode") commercialAreaCode: String,
+        @Query("questType") type: String? = null,
+        @Query("repeatFrequency") repeatFrequency: String? = null,
+        @Query("orderRewardDesc") orderRewardDesc: Boolean? = null,
+        @Query("favoriteYn") favoriteYn: Boolean? = null,
+        @Query("completeYn") completeYn: Boolean = false,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String> = emptyList()
+    ): TypedQuestsResponse
 
     @GET("api/v1/quest/user/search/reward")
     suspend fun getLargeRewardQuest(
