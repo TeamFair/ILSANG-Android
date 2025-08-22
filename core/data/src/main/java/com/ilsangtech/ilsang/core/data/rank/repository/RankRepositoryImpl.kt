@@ -39,6 +39,18 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getCommercialTopRankUsers(
+        seasonId: Int?,
+        commercialAreaCode: String
+    ): Flow<UserRanksWithMyRank> {
+        return flow {
+            emit(
+                rankDataSource.getCommercialTopRankUsers(seasonId, commercialAreaCode)
+                    .toUserRanksWithMyRank()
+            )
+        }
+    }
+
     override suspend fun getTopRankUsers(): List<UserRank> {
         return rankDataSource.getTopRankUsers()
             .data.map(UserRankNetworkModel::toUserRank)
