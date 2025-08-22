@@ -54,13 +54,14 @@ import com.ilsangtech.ilsang.feature.ranking.model.RankingTabUiState
 import com.ilsangtech.ilsang.feature.ranking.model.RewardUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.SeasonUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.UserRankUiModel
+import com.ilsangtech.ilsang.feature.ranking.navigation.RankingDetailRoute
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun RankingTabScreen(
     rankingViewModel: RankingTabViewModel = hiltViewModel(),
-    navigateToProfile: (String) -> Unit
+    navigateToRankingDetail: (RankingDetailRoute) -> Unit
 ) {
     val seasonList by rankingViewModel.seasonList.collectAsStateWithLifecycle()
     val currentSeason by rankingViewModel.currentSeason.collectAsStateWithLifecycle()
@@ -74,6 +75,19 @@ fun RankingTabScreen(
         selectedSeason = selectedSeason,
         rankingTabUiState = rankingUiState,
         onSeasonSelected = rankingViewModel::updateSelectedSeason,
+        onAreaClick = { areaRankUiModel, isMetro ->
+            navigateToRankingDetail(
+                RankingDetailRoute(
+                    seasonId = currentSeason!!.seasonId,
+                    isMetro = isMetro,
+                    areaCode = areaRankUiModel.areaCode,
+                    areaName = areaRankUiModel.areaName,
+                    rank = areaRankUiModel.rank,
+                    point = areaRankUiModel.point,
+                    images = areaRankUiModel.images
+                )
+            )
+        },
         onSeasonFinished = rankingViewModel::refreshSeason
     )
 }
@@ -86,6 +100,7 @@ private fun RankingTabScreen(
     selectedSeason: SeasonUiModel,
     rankingTabUiState: RankingTabUiState,
     onSeasonSelected: (SeasonUiModel) -> Unit,
+    onAreaClick: (AreaRankUiModel, Boolean) -> Unit,
     onSeasonFinished: () -> Unit
 ) {
     var selectedReward by remember { mutableStateOf(RewardUiModel.Metro) }
@@ -171,7 +186,7 @@ private fun RankingTabScreen(
                                             areaName = metroRankArea.areaName,
                                             rank = metroRankArea.rank,
                                             point = metroRankArea.point,
-                                            onClick = {}
+                                            onClick = { onAreaClick(metroRankArea, true) }
                                         )
                                     }
                                 }
@@ -182,7 +197,7 @@ private fun RankingTabScreen(
                                             areaName = commercialRankArea.areaName,
                                             rank = commercialRankArea.rank,
                                             point = commercialRankArea.point,
-                                            onClick = {}
+                                            onClick = { onAreaClick(commercialRankArea, false) }
                                         )
                                     }
                                 }
@@ -352,6 +367,7 @@ private fun RankingTabScreenPreview() {
         selectedSeason = selectedSeason,
         rankingTabUiState = rankingTabUiState,
         onSeasonSelected = {},
+        onAreaClick = { _, _ -> },
         onSeasonFinished = {}
     )
 }
