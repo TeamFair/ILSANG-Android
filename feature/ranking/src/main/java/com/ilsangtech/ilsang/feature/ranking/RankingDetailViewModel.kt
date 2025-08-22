@@ -32,6 +32,7 @@ class RankingDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val rankingDetailInfo = savedStateHandle.toRoute<RankingDetailRoute>()
     private val areaRankUiModel = AreaRankUiModel(
+        areaCode = rankingDetailInfo.areaCode,
         areaName = rankingDetailInfo.areaName,
         rank = rankingDetailInfo.rank,
         point = rankingDetailInfo.point,

@@ -279,14 +279,50 @@ private fun RankingTabScreenPreview() {
     )
     val rankingTabUiState = RankingTabUiState.Success(
         metroRankAreas = listOf(
-            AreaRankUiModel(areaName = "강남구", rank = 1, point = 1000, images = emptyList()),
-            AreaRankUiModel(areaName = "서초구", rank = 2, point = 900, images = emptyList()),
-            AreaRankUiModel(areaName = "송파구", rank = 3, point = 800, images = emptyList())
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "강남구",
+                rank = 1,
+                point = 1000,
+                images = emptyList()
+            ),
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "서초구",
+                rank = 2,
+                point = 900,
+                images = emptyList()
+            ),
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "송파구",
+                rank = 3,
+                point = 800,
+                images = emptyList()
+            )
         ),
         commercialRankAreas = listOf(
-            AreaRankUiModel(areaName = "역삼동", rank = 1, point = 1200, images = emptyList()),
-            AreaRankUiModel(areaName = "삼성동", rank = 2, point = 1100, images = emptyList()),
-            AreaRankUiModel(areaName = "논현동", rank = 3, point = 1000, images = emptyList())
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "역삼동",
+                rank = 1,
+                point = 1200,
+                images = emptyList()
+            ),
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "삼성동",
+                rank = 2,
+                point = 1100,
+                images = emptyList()
+            ),
+            AreaRankUiModel(
+                areaCode = "",
+                areaName = "논현동",
+                rank = 3,
+                point = 1000,
+                images = emptyList()
+            )
         ),
         contributionRankUsers = listOf(
             UserRankUiModel(
