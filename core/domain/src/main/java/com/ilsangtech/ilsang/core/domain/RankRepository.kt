@@ -9,27 +9,27 @@ import com.ilsangtech.ilsang.core.model.rank.UserRanksWithMyRank
 import kotlinx.coroutines.flow.Flow
 
 interface RankRepository {
-    suspend fun getTotalTopRankUsers(commercialAreaCode: String): Flow<List<UserRank>>
+    fun getTotalTopRankUsers(commercialAreaCode: String): Flow<List<UserRank>>
 
-    suspend fun getMetroTopRankUsers(
+    fun getMetroTopRankUsers(
         seasonId: Int?,
         metroAreaCode: String
     ): Flow<UserRanksWithMyRank>
 
-    suspend fun getCommercialTopRankUsers(
+    fun getCommercialTopRankUsers(
         seasonId: Int?,
         commercialAreaCode: String
     ): Flow<UserRanksWithMyRank>
 
-    suspend fun getContributionTopRankUsers(
+    fun getContributionTopRankUsers(
         seasonId: Int?
     ): Flow<UserRanksWithMyRank>
 
-    suspend fun getMetroTopRankAreas(
+    fun getMetroTopRankAreas(
         seasonId: Int?
     ): Flow<List<MetroAreaRank>>
 
-    suspend fun getCommercialTopRankAreas(
+    fun getCommercialTopRankAreas(
         seasonId: Int?
     ): Flow<List<CommercialAreaRank>>
 

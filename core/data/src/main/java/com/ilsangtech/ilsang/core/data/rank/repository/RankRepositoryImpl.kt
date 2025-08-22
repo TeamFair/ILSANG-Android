@@ -24,7 +24,7 @@ import javax.inject.Inject
 class RankRepositoryImpl @Inject constructor(
     private val rankDataSource: RankDataSource
 ) : RankRepository {
-    override suspend fun getTotalTopRankUsers(commercialAreaCode: String): Flow<List<UserRank>> {
+    override fun getTotalTopRankUsers(commercialAreaCode: String): Flow<List<UserRank>> {
         return flow {
             emit(
                 rankDataSource.getTotalTopRankUsers(commercialAreaCode)
@@ -33,7 +33,7 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMetroTopRankUsers(
+    override fun getMetroTopRankUsers(
         seasonId: Int?,
         metroAreaCode: String
     ): Flow<UserRanksWithMyRank> {
@@ -45,7 +45,7 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCommercialTopRankUsers(
+    override fun getCommercialTopRankUsers(
         seasonId: Int?,
         commercialAreaCode: String
     ): Flow<UserRanksWithMyRank> {
@@ -57,7 +57,7 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getContributionTopRankUsers(seasonId: Int?): Flow<UserRanksWithMyRank> {
+    override fun getContributionTopRankUsers(seasonId: Int?): Flow<UserRanksWithMyRank> {
         return flow {
             emit(
                 rankDataSource.getContributionTopRankUsers(seasonId)
@@ -66,7 +66,7 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMetroTopRankAreas(seasonId: Int?): Flow<List<MetroAreaRank>> {
+    override fun getMetroTopRankAreas(seasonId: Int?): Flow<List<MetroAreaRank>> {
         return flow {
             emit(
                 rankDataSource.getMetroTopRankAreas(seasonId)
@@ -75,7 +75,7 @@ class RankRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCommercialTopRankAreas(seasonId: Int?): Flow<List<CommercialAreaRank>> {
+    override fun getCommercialTopRankAreas(seasonId: Int?): Flow<List<CommercialAreaRank>> {
         return flow {
             emit(
                 rankDataSource.getCommercialTopRankAreas(seasonId)
