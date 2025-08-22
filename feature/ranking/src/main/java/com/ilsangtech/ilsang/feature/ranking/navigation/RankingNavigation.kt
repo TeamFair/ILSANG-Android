@@ -12,6 +12,17 @@ data object RankingBaseRoute
 @Serializable
 data object RankingRoute
 
+@Serializable
+data class RankingDetailRoute(
+    val seasonId: Int?,
+    val isMetro: Boolean,
+    val areaCode: String,
+    val areaName: String,
+    val rank: Int,
+    val point: Int,
+    val images: List<String>
+)
+
 fun NavGraphBuilder.rankingNavigation(
     navigateToProfile: (String) -> Unit
 ) {
