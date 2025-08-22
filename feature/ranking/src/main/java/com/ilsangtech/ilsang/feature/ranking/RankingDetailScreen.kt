@@ -184,6 +184,7 @@ private fun RankingDetailScreenPreview() {
     )
     RankingDetailScreen(
         currentSeason = SeasonUiModel.Season(
+            seasonId = 1,
             seasonNumber = 1,
             startDate = "2023-01-01",
             endDate = "2025-10-31"
