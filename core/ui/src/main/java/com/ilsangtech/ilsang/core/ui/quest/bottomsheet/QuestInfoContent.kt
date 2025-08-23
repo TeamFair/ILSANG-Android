@@ -240,7 +240,8 @@ internal fun QuestDetailInfoContentPreview() {
             RewardPoint.Contribute(10)
         ),
         title = "일상 공유하고 포인트 받기",
-        userRank = 5
+        userRank = 5,
+        writerName = "사장님 이름"
     )
     QuestInfoContent(
         modifier = Modifier,
