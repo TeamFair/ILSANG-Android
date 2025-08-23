@@ -11,5 +11,7 @@ data class TypedQuestNetworkModel(
     val mainImageId: String,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
-    val writerName: String
+    val writerName: String,
+    val questType: String,
+    val repeatFrequency: String
 )
