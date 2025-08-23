@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.user.datasource
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
@@ -30,6 +31,10 @@ class UserDataSourceImpl @Inject constructor(
 
     override suspend fun getUserPointSummary(seasonId: Int): UserPointSummaryResponse {
         return userApiService.getUserPointSummary(seasonId)
+    }
+
+    override suspend fun getUserCommercialPoint(userId: String?): UserCommercialPointResponse {
+        return userApiService.getUserCommercialPoint(userId)
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStatsResponse {
