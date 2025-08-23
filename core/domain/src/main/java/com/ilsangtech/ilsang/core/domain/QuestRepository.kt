@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.domain
 import androidx.paging.PagingData
 import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
+import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
@@ -16,6 +17,12 @@ interface QuestRepository {
     fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
 
     fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
+
+    fun getBannerQuests(
+        bannerId: Int,
+        orderExpiredDesc: Boolean? = null,
+        orderRewardDesc: Boolean? = null
+    ): Flow<PagingData<BannerQuest>>
 
     fun getTypedQuests(
         commercialAreaCode: String,
