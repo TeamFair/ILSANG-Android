@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardPoint
-import com.ilsangtech.ilsang.core.model.quest.NewQuest
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.primary300
@@ -21,7 +22,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary300
 @Composable
 fun QuestCardWithFavorite(
     modifier: Modifier = Modifier,
-    quest: NewQuest,
+    quest: TypedQuest,
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit
 ) {
@@ -69,7 +70,7 @@ fun QuestCardWithFavorite(
 @Preview
 @Composable
 private fun QuestCardWithFavoritePreviewNew() {
-    val quest = NewQuest(
+    val quest = TypedQuest(
         expireDate = "2023-12-31",
         favoriteYn = true,
         imageId = "sample_image_id",
@@ -81,7 +82,8 @@ private fun QuestCardWithFavoritePreviewNew() {
             RewardPoint.Contribute(20)
         ),
         title = "Sample Quest Title",
-        writerName = "Sample Writer"
+        writerName = "Sample Writer",
+        questType = NewQuestType.Normal
     )
     QuestCardWithFavorite(
         quest = quest,
