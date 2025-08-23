@@ -61,7 +61,7 @@ class QuestRepositoryImpl(
             emit(largeRewardQuests)
         }
 
-    override fun getTypeQuests(
+    override fun getTypedQuests(
         commercialAreaCode: String,
         questType: NewQuestType?,
         orderRewardDesc: Boolean?,

@@ -17,7 +17,7 @@ interface QuestRepository {
 
     fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
 
-    fun getTypeQuests(
+    fun getTypedQuests(
         commercialAreaCode: String,
         questType: NewQuestType? = null,
         orderRewardDesc: Boolean? = null,
