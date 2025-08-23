@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
+import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import retrofit2.http.Body
@@ -20,6 +21,12 @@ interface UserApiService {
     suspend fun getUserInfo(
         @Query("id") id: String?
     ): UserInfoResponse
+
+    @GET("api/v1/user/point")
+    suspend fun getUserPoint(
+        @Query("userId") userId: String?,
+        @Query("seasonId") seasonId: Int?
+    ): UserPointResponse
 
     @GET("customer/xpStats")
     suspend fun getUserXpStats(
