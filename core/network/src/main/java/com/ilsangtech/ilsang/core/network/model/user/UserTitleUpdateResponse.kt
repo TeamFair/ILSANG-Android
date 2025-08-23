@@ -1,11 +1,17 @@
 package com.ilsangtech.ilsang.core.network.model.user
 
+import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class UserTitleUpdateResponse(
-    val data: JsonObject,
+    val channel: String,
+    val commercialAreaCode: String,
+    val email: String,
+    val id: String,
+    val nickname: String,
+    val profileImageId: String,
     val status: String,
-    val message: String
+    val statusUpdatedAt: String,
+    val title: TitleNetworkModel
 )

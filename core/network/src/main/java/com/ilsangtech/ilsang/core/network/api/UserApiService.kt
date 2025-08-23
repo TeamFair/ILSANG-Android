@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import retrofit2.http.Body
@@ -58,9 +59,9 @@ interface UserApiService {
     @DELETE("customer/user/image")
     suspend fun deleteUserImage(): UserImageDeleteResponse
 
-    @PUT("customer/user/title")
+    @PUT("api/v1/user/profile/title")
     suspend fun updateUserTitle(
-        @Query("titleHistoryId") titleHistoryId: String
+        @Body titleUpdateRequest: UserTitleUpdateRequest
     ): UserTitleUpdateResponse
 
     @PUT("api/v1/user/profile/area-zone")
