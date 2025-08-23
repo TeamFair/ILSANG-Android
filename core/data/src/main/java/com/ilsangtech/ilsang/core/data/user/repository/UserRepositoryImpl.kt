@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.data.user.repository
 
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.mapper.toMyInfo
+import com.ilsangtech.ilsang.core.data.user.mapper.toUserCommercialPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
@@ -12,6 +13,7 @@ import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
+import com.ilsangtech.ilsang.core.model.user.UserCommercialPoint
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import kotlinx.coroutines.flow.Flow
@@ -52,6 +54,14 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.getUserPointSummary(
                 seasonId = seasonId
             ).toUserPointSummary()
+        )
+    }
+
+    override fun getUserCommercialPoint(userId: String?): Flow<UserCommercialPoint> = flow {
+        emit(
+            userDataSource.getUserCommercialPoint(
+                userId = userId
+            ).toUserCommercialPoint()
         )
     }
 
