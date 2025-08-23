@@ -57,6 +57,8 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":core:ui"))
+
+    implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.hilt.navigation.compose)
