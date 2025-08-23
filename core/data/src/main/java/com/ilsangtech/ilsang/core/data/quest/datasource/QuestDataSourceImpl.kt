@@ -3,8 +3,10 @@ package com.ilsangtech.ilsang.core.data.quest.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.data.quest.BannerQuestPagingSource
 import com.ilsangtech.ilsang.core.data.quest.TypedQuestPagingSource
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
+import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
@@ -75,6 +77,24 @@ class QuestDataSourceImpl @Inject constructor(
             size = size,
             sort = sort
         )
+    }
+
+    override fun getBannerQuests(
+        bannerId: Int,
+        orderExpiredDesc: Boolean?,
+        orderRewardDesc: Boolean?
+    ): Flow<PagingData<BannerQuestNetworkModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                BannerQuestPagingSource(
+                    questApiService = questApiService,
+                    bannerId = bannerId,
+                    orderExpiredDesc = orderExpiredDesc,
+                    orderRewardDesc = orderRewardDesc
+                )
+            }
+        ).flow
     }
 
     override fun getTypedQuests(

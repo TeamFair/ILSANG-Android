@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
 import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
@@ -40,6 +41,12 @@ interface QuestDataSource {
         size: Int = 3,
         sort: List<String> = emptyList()
     ): LargeRewardQuestResponse
+
+    fun getBannerQuests(
+        bannerId: Int,
+        orderExpiredDesc: Boolean?,
+        orderRewardDesc: Boolean?
+    ): Flow<PagingData<BannerQuestNetworkModel>>
 
     fun getTypedQuests(
         commercialAreaCode: String,
