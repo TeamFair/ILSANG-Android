@@ -25,7 +25,7 @@ fun NavHostController.navigateToBannerDetail(banner: Banner) {
             id = banner.id,
             title = banner.title,
             description = banner.description,
-            imageId = banner.imageId
+            imageId = banner.bannerImageId
         )
     )
 }

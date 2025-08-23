@@ -258,7 +258,8 @@ fun QuestBottomSheetPreviewQuestDetail() {
             RewardPoint.Contribute(10)
         ),
         title = "Sample Quest",
-        userRank = 1
+        userRank = 1,
+        writerName = "사장님"
     )
     val bottomSheetState = rememberStandardBottomSheetState()
     QuestBottomSheet(

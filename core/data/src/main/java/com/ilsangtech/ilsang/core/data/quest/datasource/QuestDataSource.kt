@@ -1,13 +1,17 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
+import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
+import kotlinx.coroutines.flow.Flow
 
 interface QuestDataSource {
     suspend fun getUncompletedTotalQuest(
@@ -37,6 +41,21 @@ interface QuestDataSource {
         size: Int = 3,
         sort: List<String> = emptyList()
     ): LargeRewardQuestResponse
+
+    fun getBannerQuests(
+        bannerId: Int,
+        orderExpiredDesc: Boolean?,
+        orderRewardDesc: Boolean?
+    ): Flow<PagingData<BannerQuestNetworkModel>>
+
+    fun getTypedQuests(
+        commercialAreaCode: String,
+        type: String? = null,
+        repeatFrequency: String? = null,
+        orderRewardDesc: Boolean? = null,
+        favoriteYn: Boolean? = null,
+        completeYn: Boolean = false
+    ): Flow<PagingData<TypedQuestNetworkModel>>
 
     suspend fun getUncompletedNormalQuest(
         page: Int,

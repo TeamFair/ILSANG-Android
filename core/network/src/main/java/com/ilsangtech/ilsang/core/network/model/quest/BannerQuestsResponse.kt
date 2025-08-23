@@ -3,8 +3,8 @@ package com.ilsangtech.ilsang.core.network.model.quest
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecommendedQuestResponse(
-    val content: List<RecommendedQuestNetworkModel>,
+data class BannerQuestsResponse(
+    val content: List<BannerQuestNetworkModel>,
     val isLast: Boolean,
     val page: Int,
     val size: Int,

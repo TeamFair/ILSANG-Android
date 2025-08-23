@@ -1,11 +1,13 @@
 package com.ilsangtech.ilsang.core.network.api
 
+import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestsResponse
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestsResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
@@ -42,6 +44,19 @@ interface QuestApiService {
         @Query("sort") sort: List<String>
     ): RecommendedQuestResponse
 
+    @GET("api/v1/quest/user/search/type")
+    suspend fun getTypedQuests(
+        @Query("commercialAreaCode") commercialAreaCode: String,
+        @Query("questType") type: String? = null,
+        @Query("repeatFrequency") repeatFrequency: String? = null,
+        @Query("orderRewardDesc") orderRewardDesc: Boolean? = null,
+        @Query("favoriteYn") favoriteYn: Boolean? = null,
+        @Query("completeYn") completeYn: Boolean = false,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String> = emptyList()
+    ): TypedQuestsResponse
+
     @GET("api/v1/quest/user/search/reward")
     suspend fun getLargeRewardQuest(
         @Query("commercialAreaCode") commercialAreaCode: String,
@@ -49,6 +64,16 @@ interface QuestApiService {
         @Query("size") size: Int = 3,
         @Query("sort") sort: List<String> = emptyList()
     ): LargeRewardQuestResponse
+
+    @GET("api/v1/quest/search/banner/{bannerId}")
+    suspend fun getBannerQuests(
+        @Path("bannerId") bannerId: Int,
+        @Query("orderExpiredDesc") orderExpiredDesc: Boolean?,
+        @Query("orderRewardDesc") orderRewardDesc: Boolean?,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String> = emptyList()
+    ): BannerQuestsResponse
 
     // 미완료한 기본 퀘스트 목록 조회
     @GET("customer/uncompletedQuest")

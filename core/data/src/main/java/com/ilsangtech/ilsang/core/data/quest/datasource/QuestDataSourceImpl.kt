@@ -1,16 +1,24 @@
 package com.ilsangtech.ilsang.core.data.quest.datasource
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.data.quest.BannerQuestPagingSource
+import com.ilsangtech.ilsang.core.data.quest.TypedQuestPagingSource
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
+import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestDeletionRequest
 import com.ilsangtech.ilsang.core.network.model.quest.FavoriteQuestRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
+import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class QuestDataSourceImpl @Inject constructor(
@@ -69,6 +77,48 @@ class QuestDataSourceImpl @Inject constructor(
             size = size,
             sort = sort
         )
+    }
+
+    override fun getBannerQuests(
+        bannerId: Int,
+        orderExpiredDesc: Boolean?,
+        orderRewardDesc: Boolean?
+    ): Flow<PagingData<BannerQuestNetworkModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                BannerQuestPagingSource(
+                    questApiService = questApiService,
+                    bannerId = bannerId,
+                    orderExpiredDesc = orderExpiredDesc,
+                    orderRewardDesc = orderRewardDesc
+                )
+            }
+        ).flow
+    }
+
+    override fun getTypedQuests(
+        commercialAreaCode: String,
+        type: String?,
+        repeatFrequency: String?,
+        orderRewardDesc: Boolean?,
+        favoriteYn: Boolean?,
+        completeYn: Boolean
+    ): Flow<PagingData<TypedQuestNetworkModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                TypedQuestPagingSource(
+                    questApiService = questApiService,
+                    commercialAreaCode = commercialAreaCode,
+                    type = type,
+                    repeatFrequency = repeatFrequency,
+                    orderRewardDesc = orderRewardDesc,
+                    favoriteYn = favoriteYn,
+                    completeYn = completeYn
+                )
+            }
+        ).flow
     }
 
     override suspend fun getUncompletedNormalQuest(

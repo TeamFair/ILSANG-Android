@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -18,16 +17,15 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
@@ -41,10 +39,11 @@ import com.ilsangtech.ilsang.designsystem.theme.title02
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.banner.BannerDetailQuestType
 import com.ilsangtech.ilsang.feature.banner.BannerDetailSortType
-import com.ilsangtech.ilsang.feature.banner.BannerQuestUiState
+import kotlinx.coroutines.flow.flowOf
 
 internal fun LazyListScope.bannerDetailQuestsContent(
-    bannerQuestUiState: BannerQuestUiState,
+    onGoingQuests: LazyPagingItems<BannerQuest>,
+    completedQuests: LazyPagingItems<BannerQuest>,
     selectedQuestType: BannerDetailQuestType,
     selectedSortType: BannerDetailSortType,
     onQuestClick: (BannerQuest) -> Unit,
@@ -118,13 +117,17 @@ internal fun LazyListScope.bannerDetailQuestsContent(
         }
     }
     item { Spacer(Modifier.height(11.dp)) }
-    if (bannerQuestUiState is BannerQuestUiState.Success) {
-        val bannerQuests = if (selectedQuestType == BannerDetailQuestType.OnGoing) {
-            bannerQuestUiState.onGoingQuests
+
+    val bannerQuests =
+        if (selectedQuestType == BannerDetailQuestType.OnGoing) {
+            onGoingQuests
         } else {
-            bannerQuestUiState.completedQuests
+            completedQuests
         }
-        itemsIndexed(bannerQuests) { index, bannerQuest ->
+
+    items(bannerQuests.itemCount) { index ->
+        val bannerQuest = bannerQuests[index]
+        bannerQuest?.let {
             Column {
                 if (selectedQuestType == BannerDetailQuestType.OnGoing) {
                     QuestCardWithArrow(
@@ -139,7 +142,8 @@ internal fun LazyListScope.bannerDetailQuestsContent(
                         onClick = { onQuestClick(bannerQuest) }
                     )
                 }
-                if (bannerQuests.lastIndex != index) {
+
+                if (bannerQuests.itemCount - 1 != index) {
                     Spacer(Modifier.height(12.dp))
                 } else {
                     Spacer(
@@ -156,19 +160,56 @@ internal fun LazyListScope.bannerDetailQuestsContent(
 @Preview(showBackground = true)
 @Composable
 private fun BannerDetailQuestsContentPreview() {
-    var selectedQuestType by remember { mutableStateOf(BannerDetailQuestType.OnGoing) }
-    var selectedSortType by remember { mutableStateOf(BannerDetailSortType.ExpiredDate) }
+    val onGoingQuests = flowOf(
+        PagingData.from(
+            listOf(
+                BannerQuest(
+                    questId = 1,
+                    expireDate = "2023-12-31",
+                    imageId = "imageId1",
+                    mainImageId = "mainImageId1",
+                    rewards = emptyList(),
+                    title = "OnGoing Quest 1",
+                    writerName = "Writer 1"
+                ),
+                BannerQuest(
+                    questId = 2,
+                    expireDate = "2024-01-15",
+                    imageId = "imageId2",
+                    mainImageId = "mainImageId2",
+                    rewards = emptyList(),
+                    title = "OnGoing Quest 2",
+                    writerName = "Writer 2"
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+
+    val completedQuests = flowOf(
+        PagingData.from(
+            listOf(
+                BannerQuest(
+                    questId = 3,
+                    expireDate = "2023-11-30",
+                    imageId = "imageId3",
+                    mainImageId = "mainImageId3",
+                    rewards = emptyList(),
+                    title = "Completed Quest 1",
+                    writerName = "Writer 3"
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+
     LazyColumn {
         bannerDetailQuestsContent(
-            bannerQuestUiState = BannerQuestUiState.Success(
-                onGoingQuests = emptyList(),
-                completedQuests = emptyList()
-            ),
-            selectedQuestType = selectedQuestType,
-            selectedSortType = selectedSortType,
+            onGoingQuests = onGoingQuests,
+            completedQuests = completedQuests,
+            selectedQuestType = BannerDetailQuestType.OnGoing,
+            selectedSortType = BannerDetailSortType.Popular,
             onQuestClick = {},
-            onQuestTypeChanged = { selectedQuestType = it },
-            onSortTypeChanged = { selectedSortType = it }
+            onQuestTypeChanged = {},
+            onSortTypeChanged = {}
         )
     }
 }

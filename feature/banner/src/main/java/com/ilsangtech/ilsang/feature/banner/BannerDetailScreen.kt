@@ -6,28 +6,42 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.banner.component.BannerDetailHeader
 import com.ilsangtech.ilsang.feature.banner.component.bannerDetailInfoContent
 import com.ilsangtech.ilsang.feature.banner.component.bannerDetailQuestsContent
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun BannerDetailScreen(
     bannerDetailViewModel: BannerDetailViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
-    val bannerDetailUiState by bannerDetailViewModel.uiState.collectAsStateWithLifecycle()
+    val bannerDetailInfo = bannerDetailViewModel.bannerDetailInfo
+
+    val selectedQuestType by bannerDetailViewModel.selectedQuestType.collectAsStateWithLifecycle()
+    val selectedSortType by bannerDetailViewModel.selectedSortType.collectAsStateWithLifecycle()
+
+    val onGoingQuests = bannerDetailViewModel.onGoingQuests.collectAsLazyPagingItems()
+    val completedQuests = bannerDetailViewModel.completedQuests.collectAsLazyPagingItems()
+
     BannerDetailScreen(
-        bannerDetailUiState = bannerDetailUiState,
+        imageId = bannerDetailInfo.imageId,
+        title = bannerDetailInfo.title,
+        description = bannerDetailInfo.description,
+        selectedQuestType = selectedQuestType,
+        selectedSortType = selectedSortType,
+        onGoingQuests = onGoingQuests,
+        completedQuests = completedQuests,
         onQuestClick = {},
         onQuestTypeChanged = bannerDetailViewModel::onQuestTypeChanged,
         onSortTypeChanged = bannerDetailViewModel::onSortTypeChanged,
@@ -37,7 +51,13 @@ internal fun BannerDetailScreen(
 
 @Composable
 private fun BannerDetailScreen(
-    bannerDetailUiState: BannerDetailUiState,
+    imageId: String,
+    title: String,
+    description: String,
+    selectedQuestType: BannerDetailQuestType,
+    selectedSortType: BannerDetailSortType,
+    onGoingQuests: LazyPagingItems<BannerQuest>,
+    completedQuests: LazyPagingItems<BannerQuest>,
     onQuestClick: (BannerQuest) -> Unit,
     onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
     onSortTypeChanged: (BannerDetailSortType) -> Unit,
@@ -49,19 +69,20 @@ private fun BannerDetailScreen(
     ) {
         Column {
             BannerDetailHeader(
-                bannerTitle = bannerDetailUiState.title,
+                bannerTitle = title,
                 onBackButtonClick = onBackButtonClick
             )
             LazyColumn {
                 bannerDetailInfoContent(
-                    imageId = bannerDetailUiState.imageId,
-                    title = bannerDetailUiState.title,
-                    description = bannerDetailUiState.description
+                    imageId = imageId,
+                    title = title,
+                    description = description
                 )
                 bannerDetailQuestsContent(
-                    bannerQuestUiState = bannerDetailUiState.bannerQuestUiState,
-                    selectedQuestType = bannerDetailUiState.selectedQuestType,
-                    selectedSortType = bannerDetailUiState.selectedSortType,
+                    onGoingQuests = onGoingQuests,
+                    completedQuests = completedQuests,
+                    selectedQuestType = selectedQuestType,
+                    selectedSortType = selectedSortType,
                     onQuestClick = onQuestClick,
                     onQuestTypeChanged = onQuestTypeChanged,
                     onSortTypeChanged = onSortTypeChanged
@@ -71,42 +92,73 @@ private fun BannerDetailScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun BannerDetailScreenPreview() {
-    val previewBannerQuest = BannerQuest(
-        questId = 1,
-        expireDate = "",
-        imageId = "",
-        mainImageId = "",
-        rewards = listOf(
-            RewardPoint.Metro(5),
-            RewardPoint.Commercial(10),
-            RewardPoint.Contribute(15)
-        ),
-        title = "예시 퀘스트 타이틀",
-        writerName = "예시 퀘스트 작성자"
-    )
-
-    var selectedQuestType by remember { mutableStateOf(BannerDetailQuestType.OnGoing) }
-    var selectedSortType by remember { mutableStateOf(BannerDetailSortType.ExpiredDate) }
-    val bannerDetailUiState = BannerDetailUiState(
-        id = 1,
-        imageId = "your_image_id",
-        title = "*일상 X 미트스팟 한정 퀘스트 이벤트*",
-        description = "이벤트에 대한 설명이 들어갑니다 이벤트에 대한 설명이 들어갑니다",
-        selectedQuestType = selectedQuestType,
-        selectedSortType = selectedSortType,
-        bannerQuestUiState = BannerQuestUiState.Success(
-            onGoingQuests = List(10) { previewBannerQuest },
-            completedQuests = List(10) { previewBannerQuest }
+    val onGoingQuests = flowOf(
+        PagingData.from(
+            listOf(
+                BannerQuest(
+                    questId = 1,
+                    expireDate = "2023-12-31",
+                    imageId = "sample_image_1",
+                    mainImageId = "sample_main_image_1",
+                    rewards = listOf(
+                        RewardPoint.Metro(5),
+                        RewardPoint.Commercial(10),
+                        RewardPoint.Contribute(15)
+                    ),
+                    title = "Sample OnGoing Quest 1",
+                    writerName = "Writer A"
+                ),
+                BannerQuest(
+                    questId = 2,
+                    expireDate = "2024-01-15",
+                    imageId = "sample_image_2",
+                    mainImageId = "sample_main_image_2",
+                    rewards = listOf(
+                        RewardPoint.Metro(5),
+                        RewardPoint.Commercial(10),
+                        RewardPoint.Contribute(15)
+                    ),
+                    title = "Sample OnGoing Quest 2",
+                    writerName = "Writer B"
+                )
+            )
         )
-    )
+    ).collectAsLazyPagingItems()
+
+    val completedQuests = flowOf(
+        PagingData.from(
+            listOf(
+                BannerQuest(
+                    questId = 3,
+                    expireDate = "2023-11-30",
+                    imageId = "sample_image_3",
+                    mainImageId = "sample_main_image_3",
+                    rewards = listOf(
+                        RewardPoint.Metro(5),
+                        RewardPoint.Commercial(10),
+                        RewardPoint.Contribute(15)
+                    ),
+                    title = "Sample Completed Quest 1",
+                    writerName = "Writer C"
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+
     BannerDetailScreen(
-        bannerDetailUiState = bannerDetailUiState,
+        imageId = "sample_banner_image",
+        title = "Sample Banner Title",
+        description = "This is a sample banner description. It can be a long text explaining the details of the banner.",
+        selectedQuestType = BannerDetailQuestType.OnGoing,
+        selectedSortType = BannerDetailSortType.Popular,
+        onGoingQuests = onGoingQuests,
+        completedQuests = completedQuests,
         onQuestClick = {},
-        onQuestTypeChanged = { selectedQuestType = it },
-        onSortTypeChanged = { selectedSortType = it },
+        onQuestTypeChanged = {},
+        onSortTypeChanged = {},
         onBackButtonClick = {}
     )
 }

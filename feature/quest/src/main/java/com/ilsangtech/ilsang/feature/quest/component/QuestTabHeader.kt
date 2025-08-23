@@ -15,15 +15,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 
 @Composable
 internal fun QuestTabHeader(
-    selectedQuestType: QuestType,
-    onSelectQuestType: (QuestType) -> Unit,
+    selectedQuestTab: QuestTabUiModel,
+    onQuestTabSelected: (QuestTabUiModel) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -34,19 +34,19 @@ internal fun QuestTabHeader(
             ),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        QuestType.entries.forEach { questType ->
+        QuestTabUiModel.entries.forEach { questType ->
             Box(
                 modifier = Modifier
                     .clickable(
                         interactionSource = null,
                         indication = null,
-                        onClick = { onSelectQuestType(questType) }
+                        onClick = { onQuestTabSelected(questType) }
                     )
             ) {
                 Text(
-                    text = questType.title,
+                    text = questType.toString(),
                     style = questTypeTabTitleStyle,
-                    color = if (selectedQuestType == questType) gray500 else gray300
+                    color = if (selectedQuestTab == questType) gray500 else gray300
                 )
             }
         }
@@ -64,7 +64,7 @@ private val questTypeTabTitleStyle = TextStyle(
 @Composable
 private fun QuestTypeTabRowPreview() {
     QuestTabHeader(
-        selectedQuestType = QuestType.REPEAT,
-        onSelectQuestType = {}
+        selectedQuestTab = QuestTabUiModel.REPEAT,
+        onQuestTabSelected = {}
     )
 }
