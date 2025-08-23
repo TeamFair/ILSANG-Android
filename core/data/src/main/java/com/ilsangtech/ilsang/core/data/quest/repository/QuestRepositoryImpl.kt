@@ -1,10 +1,13 @@
 package com.ilsangtech.ilsang.core.data.quest.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.data.quest.datasource.QuestDataSource
 import com.ilsangtech.ilsang.core.data.quest.mapper.toLargeRewardQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toPopularQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toQuestDetail
 import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
+import com.ilsangtech.ilsang.core.data.quest.mapper.toTypedQuest
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.Quest
@@ -12,14 +15,17 @@ import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
+import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 class QuestRepositoryImpl(
@@ -53,6 +59,24 @@ class QuestRepositoryImpl(
                 ).content.map(LargeRewardQuestNetworkModel::toLargeRewardQuest)
             emit(largeRewardQuests)
         }
+
+    override fun getTypeQuests(
+        commercialAreaCode: String,
+        type: String?,
+        repeatFrequency: String?,
+        orderRewardDesc: Boolean?,
+        favoriteYn: Boolean?,
+        completeYn: Boolean
+    ): Flow<PagingData<TypedQuest>> {
+        return questDataSource.getTypedQuests(
+            commercialAreaCode = commercialAreaCode,
+            type = type,
+            repeatFrequency = repeatFrequency,
+            orderRewardDesc = orderRewardDesc,
+            favoriteYn = favoriteYn,
+            completeYn = completeYn
+        ).map { it.map(TypedQuestNetworkModel::toTypedQuest) }
+    }
 
     override suspend fun getUncompletedNormalQuests(): Flow<List<Quest>> = flow {
         emit(
