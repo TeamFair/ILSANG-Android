@@ -32,23 +32,23 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.core.model.QuestType
-import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.quest.R
-import com.ilsangtech.ilsang.feature.quest.SortType
+import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
+import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
+import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
 
 @Composable
 internal fun SortTypeMenuContent(
-    modifier: Modifier,
-    questType: QuestType,
-    selectedRepeatPeriod: RepeatQuestPeriod,
-    selectedSortType: SortType,
-    onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
-    onSelectSortType: (SortType) -> Unit
+    modifier: Modifier = Modifier,
+    questTab: QuestTabUiModel,
+    selectedRepeatType: RepeatQuestTypeUiModel?,
+    selectedSortType: SortTypeUiModel,
+    onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
+    onSelectSortType: (SortTypeUiModel) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -60,10 +60,10 @@ internal fun SortTypeMenuContent(
             ),
         horizontalArrangement = Arrangement.End
     ) {
-        if (questType == QuestType.REPEAT) {
+        if (questTab == QuestTabUiModel.REPEAT && selectedRepeatType != null) {
             RepeatQuestSortTypeMenu(
-                repeatQuestPeriod = selectedRepeatPeriod,
-                onSelectRepeatPeriod = onSelectRepeatPeriod
+                repeatType = selectedRepeatType,
+                onSelectRepeatType = onSelectRepeatType
             )
         }
         Spacer(Modifier.width(8.dp))
@@ -76,62 +76,41 @@ internal fun SortTypeMenuContent(
 
 @Composable
 private fun RepeatQuestSortTypeMenu(
-    repeatQuestPeriod: RepeatQuestPeriod,
-    onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit
+    repeatType: RepeatQuestTypeUiModel,
+    onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit
 ) {
-    val questTypeList = remember { listOf("일간", "주간", "월간") }
-    val selectedTitle = when (repeatQuestPeriod) {
-        RepeatQuestPeriod.DAILY -> "일간"
-        RepeatQuestPeriod.WEEKLY -> "주간"
-        RepeatQuestPeriod.MONTHLY -> "월간"
-    }
-
     QuestFilterDropDownMenu(
-        modifier = Modifier,
         width = 85.dp,
-        titleList = questTypeList,
-        selectedTitle = selectedTitle,
-        onTitleSelected = { title ->
-            when (title) {
-                "일간" -> onSelectRepeatPeriod(RepeatQuestPeriod.DAILY)
-                "주간" -> onSelectRepeatPeriod(RepeatQuestPeriod.WEEKLY)
-                "월간" -> onSelectRepeatPeriod(RepeatQuestPeriod.MONTHLY)
-            }
-        }
+        typeList = RepeatQuestTypeUiModel.entries,
+        selectedType = repeatType,
+        onTypeSelected = onSelectRepeatType
     )
 }
 
 @Composable
 private fun QuestSortTypeMenu(
-    selectedSortType: SortType,
-    onSelectSortType: (SortType) -> Unit
+    selectedSortType: SortTypeUiModel,
+    onSelectSortType: (SortTypeUiModel) -> Unit
 ) {
-    val sortTypeList = remember { SortType.entries }
     QuestFilterDropDownMenu(
-        modifier = Modifier,
         width = 150.dp,
-        titleList = sortTypeList.map { it.title },
-        selectedTitle = selectedSortType.title,
-        onTitleSelected = { title ->
-            onSelectSortType(
-                sortTypeList.find { it.title == title } ?: selectedSortType
-            )
-        }
+        typeList = SortTypeUiModel.entries,
+        selectedType = selectedSortType,
+        onTypeSelected = onSelectSortType
     )
 }
 
 @Composable
-private fun QuestFilterDropDownMenu(
-    modifier: Modifier,
+private fun <T> QuestFilterDropDownMenu(
+    modifier: Modifier = Modifier,
     width: Dp,
-    titleList: List<String>,
-    selectedTitle: String,
-    onTitleSelected: (String) -> Unit
+    typeList: List<T>,
+    selectedType: T,
+    onTypeSelected: (T) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    Column(
-        modifier = modifier
-    ) {
+
+    Column(modifier = modifier) {
         Box(
             modifier = Modifier
                 .width(width)
@@ -160,7 +139,7 @@ private fun QuestFilterDropDownMenu(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = selectedTitle,
+                    text = selectedType.toString(),
                     style = dropdownMenuTitleStyle
                 )
                 Spacer(Modifier.weight(1f))
@@ -177,8 +156,8 @@ private fun QuestFilterDropDownMenu(
             }
         }
         if (expanded) {
-            titleList.filter { title -> title != selectedTitle }
-                .forEachIndexed { index, title ->
+            typeList.filter { type -> type != selectedType }
+                .forEachIndexed { index, type ->
                     HorizontalDivider(
                         modifier = Modifier.width(width),
                         color = gray100,
@@ -192,12 +171,12 @@ private fun QuestFilterDropDownMenu(
                                 indication = null,
                                 onClick = {
                                     expanded = !expanded
-                                    onTitleSelected(title)
+                                    onTypeSelected(type)
                                 }
                             )
                             .background(
                                 color = Color.White,
-                                shape = if (index != titleList.size - 2) {
+                                shape = if (index != typeList.size - 2) {
                                     RectangleShape
                                 } else {
                                     RoundedCornerShape(
@@ -212,7 +191,7 @@ private fun QuestFilterDropDownMenu(
                             )
                     ) {
                         Text(
-                            text = title,
+                            text = type.toString(),
                             style = dropdownMenuTitleStyle.copy(fontSize = 15.dp.toSp())
                         )
                     }
@@ -238,10 +217,10 @@ private val dropdownMenuTitleStyle = TextStyle(
 private fun SortTypeMenuContentPreview() {
     SortTypeMenuContent(
         modifier = Modifier,
-        questType = QuestType.REPEAT,
-        selectedRepeatPeriod = RepeatQuestPeriod.DAILY,
-        selectedSortType = SortType.POPULAR,
-        onSelectRepeatPeriod = {},
+        questTab = QuestTabUiModel.REPEAT,
+        selectedRepeatType = RepeatQuestTypeUiModel.Daily,
+        selectedSortType = SortTypeUiModel.PointDesc,
+        onSelectRepeatType = {},
         onSelectSortType = {}
     )
 }
