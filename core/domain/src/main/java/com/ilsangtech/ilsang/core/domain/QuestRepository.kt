@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.domain
 
 import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
@@ -18,8 +19,7 @@ interface QuestRepository {
 
     fun getTypeQuests(
         commercialAreaCode: String,
-        type: String? = null,
-        repeatFrequency: String? = null,
+        questType: NewQuestType? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
         completeYn: Boolean = false

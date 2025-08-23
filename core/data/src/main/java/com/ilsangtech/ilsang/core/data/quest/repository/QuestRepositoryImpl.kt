@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toTypedQuest
 import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
@@ -62,12 +63,22 @@ class QuestRepositoryImpl(
 
     override fun getTypeQuests(
         commercialAreaCode: String,
-        type: String?,
-        repeatFrequency: String?,
+        questType: NewQuestType?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
         completeYn: Boolean
     ): Flow<PagingData<TypedQuest>> {
+        val (type, repeatFrequency) = when (questType) {
+            is NewQuestType.Normal -> "Normal" to null
+            is NewQuestType.Event -> "Event" to null
+            is NewQuestType.Repeat -> "Repeat" to when (questType) {
+                is NewQuestType.Repeat.Daily -> "DAILY"
+                is NewQuestType.Repeat.Weekly -> "WEEKLY"
+                is NewQuestType.Repeat.Monthly -> "MONTHLY"
+            }
+
+            else -> null to null
+        }
         return questDataSource.getTypedQuests(
             commercialAreaCode = commercialAreaCode,
             type = type,
