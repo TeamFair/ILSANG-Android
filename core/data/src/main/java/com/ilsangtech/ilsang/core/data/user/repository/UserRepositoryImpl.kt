@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.mapper.toMyInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
+import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
@@ -12,6 +13,7 @@ import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.model.user.UserPoint
+import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -42,6 +44,14 @@ class UserRepositoryImpl @Inject constructor(
                 userId = userId,
                 seasonId = seasonId
             ).toUserPoint()
+        )
+    }
+
+    override fun getUserPointSummary(seasonId: Int): Flow<UserPointSummary> = flow {
+        emit(
+            userDataSource.getUserPointSummary(
+                seasonId = seasonId
+            ).toUserPointSummary()
         )
     }
 
