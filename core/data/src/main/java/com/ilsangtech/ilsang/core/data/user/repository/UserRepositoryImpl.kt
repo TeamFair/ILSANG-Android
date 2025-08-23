@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.user.repository
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.mapper.toMyInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
+import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.domain.ImageRepository
@@ -10,7 +11,9 @@ import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
 import com.ilsangtech.ilsang.core.model.UserXpStats
+import com.ilsangtech.ilsang.core.model.user.UserPoint
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -31,6 +34,15 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             userDataSource.getUserInfo(userId = userId).toUserInfo()
         }
+    }
+
+    override fun getUserPoint(userId: String?, seasonId: Int?): Flow<UserPoint> = flow {
+        emit(
+            userDataSource.getUserPoint(
+                userId = userId,
+                seasonId = seasonId
+            ).toUserPoint()
+        )
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStats {
