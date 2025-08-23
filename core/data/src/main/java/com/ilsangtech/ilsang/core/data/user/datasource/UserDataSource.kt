@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 
@@ -12,6 +13,8 @@ interface UserDataSource {
     suspend fun getUserInfo(userId: String?): UserInfoResponse
 
     suspend fun getUserPoint(userId: String?, seasonId: Int?): UserPointResponse
+
+    suspend fun getUserPointSummary(seasonId: Int): UserPointSummaryResponse
 
     suspend fun getUserXpStats(customerId: String?): UserXpStatsResponse
 

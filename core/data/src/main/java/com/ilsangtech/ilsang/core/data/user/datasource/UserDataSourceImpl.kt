@@ -9,6 +9,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import javax.inject.Inject
@@ -25,6 +26,10 @@ class UserDataSourceImpl @Inject constructor(
             userId = userId,
             seasonId = seasonId
         )
+    }
+
+    override suspend fun getUserPointSummary(seasonId: Int): UserPointSummaryResponse {
+        return userApiService.getUserPointSummary(seasonId)
     }
 
     override suspend fun getUserXpStats(customerId: String?): UserXpStatsResponse {
