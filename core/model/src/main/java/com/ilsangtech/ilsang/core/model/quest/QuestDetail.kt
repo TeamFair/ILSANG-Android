@@ -14,5 +14,6 @@ data class QuestDetail(
     val questType: NewQuestType,
     val rewards: List<RewardPoint>,
     val title: String,
-    val userRank: Int?
+    val userRank: Int?,
+    val writerName: String
 )

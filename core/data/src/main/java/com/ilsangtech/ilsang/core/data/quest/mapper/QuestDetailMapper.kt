@@ -29,6 +29,7 @@ internal fun QuestDetailResponse.toQuestDetail(): QuestDetail {
         },
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
         title = title,
-        userRank = userRank
+        userRank = userRank,
+        writerName = writerName
     )
 }

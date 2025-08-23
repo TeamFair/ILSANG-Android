@@ -15,5 +15,6 @@ data class QuestDetailResponse(
     val repeatFrequency: String,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
-    val userRank: Int
+    val userRank: Int,
+    val writerName: String
 )
