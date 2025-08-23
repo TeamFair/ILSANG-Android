@@ -45,7 +45,7 @@ interface UserApiService {
         @Query("customerId") customerId: String?
     ): UserXpStatsResponse
 
-    @PUT("customer/user")
+    @PUT("api/v1/user/profile/nickname")
     suspend fun updateUserNickname(
         @Body nicknameUpdateRequest: NicknameUpdateRequest
     ): NicknameUpdateResponse
