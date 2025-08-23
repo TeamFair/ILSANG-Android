@@ -27,7 +27,7 @@ class QuestRepositoryImpl(
 ) : QuestRepository {
     private val questCache = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
 
-    override suspend fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>> =
+    override fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>> =
         flow {
             emit(
                 questDataSource.getPopularQuest(commercialAreaCode = commercialAreaCode)
@@ -35,7 +35,7 @@ class QuestRepositoryImpl(
             )
         }
 
-    override suspend fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>> =
+    override fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>> =
         flow {
             emit(
                 questDataSource.getRecommendedQuest(
@@ -44,7 +44,7 @@ class QuestRepositoryImpl(
             )
         }
 
-    override suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>> =
+    override fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>> =
         flow {
             val largeRewardQuests =
                 questDataSource.getLargeRewardQuest(
@@ -61,10 +61,6 @@ class QuestRepositoryImpl(
                 size = 60
             ).data.map(QuestNetworkModel::toQuest)
         )
-    }.combine(questCache) { quests, questCache ->
-        quests.map { quest ->
-            quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
-        }
     }
 
     override suspend fun getUncompletedRepeatQuests(status: String): Flow<List<Quest>> = flow {
@@ -75,10 +71,6 @@ class QuestRepositoryImpl(
                 status = status
             ).data.map(QuestNetworkModel::toQuest)
         )
-    }.combine(questCache) { quests, questCache ->
-        quests.map { quest ->
-            quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
-        }
     }
 
     override suspend fun getUncompletedEventQuests(): Flow<List<Quest>> = flow {
@@ -88,13 +80,9 @@ class QuestRepositoryImpl(
                 size = 60
             ).data.map(QuestNetworkModel::toQuest)
         )
-    }.combine(questCache) { quests, questCache ->
-        quests.map { quest ->
-            quest.copy(favoriteYn = questCache[quest.questId] ?: quest.favoriteYn)
-        }
     }
 
-    override suspend fun getQuestDetail(questId: Int): Flow<QuestDetail> = flow {
+    override fun getQuestDetail(questId: Int): Flow<QuestDetail> = flow {
         emit(
             questDataSource.getQuestDetail(questId).toQuestDetail()
         )

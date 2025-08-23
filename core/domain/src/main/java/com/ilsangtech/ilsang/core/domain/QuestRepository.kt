@@ -8,11 +8,11 @@ import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import kotlinx.coroutines.flow.Flow
 
 interface QuestRepository {
-    suspend fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>>
+    fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>>
 
-    suspend fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
+    fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
 
-    suspend fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
+    fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
 
     // 미완료한 기본 퀘스트 목록 조회
     suspend fun getUncompletedNormalQuests(): Flow<List<Quest>>
@@ -23,7 +23,7 @@ interface QuestRepository {
     // 미완료한 이벤트 퀘스트 목록 조회
     suspend fun getUncompletedEventQuests(): Flow<List<Quest>>
 
-    suspend fun getQuestDetail(questId: Int): Flow<QuestDetail>
+    fun getQuestDetail(questId: Int): Flow<QuestDetail>
 
     suspend fun registerFavoriteQuest(questId: Int)
 
