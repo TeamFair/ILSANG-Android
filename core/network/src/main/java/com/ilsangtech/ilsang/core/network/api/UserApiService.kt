@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
@@ -33,6 +34,11 @@ interface UserApiService {
     suspend fun getUserPointSummary(
         @Query("seasonId") seasonId: Int
     ): UserPointSummaryResponse
+
+    @GET("api/v1/user/point/commercial")
+    suspend fun getUserCommercialPoint(
+        @Query("userId") userId: String?
+    ): UserCommercialPointResponse
 
     @GET("customer/xpStats")
     suspend fun getUserXpStats(
