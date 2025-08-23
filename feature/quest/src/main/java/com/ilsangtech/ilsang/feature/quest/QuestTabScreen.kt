@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
@@ -26,48 +25,54 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.QuestType
-import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
+import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
+import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
+import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (String) -> Unit
+    navigateToSubmit: (Int) -> Unit
 ) {
-    val selectedQuestType by questTabViewModel.selectedQuestType.collectAsStateWithLifecycle()
-    val selectedRepeatPeriod by questTabViewModel.selectedRepeatPeriod.collectAsStateWithLifecycle()
+    val selectedQuestType by questTabViewModel.selectedQuestTab.collectAsStateWithLifecycle()
+    val selectedRepeatType by questTabViewModel.selectedRepeatType.collectAsStateWithLifecycle()
     val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
     val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
-    val questTabUiState by questTabViewModel.questTabUiState.collectAsStateWithLifecycle()
+    val typedQuests = questTabViewModel.typedQuests.collectAsLazyPagingItems()
 
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     QuestTabScreen(
         bottomSheetState = bottomSheetState,
-        selectedQuestType = selectedQuestType,
-        selectedRepeatPeriod = selectedRepeatPeriod,
+        selectedQuestTab = selectedQuestType,
+        selectedRepeatType = selectedRepeatType,
         selectedSortType = selectedSortType,
         selectedQuest = selectedQuest,
-        questTabUiState = questTabUiState,
-        onSelectQuestType = questTabViewModel::selectQuestType,
-        onSelectRepeatPeriod = questTabViewModel::selectRepeatPeriod,
+        typedQuests = typedQuests,
+        onSelectQuestTab = questTabViewModel::selectQuestType,
+        onSelectRepeatType = questTabViewModel::selectRepeatPeriod,
         onSelectSortType = questTabViewModel::selectSortType,
         onQuestClick = questTabViewModel::selectQuest,
         onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
         onDismissRequest = questTabViewModel::unselectQuest,
-        onApproveButtonClick = {
+        onApproveButtonClick = { questId ->
             coroutineScope.launch {
                 bottomSheetState.hide()
                 questTabViewModel.unselectQuest()
-                navigateToSubmit(it.questId)
+                navigateToSubmit(questId)
             }
         }
     )
@@ -77,26 +82,27 @@ fun QuestTabScreen(
 @Composable
 private fun QuestTabScreen(
     bottomSheetState: SheetState,
-    selectedQuestType: QuestType,
-    selectedRepeatPeriod: RepeatQuestPeriod,
-    selectedSortType: SortType,
-    selectedQuest: Quest?,
-    questTabUiState: QuestTabUiState,
-    onSelectQuestType: (QuestType) -> Unit,
-    onSelectRepeatPeriod: (RepeatQuestPeriod) -> Unit,
-    onSelectSortType: (SortType) -> Unit,
-    onQuestClick: (Quest) -> Unit,
-    onFavoriteClick: (Quest) -> Unit,
-    onDismissRequest: () -> Unit,
-    onApproveButtonClick: (Quest) -> Unit
+    selectedQuestTab: QuestTabUiModel,
+    selectedRepeatType: RepeatQuestTypeUiModel?,
+    selectedSortType: SortTypeUiModel,
+    selectedQuest: QuestDetail?,
+    typedQuests: LazyPagingItems<TypedQuest>,
+    onSelectQuestTab: (QuestTabUiModel) -> Unit,
+    onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
+    onSelectSortType: (SortTypeUiModel) -> Unit,
+    onQuestClick: (Int) -> Unit,
+    onFavoriteClick: (Int, Boolean) -> Unit,
+    onApproveButtonClick: (Int) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     if (selectedQuest != null) {
         QuestBottomSheet(
-            bottomSheetState = bottomSheetState,
             quest = selectedQuest,
+            bottomSheetState = bottomSheetState,
             onDismiss = onDismissRequest,
-            onFavoriteClick = { onFavoriteClick(selectedQuest) },
-            onApproveButtonClick = { onApproveButtonClick(selectedQuest) }
+            onMissionImageClick = {},
+            onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
+            onApproveButtonClick = { onApproveButtonClick(selectedQuest.id) }
         )
     }
 
@@ -108,16 +114,16 @@ private fun QuestTabScreen(
     ) {
         Column {
             QuestTabHeader(
-                selectedQuestType = selectedQuestType,
-                onSelectQuestType = onSelectQuestType
+                selectedQuestTab = selectedQuestTab,
+                onQuestTabSelected = onSelectQuestTab
             )
             Box(modifier = Modifier.fillMaxWidth()) {
                 SortTypeMenuContent(
                     modifier = Modifier.zIndex(1f),
-                    questType = selectedQuestType,
-                    selectedRepeatPeriod = selectedRepeatPeriod,
+                    questTab = selectedQuestTab,
+                    selectedRepeatType = selectedRepeatType,
                     selectedSortType = selectedSortType,
-                    onSelectRepeatPeriod = onSelectRepeatPeriod,
+                    onSelectRepeatType = onSelectRepeatType,
                     onSelectSortType = onSelectSortType
                 )
                 LazyColumn(
@@ -126,16 +132,22 @@ private fun QuestTabScreen(
                         .padding(horizontal = 20.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    if (questTabUiState is QuestTabUiState.Success) {
-                        items(questTabUiState.data.questList) { quest ->
+                    items(typedQuests.itemCount) { index ->
+                        val quest = typedQuests[index]
+                        quest?.let {
                             QuestCardWithFavorite(
                                 quest = quest,
-                                onFavoriteClick = { onFavoriteClick(quest) },
-                                onClick = { onQuestClick(quest) }
+                                onFavoriteClick = {
+                                    onFavoriteClick(
+                                        quest.questId,
+                                        quest.favoriteYn
+                                    )
+                                },
+                                onClick = { onQuestClick(quest.questId) }
                             )
                         }
-                        item { Spacer(Modifier.height(64.dp)) }
                     }
+                    item { Spacer(Modifier.height(64.dp)) }
                 }
             }
         }
@@ -143,25 +155,38 @@ private fun QuestTabScreen(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(backgroundColor = 0xFFF6F6F6)
+@Preview
 @Composable
 private fun QuestTabScreenPreview() {
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetState = rememberModalBottomSheetState()
+    val typedQuestsData = List(10) { index ->
+        TypedQuest(
+            questId = index,
+            expireDate = "2023-12-31",
+            favoriteYn = index % 2 == 0,
+            imageId = "image_id_$index",
+            mainImageId = "main_image_id_$index",
+            rewards = emptyList(),
+            title = "Quest Title $index",
+            writerName = "Writer $index",
+            questType = com.ilsangtech.ilsang.core.model.NewQuestType.Normal
+        )
+    }
+    val typedQuests = flowOf(PagingData.from(typedQuestsData)).collectAsLazyPagingItems()
+
     QuestTabScreen(
         bottomSheetState = bottomSheetState,
-        selectedQuestType = QuestType.NORMAL,
-        selectedRepeatPeriod = RepeatQuestPeriod.DAILY,
-        selectedSortType = SortType.POPULAR,
+        selectedQuestTab = QuestTabUiModel.NORMAL,
+        selectedRepeatType = null,
+        selectedSortType = SortTypeUiModel.Popular,
         selectedQuest = null,
-        questTabUiState = QuestTabUiState.Success(
-            QuestTabUiData(emptyList())
-        ),
-        onSelectQuestType = {},
-        onSelectRepeatPeriod = {},
+        typedQuests = typedQuests,
+        onSelectQuestTab = {},
+        onSelectRepeatType = {},
         onSelectSortType = {},
         onQuestClick = {},
-        onFavoriteClick = {},
-        onDismissRequest = {},
-        onApproveButtonClick = {}
+        onFavoriteClick = { _, _ -> },
+        onApproveButtonClick = {},
+        onDismissRequest = {}
     )
 }
