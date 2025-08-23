@@ -18,7 +18,7 @@ import retrofit2.http.Query
 interface UserApiService {
     @GET("api/v1/user")
     suspend fun getUserInfo(
-        @Query("customerId") customerId: String?
+        @Query("id") id: String?
     ): UserInfoResponse
 
     @GET("customer/xpStats")
