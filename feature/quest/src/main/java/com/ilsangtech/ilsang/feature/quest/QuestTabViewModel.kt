@@ -2,20 +2,21 @@ package com.ilsangtech.ilsang.feature.quest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.QuestRepository
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.QuestType
-import com.ilsangtech.ilsang.core.model.RepeatQuestPeriod
+import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
+import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
+import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,107 +24,97 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuestTabViewModel @Inject constructor(
+    userRepository: UserRepository,
     private val questRepository: QuestRepository
 ) : ViewModel() {
-    private val _selectedQuestId = MutableStateFlow<String?>(null)
-    private val selectedQuestId = _selectedQuestId.asStateFlow()
+    private val _selectedQuestTab = MutableStateFlow(QuestTabUiModel.NORMAL)
+    val selectedQuestTab = _selectedQuestTab.asStateFlow()
 
-    private var _selectedQuestType = MutableStateFlow(QuestType.NORMAL)
-    val selectedQuestType = _selectedQuestType.asStateFlow()
+    private val _selectedRepeatType = MutableStateFlow<RepeatQuestTypeUiModel?>(null)
+    val selectedRepeatType = _selectedRepeatType.asStateFlow()
 
-    private var _selectedRepeatPeriod = MutableStateFlow<RepeatQuestPeriod>(RepeatQuestPeriod.DAILY)
-    val selectedRepeatPeriod = _selectedRepeatPeriod.asStateFlow()
-
-    private var _selectedSortType = MutableStateFlow(SortType.POINT_DESC)
+    private val _selectedSortType = MutableStateFlow(SortTypeUiModel.PointDesc)
     val selectedSortType = _selectedSortType.asStateFlow()
 
+    private val _selectedQuestId = MutableStateFlow<Int?>(null)
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    val questTabUiState: StateFlow<QuestTabUiState> = combine(
-        selectedQuestType, selectedRepeatPeriod
-    ) { type, period ->
-        type to period
-    }.flatMapLatest { (questType, repeatPeriod) ->
-        when (questType) {
-            QuestType.NORMAL -> questRepository.getUncompletedNormalQuests()
-            QuestType.REPEAT -> questRepository.getUncompletedRepeatQuests(
-                when (repeatPeriod) {
-                    RepeatQuestPeriod.DAILY -> "DAILY"
-                    RepeatQuestPeriod.WEEKLY -> "WEEKLY"
-                    RepeatQuestPeriod.MONTHLY -> "MONTHLY"
-                }
-            )
-
-            QuestType.EVENT -> questRepository.getUncompletedEventQuests()
-            else -> {
-                flow { emit(emptyList()) }
-            }
-        }
-    }.combine<List<Quest>, SortType, QuestTabUiState>(selectedSortType) { quests, sortType ->
-        val sortedQuests = when (sortType) {
-            SortType.POINT_ASC -> {
-                quests.sortedBy { quest ->
-                    quest.rewardList.sumOf { it.quantity }
-                }
-            }
-
-            SortType.POINT_DESC -> {
-                quests.sortedByDescending { quest ->
-                    quest.rewardList.sumOf { it.quantity }
-                }
-            }
-
-            SortType.FAVORITE -> {
-                quests.filter { it.favoriteYn }
-            }
-
-            SortType.POPULAR -> {
-                quests.sortedByDescending { it.score }
-            }
-        }
-        QuestTabUiState.Success(QuestTabUiData(sortedQuests))
-    }
-        .catch { emit(QuestTabUiState.Error(it)) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = QuestTabUiState.Loading
-        )
-
-    val selectedQuest = selectedQuestId.combine(questTabUiState) { questId, uiState ->
-        if (questId == null || uiState !is QuestTabUiState.Success) return@combine null
-        uiState.data.questList.find { it.questId == questId }
+    val selectedQuest = _selectedQuestId.flatMapLatest { questId ->
+        questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = null
     )
 
-    fun selectQuest(quest: Quest) {
-        _selectedQuestId.update { quest.questId }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val typedQuests = combine(
+        userRepository.getMyInfo(),
+        selectedQuestTab,
+        selectedRepeatType,
+        selectedSortType
+    ) { myInfo, questTab, repeatType, sortType ->
+        val areaCode = myInfo.myCommericalAreaCode.orEmpty()
+        val questType = when (questTab) {
+            QuestTabUiModel.NORMAL -> NewQuestType.Normal
+            QuestTabUiModel.REPEAT -> when (repeatType) {
+                RepeatQuestTypeUiModel.Daily -> NewQuestType.Repeat.Daily
+                RepeatQuestTypeUiModel.Weekly -> NewQuestType.Repeat.Weekly
+                RepeatQuestTypeUiModel.Monthly -> NewQuestType.Repeat.Monthly
+                else -> null
+            }
+
+            QuestTabUiModel.EVENT -> NewQuestType.Event
+            else -> null
+        }
+        val orderRewardDesc = when (sortType) {
+            SortTypeUiModel.PointDesc -> true
+            SortTypeUiModel.PointAsc -> false
+            else -> null
+        }
+        val completeYn = questTab == QuestTabUiModel.COMPLETED
+
+        areaCode to Triple(questType, orderRewardDesc, completeYn)
+    }.flatMapLatest {
+        val (areaCode, typedQuestsCondition) = it
+        val (questType, orderRewardDesc, completeYn) = typedQuestsCondition
+        questRepository.getTypedQuests(
+            commercialAreaCode = areaCode,
+            questType = questType,
+            orderRewardDesc = orderRewardDesc,
+            completeYn = completeYn
+        )
+    }.cachedIn(viewModelScope)
+
+    fun selectQuest(questId: Int) {
+        _selectedQuestId.update { questId }
     }
 
     fun unselectQuest() {
         _selectedQuestId.update { null }
     }
 
-    fun selectQuestType(questType: QuestType) {
-        _selectedQuestType.value = questType
+    fun selectQuestType(questTab: QuestTabUiModel) {
+        _selectedQuestTab.update { questTab }
+        if (questTab == QuestTabUiModel.REPEAT) {
+            _selectedRepeatType.update { RepeatQuestTypeUiModel.Daily }
+        }
     }
 
-    fun selectRepeatPeriod(repeatQuestPeriod: RepeatQuestPeriod) {
-        _selectedRepeatPeriod.value = repeatQuestPeriod
+    fun selectRepeatPeriod(repeatType: RepeatQuestTypeUiModel) {
+        _selectedRepeatType.update { repeatType }
     }
 
-    fun selectSortType(sortType: SortType) {
+    fun selectSortType(sortType: SortTypeUiModel) {
         _selectedSortType.update { sortType }
     }
 
-    fun updateQuestFavoriteStatus(quest: Quest) {
+    fun updateQuestFavoriteStatus(questId: Int, isFavorite: Boolean) {
         viewModelScope.launch {
-            if (quest.favoriteYn) {
-                questRepository.deleteFavoriteQuest(quest.questId)
+            if (isFavorite) {
+                questRepository.deleteFavoriteQuest(questId)
             } else {
-                questRepository.registerFavoriteQuest(quest.questId)
+                questRepository.registerFavoriteQuest(questId)
             }
         }
     }
