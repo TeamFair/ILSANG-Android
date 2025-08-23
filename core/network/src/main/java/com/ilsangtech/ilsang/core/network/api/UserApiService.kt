@@ -50,7 +50,7 @@ interface UserApiService {
         @Body nicknameUpdateRequest: NicknameUpdateRequest
     ): NicknameUpdateResponse
 
-    @PUT("customer/user/image")
+    @PUT("api/v1/user/profile/image")
     suspend fun updateUserImage(
         @Body imageUpdateRequest: UserImageUpdateRequest
     ): UserImageUpdateResponse
