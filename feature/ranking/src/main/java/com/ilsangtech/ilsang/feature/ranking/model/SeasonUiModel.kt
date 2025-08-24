@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.feature.ranking.model
 
 import com.ilsangtech.ilsang.core.model.season.Season
+import com.ilsangtech.ilsang.core.util.DateConverter
 
 sealed interface SeasonUiModel {
     data object Total : SeasonUiModel {
@@ -25,7 +26,7 @@ internal fun Season.toSeasonUiModel(): SeasonUiModel.Season {
     return SeasonUiModel.Season(
         seasonId = id,
         seasonNumber = seasonNumber,
-        startDate = startDate,
-        endDate = endDate
+        startDate = DateConverter.formatDate(startDate),
+        endDate = DateConverter.formatDate(endDate)
     )
 }
