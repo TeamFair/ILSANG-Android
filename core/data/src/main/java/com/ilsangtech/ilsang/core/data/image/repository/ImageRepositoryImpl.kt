@@ -18,6 +18,19 @@ class ImageRepositoryImpl @Inject constructor(
         return imageDataSource.uploadImage(
             type = type,
             imageBytes = imageBytes
-        ).imageUploadResponseData.imageId
+        ).id
+    }
+
+    override suspend fun deleteImage(id: String): Result<Unit> {
+        return try {
+            val result = imageDataSource.deleteImage(id)
+            if (result == "SUCCESS") {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Failed to delete image"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

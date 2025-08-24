@@ -21,12 +21,16 @@ class ImageDataSourceImpl @Inject constructor(
     ): ImageUploadResponse {
         val requestBody = imageBytes.toRequestBody("image/*".toMediaType())
         return imageApiService.uploadImage(
-            type = type,
+            type = type.toRequestBody("text/plain".toMediaType()),
             image = MultipartBody.Part.createFormData(
                 name = "file",
                 filename = "image.jpg",
                 body = requestBody
             )
         )
+    }
+
+    override suspend fun deleteImage(id: String): String {
+        return imageApiService.deleteImage(id)
     }
 }

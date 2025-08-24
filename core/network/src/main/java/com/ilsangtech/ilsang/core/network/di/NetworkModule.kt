@@ -1,5 +1,9 @@
 package com.ilsangtech.ilsang.core.network.di
 
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
 import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AreaApiService
@@ -151,6 +155,23 @@ object NetworkModule {
                 }
             )
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageLoaderFactory(@AuthOkHttpClient okHttpClient: OkHttpClient): SingletonImageLoader.Factory {
+        return object : SingletonImageLoader.Factory {
+            override fun newImageLoader(context: PlatformContext): ImageLoader {
+                return ImageLoader.Builder(context)
+                    .components {
+                        add(
+                            OkHttpNetworkFetcherFactory(
+                                callFactory = okHttpClient
+                            )
+                        )
+                    }.build()
+            }
+        }
     }
 
     @Provides

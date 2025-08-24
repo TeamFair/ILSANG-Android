@@ -10,4 +10,6 @@ interface ImageDataSource {
         type: String,
         imageBytes: ByteArray
     ): ImageUploadResponse
+
+    suspend fun deleteImage(id: String): String
 }

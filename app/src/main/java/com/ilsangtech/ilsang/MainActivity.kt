@@ -13,16 +13,21 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import coil3.SingletonImageLoader
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var splashScreen: SplashScreen
     private val credentialManager = CredentialManager.create(this)
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
+
+    @Inject
+    lateinit var imageLoaderFactory: SingletonImageLoader.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
@@ -31,6 +36,7 @@ class MainActivity : ComponentActivity() {
         }
 
         super.onCreate(savedInstanceState)
+        SingletonImageLoader.setSafe(imageLoaderFactory)
         enableEdgeToEdge()
 
         setContent {
