@@ -18,6 +18,6 @@ class ImageRepositoryImpl @Inject constructor(
         return imageDataSource.uploadImage(
             type = type,
             imageBytes = imageBytes
-        ).imageUploadResponseData.imageId
+        ).id
     }
 }
