@@ -10,17 +10,17 @@ internal fun PopularQuestNetworkModel.toPopularQuest(): PopularQuest {
         imageId = imageId,
         mainImageId = mainImageId,
         questType = when (questType) {
-            "Normal" -> NewQuestType.Normal
-            "Repeat" -> {
+            "NORMAL" -> NewQuestType.Normal
+            "REPEAT" -> {
                 when (repeatFrequency) {
-                    "Daily" -> NewQuestType.Repeat.Daily
-                    "Weekly" -> NewQuestType.Repeat.Weekly
-                    "Monthly" -> NewQuestType.Repeat.Monthly
+                    "DAILY" -> NewQuestType.Repeat.Daily
+                    "WEEKLY" -> NewQuestType.Repeat.Weekly
+                    "MONTHLY" -> NewQuestType.Repeat.Monthly
                     else -> throw IllegalArgumentException("Unknown repeat frequency: $repeatFrequency")
                 }
             }
 
-            "Event" -> NewQuestType.Event
+            "EVENT" -> NewQuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
         title = title,

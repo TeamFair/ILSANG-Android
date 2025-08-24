@@ -36,7 +36,7 @@ import com.ilsangtech.ilsang.feature.home.R
 internal fun HomeTabHeader(
     modifier: Modifier = Modifier,
     profileImageId: String?,
-    myCommercialAreaName: String?,
+    myCommercialAreaName: String,
     isCommercialAreaName: String?,
     onProfileClick: () -> Unit,
     onMyZoneClick: () -> Unit,
@@ -98,7 +98,7 @@ private fun LogoAndProfileImage(
 
 @Composable
 private fun MyZoneSelectionRow(
-    myCommercialAreaName: String?,
+    myCommercialAreaName: String,
     isCommercialAreaName: String?,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
@@ -131,7 +131,7 @@ private fun MyZoneSelectionRow(
                 contentDescription = "광역 지역"
             )
             Text(
-                text = myCommercialAreaName ?: "내 지역을 선택하세요",
+                text = myCommercialAreaName,
                 style = tapBoldTextStyle,
                 color = gray500
             )

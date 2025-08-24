@@ -10,5 +10,5 @@ data class UserRankNetworkModel(
     val point: Int,
     val profileImageId: String?,
     val rank: Int,
-    val title: TitleNetworkModel
+    val title: TitleNetworkModel?
 )

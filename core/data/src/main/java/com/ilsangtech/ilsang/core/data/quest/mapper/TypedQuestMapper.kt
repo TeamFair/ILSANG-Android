@@ -16,15 +16,15 @@ internal fun TypedQuestNetworkModel.toTypedQuest(): TypedQuest {
         title = title,
         writerName = writerName,
         questType = when (questType) {
-            "Normal" -> NewQuestType.Normal
-            "Repeat" -> when (repeatFrequency) {
-                "Daily" -> NewQuestType.Repeat.Daily
-                "Weekly" -> NewQuestType.Repeat.Weekly
-                "Monthly" -> NewQuestType.Repeat.Monthly
+            "NORMAL" -> NewQuestType.Normal
+            "REPEAT" -> when (repeatFrequency) {
+                "DAILY" -> NewQuestType.Repeat.Daily
+                "WEEKLY" -> NewQuestType.Repeat.Weekly
+                "MONTHLY" -> NewQuestType.Repeat.Monthly
                 else -> throw IllegalArgumentException("Unknown repeat frequency: $repeatFrequency")
             }
 
-            "Event" -> NewQuestType.Event
+            "EVENT" -> NewQuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         }
     )

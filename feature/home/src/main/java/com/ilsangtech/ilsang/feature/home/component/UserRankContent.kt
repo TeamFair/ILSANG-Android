@@ -198,20 +198,22 @@ private fun UserRankCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    TitleGradeIcon(
-                        modifier = Modifier.size(12.dp),
-                        titleGrade = userRank.title.grade
-                    )
-                    Text(
-                        text = userRank.title.name,
-                        style = badge01TextStyle.copy(
-                            fontSize = 11.dp.toSp(),
-                            lineHeight = 12.dp.toSp()
-                        ),
-                        color = gray400,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
+                    userRank.title?.let { title ->
+                        TitleGradeIcon(
+                            modifier = Modifier.size(12.dp),
+                            titleGrade = title.grade
+                        )
+                        Text(
+                            text = title.name,
+                            style = badge01TextStyle.copy(
+                                fontSize = 11.dp.toSp(),
+                                lineHeight = 12.dp.toSp()
+                            ),
+                            color = gray400,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    } ?: Spacer(Modifier.height(12.dp))
                 }
                 Text(
                     text = "${userRank.point}p",

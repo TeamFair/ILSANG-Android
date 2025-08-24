@@ -9,7 +9,7 @@ data class PopularQuestNetworkModel(
     val mainImageId: String,
     val questId: Int,
     val questType: String,
-    val repeatFrequency: String,
+    val repeatFrequency: String?,
     val title: String,
     val writerName: String
 )

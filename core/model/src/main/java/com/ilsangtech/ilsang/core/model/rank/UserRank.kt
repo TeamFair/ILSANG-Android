@@ -8,5 +8,5 @@ data class UserRank(
     val point: Int,
     val profileImageId: String?,
     val rank: Int,
-    val title: Title
+    val title: Title?
 )
