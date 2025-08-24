@@ -53,11 +53,7 @@ internal fun SortTypeMenuContent(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                end = 20.dp,
-                top = 8.dp,
-                bottom = 16.dp
-            ),
+            .padding(end = 20.dp, bottom = 16.dp),
         horizontalArrangement = Arrangement.End
     ) {
         if (questTab == QuestTabUiModel.REPEAT && selectedRepeatType != null) {

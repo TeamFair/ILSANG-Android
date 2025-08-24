@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QuestDetailResponse(
-    val expireDate: String,
+    val expireDate: String?,
     val favoriteYn: Boolean,
     val id: Int,
     val imageId: String,
@@ -15,6 +15,6 @@ data class QuestDetailResponse(
     val repeatFrequency: String,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
-    val userRank: Int,
+    val userRank: Int?,
     val writerName: String
 )

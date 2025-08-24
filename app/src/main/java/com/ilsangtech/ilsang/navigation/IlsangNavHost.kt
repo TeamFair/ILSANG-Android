@@ -107,7 +107,7 @@ fun IlsangNavHost(
                     navController.navigate(ProfileRoute(it))
                 },
                 navigateToSubmit = { questId ->
-                    navController.navigate(SubmitRoute(questId))
+                    //todo 제출 화면으로 이동 구현 필요
                 },
                 onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
@@ -121,6 +121,9 @@ fun IlsangNavHost(
             questNavigation(
                 onNavigateToSubmit = { questId ->
                     navController.navigate(SubmitRoute(questId))
+                },
+                onNavigateToMyZone = {
+                    navController.navigate(MyZoneBaseRoute)
                 }
             )
 

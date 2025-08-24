@@ -2,10 +2,13 @@ package com.ilsangtech.ilsang.feature.quest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
@@ -17,6 +20,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestTabViewModel @Inject constructor(
     userRepository: UserRepository,
+    areaRepository: AreaRepository,
     private val questRepository: QuestRepository
 ) : ViewModel() {
     private val _selectedQuestTab = MutableStateFlow(QuestTabUiModel.NORMAL)
@@ -38,6 +44,18 @@ class QuestTabViewModel @Inject constructor(
 
     private val _selectedQuestId = MutableStateFlow<Int?>(null)
 
+    private val myInfo = userRepository.getMyInfo()
+
+    val areaName = myInfo.map { myInfo ->
+        areaRepository.getCommercialArea(
+            commercialAreaCode = myInfo.myCommericalAreaCode
+        ).areaName
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = _selectedQuestId.flatMapLatest { questId ->
         questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
@@ -49,12 +67,12 @@ class QuestTabViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val typedQuests = combine(
-        userRepository.getMyInfo(),
+        myInfo,
         selectedQuestTab,
         selectedRepeatType,
         selectedSortType
     ) { myInfo, questTab, repeatType, sortType ->
-        val areaCode = myInfo.myCommericalAreaCode.orEmpty()
+        val areaCode = myInfo.myCommericalAreaCode
         val questType = when (questTab) {
             QuestTabUiModel.NORMAL -> NewQuestType.Normal
             QuestTabUiModel.REPEAT -> when (repeatType) {
@@ -75,6 +93,8 @@ class QuestTabViewModel @Inject constructor(
         val completeYn = questTab == QuestTabUiModel.COMPLETED
 
         areaCode to Triple(questType, orderRewardDesc, completeYn)
+    }.onStart {
+        PagingData.from(emptyList<TypedQuest>())
     }.flatMapLatest {
         val (areaCode, typedQuestsCondition) = it
         val (questType, orderRewardDesc, completeYn) = typedQuestsCondition

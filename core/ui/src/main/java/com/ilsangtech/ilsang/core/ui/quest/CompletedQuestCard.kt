@@ -21,11 +21,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
-import com.ilsangtech.ilsang.core.model.quest.NewQuest
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
@@ -49,7 +50,7 @@ fun CompletedQuestCard(
 @Composable
 fun CompletedQuestCard(
     modifier: Modifier = Modifier,
-    quest: NewQuest,
+    quest: TypedQuest,
     onClick: () -> Unit = {}
 ) {
     CompletedQuestCard(
@@ -138,7 +139,7 @@ private fun CompletedQuestCard(
 @Composable
 private fun CompletedQuestCardNewQuestPreview() {
     CompletedQuestCard(
-        quest = NewQuest(
+        quest = TypedQuest(
             expireDate = "2023-12-31",
             favoriteYn = false,
             imageId = "sample_image_id_new",
@@ -150,7 +151,8 @@ private fun CompletedQuestCardNewQuestPreview() {
                 RewardPoint.Contribute(15)
             ),
             title = "새로운 퀘스트 타이틀",
-            writerName = "새로운 작성자"
+            writerName = "새로운 작성자",
+            questType = NewQuestType.Repeat.Daily
         ),
         onClick = {}
     )

@@ -6,7 +6,7 @@ import com.ilsangtech.ilsang.core.model.mission.Mission
 
 data class QuestDetail(
     val id: Int,
-    val expireDate: String,
+    val expireDate: String?,
     val favoriteYn: Boolean,
     val imageId: String,
     val mainImageId: String,

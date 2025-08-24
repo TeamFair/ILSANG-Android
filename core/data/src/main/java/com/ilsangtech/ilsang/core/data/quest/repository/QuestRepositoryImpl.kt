@@ -86,9 +86,9 @@ class QuestRepositoryImpl(
         completeYn: Boolean
     ): Flow<PagingData<TypedQuest>> {
         val (type, repeatFrequency) = when (questType) {
-            is NewQuestType.Normal -> "Normal" to null
-            is NewQuestType.Event -> "Event" to null
-            is NewQuestType.Repeat -> "Repeat" to when (questType) {
+            is NewQuestType.Normal -> "NORMAL" to null
+            is NewQuestType.Event -> "EVENT" to null
+            is NewQuestType.Repeat -> "REPEAT" to when (questType) {
                 is NewQuestType.Repeat.Daily -> "DAILY"
                 is NewQuestType.Repeat.Weekly -> "WEEKLY"
                 is NewQuestType.Repeat.Monthly -> "MONTHLY"
