@@ -36,7 +36,7 @@ interface QuestApiService {
         @Query("sort") sort: List<String>
     ): PopularQuestResponse
 
-    @GET("api/v1/quest/user/search/recommended")
+    @GET("api/v1/quest/user/search/recommend")
     suspend fun getRecommendedQuest(
         @Query("commercialAreaCode") commercialAreaCode: String,
         @Query("page") page: Int,
