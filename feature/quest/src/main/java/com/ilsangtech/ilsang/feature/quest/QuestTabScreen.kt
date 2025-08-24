@@ -47,7 +47,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int) -> Unit
+    navigateToSubmit: (Int) -> Unit,
+    navigateToMyZone: () -> Unit
 ) {
     val selectedQuestType by questTabViewModel.selectedQuestTab.collectAsStateWithLifecycle()
     val selectedRepeatType by questTabViewModel.selectedRepeatType.collectAsStateWithLifecycle()
@@ -73,7 +74,7 @@ fun QuestTabScreen(
         onQuestClick = questTabViewModel::selectQuest,
         onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
         onDismissRequest = questTabViewModel::unselectQuest,
-        onMyZoneClick = {},
+        onMyZoneClick = navigateToMyZone,
         onApproveButtonClick = { questId ->
             coroutineScope.launch {
                 bottomSheetState.hide()
