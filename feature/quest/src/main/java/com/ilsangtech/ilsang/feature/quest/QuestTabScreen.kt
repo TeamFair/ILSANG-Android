@@ -30,8 +30,11 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
+import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
+import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
@@ -51,6 +54,7 @@ fun QuestTabScreen(
     val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
     val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
     val typedQuests = questTabViewModel.typedQuests.collectAsLazyPagingItems()
+    val areaName by questTabViewModel.areaName.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -62,12 +66,14 @@ fun QuestTabScreen(
         selectedSortType = selectedSortType,
         selectedQuest = selectedQuest,
         typedQuests = typedQuests,
+        areaName = areaName,
         onSelectQuestTab = questTabViewModel::selectQuestType,
         onSelectRepeatType = questTabViewModel::selectRepeatPeriod,
         onSelectSortType = questTabViewModel::selectSortType,
         onQuestClick = questTabViewModel::selectQuest,
         onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
         onDismissRequest = questTabViewModel::unselectQuest,
+        onMyZoneClick = {},
         onApproveButtonClick = { questId ->
             coroutineScope.launch {
                 bottomSheetState.hide()
@@ -86,6 +92,7 @@ private fun QuestTabScreen(
     selectedRepeatType: RepeatQuestTypeUiModel?,
     selectedSortType: SortTypeUiModel,
     selectedQuest: QuestDetail?,
+    areaName: String?,
     typedQuests: LazyPagingItems<TypedQuest>,
     onSelectQuestTab: (QuestTabUiModel) -> Unit,
     onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
@@ -93,6 +100,7 @@ private fun QuestTabScreen(
     onQuestClick: (Int) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
     onApproveButtonClick: (Int) -> Unit,
+    onMyZoneClick: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
     if (selectedQuest != null) {
@@ -110,12 +118,20 @@ private fun QuestTabScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .navigationBarsPadding()
+            .navigationBarsPadding(),
+        color = background
     ) {
         Column {
             QuestTabHeader(
                 selectedQuestTab = selectedQuestTab,
                 onQuestTabSelected = onSelectQuestTab
+            )
+            MyZoneSelector(
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .padding(vertical = 16.dp),
+                myCommercialAreaName = areaName.orEmpty(),
+                onMyZoneClick = onMyZoneClick
             )
             Box(modifier = Modifier.fillMaxWidth()) {
                 SortTypeMenuContent(
@@ -135,16 +151,23 @@ private fun QuestTabScreen(
                     items(typedQuests.itemCount) { index ->
                         val quest = typedQuests[index]
                         quest?.let {
-                            QuestCardWithFavorite(
-                                quest = quest,
-                                onFavoriteClick = {
-                                    onFavoriteClick(
-                                        quest.questId,
-                                        quest.favoriteYn
-                                    )
-                                },
-                                onClick = { onQuestClick(quest.questId) }
-                            )
+                            if (selectedQuestTab == QuestTabUiModel.COMPLETED) {
+                                CompletedQuestCard(
+                                    quest = quest,
+                                    onClick = { onQuestClick(quest.questId) }
+                                )
+                            } else {
+                                QuestCardWithFavorite(
+                                    quest = quest,
+                                    onFavoriteClick = {
+                                        onFavoriteClick(
+                                            quest.questId,
+                                            quest.favoriteYn
+                                        )
+                                    },
+                                    onClick = { onQuestClick(quest.questId) }
+                                )
+                            }
                         }
                     }
                     item { Spacer(Modifier.height(64.dp)) }
@@ -181,12 +204,14 @@ private fun QuestTabScreenPreview() {
         selectedSortType = SortTypeUiModel.Popular,
         selectedQuest = null,
         typedQuests = typedQuests,
+        areaName = "서현",
         onSelectQuestTab = {},
         onSelectRepeatType = {},
         onSelectSortType = {},
         onQuestClick = {},
         onFavoriteClick = { _, _ -> },
         onApproveButtonClick = {},
+        onMyZoneClick = {},
         onDismissRequest = {}
     )
 }
