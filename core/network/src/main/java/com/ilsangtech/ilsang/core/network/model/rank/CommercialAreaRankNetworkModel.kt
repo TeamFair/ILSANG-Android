@@ -7,5 +7,6 @@ data class CommercialAreaRankNetworkModel(
     val areaName: String,
     val commercialCode: String,
     val images: List<String>,
-    val point: Int
+    val point: Int,
+    val rank: Int
 )

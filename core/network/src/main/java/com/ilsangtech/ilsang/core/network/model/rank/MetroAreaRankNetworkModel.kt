@@ -7,5 +7,6 @@ data class MetroAreaRankNetworkModel(
     val areaName: String,
     val images: List<String>,
     val metroCode: String,
-    val point: Int
+    val point: Int,
+    val rank: Int
 )
