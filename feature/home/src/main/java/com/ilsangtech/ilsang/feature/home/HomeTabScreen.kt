@@ -95,24 +95,22 @@ private fun HomeTabScreen(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (selectedQuest != null) {
-        selectedQuest?.let { quest ->
-            QuestBottomSheet(
-                quest = quest,
-                bottomSheetState = bottomSheetState,
-                onDismiss = onUnselectQuest,
-                onFavoriteClick = onFavoriteClick,
-                onMissionImageClick = {
-                    //TODO 퀘스트 인증 예시 화면으로 이동
-                },
-                onApproveButtonClick = {
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
-                        onUnselectQuest()
-                        //TODO 제출 화면으로 이동 구현
-                    }
+        QuestBottomSheet(
+            quest = selectedQuest,
+            bottomSheetState = bottomSheetState,
+            onDismiss = onUnselectQuest,
+            onFavoriteClick = onFavoriteClick,
+            onMissionImageClick = {
+                //TODO 퀘스트 인증 예시 화면으로 이동
+            },
+            onApproveButtonClick = {
+                coroutineScope.launch {
+                    bottomSheetState.hide()
+                    onUnselectQuest()
+                    //TODO 제출 화면으로 이동 구현
                 }
-            )
-        }
+            }
+        )
     }
 
     Surface(
