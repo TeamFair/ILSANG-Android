@@ -29,4 +29,8 @@ class ImageDataSourceImpl @Inject constructor(
             )
         )
     }
+
+    override suspend fun deleteImage(id: String): String {
+        return imageApiService.deleteImage(id)
+    }
 }
