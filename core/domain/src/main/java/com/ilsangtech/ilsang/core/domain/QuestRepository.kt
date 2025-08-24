@@ -20,6 +20,7 @@ interface QuestRepository {
 
     fun getBannerQuests(
         bannerId: Int,
+        completedYn: Boolean,
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null
     ): Flow<PagingData<BannerQuest>>

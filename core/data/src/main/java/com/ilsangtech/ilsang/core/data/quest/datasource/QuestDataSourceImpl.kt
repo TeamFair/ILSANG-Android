@@ -81,6 +81,7 @@ class QuestDataSourceImpl @Inject constructor(
 
     override fun getBannerQuests(
         bannerId: Int,
+        completedYn: Boolean,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?
     ): Flow<PagingData<BannerQuestNetworkModel>> {
@@ -90,6 +91,7 @@ class QuestDataSourceImpl @Inject constructor(
                 BannerQuestPagingSource(
                     questApiService = questApiService,
                     bannerId = bannerId,
+                    completedYn = completedYn,
                     orderExpiredDesc = orderExpiredDesc,
                     orderRewardDesc = orderRewardDesc
                 )

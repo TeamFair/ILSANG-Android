@@ -65,9 +65,10 @@ interface QuestApiService {
         @Query("sort") sort: List<String> = emptyList()
     ): LargeRewardQuestResponse
 
-    @GET("api/v1/quest/search/banner/{bannerId}")
+    @GET("api/v1/quest/user/search/banner/{bannerId}")
     suspend fun getBannerQuests(
         @Path("bannerId") bannerId: Int,
+        @Query("completedYn") completedYn: Boolean,
         @Query("orderExpiredDesc") orderExpiredDesc: Boolean?,
         @Query("orderRewardDesc") orderRewardDesc: Boolean?,
         @Query("page") page: Int,
