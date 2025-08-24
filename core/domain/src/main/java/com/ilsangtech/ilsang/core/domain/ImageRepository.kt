@@ -7,4 +7,6 @@ interface ImageRepository {
         type: String,
         imageBytes: ByteArray
     ): String
+
+    suspend fun deleteImage(id: String): Result<Unit>
 }
