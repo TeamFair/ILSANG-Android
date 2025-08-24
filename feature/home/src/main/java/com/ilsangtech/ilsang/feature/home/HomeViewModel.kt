@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
         userRepository.getMyInfo().flatMapLatest<MyInfo, HomeTabUiState> { myInfo ->
-            val myAreaCode = myInfo.myCommericalAreaCode.orEmpty()
+            val myAreaCode = myInfo.myCommericalAreaCode
             val isAreaCode = myInfo.isCommercialAreaCode
 
             val myCommercialAreaName =
