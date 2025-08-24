@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.image.ImageResponse
 import com.ilsangtech.ilsang.core.network.model.image.ImageUploadResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -22,4 +23,9 @@ interface ImageApiService {
         @Part type: RequestBody,
         @Part image: MultipartBody.Part
     ): ImageUploadResponse
+
+    @DELETE("api/v1/image/{id}")
+    suspend fun deleteImage(
+        @Path("id") id: String
+    ): String
 }
