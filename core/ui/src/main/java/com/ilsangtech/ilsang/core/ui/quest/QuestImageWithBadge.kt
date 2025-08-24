@@ -73,7 +73,7 @@ fun QuestImageWithBadge(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .zIndex(1f)
+                    .zIndex(2f)
                     .offset(x = 10.dp, y = (-10).dp)
             ) {
                 badge.invoke()

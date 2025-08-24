@@ -46,6 +46,15 @@ fun QuestCardWithFavorite(
                 questImage = {
                     QuestImageWithBadge(
                         imageId = quest.imageId,
+                        badge = {
+                            if (quest.questType is NewQuestType.Repeat) {
+                                RepeatQuestTypeBadge(
+                                    repeatType = quest.questType as NewQuestType.Repeat,
+                                )
+                            } else if (quest.questType is NewQuestType.Event) {
+                                EventQuestTypeBadge()
+                            }
+                        },
                         contentDescription = "퀘스트 이미지"
                     )
                 }
