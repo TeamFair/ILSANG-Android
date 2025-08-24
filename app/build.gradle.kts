@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":feature:iszone"))
     implementation(project(":feature:banner"))
 
+    implementation(libs.coil)
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)
     implementation(libs.hilt.android)
