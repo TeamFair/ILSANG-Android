@@ -32,8 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
@@ -44,29 +42,6 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.primary300
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun QuestBottomSheet(
-    quest: Quest,
-    bottomSheetState: SheetState,
-    onFavoriteClick: () -> Unit,
-    onApproveButtonClick: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    IlsangBottomSheet(
-        bottomSheetState = bottomSheetState,
-        onDismissRequest = onDismiss
-    ) {
-        QuestBottomSheetHeader(
-            isFavorite = quest.favoriteYn,
-            onFavoriteClick = onFavoriteClick
-        )
-        QuestBottomSheetContent(quest = quest)
-        Spacer(Modifier.height(16.dp))
-        QuestBottomSheetFooter(onClick = onApproveButtonClick)
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -159,34 +134,6 @@ private fun QuestBottomSheetContent(
 }
 
 @Composable
-private fun QuestBottomSheetContent(
-    modifier: Modifier = Modifier,
-    quest: Quest
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        QuestInfoContent(quest = quest)
-        Row(modifier = Modifier.fillMaxWidth()) {
-            QuestApprovalExample(
-                modifier = Modifier.weight(1f),
-                imageId = null,
-                onImageClick = {}
-            )
-            MyQuestRank(
-                modifier = Modifier.weight(1f),
-                rank = quest.score
-            )
-        }
-        ObtainablePointsContent(quest.rewardList)
-    }
-}
-
-@Composable
 private fun QuestBottomSheetFooter(onClick: () -> Unit) {
     Column(
         modifier = Modifier
@@ -271,55 +218,3 @@ fun QuestBottomSheetPreviewQuestDetail() {
         onDismiss = {}
     )
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-private fun QuestBottomSheetPreview() {
-    val bottomSheetState = rememberStandardBottomSheetState()
-    QuestBottomSheet(
-        quest = previewQuest,
-        bottomSheetState = bottomSheetState,
-        onFavoriteClick = {},
-        onApproveButtonClick = {},
-        onDismiss = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun QuestBottomSheetContentPreview() {
-    QuestBottomSheetContent(quest = previewQuest)
-}
-
-private val previewReward = Reward(
-    content = "",
-    quantity = 100,
-    rewardId = "",
-    type = "INTELLECT",
-    discountRate = 0,
-    questId = "",
-    target = "",
-    title = ""
-)
-
-private val previewQuest = Quest(
-    createDate = "",
-    creatorRole = "",
-    expireDate = "",
-    favoriteYn = false,
-    imageId = "",
-    mainImageId = "",
-    marketId = "",
-    missionId = "",
-    missionTitle = "아메리카노 마시기",
-    missionType = "",
-    popularYn = true,
-    questId = "",
-    rewardList = listOf(previewReward),
-    score = 40,
-    status = "",
-    target = "",
-    type = "",
-    writer = ""
-)
