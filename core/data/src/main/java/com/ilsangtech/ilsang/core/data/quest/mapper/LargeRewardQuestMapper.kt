@@ -10,7 +10,7 @@ fun LargeRewardQuestNetworkModel.toLargeRewardQuest(): LargeRewardQuest {
         expireDate = expireDate,
         imageId = imageId,
         mainImageId = mainImageId,
-        rewards = rewardPointNetworkModels.map(RewardPointNetworkModel::toRewardPoint),
+        rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
         title = title,
         writerName = writerName
     )

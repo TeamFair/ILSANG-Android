@@ -8,7 +8,7 @@ data class LargeRewardQuestNetworkModel(
     val imageId: String,
     val mainImageId: String,
     val questId: Int,
-    val rewardPointNetworkModels: List<RewardPointNetworkModel>,
+    val rewards: List<RewardPointNetworkModel>,
     val title: String,
     val writerName: String
 )
