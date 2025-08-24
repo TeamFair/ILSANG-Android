@@ -66,11 +66,13 @@ class QuestRepositoryImpl(
 
     override fun getBannerQuests(
         bannerId: Int,
+        completedYn: Boolean,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?
     ): Flow<PagingData<BannerQuest>> {
         return questDataSource.getBannerQuests(
             bannerId = bannerId,
+            completedYn = completedYn,
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc
         ).map { it.map(BannerQuestNetworkModel::toBannerQuest) }
