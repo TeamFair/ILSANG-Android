@@ -11,6 +11,6 @@ internal fun UserRankNetworkModel.toUserRank(): UserRank {
         point = point,
         profileImageId = profileImageId,
         rank = rank,
-        title = title.toTitle()
+        title = title?.toTitle()
     )
 }
