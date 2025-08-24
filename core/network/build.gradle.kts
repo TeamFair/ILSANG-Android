@@ -53,6 +53,8 @@ android {
 dependencies {
     implementation(project(":core:datastore"))
 
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
