@@ -15,7 +15,7 @@ internal fun MetroAreaRank.toAreaRankUiModel(): AreaRankUiModel {
     return AreaRankUiModel(
         areaCode = metroAreaCode,
         areaName = areaName,
-        rank = 0, //TODO 수정 필요
+        rank = rank,
         point = point,
         images = images
     )
@@ -25,7 +25,7 @@ internal fun CommercialAreaRank.toAreaRankUiModel(): AreaRankUiModel {
     return AreaRankUiModel(
         areaCode = commercialAreaCode,
         areaName = areaName,
-        rank = 0, //TODO 수정 필요
+        rank = rank,
         point = point,
         images = images
     )

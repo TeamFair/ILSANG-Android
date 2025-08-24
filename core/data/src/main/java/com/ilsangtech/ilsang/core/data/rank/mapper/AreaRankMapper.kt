@@ -10,7 +10,8 @@ internal fun MetroAreaRankNetworkModel.toMetroAreaRank(): MetroAreaRank {
         metroAreaCode = metroCode,
         areaName = areaName,
         point = point,
-        images = images
+        images = images,
+        rank = rank
     )
 }
 
@@ -19,6 +20,7 @@ internal fun CommercialAreaRankNetworkModel.toCommercialAreaRank(): CommercialAr
         commercialAreaCode = commercialCode,
         areaName = areaName,
         point = point,
-        images = images
+        images = images,
+        rank = rank
     )
 }
