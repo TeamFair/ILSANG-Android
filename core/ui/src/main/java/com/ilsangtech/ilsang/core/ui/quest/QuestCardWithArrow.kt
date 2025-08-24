@@ -1,9 +1,7 @@
 package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -68,17 +66,16 @@ private fun QuestCardWithArrow(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = 23.dp,
                     vertical = 20.dp
-                ),
-            horizontalArrangement = Arrangement.SpaceBetween
+                )
         ) {
             DefaultQuestContent(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(),
                 title = title,
                 writer = writer,
                 rewardPoints = rewardPoints,
@@ -92,7 +89,7 @@ private fun QuestCardWithArrow(
             Box(
                 modifier = Modifier
                     .size(26.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterEnd)
                     .clip(CircleShape)
                     .background(Color(0xFFF4F4F4)),
                 contentAlignment = Alignment.Center
