@@ -23,13 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.ui.BuildConfig
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.theme.caption02
@@ -67,6 +66,9 @@ internal fun QuestInfoContent(
                 } else if (quest.questType is NewQuestType.Event) {
                     EventQuestTypeBadge()
                 }
+                quest.missions.firstOrNull()?.type?.let { missionType ->
+                    MissionTypeBadge(missionType = missionType)
+                }
             }
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -75,17 +77,16 @@ internal fun QuestInfoContent(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            Text(
-                text = DateConverter.formatDate(
-                    input = "",
-                    outputPattern = "MM.dd"
-                ) + " ~ " + DateConverter.formatDate(
-                    input = quest.expireDate,
-                    outputPattern = "MM.dd"
-                ),
-                style = caption02,
-                color = gray400
-            )
+            quest.expireDate?.let { expireDate ->
+                Text(
+                    text = DateConverter.formatDate(
+                        input = expireDate,
+                        outputPattern = "yyyy.MM.dd"
+                    ) + "까지",
+                    style = caption02,
+                    color = gray400
+                )
+            }
         }
         Box(
             modifier = Modifier
@@ -102,112 +103,6 @@ internal fun QuestInfoContent(
             )
         }
     }
-}
-
-@Composable
-internal fun QuestInfoContent(
-    modifier: Modifier = Modifier,
-    quest: Quest
-) {
-    Row(
-        modifier = modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFF1F5FF)),
-            model = BuildConfig.IMAGE_URL + quest.imageId,
-            contentDescription = quest.missionTitle
-        )
-        Spacer(Modifier.width(8.dp))
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            //TODO 퀘스트 유형 칩 UI 적용
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = quest.missionTitle,
-                style = title02,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-            Text(
-                text = DateConverter.formatDate(
-                    input = quest.createDate,
-                    outputPattern = "MM.dd"
-                ) + " ~ " + DateConverter.formatDate(
-                    input = quest.expireDate,
-                    outputPattern = "MM.dd"
-                ),
-                style = caption02,
-                color = gray400
-            )
-        }
-        Box(
-            modifier = Modifier
-                .background(
-                    color = primary100,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .padding(10.dp)
-        ) {
-            Text(
-                text = "${quest.rewardList.sumOf { it.quantity }}P",
-                style = heading01,
-                color = primary,
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun QuestInfoContentPreview() {
-    val quest = Quest(
-        createDate = "2023-10-27",
-        creatorRole = "USER",
-        expireDate = "2023-11-27",
-        favoriteYn = false,
-        imageId = "sample_image_id",
-        mainImageId = "sample_main_image_id",
-        marketId = "sample_market_id",
-        missionId = "sample_mission_id",
-        missionTitle = "일상 공유하고 포인트 받기",
-        missionType = "GENERAL",
-        popularYn = false,
-        questId = "sample_quest_id",
-        rewardList = listOf(
-            Reward(
-                content = null,
-                discountRate = null,
-                quantity = 10,
-                questId = "sample_quest_id",
-                rewardId = "reward1",
-                target = null,
-                title = null,
-                type = "POINT"
-            ),
-            Reward(
-                content = null,
-                discountRate = null,
-                quantity = 20,
-                questId = "sample_quest_id",
-                rewardId = "reward2",
-                target = null,
-                title = null,
-                type = "POINT"
-            )
-        ),
-        score = 100,
-        status = "ACTIVE",
-        target = "ALL",
-        type = "DAILY",
-        writer = "user123"
-    )
-    QuestInfoContent(quest = quest)
 }
 
 @Preview(showBackground = true)
