@@ -17,12 +17,10 @@ class MyTabViewModel @Inject constructor(
     private val userRepository: UserRepository,
     challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    val myInfo = flow {
-        emit(userRepository.currentUser)
-    }.stateIn(
+    val myInfo = userRepository.getMyInfo().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = userRepository.currentUser
+        initialValue = null
     )
 
     val challengePager = challengeRepository.getChallengePaging().cachedIn(viewModelScope)

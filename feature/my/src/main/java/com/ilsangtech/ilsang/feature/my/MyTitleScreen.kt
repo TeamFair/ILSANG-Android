@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.my
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilsangtech.ilsang.core.model.Title
+import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -60,9 +59,9 @@ internal fun MyTitleScreen(
         }
     }
 
-    BackHandler(myTitleViewModel.previousTitleId != selectedTitle?.id) {
-        showUpdateDialog = true
-    }
+//    BackHandler(myTitleViewModel.previousTitleId != selectedTitle?.id) {
+//        showUpdateDialog = true
+//    }
 
     if (showUpdateDialog) {
         MyTitleUpdateDialog(
@@ -77,7 +76,7 @@ internal fun MyTitleScreen(
         selectedTitle = selectedTitle,
         onTypeChipClick = { selectedType = it },
         onBackButtonClick = {
-            if (myTitleViewModel.previousTitleId == selectedTitle?.id) {
+            if (myTitleViewModel.previousTitleId == "") {
                 onBackButtonClick()
             } else {
                 showUpdateDialog = true
@@ -121,7 +120,7 @@ private fun MyTitleScreen(
                     )
                 }
                 typeTitleList(
-                    titleList = titleList.filter { it.type == selectedType },
+                    titleList = titleList,
                     selectedTitle = selectedTitle,
                     onTitleSelect = onTitleSelect
                 )

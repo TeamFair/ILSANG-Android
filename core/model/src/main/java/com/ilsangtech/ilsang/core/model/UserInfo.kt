@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.core.model
 
+import com.ilsangtech.ilsang.core.model.title.Title
+
 data class UserInfo(
     val id: String,
     val channel: String,
@@ -8,5 +10,6 @@ data class UserInfo(
     val nickname: String,
     val profileImageId: String?,
     val status: String,
-    val statusUpdatedAt: String
+    val statusUpdatedAt: String,
+    val title: Title?
 )

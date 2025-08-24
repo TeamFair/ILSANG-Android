@@ -21,7 +21,7 @@ class UserDataStore(context: Context) {
 
     private val userMyZoneKey = stringPreferencesKey("user_my_zone")
     val userMyZone = userDataStore.data.map { preferences ->
-        preferences[userMyZoneKey]
+        preferences[userMyZoneKey] ?: "R100"
     }
 
     private val accessTokenKey = stringPreferencesKey("access_token")
