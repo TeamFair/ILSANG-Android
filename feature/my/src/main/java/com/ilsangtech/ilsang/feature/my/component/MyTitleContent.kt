@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,8 +25,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.Title
-import com.ilsangtech.ilsang.designsystem.component.CircleShapeCheckBox
+import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.designsystem.component.IlsangCheckBox
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -121,26 +119,26 @@ private fun TypeTitleListItem(
             )
         }
         Box(modifier = Modifier.weight(1f)) {
-            title.condition?.let { condition ->
-                Text(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    text = condition,
-                    style = tapRegularTextStyle.copy(
-                        lineBreak = LineBreak.Paragraph
-                    ),
-                    color = gray400,
-                )
-            }
+//            title.condition?.let { condition ->
+//                Text(
+//                    modifier = Modifier.padding(horizontal = 10.dp),
+//                    text = condition,
+//                    style = tapRegularTextStyle.copy(
+//                        lineBreak = LineBreak.Paragraph
+//                    ),
+//                    color = gray400,
+//                )
+//            }
         }
         Box(
             modifier = Modifier.width(50.dp),
             contentAlignment = Alignment.Center
         ) {
-            CircleShapeCheckBox(
-                modifier = Modifier.size(20.dp),
-                checked = title.historyId != null,
-                enabled = false
-            )
+//            CircleShapeCheckBox(
+//                modifier = Modifier.size(20.dp),
+//                checked = title.historyId != null,
+//                enabled = false
+//            )
         }
     }
 }
@@ -199,20 +197,20 @@ internal fun LazyListScope.typeTitleList(
             )
         }
     }
-    items(
-        items = titleList,
-        key = { title -> title.id }
-    ) { title ->
-        TypeTitleListItem(
-            title = title,
-            checked = selectedTitle == title,
-            onCheckBoxClick = {
-                if (title.historyId != null) {
-                    onTitleSelect(title)
-                }
-            }
-        )
-    }
+//    items(
+//        items = titleList,
+//        key = { title -> title.id }
+//    ) { title ->
+//        TypeTitleListItem(
+//            title = title,
+//            checked = selectedTitle == title,
+//            onCheckBoxClick = {
+//                if (title.historyId != null) {
+//                    onTitleSelect(title)
+//                }
+//            }
+//        )
+//    }
 }
 
 @Composable
@@ -226,15 +224,7 @@ private fun MyTitleContentPreview() {
             )
         }
         typeTitleList(
-            titleList = listOf(
-                Title(
-                    id = "",
-                    name = "일반 칭호 이름",
-                    type = "STANDARD",
-                    condition = "일반 칭호 조건",
-                    createdAt = ""
-                )
-            ),
+            titleList = emptyList(),
             selectedTitle = null,
             onTitleSelect = {}
         )

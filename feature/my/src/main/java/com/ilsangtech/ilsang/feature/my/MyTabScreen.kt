@@ -16,23 +16,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.Title
 import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.feature.my.component.MyChallengeContent
 import com.ilsangtech.ilsang.feature.my.component.MyInfoMenuContent
 import com.ilsangtech.ilsang.feature.my.component.MyTabHeader
 import com.ilsangtech.ilsang.feature.my.component.MyTabMenuContent
 import com.ilsangtech.ilsang.feature.my.component.UserProfileContent
-import kotlinx.coroutines.flow.asFlow
 
 @Composable
 fun MyTabScreen(
@@ -42,7 +38,7 @@ fun MyTabScreen(
     navigateToSetting: () -> Unit,
     navigateToMyTitle: (titleId: String?) -> Unit
 ) {
-    val userInfo by myTabViewModel.myInfo.collectAsStateWithLifecycle()
+    val myInfo by myTabViewModel.myInfo.collectAsStateWithLifecycle()
     val userXpStats by myTabViewModel.userXpStats.collectAsStateWithLifecycle()
     val challengePager = myTabViewModel.challengePager.collectAsLazyPagingItems()
 
@@ -51,7 +47,7 @@ fun MyTabScreen(
     }
 
     MyTabScreen(
-        myInfo = userInfo,
+        myInfo = myInfo,
         userXpStats = userXpStats,
         challengePager = challengePager,
         navigateToNicknameEdit = navigateToNicknameEdit,
@@ -66,7 +62,7 @@ fun MyTabScreen(
             )
         },
         navigateToSetting = navigateToSetting,
-        navigateToMyTitle = { navigateToMyTitle(userInfo?.title?.id) }
+        navigateToMyTitle = {}
     )
 }
 
@@ -122,33 +118,4 @@ fun MyTabScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun MyTabScreenPreview() {
-    MyTabScreen(
-        myInfo = MyInfo(
-            nickname = "김일상1234",
-            email = "",
-            profileImage = null,
-            completeChallengeCount = 0,
-            couponCount = 0,
-            xpPoint = 16300,
-            status = "",
-            title = Title(
-                id = "",
-                name = "세상을 움직이는 자",
-                type = "",
-                condition = null,
-                createdAt = ""
-            )
-        ),
-        userXpStats = UserXpStats(),
-        challengePager = emptyList<PagingData<Challenge>>().asFlow().collectAsLazyPagingItems(),
-        navigateToNicknameEdit = {},
-        navigateToMyChallenge = {},
-        navigateToSetting = {},
-        navigateToMyTitle = {}
-    )
 }

@@ -150,12 +150,12 @@ fun MyInfoMenuContent(
             ) {
                 MyTitleCard(
                     modifier = Modifier.weight(1f),
-                    titleName = myInfo.title?.name,
+                    titleName = "myInfo.title?.name",
                     onClick = onMyTitleCardClick
                 )
                 MyInfoTotalXpPointContent(
                     modifier = Modifier.weight(1f),
-                    xpPoint = myInfo.xpPoint
+                    xpPoint = 0
                 )
             }
         }
