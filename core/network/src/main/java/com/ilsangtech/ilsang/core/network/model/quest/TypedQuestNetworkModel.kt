@@ -13,5 +13,5 @@ data class TypedQuestNetworkModel(
     val title: String,
     val writerName: String,
     val questType: String,
-    val repeatFrequency: String
+    val repeatFrequency: String?
 )
