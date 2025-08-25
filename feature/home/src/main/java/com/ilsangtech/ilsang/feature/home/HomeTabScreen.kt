@@ -194,16 +194,14 @@ private fun HomeTabScreenPreview() {
                     bannerImageId = "sample_banner_1.png",
                     description = "Sample Banner 1 Description",
                     navigationTitle = "Go to Sample 1",
-                    title = "Sample Banner 1",
-                    useYn = true
+                    title = "Sample Banner 1"
                 ),
                 Banner(
                     id = 2,
                     bannerImageId = "sample_banner_2.png",
                     description = "Sample Banner 2 Description",
                     navigationTitle = "Go to Sample 2",
-                    title = "Sample Banner 2",
-                    useYn = true
+                    title = "Sample Banner 2"
                 )
             ),
             popularQuests = listOf(

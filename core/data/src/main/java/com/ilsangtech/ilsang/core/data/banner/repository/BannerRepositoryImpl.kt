@@ -13,6 +13,9 @@ class BannerRepositoryImpl @Inject constructor(
     private val bannerDataSource: BannerDataSource,
 ) : BannerRepository {
     override suspend fun getBanners(): Flow<List<Banner>> = flow {
-        emit(bannerDataSource.getBanners().content.map(BannerNetworkModel::toBanner))
+        emit(
+            bannerDataSource.getBanners()
+                .map(BannerNetworkModel::toBanner)
+        )
     }
 }

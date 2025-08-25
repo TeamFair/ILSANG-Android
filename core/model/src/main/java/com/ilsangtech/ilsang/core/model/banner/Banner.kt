@@ -5,6 +5,5 @@ data class Banner(
     val bannerImageId: String,
     val description: String,
     val navigationTitle: String,
-    val title: String,
-    val useYn: Boolean
+    val title: String
 )

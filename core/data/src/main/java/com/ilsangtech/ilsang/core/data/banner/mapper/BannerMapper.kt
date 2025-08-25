@@ -9,7 +9,6 @@ internal fun BannerNetworkModel.toBanner(): Banner {
         bannerImageId = bannerImageId,
         description = description,
         navigationTitle = navigationTitle,
-        title = title,
-        useYn = useYn
+        title = title
     )
 }
