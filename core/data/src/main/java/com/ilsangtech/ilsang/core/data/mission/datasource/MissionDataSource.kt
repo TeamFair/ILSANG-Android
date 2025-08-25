@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MissionDataSource {
     fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistoryNetworkModel>>
+
+    suspend fun registerMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 }
