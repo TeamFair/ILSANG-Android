@@ -14,7 +14,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +22,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.RandomChallenge
+import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
+import com.ilsangtech.ilsang.core.model.title.Title
+import com.ilsangtech.ilsang.core.model.title.TitleGrade
+import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -36,6 +37,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalItem
+import com.ilsangtech.ilsang.feature.approval.model.RandomMissionHistoryUiModel
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -43,32 +45,30 @@ internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
     navigateToProfile: (String) -> Unit
 ) {
-    val randomChallenges = approvalViewModel.randomChallenges.collectAsLazyPagingItems()
-    val isReportSuccess by approvalViewModel.isReportSuccess.collectAsStateWithLifecycle()
+    val randomMissionHistoryItems =
+        approvalViewModel.randomMissionHistories.collectAsLazyPagingItems()
 
-    LaunchedEffect(isReportSuccess) {
-        if (isReportSuccess == true) {
-            randomChallenges.refresh()
-        }
-        isReportSuccess?.let {
-            approvalViewModel.resetReportStatus()
+    LaunchedEffect(Unit) {
+        approvalViewModel.missionHistoryRefreshTrigger.collect {
+            randomMissionHistoryItems.refresh()
         }
     }
+
     ApprovalScreen(
-        randomChallenges = randomChallenges,
+        randomMissionHistoryItems = randomMissionHistoryItems,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onHateButtonClick = approvalViewModel::hateChallenge,
-        onReportButtonClick = approvalViewModel::reportChallenge,
+        onReportButtonClick = approvalViewModel::reportMissionHistory,
         navigateToProfile = navigateToProfile
     )
 }
 
 @Composable
 private fun ApprovalScreen(
-    randomChallenges: LazyPagingItems<RandomChallenge>,
-    onLikeButtonClick: (RandomChallenge) -> Unit,
-    onHateButtonClick: (RandomChallenge) -> Unit,
-    onReportButtonClick: (RandomChallenge) -> Unit,
+    randomMissionHistoryItems: LazyPagingItems<RandomMissionHistoryUiModel>,
+    onLikeButtonClick: (RandomMissionHistoryUiModel) -> Unit,
+    onHateButtonClick: (RandomMissionHistoryUiModel) -> Unit,
+    onReportButtonClick: (RandomMissionHistoryUiModel) -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     Surface(
@@ -78,8 +78,8 @@ private fun ApprovalScreen(
         color = background
     ) {
         if (
-            randomChallenges.loadState.refresh is LoadState.NotLoading &&
-            randomChallenges.itemCount == 0
+            randomMissionHistoryItems.loadState.refresh is LoadState.NotLoading &&
+            randomMissionHistoryItems.itemCount == 0
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -115,14 +115,14 @@ private fun ApprovalScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { Spacer(Modifier.statusBarsPadding()) }
-            items(randomChallenges.itemCount) {
-                randomChallenges[it]?.let { randomChallenge ->
+            items(randomMissionHistoryItems.itemCount) {
+                randomMissionHistoryItems[it]?.let { randomMissionHistory ->
                     ApprovalItem(
-                        challenge = randomChallenge,
-                        onProfileClick = { navigateToProfile(randomChallenge.customerId) },
-                        onLikeButtonClick = { onLikeButtonClick(randomChallenge) },
-                        onHateButtonClick = { onHateButtonClick(randomChallenge) },
-                        onReportButtonClick = { onReportButtonClick(randomChallenge) }
+                        randomMissionHistory = randomMissionHistory,
+                        onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
+                        onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
+                        onHateButtonClick = { onHateButtonClick(randomMissionHistory) },
+                        onReportButtonClick = { onReportButtonClick(randomMissionHistory) }
                     )
                 }
             }
@@ -133,42 +133,59 @@ private fun ApprovalScreen(
 @Preview
 @Composable
 private fun ApprovalScreenPreview() {
-    val randomChallenges = listOf(
-        RandomChallenge(
-            challengeId = "1",
-            createdAt = "2023-10-27T10:00:00Z",
-            customerId = "customer1",
-            hateCnt = 0,
-            likeCnt = 10,
-            missionTitle = "Mission 1",
-            receiptImageId = "receipt1",
-            status = "APPROVED",
-            userNickName = "User1",
-            userProfileImage = null,
-            viewCount = 100,
-            emoji = null
+    val randomMissionHistoryItems = listOf(
+        RandomMissionHistoryUiModel(
+            commercialAreaName = "강남",
+            createdAt = "2023.10.27 10:00",
+            currentUserEmojis = listOf("LIKE"),
+            hateCount = 0,
+            likeCount = 10,
+            missionHistoryId = 1,
+            submitImageId = "sample_image_1",
+            title = "강남역 10번 출구에서 사진 찍기",
+            user = RandomMissionHistoryUser(
+                userId = "user1",
+                nickname = "개발자",
+                profileImageId = null,
+                title = Title(
+                    name = "개발의 신",
+                    grade = TitleGrade.Legend,
+                    type = TitleType.Contribution
+                )
+            ),
+            viewCount = 100
         ),
-        RandomChallenge(
-            challengeId = "2",
-            createdAt = "2023-10-27T11:00:00Z",
-            customerId = "customer2",
-            hateCnt = 2,
-            likeCnt = 5,
-            missionTitle = "Mission 2",
-            receiptImageId = "receipt2",
-            status = "PENDING",
-            userNickName = "User2",
-            userProfileImage = "image_url",
-            viewCount = 50,
-            emoji = null
+        RandomMissionHistoryUiModel(
+            commercialAreaName = "홍대",
+            createdAt = "2023.10.28 12:00",
+            currentUserEmojis = emptyList(),
+            hateCount = 2,
+            likeCount = 5,
+            missionHistoryId = 2,
+            submitImageId = "sample_image_2",
+            title = "홍대에서 버스킹 구경하기",
+            user = RandomMissionHistoryUser(
+                userId = "user2",
+                nickname = "디자이너",
+                profileImageId = "profile_image_2",
+                title = Title(
+                    name = "디자인의 달인",
+                    grade = TitleGrade.Rare,
+                    type = TitleType.Commercial
+                )
+            ),
+            viewCount = 50
         )
     )
-    val lazyPagingItems = flowOf(PagingData.from(randomChallenges)).collectAsLazyPagingItems()
+    val lazyPagingItems =
+        flowOf(PagingData.from(randomMissionHistoryItems))
+            .collectAsLazyPagingItems()
 
     ApprovalScreen(
-        randomChallenges = lazyPagingItems,
+        randomMissionHistoryItems = lazyPagingItems,
         onLikeButtonClick = {},
         onHateButtonClick = {},
         onReportButtonClick = {},
-        navigateToProfile = {})
+        navigateToProfile = {}
+    )
 }
