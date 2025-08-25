@@ -13,8 +13,8 @@ import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResp
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -108,7 +108,7 @@ interface QuestApiService {
         @Body favoriteQuestRegistrationRequest: FavoriteQuestRegistrationRequest
     )
 
-    @DELETE("api/v1/quest/user/favorite")
+    @HTTP(method = "DELETE", path = "api/v1/quest/user/favorite", hasBody = true)
     suspend fun deleteFavoriteQuest(
         @Body favoriteQuestDeletionRequest: FavoriteQuestDeletionRequest
     )

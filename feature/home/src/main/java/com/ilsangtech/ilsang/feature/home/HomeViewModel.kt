@@ -13,6 +13,7 @@ import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
 import com.ilsangtech.ilsang.feature.home.model.MyInfoUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,6 +36,8 @@ class HomeViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val rankRepository: RankRepository
 ) : ViewModel() {
+    private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
+
     private val _selectedQuestId = MutableStateFlow<Int?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
 
@@ -91,7 +95,10 @@ class HomeViewModel @Inject constructor(
             )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedQuest = selectedQuestId.flatMapLatest { questId ->
+    val selectedQuest = combine(
+        selectedQuestId,
+        questDetailRefreshTrigger.onStart { emit(Unit) }
+    ) { questId, _ -> questId }.flatMapLatest { questId ->
         questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
@@ -110,8 +117,12 @@ class HomeViewModel @Inject constructor(
     fun updateQuestFavoriteStatus() {
         viewModelScope.launch {
             selectedQuest.value?.let { quest ->
-                if (quest.favoriteYn) questRepository.deleteFavoriteQuest(quest.id)
-                else questRepository.registerFavoriteQuest(quest.id)
+                val result = if (quest.favoriteYn) {
+                    questRepository.deleteFavoriteQuest(quest.id)
+                } else {
+                    questRepository.registerFavoriteQuest(quest.id)
+                }
+                result.onSuccess { questDetailRefreshTrigger.emit(Unit) }
             }
         }
     }
