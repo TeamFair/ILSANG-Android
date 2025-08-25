@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
-import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiUpdateRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.Body
@@ -39,9 +39,9 @@ interface MissionApiService {
     )
 
     @POST("api/v1/mission/user/history/{missionHistoryId}/emoji")
-    suspend fun updateMissionHistoryEmoji(
+    suspend fun registerMissionHistoryEmoji(
         @Path("missionHistoryId") missionHistoryId: Int,
-        @Body request: MissionHistoryEmojiUpdateRequest
+        @Body request: MissionHistoryEmojiRegistrationRequest
     )
 
     @PUT("api/v1/mission/user/history/{missionHistoryId}")
