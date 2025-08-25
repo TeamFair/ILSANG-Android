@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryRespon
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -40,5 +41,10 @@ interface MissionApiService {
     suspend fun updateMissionHistoryEmoji(
         @Path("missionHistoryId") missionHistoryId: Int,
         @Body request: MissionHistoryEmojiUpdateRequest
+    )
+
+    @PUT("api/v1/mission/user/history/{missionHistoryId}")
+    suspend fun reportMissionHistory(
+        @Path("missionHistoryId") missionHistoryId: Int
     )
 }
