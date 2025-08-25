@@ -27,8 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -39,7 +37,6 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.ui.title.TitleGradeIcon
 import com.ilsangtech.ilsang.designsystem.R
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -50,8 +47,8 @@ internal fun ApprovalItemUserInfo(
     modifier: Modifier = Modifier,
     userProfileImage: String?,
     userNickname: String,
-    titleGrade: TitleGrade,
-    titleName: String,
+    titleGrade: TitleGrade?,
+    titleName: String?,
     onProfileClick: () -> Unit,
     onShareButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
@@ -92,15 +89,17 @@ internal fun ApprovalItemUserInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                TitleGradeIcon(
-                    modifier = Modifier.size(20.dp),
-                    titleGrade = titleGrade
-                )
-                Text(
-                    text = titleName,
-                    style = badge01TextStyle,
-                    color = gray500
-                )
+                if (titleGrade != null && titleName != null) {
+                    TitleGradeIcon(
+                        modifier = Modifier.size(20.dp),
+                        titleGrade = titleGrade
+                    )
+                    Text(
+                        text = titleName,
+                        style = badge01TextStyle,
+                        color = gray500
+                    )
+                }
             }
         }
         Spacer(Modifier.weight(1f))
@@ -225,7 +224,8 @@ private fun ApprovalDropDownMenu(
 }
 
 private val approvalItemNicknameTextStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_semibold)),
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.SemiBold,
     fontSize = 14.sp,
     lineHeight = 12.sp,
     letterSpacing = 0.sp,

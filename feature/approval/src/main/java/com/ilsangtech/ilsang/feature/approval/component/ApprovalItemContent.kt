@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray200
@@ -72,10 +71,7 @@ internal fun ApprovalItemContent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = DateConverter.formatDate(
-                    input = createdAt,
-                    outputPattern = "yyyy.MM.dd hh:mm"
-                ),
+                text = createdAt,
                 style = TextStyle(
                     fontFamily = pretendardFontFamily,
                     fontWeight = FontWeight.Normal,
@@ -149,7 +145,7 @@ private fun ApprovalItemContentPreview() {
         modifier = Modifier.padding(20.dp),
         title = "우리 동네 사진 챌린지",
         challengeImage = "https://picsum.photos/200/300",
-        createdAt = "2023-10-26T10:15:30",
+        createdAt = "2025.04.12 12:00",
         areaName = "서울",
         likeCount = 100,
         hateCount = 10
