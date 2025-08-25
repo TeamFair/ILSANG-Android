@@ -30,4 +30,8 @@ class MissionDataSourceImpl(
             request = MissionHistoryEmojiRegistrationRequest(emojiType)
         )
     }
+
+    override suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String) {
+        return missionApiService.deleteMissionHistoryEmoji(missionHistoryId, emojiType)
+    }
 }

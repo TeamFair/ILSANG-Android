@@ -8,4 +8,6 @@ interface MissionDataSource {
     fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistoryNetworkModel>>
 
     suspend fun registerMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
+
+    suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 }
