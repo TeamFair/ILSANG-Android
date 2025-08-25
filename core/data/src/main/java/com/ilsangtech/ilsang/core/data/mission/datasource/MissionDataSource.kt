@@ -10,4 +10,6 @@ interface MissionDataSource {
     suspend fun registerMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 
     suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
+
+    suspend fun reportMissionHistory(missionHistoryId: Int)
 }
