@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
 import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
+import com.ilsangtech.ilsang.core.network.api.MissionApiService
 import com.ilsangtech.ilsang.core.network.api.QuestApiService
 import com.ilsangtech.ilsang.core.network.api.RankApiService
 import com.ilsangtech.ilsang.core.network.api.SeasonApiService
@@ -251,5 +252,11 @@ object NetworkModule {
     @Singleton
     fun provideSeasonApiService(retrofit: Retrofit): SeasonApiService {
         return retrofit.create(SeasonApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMissionApiService(retrofit: Retrofit): MissionApiService {
+        return retrofit.create(MissionApiService::class.java)
     }
 }
