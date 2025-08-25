@@ -68,7 +68,7 @@ private fun RankingDetailScreen(
     onBackButtonClick: () -> Unit,
     onSeasonFinished: () -> Unit
 ) {
-    val endDate = remember {
+    val endDate = remember(currentSeason) {
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             .parse(currentSeason.endDate)
     }
@@ -151,7 +151,8 @@ private fun RankingDetailScreenPreview() {
         areaName = "강남구",
         rank = 1,
         point = 1000,
-        images = listOf("image1", "image2", "image3")
+        images = listOf("image1", "image2", "image3"),
+        areaCode = ""
     )
     val myRankUiModel = UserRankUiModel(
         userId = "1",
