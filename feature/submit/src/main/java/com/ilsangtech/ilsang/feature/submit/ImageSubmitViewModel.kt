@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SubmitViewModel @Inject constructor(
+class ImageSubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val questRepository: QuestRepository,
@@ -36,13 +36,6 @@ class SubmitViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 _submitUiState.update { SubmitUiState.Loading }
-                challengeRepository.submitChallenge(
-                    questId = questId,
-                    imageBytes = FileManager.getBytesFromUri(
-                        context,
-                        FileManager.getUriForFile(capturedImageFile.value, context)
-                    )
-                )
                 //TODO 퀘스트 보상 단일 조회 호출
             }.onSuccess {
                 _submitUiState.update {

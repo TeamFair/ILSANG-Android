@@ -54,13 +54,13 @@ import java.io.File
 
 @Composable
 internal fun ImageSubmitScreen(
-    submitViewModel: SubmitViewModel = hiltViewModel(),
+    imageSubmitViewModel: ImageSubmitViewModel = hiltViewModel(),
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val submitUiState by submitViewModel.submitUiState.collectAsStateWithLifecycle()
+    val submitUiState by imageSubmitViewModel.submitUiState.collectAsStateWithLifecycle()
 
-    val tempFile by submitViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFile by imageSubmitViewModel.capturedImageFile.collectAsStateWithLifecycle()
     val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
     var lastModified by remember { mutableLongStateOf(tempFile.lastModified()) }
 
@@ -87,7 +87,7 @@ internal fun ImageSubmitScreen(
             SubmitSuccessDialog(
                 rewardList = rewardList,
                 onDismiss = {
-                    submitViewModel.completeSubmit()
+                    imageSubmitViewModel.completeSubmit()
                     onDismiss()
                 }
             )
@@ -96,7 +96,7 @@ internal fun ImageSubmitScreen(
         is SubmitUiState.Error -> {
             SubmitErrorDialog(
                 onDismissRequest = {
-                    submitViewModel.completeSubmit()
+                    imageSubmitViewModel.completeSubmit()
                     onDismiss()
                 }
             )
@@ -112,7 +112,7 @@ internal fun ImageSubmitScreen(
         onRetakeButtonClick = {
             imageCaptureLauncher.launch(tempFileUri)
         },
-        onSubmitButtonClick = submitViewModel::submitApproveImage
+        onSubmitButtonClick = imageSubmitViewModel::submitApproveImage
     )
 }
 
