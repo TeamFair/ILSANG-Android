@@ -132,7 +132,7 @@ private fun ApprovalScreen(
 
 @Preview
 @Composable
-fun ApprovalScreenPreview() {
+private fun ApprovalScreenPreview() {
     val randomMissionHistoryItems = listOf(
         RandomMissionHistoryUiModel(
             commercialAreaName = "강남",
