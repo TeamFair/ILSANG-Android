@@ -49,8 +49,8 @@ internal fun UserRankItem(
     modifier: Modifier = Modifier,
     imageId: String?,
     nickname: String,
-    titleName: String,
-    titleGrade: TitleGrade,
+    titleName: String?,
+    titleGrade: TitleGrade?,
     rank: Int,
     point: Int
 ) {
@@ -102,8 +102,8 @@ internal fun MyRankCard(
     modifier: Modifier = Modifier,
     imageId: String?,
     nickname: String,
-    titleName: String,
-    titleGrade: TitleGrade,
+    titleName: String?,
+    titleGrade: TitleGrade?,
     point: Int,
     rank: Int,
     requiredPoint: Int
@@ -188,8 +188,8 @@ private fun DefaultUserRankContent(
     modifier: Modifier = Modifier,
     imageId: String?,
     nickname: String,
-    titleName: String,
-    titleGrade: TitleGrade,
+    titleName: String?,
+    titleGrade: TitleGrade?,
     point: Int
 ) {
     Row(
@@ -221,15 +221,17 @@ private fun DefaultUserRankContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                TitleGradeIcon(
-                    modifier = Modifier.size(12.dp),
-                    titleGrade = titleGrade
-                )
-                Text(
-                    text = titleName,
-                    style = badge01TextStyle,
-                    color = gray400
-                )
+                if (titleGrade != null && titleName != null) {
+                    TitleGradeIcon(
+                        modifier = Modifier.size(12.dp),
+                        titleGrade = titleGrade
+                    )
+                    Text(
+                        text = titleName,
+                        style = badge01TextStyle,
+                        color = gray400
+                    )
+                }
             }
             Spacer(Modifier.height(12.dp))
             Text(
