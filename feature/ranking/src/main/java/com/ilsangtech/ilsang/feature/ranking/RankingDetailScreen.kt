@@ -109,7 +109,7 @@ private fun RankingDetailScreen(
                             point = myRankUiModel.point,
                             rank = myRankUiModel.rank,
                             requiredPoint = userRankList.find {
-                                it.rank == myRankUiModel.rank - 1
+                                it.rank == myRankUiModel.rank?.minus(1)
                             }?.point?.minus(myRankUiModel.point) ?: 0
                         )
                     }
