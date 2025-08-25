@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -27,4 +28,9 @@ interface MissionApiService {
         @Query("size") size: Int,
         @Query("sort") sort: List<String> = emptyList()
     ): RandomMissionHistoryResponse
+
+    @POST("api/v1/mission/user/history/{missionHistoryId}/view-count")
+    suspend fun updateMissionHistoryViewCount(
+        @Path("missionHistoryId") missionHistoryId: Int
+    )
 }
