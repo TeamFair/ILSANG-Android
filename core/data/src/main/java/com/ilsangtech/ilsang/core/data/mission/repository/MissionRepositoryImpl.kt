@@ -18,4 +18,40 @@ class MissionRepositoryImpl(
             pagingData.map(RandomMissionHistoryNetworkModel::toRandomMissionHistory)
         }
     }
+
+    override suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.registerMissionHistoryEmoji(
+                missionHistoryId = missionHistoryId,
+                emojiType = "LIKE"
+            )
+        }
+    }
+
+    override suspend fun unlikeMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.deleteMissionHistoryEmoji(
+                missionHistoryId = missionHistoryId,
+                emojiType = "LIKE"
+            )
+        }
+    }
+
+    override suspend fun hateMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.registerMissionHistoryEmoji(
+                missionHistoryId = missionHistoryId,
+                emojiType = "HATE"
+            )
+        }
+    }
+
+    override suspend fun unhateMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.deleteMissionHistoryEmoji(
+                missionHistoryId = missionHistoryId,
+                emojiType = "HATE"
+            )
+        }
+    }
 }

@@ -6,4 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface MissionRepository {
     fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistory>>
+
+    suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit>
+
+    suspend fun unlikeMissionHistory(missionHistoryId: Int): Result<Unit>
+
+    suspend fun hateMissionHistory(missionHistoryId: Int): Result<Unit>
+
+    suspend fun unhateMissionHistory(missionHistoryId: Int): Result<Unit>
+
 }
