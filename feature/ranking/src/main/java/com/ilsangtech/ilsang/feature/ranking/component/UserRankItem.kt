@@ -123,14 +123,16 @@ internal fun MyRankCard(
                     tint = Color.Unspecified,
                     contentDescription = null
                 )
-                Text(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    text = rank.toString(),
-                    style = heading02.copy(
-                        fontSize = 15.dp.toSp(),
-                        lineHeight = 18.dp.toSp()
+                rank?.let {
+                    Text(
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        text = rank.toString(),
+                        style = heading02.copy(
+                            fontSize = 15.dp.toSp(),
+                            lineHeight = 18.dp.toSp()
+                        )
                     )
-                )
+                }
             }
             DefaultUserRankContent(
                 imageId = imageId,
