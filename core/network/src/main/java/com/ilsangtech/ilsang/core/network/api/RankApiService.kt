@@ -4,9 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.rank.CommercialAreaRankNetworkMo
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
-import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
-import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -42,13 +40,4 @@ interface RankApiService {
     suspend fun getCommercialTopRankAreas(
         @Query("seasonId") seasonId: Int?
     ): List<CommercialAreaRankNetworkModel>
-
-    @GET("open/v1/rank/top-users")
-    suspend fun getTopRankUsers(): TopUsersResponse
-
-    @GET("customer/rank")
-    suspend fun getXpTypeRank(
-        @Query("xpType") xpType: String,
-        @Query("size") size: Int
-    ): XpTypeRankResponse
 }
