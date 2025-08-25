@@ -15,4 +15,5 @@ interface MissionRepository {
 
     suspend fun unhateMissionHistory(missionHistoryId: Int): Result<Unit>
 
+    suspend fun reportMissionHistory(missionHistoryId: Int): Result<Unit>
 }

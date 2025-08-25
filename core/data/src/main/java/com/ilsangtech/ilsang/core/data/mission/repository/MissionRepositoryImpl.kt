@@ -54,4 +54,10 @@ class MissionRepositoryImpl(
             )
         }
     }
+
+    override suspend fun reportMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.reportMissionHistory(missionHistoryId)
+        }
+    }
 }
