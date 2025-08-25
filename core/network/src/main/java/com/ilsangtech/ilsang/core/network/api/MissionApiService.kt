@@ -1,8 +1,10 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
+import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -32,5 +34,11 @@ interface MissionApiService {
     @POST("api/v1/mission/user/history/{missionHistoryId}/view-count")
     suspend fun updateMissionHistoryViewCount(
         @Path("missionHistoryId") missionHistoryId: Int
+    )
+
+    @POST("api/v1/mission/user/history/{missionHistoryId}/emoji")
+    suspend fun updateMissionHistoryEmoji(
+        @Path("missionHistoryId") missionHistoryId: Int,
+        @Body request: MissionHistoryEmojiUpdateRequest
     )
 }
