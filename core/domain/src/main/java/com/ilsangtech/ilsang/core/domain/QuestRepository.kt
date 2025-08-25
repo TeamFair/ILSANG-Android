@@ -44,7 +44,7 @@ interface QuestRepository {
 
     fun getQuestDetail(questId: Int): Flow<QuestDetail>
 
-    suspend fun registerFavoriteQuest(questId: Int)
+    suspend fun registerFavoriteQuest(questId: Int): Result<Unit>
 
-    suspend fun deleteFavoriteQuest(questId: Int)
+    suspend fun deleteFavoriteQuest(questId: Int): Result<Unit>
 }

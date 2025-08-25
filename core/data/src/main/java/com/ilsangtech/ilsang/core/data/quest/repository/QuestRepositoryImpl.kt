@@ -26,17 +26,12 @@ import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 
 class QuestRepositoryImpl(
     private val questDataSource: QuestDataSource,
 ) : QuestRepository {
-    private val questCache = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
-
     override fun getPopularQuests(commercialAreaCode: String): Flow<List<PopularQuest>> =
         flow {
             emit(
@@ -138,23 +133,17 @@ class QuestRepositoryImpl(
         emit(
             questDataSource.getQuestDetail(questId).toQuestDetail()
         )
-    }.combine(questCache) { quest, questCache ->
-        quest.copy(favoriteYn = questCache[quest.id] ?: quest.favoriteYn)
     }
 
-    override suspend fun registerFavoriteQuest(questId: Int) {
-        runCatching {
+    override suspend fun registerFavoriteQuest(questId: Int): Result<Unit> {
+        return runCatching {
             questDataSource.registerFavoriteQuest(questId)
-        }.onSuccess {
-            questCache.update { it + (questId to true) }
         }
     }
 
-    override suspend fun deleteFavoriteQuest(questId: Int) {
-        runCatching {
+    override suspend fun deleteFavoriteQuest(questId: Int): Result<Unit> {
+        return runCatching {
             questDataSource.deleteFavoriteQuest(questId)
-        }.onSuccess {
-            questCache.update { it + (questId to false) }
         }
     }
 }
