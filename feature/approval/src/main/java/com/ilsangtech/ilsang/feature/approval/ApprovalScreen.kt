@@ -14,7 +14,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.RandomChallenge
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
@@ -50,21 +47,18 @@ internal fun ApprovalScreen(
 ) {
     val randomMissionHistoryItems =
         approvalViewModel.randomMissionHistories.collectAsLazyPagingItems()
-    val isReportSuccess by approvalViewModel.isReportSuccess.collectAsStateWithLifecycle()
 
-    LaunchedEffect(isReportSuccess) {
-        if (isReportSuccess == true) {
+    LaunchedEffect(Unit) {
+        approvalViewModel.missionHistoryRefreshTrigger.collect {
             randomMissionHistoryItems.refresh()
         }
-        isReportSuccess?.let {
-            approvalViewModel.resetReportStatus()
-        }
     }
+
     ApprovalScreen(
         randomMissionHistoryItems = randomMissionHistoryItems,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onHateButtonClick = approvalViewModel::hateChallenge,
-        onReportButtonClick = approvalViewModel::reportChallenge,
+        onReportButtonClick = approvalViewModel::reportMissionHistory,
         navigateToProfile = navigateToProfile
     )
 }
@@ -72,9 +66,9 @@ internal fun ApprovalScreen(
 @Composable
 private fun ApprovalScreen(
     randomMissionHistoryItems: LazyPagingItems<RandomMissionHistoryUiModel>,
-    onLikeButtonClick: (RandomChallenge) -> Unit,
-    onHateButtonClick: (RandomChallenge) -> Unit,
-    onReportButtonClick: (RandomChallenge) -> Unit,
+    onLikeButtonClick: (RandomMissionHistoryUiModel) -> Unit,
+    onHateButtonClick: (RandomMissionHistoryUiModel) -> Unit,
+    onReportButtonClick: (RandomMissionHistoryUiModel) -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     Surface(
@@ -126,9 +120,9 @@ private fun ApprovalScreen(
                     ApprovalItem(
                         randomMissionHistory = randomMissionHistory,
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
-                        onLikeButtonClick = {},
-                        onHateButtonClick = {},
-                        onReportButtonClick = {}
+                        onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
+                        onHateButtonClick = { onHateButtonClick(randomMissionHistory) },
+                        onReportButtonClick = { onReportButtonClick(randomMissionHistory) }
                     )
                 }
             }
