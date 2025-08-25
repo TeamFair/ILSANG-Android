@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
@@ -35,17 +34,15 @@ import com.ilsangtech.ilsang.feature.submit.component.OxQuizGuideCard
 import com.ilsangtech.ilsang.feature.submit.component.OxQuizSubmitCard
 import com.ilsangtech.ilsang.feature.submit.component.QuizQuestInfoCard
 import com.ilsangtech.ilsang.feature.submit.component.QuizScreenHeader
-import com.ilsangtech.ilsang.feature.submit.component.WordsQuizGuideCard
-import com.ilsangtech.ilsang.feature.submit.component.WordsQuizSubmitCard
 
 @Composable
-private fun QuizScreen(
+private fun OxQuizSubmitScreen(
     submitQuestUiState: SubmitQuestUiState,
-    quizUiState: QuizUiState,
-    onBackButtonClick: () -> Unit,
+    quizUiState: QuizUiState.OxQuizUiState,
     onCorrectButtonClick: () -> Unit,
     onIncorrectButtonClick: () -> Unit,
-    onSubmitButtonClick: () -> Unit
+    onSubmitButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -65,26 +62,15 @@ private fun QuizScreen(
                     )
                 }
                 item { Spacer(Modifier.height(16.dp)) }
-                item {
-                    if (quizUiState is QuizUiState.WordsQuizUiState) {
-                        WordsQuizGuideCard()
-                    } else {
-                        OxQuizGuideCard()
-                    }
-                }
+                item { OxQuizGuideCard() }
                 item { Spacer(Modifier.height(16.dp)) }
                 item {
-                    if (quizUiState is QuizUiState.OxQuizUiState) {
-                        OxQuizSubmitCard(
-                            oxQuizUiState = quizUiState,
-                            onCorrectButtonClick = onCorrectButtonClick,
-                            onIncorrectButtonClick = onIncorrectButtonClick
-                        )
-                    } else {
-                        WordsQuizSubmitCard(
-                            wordsQuizUiState = quizUiState as QuizUiState.WordsQuizUiState
-                        )
-                    }
+                    OxQuizSubmitCard(
+                        oxQuizUiState = quizUiState,
+                        onCorrectButtonClick = onCorrectButtonClick,
+                        onIncorrectButtonClick = onIncorrectButtonClick
+                    )
+
                 }
                 item { Spacer(Modifier.height(40.dp)) }
                 item {
@@ -100,10 +86,7 @@ private fun QuizScreen(
                             disabledContentColor = Color.White
                         ),
                         shape = RoundedCornerShape(12.dp),
-                        enabled = (quizUiState is QuizUiState.OxQuizUiState &&
-                                quizUiState.submitState !is OxQuizSubmitUiState.NotSelected) ||
-                                (quizUiState is QuizUiState.WordsQuizUiState &&
-                                        quizUiState.answer.text.isNotEmpty()),
+                        enabled = quizUiState.submitState !is OxQuizSubmitUiState.NotSelected,
                         onClick = onSubmitButtonClick
                     ) {
                         Text(
@@ -141,7 +124,8 @@ private fun OxQuizScreenPreview() {
             )
         )
     }
-    QuizScreen(
+
+    OxQuizSubmitScreen(
         submitQuestUiState = submitQuestUiState,
         quizUiState = quizUiState,
         onBackButtonClick = {},
@@ -155,33 +139,6 @@ private fun OxQuizScreenPreview() {
                 submitState = OxQuizSubmitUiState.Incorrect
             )
         },
-        onSubmitButtonClick = {}
-    )
-}
-
-@Preview
-@Composable
-private fun WordsQuizScreenPreview() {
-    val answerTextFieldState = rememberTextFieldState()
-    val submitQuestUiState = SubmitQuestUiState(
-        questImageId = "",
-        title = "정자동 최고의 돈까스 가게 가기",
-        locationName = "야미돈까스 정자동점",
-        questType = NewQuestType.Event,
-        point = 10
-    )
-
-    val quizUiState = QuizUiState.WordsQuizUiState(
-        question = "야미돈까스 정자동점의 베스트셀러 메뉴는?",
-        hint = "등심",
-        answer = answerTextFieldState
-    )
-    QuizScreen(
-        submitQuestUiState = submitQuestUiState,
-        quizUiState = quizUiState,
-        onBackButtonClick = {},
-        onCorrectButtonClick = {},
-        onIncorrectButtonClick = {},
         onSubmitButtonClick = {}
     )
 }
