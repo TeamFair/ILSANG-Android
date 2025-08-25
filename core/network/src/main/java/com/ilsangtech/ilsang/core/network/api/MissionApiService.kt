@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.network.api
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.Body
@@ -41,6 +42,9 @@ interface MissionApiService {
         @Query("size") size: Int,
         @Query("sort") sort: List<String> = emptyList()
     ): ExampleMissionHistoryResponse
+
+    @POST("api/v1/challenge/mission")
+    suspend fun submitMission(@Body request: MissionSubmitRequest)
 
     @POST("api/v1/mission/user/history/{missionHistoryId}/view-count")
     suspend fun updateMissionHistoryViewCount(
