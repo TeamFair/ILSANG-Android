@@ -1,0 +1,22 @@
+package com.ilsangtech.ilsang.core.data.mission.datasource
+
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.data.mission.RandomMissionHistoryPagingSource
+import com.ilsangtech.ilsang.core.network.api.MissionApiService
+import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import kotlinx.coroutines.flow.Flow
+
+class MissionDataSourceImpl(
+    private val missionApiService: MissionApiService
+) : MissionDataSource {
+    override fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistoryNetworkModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                RandomMissionHistoryPagingSource(missionApiService)
+            }
+        ).flow
+    }
+}

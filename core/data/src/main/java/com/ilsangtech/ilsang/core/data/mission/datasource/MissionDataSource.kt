@@ -1,0 +1,9 @@
+package com.ilsangtech.ilsang.core.data.mission.datasource
+
+import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import kotlinx.coroutines.flow.Flow
+
+interface MissionDataSource {
+    fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistoryNetworkModel>>
+}
