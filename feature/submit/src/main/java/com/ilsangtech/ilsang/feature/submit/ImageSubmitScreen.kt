@@ -53,7 +53,7 @@ import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
 import java.io.File
 
 @Composable
-fun SubmitScreen(
+internal fun ImageSubmitScreen(
     submitViewModel: SubmitViewModel = hiltViewModel(),
     onDismiss: () -> Unit
 ) {
@@ -105,7 +105,7 @@ fun SubmitScreen(
         else -> {}
     }
 
-    SubmitScreen(
+    ImageSubmitScreen(
         imageFile = tempFile,
         lastModifyTime = lastModified,
         onBackButtonClick = onDismiss,
@@ -117,7 +117,7 @@ fun SubmitScreen(
 }
 
 @Composable
-private fun SubmitScreen(
+private fun ImageSubmitScreen(
     imageFile: File,
     lastModifyTime: Long,
     onBackButtonClick: () -> Unit,
@@ -130,7 +130,7 @@ private fun SubmitScreen(
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        SubmitScreenHeader(onBackButtonClick)
+        ImageSubmitScreenHeader(onBackButtonClick)
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -146,7 +146,7 @@ private fun SubmitScreen(
                     .padding(bottom = 58.dp)
             )
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                SubmitScreenFooter(
+                ImageSubmitScreenFooter(
                     onRetakeButtonClick = onRetakeButtonClick,
                     onSubmitButtonClick = onSubmitButtonClick
                 )
@@ -156,7 +156,7 @@ private fun SubmitScreen(
 }
 
 @Composable
-private fun SubmitScreenHeader(
+private fun ImageSubmitScreenHeader(
     onBackButtonClick: () -> Unit
 ) {
     Box(
@@ -188,7 +188,7 @@ private fun SubmitScreenHeader(
 }
 
 @Composable
-private fun SubmitScreenFooter(
+private fun ImageSubmitScreenFooter(
     onRetakeButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit
 ) {
@@ -244,6 +244,14 @@ private fun SubmitScreenFooter(
 
 @Preview
 @Composable
-private fun SubmitScreenPreview() {
-    SubmitScreen(File.createTempFile("", ""), 0L, {}, {}, {})
+private fun ImageSubmitScreenPreview() {
+    ImageSubmitScreen(
+        File.createTempFile(
+            "", ""
+        ),
+        0L,
+        {},
+        {},
+        {}
+    )
 }
