@@ -77,4 +77,27 @@ class MissionRepositoryImpl(
             missionDataSource.reportMissionHistory(missionHistoryId)
         }
     }
+
+    override suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit> {
+        return runCatching {
+            missionDataSource.submitMission(
+                missionId = missionId,
+                imageId = imageId
+            )
+        }
+    }
+
+    override suspend fun submitQuizMission(
+        missionId: Int,
+        quizId: Int,
+        answer: String
+    ): Result<Unit> {
+        return runCatching {
+            missionDataSource.submitMission(
+                missionId = missionId,
+                quizId = quizId,
+                answer = answer
+            )
+        }
+    }
 }
