@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 data class UserRankNetworkModel(
     val userId: String,
     val nickName: String,
-    val point: Int,
+    val point: Int?,
     val profileImageId: String?,
-    val rank: Int,
+    val rank: Int?,
     val title: TitleNetworkModel?
 )
