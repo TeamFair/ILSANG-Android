@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RandomMissionHistoryUserNetworkModel(
     val nickname: String,
-    val profileImageId: String,
-    val title: TitleNetworkModel,
+    val profileImageId: String?,
+    val title: TitleNetworkModel?,
     val userId: String
 )
