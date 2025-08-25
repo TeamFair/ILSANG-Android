@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiUpdat
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -45,6 +46,11 @@ interface MissionApiService {
 
     @PUT("api/v1/mission/user/history/{missionHistoryId}")
     suspend fun reportMissionHistory(
+        @Path("missionHistoryId") missionHistoryId: Int
+    )
+
+    @DELETE("api/v1/mission/user/history/{missionHistoryId}")
+    suspend fun deleteMissionHistory(
         @Path("missionHistoryId") missionHistoryId: Int
     )
 }
