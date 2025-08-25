@@ -5,9 +5,7 @@ import com.ilsangtech.ilsang.core.network.model.rank.CommercialAreaRankNetworkMo
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
-import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
-import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankResponse
 import javax.inject.Inject
 
 class RankDataSourceImpl @Inject constructor(
@@ -47,16 +45,5 @@ class RankDataSourceImpl @Inject constructor(
         seasonId: Int?
     ): List<CommercialAreaRankNetworkModel> {
         return rankApiService.getCommercialTopRankAreas(seasonId)
-    }
-
-    override suspend fun getTopRankUsers(): TopUsersResponse {
-        return rankApiService.getTopRankUsers()
-    }
-
-    override suspend fun getXpTypeRank(
-        xpType: String,
-        size: Int
-    ): XpTypeRankResponse {
-        return rankApiService.getXpTypeRank(xpType, size)
     }
 }
