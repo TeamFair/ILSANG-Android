@@ -105,9 +105,9 @@ private fun RankingTabScreen(
 ) {
     var selectedReward by remember { mutableStateOf(RewardUiModel.Metro) }
     var expanded by remember { mutableStateOf(false) }
-    val endDate = remember {
+    val endDate = remember(currentSeason) {
         currentSeason?.let {
-            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
                 .parse(currentSeason.endDate)
         }
     }

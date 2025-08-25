@@ -8,9 +8,9 @@ data class UserRankUiModel(
     val profileImageId: String?,
     val nickname: String,
     val point: Int,
-    val rank: Int,
-    val titleName: String,
-    val titleGrade: TitleGrade
+    val rank: Int?,
+    val titleName: String?,
+    val titleGrade: TitleGrade?
 )
 
 internal fun UserRank.toUserRankUiModel(): UserRankUiModel {
@@ -18,9 +18,9 @@ internal fun UserRank.toUserRankUiModel(): UserRankUiModel {
         userId = userId,
         profileImageId = profileImageId,
         nickname = nickName,
-        point = point,
+        point = point ?: 0,
         rank = rank,
-        titleName = title.name,
-        titleGrade = title.grade
+        titleName = title?.name,
+        titleGrade = title?.grade
     )
 }

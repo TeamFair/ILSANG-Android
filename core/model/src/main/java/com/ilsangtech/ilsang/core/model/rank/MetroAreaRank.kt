@@ -4,5 +4,6 @@ data class MetroAreaRank(
     val metroAreaCode: String,
     val areaName: String,
     val point: Int,
-    val images: List<String>
+    val images: List<String>,
+    val rank: Int
 )

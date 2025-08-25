@@ -4,9 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.rank.CommercialAreaRankNetworkMo
 import com.ilsangtech.ilsang.core.network.model.rank.CommercialTopRankUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.MetroAreaRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.rank.MetroTopRankUsersResponse
-import com.ilsangtech.ilsang.core.network.model.rank.TopUsersResponse
 import com.ilsangtech.ilsang.core.network.model.rank.UserRankNetworkModel
-import com.ilsangtech.ilsang.core.network.model.rank.XpTypeRankResponse
 
 interface RankDataSource {
     suspend fun getTotalTopRankUsers(commercialAreaCode: String): List<UserRankNetworkModel>
@@ -28,10 +26,4 @@ interface RankDataSource {
     suspend fun getMetroTopRankAreas(seasonId: Int?): List<MetroAreaRankNetworkModel>
 
     suspend fun getCommercialTopRankAreas(seasonId: Int?): List<CommercialAreaRankNetworkModel>
-
-    suspend fun getTopRankUsers(): TopUsersResponse
-    suspend fun getXpTypeRank(
-        xpType: String,
-        size: Int
-    ): XpTypeRankResponse
 }
