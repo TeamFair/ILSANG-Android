@@ -53,4 +53,9 @@ interface MissionApiService {
     suspend fun deleteMissionHistory(
         @Path("missionHistoryId") missionHistoryId: Int
     )
+
+    @DELETE("api/v1/mission/user/history/{missionHistoryId}/emoji")
+    suspend fun deleteMissionHistoryEmoji(
+        @Path("missionHistoryId") missionHistoryId: Int
+    )
 }
