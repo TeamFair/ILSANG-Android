@@ -15,6 +15,18 @@ data class ImageSubmitRoute(
     val missionId: Int
 )
 
+@Serializable
+data class OxQuizSubmitRoute(
+    val questId: Int,
+    val missionId: Int
+)
+
+@Serializable
+data class WordsQuizSubmitRoute(
+    val questId: Int,
+    val missionId: Int
+)
+
 fun NavGraphBuilder.submitNavigation(popBackStack: () -> Unit) {
     navigation<SubmitBaseRoute>(startDestination = ImageSubmitRoute::class) {
         composable<ImageSubmitRoute> {
