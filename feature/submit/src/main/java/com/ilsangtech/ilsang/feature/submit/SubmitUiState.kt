@@ -6,5 +6,6 @@ sealed interface SubmitUiState {
     data object NotSubmitted : SubmitUiState
     data object Loading : SubmitUiState
     data class Success(val rewardPoints: List<RewardPoint>) : SubmitUiState
+    data object WrongAnswer : SubmitUiState
     data object Error : SubmitUiState
 }
