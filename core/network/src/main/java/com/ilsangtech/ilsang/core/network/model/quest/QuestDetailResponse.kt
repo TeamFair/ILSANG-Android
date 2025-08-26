@@ -12,7 +12,7 @@ data class QuestDetailResponse(
     val mainImageId: String,
     val missions: List<MissionNetworkModel>,
     val questType: String,
-    val repeatFrequency: String,
+    val repeatFrequency: String?,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
     val userRank: Int?,
