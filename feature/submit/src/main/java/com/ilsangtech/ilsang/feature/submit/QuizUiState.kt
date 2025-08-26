@@ -2,19 +2,23 @@ package com.ilsangtech.ilsang.feature.submit
 
 import androidx.compose.foundation.text.input.TextFieldState
 
-sealed interface QuizUiState {
-    data class OxQuizUiState(
-        val quizId: Int?,
-        val question: String,
-        val submitState: OxQuizSubmitUiState
-    ) : QuizUiState
-
-    data class WordsQuizUiState(
+sealed interface WordsQuizUiState {
+    data object Loading : WordsQuizUiState
+    data class Success(
         val quizId: Int?,
         val question: String,
         val hint: String,
         val answer: TextFieldState
-    ) : QuizUiState
+    ) : WordsQuizUiState
+}
+
+sealed interface OxQuizUiState {
+    data object Loading : OxQuizUiState
+    data class Success(
+        val quizId: Int,
+        val question: String,
+        val submitQuestUiState: SubmitQuestUiState
+    ) : OxQuizUiState
 }
 
 sealed interface OxQuizSubmitUiState {
