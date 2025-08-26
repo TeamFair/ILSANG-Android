@@ -139,6 +139,7 @@ private fun OxQuizSubmitCardPreview() {
     var oxQuizUiState by remember {
         mutableStateOf(
             QuizUiState.OxQuizUiState(
+                quizId = 0,
                 question = "야미돈까스에서 파는 메뉴 중 ‘치킨까스' 는 케첩소스와 함께 제공된다.",
                 submitState = OxQuizSubmitUiState.NotSelected
             )

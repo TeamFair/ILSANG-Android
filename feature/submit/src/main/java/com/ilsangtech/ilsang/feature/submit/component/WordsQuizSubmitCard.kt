@@ -135,6 +135,7 @@ internal fun WordsQuizSubmitCard(
 private fun WordsQuizSubmitCardPreview() {
     WordsQuizSubmitCard(
         wordsQuizUiState = QuizUiState.WordsQuizUiState(
+            quizId = 0,
             question = "야미돈까스 정자동점의 베스트셀러 메뉴는?",
             hint = "등심",
             answer = TextFieldState(initialText = "등심 돈까스")
