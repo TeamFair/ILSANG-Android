@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
-import androidx.core.graphics.scale
 
 object FileManager {
     fun createCacheFile(context: Context): File {
@@ -25,6 +24,35 @@ object FileManager {
             "${context.packageName}.fileprovider",
             tempFile
         )
+    }
+
+    suspend fun getBytesFromFile(context: Context, file: File): ByteArray {
+        return withContext(Dispatchers.IO) {
+            val uri =
+                FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            var bitmap = rotateBitmapIfRequired(context, uri)
+
+            val maxSizeBytes = 1 * 1024 * 100 // 100KB
+            var quality = 95
+            val minQuality = 60
+            val outputStream = ByteArrayOutputStream()
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            while (outputStream.toByteArray().size > maxSizeBytes && quality > minQuality) {
+                quality -= 5
+                outputStream.reset()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            }
+
+            while (outputStream.toByteArray().size > maxSizeBytes) {
+                bitmap = bitmap.scale((bitmap.width * 0.9f).toInt(), (bitmap.height * 0.9f).toInt())
+                quality = 90 // 다시 적절한 품질로 리셋
+                outputStream.reset()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            }
+
+            outputStream.toByteArray()
+        }
     }
 
     suspend fun getBytesFromUri(context: Context, uri: Uri): ByteArray {
