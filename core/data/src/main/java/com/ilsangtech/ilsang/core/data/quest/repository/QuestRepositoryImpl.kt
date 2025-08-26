@@ -76,6 +76,7 @@ class QuestRepositoryImpl(
     override fun getTypedQuests(
         commercialAreaCode: String,
         questType: NewQuestType?,
+        orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
         completeYn: Boolean
@@ -95,6 +96,7 @@ class QuestRepositoryImpl(
             commercialAreaCode = commercialAreaCode,
             type = type,
             repeatFrequency = repeatFrequency,
+            orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
             favoriteYn = favoriteYn,
             completeYn = completeYn

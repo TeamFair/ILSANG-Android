@@ -53,6 +53,7 @@ interface QuestDataSource {
         commercialAreaCode: String,
         type: String? = null,
         repeatFrequency: String? = null,
+        orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
         completeYn: Boolean = false

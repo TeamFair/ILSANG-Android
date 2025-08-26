@@ -10,6 +10,7 @@ class TypedQuestPagingSource(
     private val commercialAreaCode: String,
     private val type: String?,
     private val repeatFrequency: String?,
+    private val orderExpiredDesc: Boolean?,
     private val orderRewardDesc: Boolean?,
     private val favoriteYn: Boolean?,
     private val completeYn: Boolean
@@ -21,6 +22,7 @@ class TypedQuestPagingSource(
                 commercialAreaCode = commercialAreaCode,
                 type = type,
                 repeatFrequency = repeatFrequency,
+                orderExpiredDesc = orderExpiredDesc,
                 orderRewardDesc = orderRewardDesc,
                 favoriteYn = favoriteYn,
                 completeYn = completeYn,

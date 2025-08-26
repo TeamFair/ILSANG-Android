@@ -103,6 +103,7 @@ class QuestDataSourceImpl @Inject constructor(
         commercialAreaCode: String,
         type: String?,
         repeatFrequency: String?,
+        orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
         completeYn: Boolean
@@ -115,6 +116,7 @@ class QuestDataSourceImpl @Inject constructor(
                     commercialAreaCode = commercialAreaCode,
                     type = type,
                     repeatFrequency = repeatFrequency,
+                    orderExpiredDesc = orderExpiredDesc,
                     orderRewardDesc = orderRewardDesc,
                     favoriteYn = favoriteYn,
                     completeYn = completeYn
