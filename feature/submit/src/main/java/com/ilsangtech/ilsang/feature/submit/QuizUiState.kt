@@ -4,11 +4,13 @@ import androidx.compose.foundation.text.input.TextFieldState
 
 sealed interface QuizUiState {
     data class OxQuizUiState(
+        val quizId: Int?,
         val question: String,
         val submitState: OxQuizSubmitUiState
     ) : QuizUiState
 
     data class WordsQuizUiState(
+        val quizId: Int?,
         val question: String,
         val hint: String,
         val answer: TextFieldState
