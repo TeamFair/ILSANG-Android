@@ -7,10 +7,6 @@ import javax.inject.Inject
 class ImageRepositoryImpl @Inject constructor(
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
-    override suspend fun getImageUrl(imageId: String): String {
-        return imageDataSource.getImage(imageId).networkImage.location
-    }
-
     override suspend fun uploadImage(
         type: String,
         imageBytes: ByteArray
