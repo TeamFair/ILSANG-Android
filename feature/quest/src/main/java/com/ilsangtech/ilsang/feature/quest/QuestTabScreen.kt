@@ -131,7 +131,10 @@ private fun QuestTabScreen(
                 onMissionImageClick(selectedQuest.missions.firstOrNull()?.id)
             },
             onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
-            onApproveButtonClick = { onApproveButtonClick(selectedQuest.id) }
+            onApproveButtonClick = {
+                val missionId = selectedQuest.missions.firstOrNull()?.id
+                missionId?.let { onApproveButtonClick(it) }
+            }
         )
     }
 

@@ -53,7 +53,7 @@ import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
-import com.ilsangtech.ilsang.feature.submit.navigation.SubmitRoute
+import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
 import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
@@ -107,8 +107,8 @@ fun IlsangNavHost(
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },
-                navigateToSubmit = { questId ->
-                    //todo 제출 화면으로 이동 구현 필요
+                navigateToSubmit = { missionId ->
+                    navController.navigate(ImageSubmitRoute(missionId))
                 },
                 onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
@@ -123,8 +123,8 @@ fun IlsangNavHost(
             )
 
             questNavigation(
-                onNavigateToSubmit = { questId ->
-                    navController.navigate(SubmitRoute("questId"))
+                onNavigateToSubmit = { missionId ->
+                    navController.navigate(ImageSubmitRoute(missionId))
                 },
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
