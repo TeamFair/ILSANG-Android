@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,9 @@ class ImageSubmitViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageRepository: ImageRepository,
     private val missionRepository: MissionRepository,
+    private val questRepository: QuestRepository
 ) : ViewModel() {
+    private val questId = savedStateHandle.toRoute<ImageSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
     val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
@@ -42,7 +45,9 @@ class ImageSubmitViewModel @Inject constructor(
                     missionId = missionId,
                     imageId = imageId
                 ).onSuccess {
-                    _submitUiState.update { SubmitUiState.Success(emptyList()) }
+                    questRepository.getQuestDetail(questId).collect { quest ->
+                        _submitUiState.update { SubmitUiState.Success(quest.rewards) }
+                    }
                 }.onFailure {
                     _submitUiState.update { SubmitUiState.Error }
                 }
