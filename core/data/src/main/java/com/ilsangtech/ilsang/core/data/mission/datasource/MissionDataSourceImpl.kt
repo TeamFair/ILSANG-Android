@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.api.MissionApiService
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
 import kotlinx.coroutines.flow.Flow
@@ -67,8 +68,8 @@ class MissionDataSourceImpl(
         imageId: String?,
         quizId: Int?,
         answer: String?
-    ) {
-        missionApiService.submitMission(
+    ): MissionSubmitResponse {
+        return missionApiService.submitMission(
             request = MissionSubmitRequest(
                 missionId = missionId,
                 imageId = imageId,

@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.mission.datasource
 
 import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
@@ -24,5 +25,5 @@ interface MissionDataSource {
         imageId: String? = null,
         quizId: Int? = null,
         answer: String? = null
-    )
+    ): MissionSubmitResponse
 }
