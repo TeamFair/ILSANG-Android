@@ -25,5 +25,5 @@ interface MissionRepository {
 
     suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit>
 
-    suspend fun submitQuizMission(missionId: Int, quizId: Int, answer: String): Result<Unit>
+    suspend fun submitQuizMission(missionId: Int, quizId: Int, answer: String): Result<Boolean>
 }

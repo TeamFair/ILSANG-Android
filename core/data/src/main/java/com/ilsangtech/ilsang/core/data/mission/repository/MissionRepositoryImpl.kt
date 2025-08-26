@@ -91,13 +91,14 @@ class MissionRepositoryImpl(
         missionId: Int,
         quizId: Int,
         answer: String
-    ): Result<Unit> {
+    ): Result<Boolean> {
         return runCatching {
-            missionDataSource.submitMission(
+            val response = missionDataSource.submitMission(
                 missionId = missionId,
                 quizId = quizId,
                 answer = answer
             )
+            response.resultCode == "S1000"
         }
     }
 }
