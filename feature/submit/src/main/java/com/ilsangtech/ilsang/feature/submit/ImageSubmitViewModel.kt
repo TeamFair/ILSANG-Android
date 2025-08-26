@@ -6,8 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.ilsangtech.ilsang.core.domain.ChallengeRepository
-import com.ilsangtech.ilsang.core.domain.QuestRepository
+import com.ilsangtech.ilsang.core.domain.ImageRepository
+import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +22,8 @@ import javax.inject.Inject
 class ImageSubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
-    private val questRepository: QuestRepository,
-    private val challengeRepository: ChallengeRepository
+    private val imageRepository: ImageRepository,
+    private val missionRepository: MissionRepository,
 ) : ViewModel() {
     private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
@@ -34,15 +34,17 @@ class ImageSubmitViewModel @Inject constructor(
 
     fun submitApproveImage() {
         viewModelScope.launch {
-            runCatching {
-                _submitUiState.update { SubmitUiState.Loading }
-                //TODO 퀘스트 보상 단일 조회 호출
-            }.onSuccess {
-                _submitUiState.update {
-                    SubmitUiState.Success(
-                        //TODO 실제 보상 리스트
-                        emptyList()
-                    )
+            _submitUiState.update { SubmitUiState.Loading }
+            imageRepository.uploadMissionImage(
+                imageBytes = FileManager.getBytesFromFile(context, capturedImageFile.value),
+            ).onSuccess { imageId ->
+                missionRepository.submitImageMission(
+                    missionId = missionId,
+                    imageId = imageId
+                ).onSuccess {
+                    _submitUiState.update { SubmitUiState.Success(emptyList()) }
+                }.onFailure {
+                    _submitUiState.update { SubmitUiState.Error }
                 }
             }.onFailure {
                 _submitUiState.update { SubmitUiState.Error }
