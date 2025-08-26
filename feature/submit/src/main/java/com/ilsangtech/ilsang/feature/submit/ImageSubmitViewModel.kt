@@ -9,7 +9,7 @@ import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.util.FileManager
-import com.ilsangtech.ilsang.feature.submit.navigation.SubmitRoute
+import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,7 @@ class ImageSubmitViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    private val questId = savedStateHandle.toRoute<SubmitRoute>().questId
+    private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
     val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
 
