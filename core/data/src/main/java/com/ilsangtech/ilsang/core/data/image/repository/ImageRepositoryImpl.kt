@@ -17,6 +17,15 @@ class ImageRepositoryImpl @Inject constructor(
         ).id
     }
 
+    override suspend fun uploadMissionImage(imageBytes: ByteArray): Result<String> {
+        return runCatching {
+            imageDataSource.uploadImage(
+                type = "RECEIPT",
+                imageBytes = imageBytes
+            ).id
+        }
+    }
+
     override suspend fun deleteImage(id: String): Result<Unit> {
         return try {
             val result = imageDataSource.deleteImage(id)
