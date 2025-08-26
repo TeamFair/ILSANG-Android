@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int) -> Unit,
+    navigateToSubmit: (Int, Int) -> Unit,
     navigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {
@@ -92,11 +92,11 @@ fun QuestTabScreen(
                 }
             }
         },
-        onApproveButtonClick = { questId ->
+        onApproveButtonClick = { questId, missionId ->
             coroutineScope.launch {
                 bottomSheetState.hide()
                 questTabViewModel.unselectQuest()
-                navigateToSubmit(questId)
+                navigateToSubmit(questId, missionId)
             }
         }
     )
@@ -117,7 +117,7 @@ private fun QuestTabScreen(
     onSelectSortType: (SortTypeUiModel) -> Unit,
     onQuestClick: (Int) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
-    onApproveButtonClick: (Int) -> Unit,
+    onApproveButtonClick: (Int, Int) -> Unit,
     onMyZoneClick: () -> Unit,
     onMissionImageClick: (Int?) -> Unit,
     onDismissRequest: () -> Unit
@@ -132,8 +132,11 @@ private fun QuestTabScreen(
             },
             onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
             onApproveButtonClick = {
+                val questId = selectedQuest.id
                 val missionId = selectedQuest.missions.firstOrNull()?.id
-                missionId?.let { onApproveButtonClick(it) }
+                missionId?.let { missionId ->
+                    onApproveButtonClick(questId, missionId)
+                }
             }
         )
     }
@@ -234,7 +237,7 @@ private fun QuestTabScreenPreview() {
         onSelectSortType = {},
         onQuestClick = {},
         onFavoriteClick = { _, _ -> },
-        onApproveButtonClick = {},
+        onApproveButtonClick = { _, _ -> },
         onMyZoneClick = {},
         onMissionImageClick = {},
         onDismissRequest = {}

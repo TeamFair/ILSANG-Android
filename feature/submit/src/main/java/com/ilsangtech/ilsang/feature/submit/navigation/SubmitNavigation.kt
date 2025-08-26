@@ -10,7 +10,10 @@ import kotlinx.serialization.Serializable
 data object SubmitBaseRoute
 
 @Serializable
-data class ImageSubmitRoute(val missionId: Int)
+data class ImageSubmitRoute(
+    val questId: Int,
+    val missionId: Int
+)
 
 fun NavGraphBuilder.submitNavigation(popBackStack: () -> Unit) {
     navigation<SubmitBaseRoute>(startDestination = ImageSubmitRoute::class) {

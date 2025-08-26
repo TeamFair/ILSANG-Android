@@ -107,8 +107,8 @@ fun IlsangNavHost(
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },
-                navigateToSubmit = { missionId ->
-                    navController.navigate(ImageSubmitRoute(missionId))
+                navigateToSubmit = { questId, missionId ->
+                    navController.navigate(ImageSubmitRoute(questId, missionId))
                 },
                 onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
@@ -123,8 +123,8 @@ fun IlsangNavHost(
             )
 
             questNavigation(
-                onNavigateToSubmit = { missionId ->
-                    navController.navigate(ImageSubmitRoute(missionId))
+                onNavigateToSubmit = { questId, missionId ->
+                    navController.navigate(ImageSubmitRoute(questId, missionId))
                 },
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
