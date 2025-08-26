@@ -9,5 +9,8 @@ enum class SortTypeUiModel {
     },
     PointAsc {
         override fun toString(): String = "포인트 낮은순"
+    },
+    ExpireDate {
+        override fun toString(): String = "임박순"
     }
 }

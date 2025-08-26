@@ -49,6 +49,7 @@ interface QuestApiService {
         @Query("commercialAreaCode") commercialAreaCode: String,
         @Query("questType") type: String? = null,
         @Query("repeatFrequency") repeatFrequency: String? = null,
+        @Query("orderExpiredDesc") orderExpiredDesc: Boolean? = null,
         @Query("orderRewardDesc") orderRewardDesc: Boolean? = null,
         @Query("favoriteYn") favoriteYn: Boolean? = null,
         @Query("completeYn") completeYn: Boolean = false,

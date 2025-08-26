@@ -28,6 +28,7 @@ interface QuestRepository {
     fun getTypedQuests(
         commercialAreaCode: String,
         questType: NewQuestType? = null,
+        orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
         completeYn: Boolean = false

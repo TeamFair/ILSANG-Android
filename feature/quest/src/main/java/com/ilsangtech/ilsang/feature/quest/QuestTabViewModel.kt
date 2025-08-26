@@ -2,13 +2,12 @@ package com.ilsangtech.ilsang.feature.quest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.quest.TypedQuest
+import com.ilsangtech.ilsang.feature.quest.model.QuestFilterCondition
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
@@ -98,19 +97,23 @@ class QuestTabViewModel @Inject constructor(
             SortTypeUiModel.PointAsc -> false
             else -> null
         }
+        val orderExpiredDesc = if (sortType == SortTypeUiModel.ExpireDate) true else null
         val completeYn = questTab == QuestTabUiModel.COMPLETED
 
-        areaCode to Triple(questType, orderRewardDesc, completeYn)
-    }.onStart {
-        PagingData.from(emptyList<TypedQuest>())
-    }.flatMapLatest {
-        val (areaCode, typedQuestsCondition) = it
-        val (questType, orderRewardDesc, completeYn) = typedQuestsCondition
-        questRepository.getTypedQuests(
-            commercialAreaCode = areaCode,
+        QuestFilterCondition(
+            areaCode = areaCode,
             questType = questType,
+            orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
-            completeYn = completeYn
+            completeYn = completeYn,
+        )
+    }.flatMapLatest { questFilterCondition ->
+        questRepository.getTypedQuests(
+            commercialAreaCode = questFilterCondition.areaCode,
+            questType = questFilterCondition.questType,
+            orderExpiredDesc = questFilterCondition.orderExpiredDesc,
+            orderRewardDesc = questFilterCondition.orderRewardDesc,
+            completeYn = questFilterCondition.completeYn
         )
     }.cachedIn(viewModelScope)
 

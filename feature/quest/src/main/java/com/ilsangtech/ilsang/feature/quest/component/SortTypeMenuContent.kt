@@ -64,6 +64,7 @@ internal fun SortTypeMenuContent(
         }
         Spacer(Modifier.width(8.dp))
         QuestSortTypeMenu(
+            questTab = questTab,
             selectedSortType = selectedSortType,
             onSelectSortType = onSelectSortType
         )
@@ -85,12 +86,19 @@ private fun RepeatQuestSortTypeMenu(
 
 @Composable
 private fun QuestSortTypeMenu(
+    questTab: QuestTabUiModel,
     selectedSortType: SortTypeUiModel,
     onSelectSortType: (SortTypeUiModel) -> Unit
 ) {
     QuestFilterDropDownMenu(
         width = 150.dp,
-        typeList = SortTypeUiModel.entries,
+        typeList = if (questTab != QuestTabUiModel.EVENT) {
+            SortTypeUiModel.entries.filterNot { type ->
+                type == SortTypeUiModel.ExpireDate
+            }
+        } else {
+            SortTypeUiModel.entries
+        },
         selectedType = selectedSortType,
         onTypeSelected = onSelectSortType
     )
