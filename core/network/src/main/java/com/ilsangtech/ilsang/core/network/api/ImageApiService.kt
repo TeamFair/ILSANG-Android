@@ -20,7 +20,7 @@ interface ImageApiService {
     @Multipart
     @POST("api/v1/image")
     suspend fun uploadImage(
-        @Part type: RequestBody,
+        @Part("type") type: RequestBody,
         @Part image: MultipartBody.Part
     ): ImageUploadResponse
 
