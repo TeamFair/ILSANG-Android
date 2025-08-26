@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryRes
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.Body
@@ -44,7 +45,7 @@ interface MissionApiService {
     ): ExampleMissionHistoryResponse
 
     @POST("api/v1/challenge/mission")
-    suspend fun submitMission(@Body request: MissionSubmitRequest)
+    suspend fun submitMission(@Body request: MissionSubmitRequest): MissionSubmitResponse
 
     @POST("api/v1/mission/user/history/{missionHistoryId}/view-count")
     suspend fun updateMissionHistoryViewCount(
