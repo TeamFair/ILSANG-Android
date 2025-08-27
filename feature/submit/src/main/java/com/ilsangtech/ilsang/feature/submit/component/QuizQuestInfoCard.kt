@@ -40,7 +40,7 @@ internal fun QuizQuestInfoCard(
     modifier: Modifier = Modifier,
     questImageId: String,
     title: String,
-    locationName: String,
+    writerName: String,
     questType: NewQuestType,
     point: Int
 ) {
@@ -72,7 +72,7 @@ internal fun QuizQuestInfoCard(
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = locationName,
+                    text = writerName,
                     style = bodyTextStyle,
                     color = gray500,
                     maxLines = 1,
@@ -114,7 +114,7 @@ private fun QuizQuestInfoCardPreview() {
         modifier = Modifier,
         questImageId = "some_image_id",
         title = "정자동 최고의 돈까스 가게 가기",
-        locationName = "야미돈까스 정자동점",
+        writerName = "야미돈까스 정자동점",
         questType = NewQuestType.Repeat.Daily,
         point = 100
     )

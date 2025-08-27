@@ -112,7 +112,7 @@ private fun OxQuizSubmitScreen(
                     QuizQuestInfoCard(
                         questImageId = submitQuestUiState.questImageId,
                         title = submitQuestUiState.title,
-                        locationName = submitQuestUiState.writerName,
+                        writerName = submitQuestUiState.writerName,
                         questType = submitQuestUiState.questType,
                         point = submitQuestUiState.rewards.sumOf { it.point }
                     )
