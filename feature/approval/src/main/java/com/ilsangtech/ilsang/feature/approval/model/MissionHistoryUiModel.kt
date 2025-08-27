@@ -1,10 +1,11 @@
 package com.ilsangtech.ilsang.feature.approval.model
 
+import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.util.DateConverter
 
-data class RandomMissionHistoryUiModel(
+data class MissionHistoryUiModel(
     val commercialAreaName: String,
     val createdAt: String,
     val currentUserEmojis: List<String>,
@@ -17,8 +18,8 @@ data class RandomMissionHistoryUiModel(
     val viewCount: Int
 )
 
-internal fun RandomMissionHistory.toUiModel(areaName: String): RandomMissionHistoryUiModel {
-    return RandomMissionHistoryUiModel(
+internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiModel {
+    return MissionHistoryUiModel(
         commercialAreaName = areaName,
         createdAt = DateConverter.formatDate(
             input = createdAt,

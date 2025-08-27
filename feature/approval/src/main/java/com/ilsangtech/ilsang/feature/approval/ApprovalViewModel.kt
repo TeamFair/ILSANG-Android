@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
-import com.ilsangtech.ilsang.feature.approval.model.RandomMissionHistoryUiModel
+import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 import com.ilsangtech.ilsang.feature.approval.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,7 +31,7 @@ class ApprovalViewModel @Inject constructor(
         }
     }.cachedIn(viewModelScope)
 
-    fun likeChallenge(missionHistory: RandomMissionHistoryUiModel) {
+    fun likeChallenge(missionHistory: MissionHistoryUiModel) {
         viewModelScope.launch {
             val missionHistoryId = missionHistory.missionHistoryId
             val emojiTypes = missionHistory.currentUserEmojis
@@ -48,7 +48,7 @@ class ApprovalViewModel @Inject constructor(
         }
     }
 
-    fun hateChallenge(missionHistory: RandomMissionHistoryUiModel) {
+    fun hateChallenge(missionHistory: MissionHistoryUiModel) {
         viewModelScope.launch {
             val missionHistoryId = missionHistory.missionHistoryId
             val emojiTypes = missionHistory.currentUserEmojis
@@ -65,7 +65,7 @@ class ApprovalViewModel @Inject constructor(
         }
     }
 
-    fun reportMissionHistory(missionHistory: RandomMissionHistoryUiModel) {
+    fun reportMissionHistory(missionHistory: MissionHistoryUiModel) {
         viewModelScope.launch {
             runCatching {
                 missionRepository.reportMissionHistory(missionHistory.missionHistoryId)

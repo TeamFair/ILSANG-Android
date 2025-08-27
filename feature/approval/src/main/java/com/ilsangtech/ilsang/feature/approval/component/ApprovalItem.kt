@@ -28,12 +28,12 @@ import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
-import com.ilsangtech.ilsang.feature.approval.model.RandomMissionHistoryUiModel
+import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 import java.io.File
 
 @Composable
 internal fun ApprovalItem(
-    randomMissionHistory: RandomMissionHistoryUiModel,
+    missionHistory: MissionHistoryUiModel,
     onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
     onHateButtonClick: () -> Unit,
@@ -107,26 +107,26 @@ internal fun ApprovalItem(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ApprovalItemUserInfo(
-                userProfileImage = randomMissionHistory.user.profileImageId,
-                userNickname = randomMissionHistory.user.nickname,
-                titleGrade = randomMissionHistory.user.title?.grade,
-                titleName = randomMissionHistory.user.title?.name,
+                userProfileImage = missionHistory.user.profileImageId,
+                userNickname = missionHistory.user.nickname,
+                titleGrade = missionHistory.user.title?.grade,
+                titleName = missionHistory.user.title?.name,
                 onProfileClick = onProfileClick,
                 onShareButtonClick = { isSharing = true },
                 onReportButtonClick = { showReportDialog = true }
             )
             ApprovalItemContent(
-                title = randomMissionHistory.title,
-                challengeImage = randomMissionHistory.submitImageId,
-                createdAt = randomMissionHistory.createdAt,
-                areaName = randomMissionHistory.commercialAreaName,
-                likeCount = randomMissionHistory.likeCount,
-                hateCount = randomMissionHistory.hateCount
+                title = missionHistory.title,
+                challengeImage = missionHistory.submitImageId,
+                createdAt = missionHistory.createdAt,
+                areaName = missionHistory.commercialAreaName,
+                likeCount = missionHistory.likeCount,
+                hateCount = missionHistory.hateCount
             )
             if (!isSharing) {
                 ApprovalFeedbackButtonRow(
-                    isLiked = randomMissionHistory.currentUserEmojis.contains("LIKE"),
-                    isHated = randomMissionHistory.currentUserEmojis.contains("HATE"),
+                    isLiked = missionHistory.currentUserEmojis.contains("LIKE"),
+                    isHated = missionHistory.currentUserEmojis.contains("HATE"),
                     onLikeButtonClick = onLikeButtonClick,
                     onHateButtonClick = onHateButtonClick
                 )
@@ -138,7 +138,7 @@ internal fun ApprovalItem(
 @Preview
 @Composable
 private fun ApprovalItemPreview() {
-    val randomMissionHistory = RandomMissionHistoryUiModel(
+    val missionHistory = MissionHistoryUiModel(
         commercialAreaName = "강남역",
         createdAt = "2023.10.26 10:00",
         currentUserEmojis = listOf("LIKE"),
@@ -160,7 +160,7 @@ private fun ApprovalItemPreview() {
         viewCount = 1000
     )
     ApprovalItem(
-        randomMissionHistory = randomMissionHistory,
+        missionHistory = missionHistory,
         onProfileClick = {},
         onLikeButtonClick = {},
         onHateButtonClick = {},

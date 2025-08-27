@@ -37,7 +37,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalItem
-import com.ilsangtech.ilsang.feature.approval.model.RandomMissionHistoryUiModel
+import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
@@ -55,7 +55,7 @@ internal fun ApprovalScreen(
     }
 
     ApprovalScreen(
-        randomMissionHistoryItems = randomMissionHistoryItems,
+        missionHistoryItems = randomMissionHistoryItems,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onHateButtonClick = approvalViewModel::hateChallenge,
         onReportButtonClick = approvalViewModel::reportMissionHistory,
@@ -65,10 +65,10 @@ internal fun ApprovalScreen(
 
 @Composable
 private fun ApprovalScreen(
-    randomMissionHistoryItems: LazyPagingItems<RandomMissionHistoryUiModel>,
-    onLikeButtonClick: (RandomMissionHistoryUiModel) -> Unit,
-    onHateButtonClick: (RandomMissionHistoryUiModel) -> Unit,
-    onReportButtonClick: (RandomMissionHistoryUiModel) -> Unit,
+    missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
+    onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
+    onHateButtonClick: (MissionHistoryUiModel) -> Unit,
+    onReportButtonClick: (MissionHistoryUiModel) -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     Surface(
@@ -78,8 +78,8 @@ private fun ApprovalScreen(
         color = background
     ) {
         if (
-            randomMissionHistoryItems.loadState.refresh is LoadState.NotLoading &&
-            randomMissionHistoryItems.itemCount == 0
+            missionHistoryItems.loadState.refresh is LoadState.NotLoading &&
+            missionHistoryItems.itemCount == 0
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -115,10 +115,10 @@ private fun ApprovalScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { Spacer(Modifier.statusBarsPadding()) }
-            items(randomMissionHistoryItems.itemCount) {
-                randomMissionHistoryItems[it]?.let { randomMissionHistory ->
+            items(missionHistoryItems.itemCount) {
+                missionHistoryItems[it]?.let { randomMissionHistory ->
                     ApprovalItem(
-                        randomMissionHistory = randomMissionHistory,
+                        missionHistory = randomMissionHistory,
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
                         onHateButtonClick = { onHateButtonClick(randomMissionHistory) },
@@ -133,8 +133,8 @@ private fun ApprovalScreen(
 @Preview
 @Composable
 private fun ApprovalScreenPreview() {
-    val randomMissionHistoryItems = listOf(
-        RandomMissionHistoryUiModel(
+    val missionHistoryItems = listOf(
+        MissionHistoryUiModel(
             commercialAreaName = "강남",
             createdAt = "2023.10.27 10:00",
             currentUserEmojis = listOf("LIKE"),
@@ -155,7 +155,7 @@ private fun ApprovalScreenPreview() {
             ),
             viewCount = 100
         ),
-        RandomMissionHistoryUiModel(
+        MissionHistoryUiModel(
             commercialAreaName = "홍대",
             createdAt = "2023.10.28 12:00",
             currentUserEmojis = emptyList(),
@@ -178,11 +178,11 @@ private fun ApprovalScreenPreview() {
         )
     )
     val lazyPagingItems =
-        flowOf(PagingData.from(randomMissionHistoryItems))
+        flowOf(PagingData.from(missionHistoryItems))
             .collectAsLazyPagingItems()
 
     ApprovalScreen(
-        randomMissionHistoryItems = lazyPagingItems,
+        missionHistoryItems = lazyPagingItems,
         onLikeButtonClick = {},
         onHateButtonClick = {},
         onReportButtonClick = {},
