@@ -21,7 +21,8 @@ fun NavGraphBuilder.homeNavigation(
     navigateToSubmit: (String) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
-    onIsZoneClick: () -> Unit
+    onIsZoneClick: () -> Unit,
+    onMissionImageClick: (Int) -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
@@ -33,7 +34,8 @@ fun NavGraphBuilder.homeNavigation(
                 navigateToProfile = navigateToProfile,
                 onBannerClick = onBannerClick,
                 onMyZoneClick = onMyZoneClick,
-                onIsZoneClick = onIsZoneClick
+                onIsZoneClick = onIsZoneClick,
+                onMissionImageClick = onMissionImageClick
             )
         }
     }
