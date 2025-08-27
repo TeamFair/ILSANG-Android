@@ -12,6 +12,6 @@ data class RandomMissionHistoryNetworkModel(
     val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
-    val user: RandomMissionHistoryUserNetworkModel,
+    val user: MissionHistoryUserNetworkModel,
     val viewCount: Int
 )

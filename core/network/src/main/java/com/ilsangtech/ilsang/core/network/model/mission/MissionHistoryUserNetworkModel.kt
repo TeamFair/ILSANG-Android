@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RandomMissionHistoryUserNetworkModel(
+data class MissionHistoryUserNetworkModel(
     val nickname: String,
     val profileImageId: String?,
     val title: TitleNetworkModel?,

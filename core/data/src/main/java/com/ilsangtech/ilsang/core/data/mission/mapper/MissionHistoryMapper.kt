@@ -3,8 +3,8 @@ package com.ilsangtech.ilsang.core.data.mission.mapper
 import com.ilsangtech.ilsang.core.data.title.mapper.toTitle
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
+import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryUserNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
-import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryUserNetworkModel
 
 internal fun RandomMissionHistoryNetworkModel.toRandomMissionHistory(): RandomMissionHistory {
     return RandomMissionHistory(
@@ -21,7 +21,7 @@ internal fun RandomMissionHistoryNetworkModel.toRandomMissionHistory(): RandomMi
     )
 }
 
-private fun RandomMissionHistoryUserNetworkModel.toRandomMissionHistoryUser(): RandomMissionHistoryUser {
+private fun MissionHistoryUserNetworkModel.toRandomMissionHistoryUser(): RandomMissionHistoryUser {
     return RandomMissionHistoryUser(
         userId = userId,
         nickname = nickname,
