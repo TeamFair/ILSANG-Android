@@ -38,9 +38,10 @@ object DateConverter {
 
     fun formatDate(input: String, outputPattern: String = "yyyy.MM.dd"): String {
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).apply {
+                timeZone = TimeZone.getTimeZone("UTC")
+            }
             val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
-
             val date = inputFormat.parse(input)
             outputFormat.format(date!!)
         } catch (_: Exception) {
