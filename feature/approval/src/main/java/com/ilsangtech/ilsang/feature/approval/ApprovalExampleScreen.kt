@@ -3,9 +3,7 @@ package com.ilsangtech.ilsang.feature.approval
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -63,10 +61,9 @@ private fun ApprovalExampleScreen(
             ApprovalExampleHeader(onBackButtonClick = onBackButtonClick)
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 48.dp),
+                contentPadding = PaddingValues(bottom = 48.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                item { Spacer(Modifier.statusBarsPadding()) }
                 items(missionHistories.itemCount) {
                     missionHistories[it]?.let { missionHistory ->
                         ApprovalItem(
