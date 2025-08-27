@@ -22,7 +22,7 @@ internal fun RandomMissionHistory.toUiModel(areaName: String): RandomMissionHist
         commercialAreaName = areaName,
         createdAt = DateConverter.formatDate(
             input = createdAt,
-            outputPattern = "yyyy.MM.dd hh:mm"
+            outputPattern = "yyyy.MM.dd HH:mm"
         ),
         currentUserEmojis = currentUserEmojis,
         hateCount = hateCount,
