@@ -45,12 +45,12 @@ import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 
 @Composable
 internal fun OxQuizSubmitScreen(
-    oxQuizSubmitViewModel: OxQuizSubmitViewModel = hiltViewModel(),
+    viewModel: OxQuizSubmitViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
-    val quizUiState by oxQuizSubmitViewModel.oxQuizUiState.collectAsStateWithLifecycle()
-    val quizSubmitUiState by oxQuizSubmitViewModel.quizSubmitUiState.collectAsStateWithLifecycle()
-    val submitResultUiState by oxQuizSubmitViewModel.submitResultUiState.collectAsStateWithLifecycle()
+    val quizUiState by viewModel.oxQuizUiState.collectAsStateWithLifecycle()
+    val quizSubmitUiState by viewModel.quizSubmitUiState.collectAsStateWithLifecycle()
+    val submitResultUiState by viewModel.submitResultUiState.collectAsStateWithLifecycle()
 
     when (val result = submitResultUiState) {
         is SubmitResultUiState.Loading -> {
@@ -61,7 +61,7 @@ internal fun OxQuizSubmitScreen(
             SubmitSuccessDialog(
                 rewardPoints = result.rewardPoints,
                 onDismissRequest = {
-                    oxQuizSubmitViewModel.resetResultUiState()
+                    viewModel.resetResultUiState()
                     onBackButtonClick()
                 }
             )
@@ -69,13 +69,13 @@ internal fun OxQuizSubmitScreen(
 
         is SubmitResultUiState.WrongAnswer -> {
             InCorrectAnswerDialog {
-                oxQuizSubmitViewModel.resetResultUiState()
+                viewModel.resetResultUiState()
             }
         }
 
         is SubmitResultUiState.Error -> {
             SubmitErrorDialog {
-                oxQuizSubmitViewModel.resetResultUiState()
+                viewModel.resetResultUiState()
                 onBackButtonClick()
             }
         }
@@ -90,12 +90,12 @@ internal fun OxQuizSubmitScreen(
             submitQuestUiState = quizUiState.submitQuestUiState,
             quizSubmitUiState = quizSubmitUiState,
             onCorrectButtonClick = {
-                oxQuizSubmitViewModel.updateSubmitState(OxQuizSubmitUiState.Correct)
+                viewModel.updateSubmitState(OxQuizSubmitUiState.Correct)
             },
             onIncorrectButtonClick = {
-                oxQuizSubmitViewModel.updateSubmitState(OxQuizSubmitUiState.Incorrect)
+                viewModel.updateSubmitState(OxQuizSubmitUiState.Incorrect)
             },
-            onSubmitButtonClick = oxQuizSubmitViewModel::submitMission,
+            onSubmitButtonClick = viewModel::submitMission,
             onBackButtonClick = onBackButtonClick
         )
     }
