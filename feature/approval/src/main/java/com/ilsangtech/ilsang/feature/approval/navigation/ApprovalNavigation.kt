@@ -14,7 +14,7 @@ data object ApprovalBaseRoute
 data object ApprovalRoute
 
 @Serializable
-data object ApprovalExampleRoute
+data class ApprovalExampleRoute(val missionId: Int)
 
 fun NavGraphBuilder.approvalNavigation(
     navigateToProfile: (String) -> Unit
@@ -23,8 +23,8 @@ fun NavGraphBuilder.approvalNavigation(
         composable<ApprovalRoute> {
             ApprovalScreen(navigateToProfile = navigateToProfile)
         }
-        composable<ApprovalExampleRoute> {
-            ApprovalExampleScreen {}
-        }
+    }
+    composable<ApprovalExampleRoute> {
+        ApprovalExampleScreen {}
     }
 }

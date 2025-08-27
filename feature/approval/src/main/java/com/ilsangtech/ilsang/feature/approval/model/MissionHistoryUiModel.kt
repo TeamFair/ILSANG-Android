@@ -35,3 +35,21 @@ internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiM
         viewCount = viewCount
     )
 }
+
+internal fun ExampleMissionHistory.toUiModel(areaName: String): MissionHistoryUiModel {
+    return MissionHistoryUiModel(
+        commercialAreaName = areaName,
+        createdAt = DateConverter.formatDate(
+            input = createdAt,
+            outputPattern = "yyyy.MM.dd HH:mm"
+        ),
+        currentUserEmojis = currentUserEmojis,
+        hateCount = hateCount,
+        likeCount = likeCount,
+        missionHistoryId = missionHistoryId,
+        submitImageId = submitImageId,
+        title = title,
+        user = user,
+        viewCount = viewCount
+    )
+}
