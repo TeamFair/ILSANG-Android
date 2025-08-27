@@ -32,12 +32,13 @@ class ImageSubmitViewModel @Inject constructor(
     private val _capturedImageUri = MutableStateFlow<Uri?>(null)
     val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
 
-    private val _submitUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
+    private val _submitUiState =
+        MutableStateFlow<SubmitResultUiState>(SubmitResultUiState.NotSubmitted)
     val submitUiState = _submitUiState.asStateFlow()
 
     fun submitApproveImage() {
         viewModelScope.launch {
-            _submitUiState.update { SubmitUiState.Loading }
+            _submitUiState.update { SubmitResultUiState.Loading }
             imageRepository.uploadMissionImage(
                 imageBytes = FileManager.getBytesFromFile(context, capturedImageFile.value),
             ).onSuccess { imageId ->
@@ -46,19 +47,19 @@ class ImageSubmitViewModel @Inject constructor(
                     imageId = imageId
                 ).onSuccess {
                     questRepository.getQuestDetail(questId).collect { quest ->
-                        _submitUiState.update { SubmitUiState.Success(quest.rewards) }
+                        _submitUiState.update { SubmitResultUiState.Success(quest.rewards) }
                     }
                 }.onFailure {
-                    _submitUiState.update { SubmitUiState.Error }
+                    _submitUiState.update { SubmitResultUiState.Error }
                 }
             }.onFailure {
-                _submitUiState.update { SubmitUiState.Error }
+                _submitUiState.update { SubmitResultUiState.Error }
             }
         }
     }
 
     fun completeSubmit() {
-        _submitUiState.update { SubmitUiState.NotSubmitted }
+        _submitUiState.update { SubmitResultUiState.NotSubmitted }
         _capturedImageUri.update { null }
     }
 

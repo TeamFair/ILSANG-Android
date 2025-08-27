@@ -78,12 +78,12 @@ internal fun ImageSubmitScreen(
     }
 
     when (submitUiState) {
-        is SubmitUiState.Loading -> {
+        is SubmitResultUiState.Loading -> {
             SubmitLoadingDialog()
         }
 
-        is SubmitUiState.Success -> {
-            val rewardList = (submitUiState as SubmitUiState.Success).rewardPoints
+        is SubmitResultUiState.Success -> {
+            val rewardList = (submitUiState as SubmitResultUiState.Success).rewardPoints
             SubmitSuccessDialog(
                 rewardPoints = rewardList,
                 onDismissRequest = {
@@ -93,7 +93,7 @@ internal fun ImageSubmitScreen(
             )
         }
 
-        is SubmitUiState.Error -> {
+        is SubmitResultUiState.Error -> {
             SubmitErrorDialog(
                 onDismissRequest = {
                     imageSubmitViewModel.completeSubmit()
