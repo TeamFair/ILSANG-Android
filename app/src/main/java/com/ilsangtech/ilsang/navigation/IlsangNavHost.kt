@@ -197,9 +197,12 @@ fun IlsangNavHost(
                 onBackButtonClick = navController::popBackStack
             )
 
-            approvalNavigation(navigateToProfile = { id ->
-                navController.navigate(ProfileRoute(id))
-            })
+            approvalNavigation(
+                popBackStack = navController::popBackStack,
+                navigateToProfile = { id ->
+                    navController.navigate(ProfileRoute(id))
+                }
+            )
 
             myZoneNavigation(onBackButtonClick = navController::popBackStack)
 

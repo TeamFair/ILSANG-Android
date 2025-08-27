@@ -17,6 +17,7 @@ data object ApprovalRoute
 data class ApprovalExampleRoute(val missionId: Int)
 
 fun NavGraphBuilder.approvalNavigation(
+    popBackStack: () -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
@@ -25,6 +26,6 @@ fun NavGraphBuilder.approvalNavigation(
         }
     }
     composable<ApprovalExampleRoute> {
-        ApprovalExampleScreen {}
+        ApprovalExampleScreen(onBackButtonClick = popBackStack)
     }
 }
