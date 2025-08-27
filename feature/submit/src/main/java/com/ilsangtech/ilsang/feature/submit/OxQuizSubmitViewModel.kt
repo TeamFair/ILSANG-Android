@@ -19,61 +19,70 @@ import kotlinx.coroutines.launch
 class OxQuizSubmitViewModel(
     savedStateHandle: SavedStateHandle,
     quizRepository: QuizRepository,
-    private val questRepository: QuestRepository,
+    questRepository: QuestRepository,
     private val missionRepository: MissionRepository
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<OxQuizSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<OxQuizSubmitRoute>().missionId
 
-    private val oxQuizSubmitUiState =
+    private val _quizSubmitUiState =
         MutableStateFlow<OxQuizSubmitUiState>(OxQuizSubmitUiState.NotSelected)
+    val quizSubmitUiState = _quizSubmitUiState.asStateFlow()
 
-    private val _submitResultUiState = MutableStateFlow<SubmitUiState>(SubmitUiState.NotSubmitted)
+    private val _submitResultUiState =
+        MutableStateFlow<SubmitResultUiState>(SubmitResultUiState.NotSubmitted)
     val submitResultUiState = _submitResultUiState.asStateFlow()
 
     val oxQuizUiState = combine(
         quizRepository.getRandomQuiz(missionId),
-        oxQuizSubmitUiState
-    ) { quiz, submitState ->
-        QuizUiState.OxQuizUiState(
+        quizSubmitUiState,
+        questRepository.getQuestDetail(questId)
+    ) { quiz, submitState, quest ->
+        val submitQuestUiState = SubmitQuestUiState(
+            questImageId = quest.imageId,
+            title = quest.title,
+            writerName = quest.writerName,
+            questType = quest.questType,
+            rewards = quest.rewards
+        )
+
+        OxQuizUiState.Success(
             quizId = quiz.id,
             question = quiz.question,
-            submitState = submitState
+            submitQuestUiState = submitQuestUiState
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = QuizUiState.OxQuizUiState(
-            quizId = null,
-            question = "",
-            submitState = OxQuizSubmitUiState.NotSelected
-        )
+        initialValue = OxQuizUiState.Loading
     )
 
     fun updateSubmitState(state: OxQuizSubmitUiState) {
-        oxQuizSubmitUiState.update { state }
+        _quizSubmitUiState.update { state }
     }
 
     fun submitMission() {
         viewModelScope.launch {
-            _submitResultUiState.update { SubmitUiState.Loading }
-            oxQuizUiState.value.quizId?.let { quizId ->
+            _submitResultUiState.update { SubmitResultUiState.Loading }
+            (oxQuizUiState.value as? OxQuizUiState.Success)?.let { (quizId, _, submitQuestUiState) ->
                 missionRepository.submitQuizMission(
                     missionId = missionId,
                     quizId = quizId,
-                    answer = when (oxQuizUiState.value.submitState) {
+                    answer = when (_quizSubmitUiState.value) {
                         OxQuizSubmitUiState.Correct -> "O"
                         OxQuizSubmitUiState.Incorrect -> "X"
                         else -> throw IllegalStateException("Not Selected")
                     }
-                ).onSuccess {
-                    questRepository.getQuestDetail(questId).collect { quest ->
+                ).onSuccess { isCorrect ->
+                    if (isCorrect) {
                         _submitResultUiState.update {
-                            SubmitUiState.Success(quest.rewards)
+                            SubmitResultUiState.Success(submitQuestUiState.rewards)
                         }
+                    } else {
+                        _submitResultUiState.update { SubmitResultUiState.WrongAnswer }
                     }
                 }.onFailure {
-                    _submitResultUiState.update { SubmitUiState.Error }
+                    _submitResultUiState.update { SubmitResultUiState.Error }
                 }
             }
         }
