@@ -15,9 +15,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -25,20 +22,79 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.submit.component.InCorrectAnswerDialog
 import com.ilsangtech.ilsang.feature.submit.component.OxQuizGuideCard
 import com.ilsangtech.ilsang.feature.submit.component.OxQuizSubmitCard
 import com.ilsangtech.ilsang.feature.submit.component.QuizQuestInfoCard
 import com.ilsangtech.ilsang.feature.submit.component.QuizScreenHeader
+import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
+import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
+import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
+
+@Composable
+internal fun OxQuizSubmitScreen(
+    oxQuizSubmitViewModel: OxQuizSubmitViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit
+) {
+    val quizUiState by oxQuizSubmitViewModel.oxQuizUiState.collectAsStateWithLifecycle()
+    val quizSubmitUiState by oxQuizSubmitViewModel.quizSubmitUiState.collectAsStateWithLifecycle()
+    val submitResultUiState by oxQuizSubmitViewModel.submitResultUiState.collectAsStateWithLifecycle()
+
+    when (submitResultUiState) {
+        is SubmitResultUiState.Loading -> {
+            SubmitLoadingDialog()
+        }
+
+        is SubmitResultUiState.Success -> {
+            val submitResultUiState = submitResultUiState as SubmitResultUiState.Success
+            SubmitSuccessDialog(
+                rewardPoints = submitResultUiState.rewardPoints,
+                onDismissRequest = {}
+            )
+        }
+
+        is SubmitResultUiState.WrongAnswer -> {
+            InCorrectAnswerDialog { }
+        }
+
+        is SubmitResultUiState.Error -> {
+            SubmitErrorDialog { }
+        }
+
+        else -> {}
+    }
+
+    if (quizUiState is OxQuizUiState.Success) {
+        val quizUiState = quizUiState as OxQuizUiState.Success
+        OxQuizSubmitScreen(
+            question = quizUiState.question,
+            submitQuestUiState = quizUiState.submitQuestUiState,
+            quizSubmitUiState = quizSubmitUiState,
+            onCorrectButtonClick = {
+                oxQuizSubmitViewModel.updateSubmitState(OxQuizSubmitUiState.Correct)
+            },
+            onIncorrectButtonClick = {
+                oxQuizSubmitViewModel.updateSubmitState(OxQuizSubmitUiState.Incorrect)
+            },
+            onSubmitButtonClick = oxQuizSubmitViewModel::submitMission,
+            onBackButtonClick = onBackButtonClick
+        )
+    }
+}
 
 @Composable
 private fun OxQuizSubmitScreen(
+    question: String,
     submitQuestUiState: SubmitQuestUiState,
-    quizUiState: QuizUiState.OxQuizUiState,
+    quizSubmitUiState: OxQuizSubmitUiState,
     onCorrectButtonClick: () -> Unit,
     onIncorrectButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit,
@@ -56,9 +112,9 @@ private fun OxQuizSubmitScreen(
                     QuizQuestInfoCard(
                         questImageId = submitQuestUiState.questImageId,
                         title = submitQuestUiState.title,
-                        locationName = submitQuestUiState.locationName,
+                        locationName = submitQuestUiState.writerName,
                         questType = submitQuestUiState.questType,
-                        point = submitQuestUiState.point
+                        point = submitQuestUiState.rewards.sumOf { it.point }
                     )
                 }
                 item { Spacer(Modifier.height(16.dp)) }
@@ -66,7 +122,8 @@ private fun OxQuizSubmitScreen(
                 item { Spacer(Modifier.height(16.dp)) }
                 item {
                     OxQuizSubmitCard(
-                        oxQuizUiState = quizUiState,
+                        question = question,
+                        quizSubmitUiState = quizSubmitUiState,
                         onCorrectButtonClick = onCorrectButtonClick,
                         onIncorrectButtonClick = onIncorrectButtonClick
                     )
@@ -86,7 +143,7 @@ private fun OxQuizSubmitScreen(
                             disabledContentColor = Color.White
                         ),
                         shape = RoundedCornerShape(12.dp),
-                        enabled = quizUiState.submitState !is OxQuizSubmitUiState.NotSelected,
+                        enabled = quizSubmitUiState != OxQuizSubmitUiState.NotSelected,
                         onClick = onSubmitButtonClick
                     ) {
                         Text(
@@ -107,39 +164,29 @@ private fun OxQuizSubmitScreen(
 
 @Preview
 @Composable
-private fun OxQuizScreenPreview() {
+private fun OxQuizSubmitScreenPreview() {
+    val question = "야미돈까스에서 파는 메뉴 중 ‘치킨까스' 는 케첩소스와 함께 제공된다."
     val submitQuestUiState = SubmitQuestUiState(
-        questImageId = "",
-        title = "정자동 최고의 돈까스 가게 가기",
-        locationName = "야미돈까스 정자동점",
-        questType = NewQuestType.Event,
-        point = 10
-    )
-
-    var quizUiState by remember {
-        mutableStateOf(
-            QuizUiState.OxQuizUiState(
-                quizId = 1,
-                question = "야미돈까스에서 파는 메뉴 중 ‘치킨까스' 는 케첩소스와 함께 제공된다.",
-                submitState = OxQuizSubmitUiState.NotSelected
-            )
+        questImageId = "sampleImageId",
+        title = "정자동 최고의 돈까스 \n" +
+                "가게 가기",
+        writerName = "야미돈까스 정자동점",
+        questType = NewQuestType.Normal,
+        rewards = listOf(
+            RewardPoint.Metro(5),
+            RewardPoint.Commercial(10),
+            RewardPoint.Contribute(15)
         )
-    }
+    )
+    val quizSubmitUiState = OxQuizSubmitUiState.NotSelected
 
     OxQuizSubmitScreen(
+        question = question,
         submitQuestUiState = submitQuestUiState,
-        quizUiState = quizUiState,
-        onBackButtonClick = {},
-        onCorrectButtonClick = {
-            quizUiState = quizUiState.copy(
-                submitState = OxQuizSubmitUiState.Correct
-            )
-        },
-        onIncorrectButtonClick = {
-            quizUiState = quizUiState.copy(
-                submitState = OxQuizSubmitUiState.Incorrect
-            )
-        },
-        onSubmitButtonClick = {}
+        quizSubmitUiState = quizSubmitUiState,
+        onCorrectButtonClick = {},
+        onIncorrectButtonClick = {},
+        onSubmitButtonClick = {},
+        onBackButtonClick = {}
     )
 }
