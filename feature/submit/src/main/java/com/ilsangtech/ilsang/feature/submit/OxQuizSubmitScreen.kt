@@ -38,6 +38,10 @@ import com.ilsangtech.ilsang.feature.submit.component.QuizScreenHeader
 import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizUiState
+import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 
 @Composable
 internal fun OxQuizSubmitScreen(

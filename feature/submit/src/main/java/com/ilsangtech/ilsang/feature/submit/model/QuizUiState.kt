@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.submit
+package com.ilsangtech.ilsang.feature.submit.model
 
 sealed interface WordsQuizUiState {
     data object Loading : WordsQuizUiState

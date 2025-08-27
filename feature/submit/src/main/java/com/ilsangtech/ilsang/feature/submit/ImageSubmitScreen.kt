@@ -50,6 +50,7 @@ import com.ilsangtech.ilsang.designsystem.theme.title02
 import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import java.io.File
 
 @Composable

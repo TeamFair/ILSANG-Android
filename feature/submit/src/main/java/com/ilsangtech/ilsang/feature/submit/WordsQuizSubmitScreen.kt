@@ -39,6 +39,9 @@ import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
 import com.ilsangtech.ilsang.feature.submit.component.WordsQuizGuideCard
 import com.ilsangtech.ilsang.feature.submit.component.WordsQuizSubmitCard
+import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
+import com.ilsangtech.ilsang.feature.submit.model.WordsQuizUiState
 
 @Composable
 internal fun WordsQuizSubmitScreen(

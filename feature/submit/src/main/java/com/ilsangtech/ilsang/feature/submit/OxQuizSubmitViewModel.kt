@@ -7,6 +7,10 @@ import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizUiState
+import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import com.ilsangtech.ilsang.feature.submit.navigation.OxQuizSubmitRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

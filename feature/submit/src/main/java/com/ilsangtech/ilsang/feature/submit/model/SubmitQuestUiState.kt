@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.submit
+package com.ilsangtech.ilsang.feature.submit.model
 
 import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint

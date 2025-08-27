@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.util.FileManager
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

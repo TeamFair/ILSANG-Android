@@ -34,7 +34,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.subTitle02
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.designsystem.theme.toSp
-import com.ilsangtech.ilsang.feature.submit.OxQuizSubmitUiState
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
 
 @Composable
 internal fun OxQuizSubmitCard(
