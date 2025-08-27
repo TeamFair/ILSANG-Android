@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.feature.approval.model
 
+import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
-import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
 import com.ilsangtech.ilsang.core.util.DateConverter
 
 data class RandomMissionHistoryUiModel(
@@ -13,7 +13,7 @@ data class RandomMissionHistoryUiModel(
     val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
-    val user: RandomMissionHistoryUser,
+    val user: MissionHistoryUser,
     val viewCount: Int
 )
 

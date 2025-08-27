@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
+import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -147,7 +147,7 @@ private fun ApprovalItemPreview() {
         missionHistoryId = 1,
         submitImageId = "sample_image_id",
         title = "강남역에서 가장 맛있는 맛집",
-        user = RandomMissionHistoryUser(
+        user = MissionHistoryUser(
             userId = "user123",
             nickname = "개발자",
             profileImageId = null,

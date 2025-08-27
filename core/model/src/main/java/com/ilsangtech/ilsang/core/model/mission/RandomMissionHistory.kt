@@ -9,6 +9,6 @@ data class RandomMissionHistory(
     val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
-    val user: RandomMissionHistoryUser,
+    val user: MissionHistoryUser,
     val viewCount: Int
 )

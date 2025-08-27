@@ -26,7 +26,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistoryUser
+import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -143,7 +143,7 @@ private fun ApprovalScreenPreview() {
             missionHistoryId = 1,
             submitImageId = "sample_image_1",
             title = "강남역 10번 출구에서 사진 찍기",
-            user = RandomMissionHistoryUser(
+            user = MissionHistoryUser(
                 userId = "user1",
                 nickname = "개발자",
                 profileImageId = null,
@@ -164,7 +164,7 @@ private fun ApprovalScreenPreview() {
             missionHistoryId = 2,
             submitImageId = "sample_image_2",
             title = "홍대에서 버스킹 구경하기",
-            user = RandomMissionHistoryUser(
+            user = MissionHistoryUser(
                 userId = "user2",
                 nickname = "디자이너",
                 profileImageId = "profile_image_2",
