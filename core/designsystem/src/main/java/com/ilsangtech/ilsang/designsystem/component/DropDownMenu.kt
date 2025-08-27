@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.designsystem.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
@@ -46,6 +48,114 @@ fun <T> DropDownMenu(
     val unselectedList = list.filter { it != selectedItem }
 
     Box(modifier = modifier.width(150.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(
+                    shape = if (!expanded) {
+                        RoundedCornerShape(8.dp)
+                    } else {
+                        RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+                    }
+                )
+                .background(Color.White)
+                .clickable(
+                    onClick = { expanded = !expanded },
+                    indication = null,
+                    interactionSource = null
+                )
+                .padding(
+                    vertical = 10.dp,
+                    horizontal = 12.dp
+                )
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = selectedItem.toString(),
+                    style = dropDownMenuTextStyle()
+                )
+                Spacer(Modifier.width(10.dp))
+                Icon(
+                    painter = painterResource(
+                        if (expanded) {
+                            R.drawable.icon_under
+                        } else {
+                            R.drawable.icon_up
+                        }
+                    ),
+                    tint = gray500,
+                    contentDescription = null
+                )
+            }
+        }
+        if (expanded) {
+            Box(modifier = Modifier.align(Alignment.BottomStart)) {
+                Popup(
+                    properties = PopupProperties(focusable = true, clippingEnabled = false),
+                    onDismissRequest = { expanded = false }
+                ) {
+                    Column(modifier = Modifier.width(150.dp)) {
+                        unselectedList.forEachIndexed { index, item ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(
+                                        shape = if (index == unselectedList.lastIndex) {
+                                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                                        } else {
+                                            RectangleShape
+                                        }
+                                    )
+                                    .background(Color.White)
+                                    .clickable(
+                                        onClick = {
+                                            onItemSelected(item)
+                                            expanded = false
+                                        },
+                                        indication = null,
+                                        interactionSource = null
+                                    )
+                                    .padding(vertical = 10.dp, horizontal = 12.dp)
+                            ) {
+                                Text(
+                                    text = item.toString(),
+                                    style = dropDownMenuTextStyle()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun <T> BorderedDropDownMenu(
+    modifier: Modifier = Modifier,
+    list: List<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val unselectedList = list.filter { it != selectedItem }
+
+    Box(
+        modifier = modifier
+            .width(150.dp)
+            .then(
+                if (!expanded) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = gray200,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                } else {
+                    Modifier
+                }
+            )
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
