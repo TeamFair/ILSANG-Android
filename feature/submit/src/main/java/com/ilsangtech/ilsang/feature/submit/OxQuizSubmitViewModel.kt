@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
 import com.ilsangtech.ilsang.feature.submit.navigation.OxQuizSubmitRoute
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OxQuizSubmitViewModel(
+@HiltViewModel
+class OxQuizSubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     quizRepository: QuizRepository,
     questRepository: QuestRepository,
