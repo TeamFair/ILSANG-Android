@@ -36,7 +36,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary500
 import java.util.Locale
 
 @Composable
-internal fun UserInfoContent(
+internal fun UserProfileInfoCard(
     modifier: Modifier = Modifier,
     nickname: String,
     xpPoint: Int
@@ -124,8 +124,8 @@ internal fun UserInfoContent(
 
 @Preview
 @Composable
-private fun UserInfoContentPreview() {
-    UserInfoContent(
+private fun UserProfileInfoCardPreview() {
+    UserProfileInfoCard(
         nickname = "김일상123",
         xpPoint = 16300
     )
