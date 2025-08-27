@@ -3,7 +3,7 @@ package com.ilsangtech.ilsang.feature.submit
 sealed interface WordsQuizUiState {
     data object Loading : WordsQuizUiState
     data class Success(
-        val quizId: Int?,
+        val quizId: Int,
         val question: String,
         val hint: String,
         val submitQuestUiState: SubmitQuestUiState
