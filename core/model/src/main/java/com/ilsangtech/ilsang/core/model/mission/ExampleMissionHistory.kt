@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.model.mission
 
-data class RandomMissionHistory(
+data class ExampleMissionHistory(
     val commercialAreaCode: String,
     val createdAt: String,
     val currentUserEmojis: List<String>,

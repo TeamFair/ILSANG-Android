@@ -14,13 +14,15 @@ data object QuestRoute
 
 fun NavGraphBuilder.questNavigation(
     onNavigateToSubmit: (Int) -> Unit,
-    onNavigateToMyZone: () -> Unit
+    onNavigateToMyZone: () -> Unit,
+    onMissionImageClick: (Int) -> Unit
 ) {
     navigation<QuestBaseRoute>(startDestination = QuestRoute) {
         composable<QuestRoute> {
             QuestTabScreen(
                 navigateToSubmit = onNavigateToSubmit,
-                navigateToMyZone = onNavigateToMyZone
+                navigateToMyZone = onNavigateToMyZone,
+                onMissionImageClick = onMissionImageClick
             )
         }
     }

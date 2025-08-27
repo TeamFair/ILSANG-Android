@@ -27,6 +27,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
+import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.bannerNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.navigateToBannerDetail
@@ -115,15 +116,21 @@ fun IlsangNavHost(
                 },
                 onIsZoneClick = {
                     navController.navigate(IsZoneBaseRoute)
+                },
+                onMissionImageClick = { missionId ->
+                    navController.navigate(ApprovalExampleRoute(missionId))
                 }
             )
 
             questNavigation(
                 onNavigateToSubmit = { questId ->
-                    navController.navigate(SubmitRoute(questId))
+                    navController.navigate(SubmitRoute("questId"))
                 },
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
+                },
+                onMissionImageClick = { missionId ->
+                    navController.navigate(ApprovalExampleRoute(missionId))
                 }
             )
 
@@ -197,9 +204,12 @@ fun IlsangNavHost(
                 onBackButtonClick = navController::popBackStack
             )
 
-            approvalNavigation(navigateToProfile = { id ->
-                navController.navigate(ProfileRoute(id))
-            })
+            approvalNavigation(
+                popBackStack = navController::popBackStack,
+                navigateToProfile = { id ->
+                    navController.navigate(ProfileRoute(id))
+                }
+            )
 
             myZoneNavigation(onBackButtonClick = navController::popBackStack)
 

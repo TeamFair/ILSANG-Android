@@ -50,6 +50,7 @@ internal fun HomeTabScreen(
     navigateToSubmit: (String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
+    onMissionImageClick: (Int) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
@@ -68,9 +69,10 @@ internal fun HomeTabScreen(
         onBannerClick = onBannerClick,
         onMyZoneClick = onMyZoneClick,
         onIsZoneClick = onIsZoneClick,
+        onMissionImageClick = onMissionImageClick,
         onSelectQuest = homeViewModel::selectQuest,
         onUnselectQuest = homeViewModel::unselectQuest,
-        onFavoriteClick = homeViewModel::updateQuestFavoriteStatus
+        onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
     )
 }
 
@@ -87,6 +89,7 @@ private fun HomeTabScreen(
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,
+    onMissionImageClick: (Int) -> Unit,
     onSelectQuest: (Int) -> Unit,
     onUnselectQuest: () -> Unit,
     onFavoriteClick: () -> Unit
@@ -101,7 +104,13 @@ private fun HomeTabScreen(
             onDismiss = onUnselectQuest,
             onFavoriteClick = onFavoriteClick,
             onMissionImageClick = {
-                //TODO 퀘스트 인증 예시 화면으로 이동
+                selectedQuest.missions.firstOrNull()?.let { mission ->
+                    coroutineScope.launch {
+                        bottomSheetState.hide()
+                        onUnselectQuest()
+                        onMissionImageClick(mission.id)
+                    }
+                }
             },
             onApproveButtonClick = {
                 coroutineScope.launch {
@@ -345,6 +354,7 @@ private fun HomeTabScreenPreview() {
         onBannerClick = {},
         onMyZoneClick = {},
         onIsZoneClick = {},
+        onMissionImageClick = {},
         onSelectQuest = {},
         onUnselectQuest = {},
         onFavoriteClick = {}

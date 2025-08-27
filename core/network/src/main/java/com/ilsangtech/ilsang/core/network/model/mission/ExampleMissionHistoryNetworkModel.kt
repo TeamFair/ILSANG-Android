@@ -1,6 +1,9 @@
-package com.ilsangtech.ilsang.core.model.mission
+package com.ilsangtech.ilsang.core.network.model.mission
 
-data class RandomMissionHistory(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ExampleMissionHistoryNetworkModel(
     val commercialAreaCode: String,
     val createdAt: String,
     val currentUserEmojis: List<String>,
@@ -9,6 +12,6 @@ data class RandomMissionHistory(
     val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
-    val user: MissionHistoryUser,
+    val user: MissionHistoryUserNetworkModel,
     val viewCount: Int
 )
