@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.network.api
 
+import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
@@ -32,6 +33,14 @@ interface MissionApiService {
         @Query("size") size: Int,
         @Query("sort") sort: List<String> = emptyList()
     ): RandomMissionHistoryResponse
+
+    @GET("api/v1/mission/user/history/example")
+    suspend fun getExampleMissionHistory(
+        @Query("missionId") missionId: Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String> = emptyList()
+    ): ExampleMissionHistoryResponse
 
     @POST("api/v1/mission/user/history/{missionHistoryId}/view-count")
     suspend fun updateMissionHistoryViewCount(
