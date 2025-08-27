@@ -48,25 +48,32 @@ internal fun OxQuizSubmitScreen(
     val quizSubmitUiState by oxQuizSubmitViewModel.quizSubmitUiState.collectAsStateWithLifecycle()
     val submitResultUiState by oxQuizSubmitViewModel.submitResultUiState.collectAsStateWithLifecycle()
 
-    when (submitResultUiState) {
+    when (val result = submitResultUiState) {
         is SubmitResultUiState.Loading -> {
             SubmitLoadingDialog()
         }
 
         is SubmitResultUiState.Success -> {
-            val submitResultUiState = submitResultUiState as SubmitResultUiState.Success
             SubmitSuccessDialog(
-                rewardPoints = submitResultUiState.rewardPoints,
-                onDismissRequest = {}
+                rewardPoints = result.rewardPoints,
+                onDismissRequest = {
+                    oxQuizSubmitViewModel.resetResultUiState()
+                    onBackButtonClick()
+                }
             )
         }
 
         is SubmitResultUiState.WrongAnswer -> {
-            InCorrectAnswerDialog { }
+            InCorrectAnswerDialog {
+                oxQuizSubmitViewModel.resetResultUiState()
+            }
         }
 
         is SubmitResultUiState.Error -> {
-            SubmitErrorDialog { }
+            SubmitErrorDialog {
+                oxQuizSubmitViewModel.resetResultUiState()
+                onBackButtonClick()
+            }
         }
 
         else -> {}

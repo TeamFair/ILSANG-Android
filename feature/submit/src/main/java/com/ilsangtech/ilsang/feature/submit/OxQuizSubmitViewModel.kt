@@ -64,6 +64,10 @@ class OxQuizSubmitViewModel @Inject constructor(
         _quizSubmitUiState.update { state }
     }
 
+    fun resetResultUiState() {
+        _submitResultUiState.update { SubmitResultUiState.NotSubmitted }
+    }
+
     fun submitMission() {
         viewModelScope.launch {
             _submitResultUiState.update { SubmitResultUiState.Loading }
