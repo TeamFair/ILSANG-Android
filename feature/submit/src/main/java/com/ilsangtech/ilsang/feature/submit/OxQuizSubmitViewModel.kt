@@ -61,7 +61,26 @@ class OxQuizSubmitViewModel @Inject constructor(
     )
 
     fun updateSubmitState(state: OxQuizSubmitUiState) {
-        _quizSubmitUiState.update { state }
+        _quizSubmitUiState.update { submitUiState ->
+            when (submitUiState) {
+                OxQuizSubmitUiState.NotSelected -> state
+                OxQuizSubmitUiState.Correct -> {
+                    if (state == OxQuizSubmitUiState.Correct) {
+                        OxQuizSubmitUiState.NotSelected
+                    } else {
+                        state
+                    }
+                }
+
+                OxQuizSubmitUiState.Incorrect -> {
+                    if (state == OxQuizSubmitUiState.Incorrect) {
+                        OxQuizSubmitUiState.NotSelected
+                    } else {
+                        state
+                    }
+                }
+            }
+        }
     }
 
     fun resetResultUiState() {
