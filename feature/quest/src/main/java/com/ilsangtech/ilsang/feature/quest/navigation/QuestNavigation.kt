@@ -13,7 +13,7 @@ data object QuestBaseRoute
 data object QuestRoute
 
 fun NavGraphBuilder.questNavigation(
-    onNavigateToSubmit: (Int, Int) -> Unit,
+    onNavigateToSubmit: (Int, Int, String) -> Unit,
     onNavigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {

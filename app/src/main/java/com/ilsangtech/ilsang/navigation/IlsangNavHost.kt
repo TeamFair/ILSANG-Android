@@ -53,7 +53,7 @@ import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
-import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
+import com.ilsangtech.ilsang.feature.submit.navigation.navigateToSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
 import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
@@ -107,9 +107,7 @@ fun IlsangNavHost(
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },
-                navigateToSubmit = { questId, missionId ->
-                    navController.navigate(ImageSubmitRoute(questId, missionId))
-                },
+                navigateToSubmit = navController::navigateToSubmit,
                 onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
                     navController.navigate(MyZoneBaseRoute)
@@ -123,9 +121,7 @@ fun IlsangNavHost(
             )
 
             questNavigation(
-                onNavigateToSubmit = { questId, missionId ->
-                    navController.navigate(ImageSubmitRoute(questId, missionId))
-                },
+                onNavigateToSubmit = navController::navigateToSubmit,
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
                 },

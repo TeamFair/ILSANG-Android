@@ -47,7 +47,7 @@ internal fun HomeTabScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onMissionImageClick: (Int) -> Unit,
@@ -83,7 +83,7 @@ private fun HomeTabScreen(
     selectedQuest: QuestDetail?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onBannerClick: (Banner) -> Unit,
@@ -114,11 +114,11 @@ private fun HomeTabScreen(
             },
             onApproveButtonClick = {
                 coroutineScope.launch {
-                    val missionId = selectedQuest.missions.firstOrNull()?.id
+                    val mission = selectedQuest.missions.firstOrNull()
                     bottomSheetState.hide()
                     onUnselectQuest()
-                    missionId?.let { missionId ->
-                        navigateToSubmit(selectedQuest.id, missionId)
+                    mission?.let { missionId ->
+                        navigateToSubmit(selectedQuest.id, mission.id, mission.type)
                     }
                 }
             }
@@ -351,7 +351,7 @@ private fun HomeTabScreenPreview() {
         selectedQuest = null,
         navigateToQuestTab = {},
         navigateToMyTab = {},
-        navigateToSubmit = { _, _ -> },
+        navigateToSubmit = { _, _, _ -> },
         navigateToRankingTab = {},
         navigateToProfile = {},
         onBannerClick = {},
