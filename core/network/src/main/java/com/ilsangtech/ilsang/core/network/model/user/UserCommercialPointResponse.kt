@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserCommercialPointResponse(
-    val topCommercialArea: TopCommercialAreaNetworkModel,
+    val topCommercialArea: TopCommercialAreaNetworkModel?,
     val totalOwnerContributions: List<TotalOwnerContributionNetworkModel>
 )

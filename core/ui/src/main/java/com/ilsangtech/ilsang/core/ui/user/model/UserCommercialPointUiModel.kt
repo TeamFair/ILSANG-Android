@@ -5,7 +5,7 @@ import com.ilsangtech.ilsang.core.model.user.TotalOwnerContribution
 
 data class UserCommercialPointUiModel(
     val nickname: String,
-    val topCommercialArea: TopCommercialAreaUiModel,
+    val topCommercialArea: TopCommercialAreaUiModel?,
     val totalOwnerContributions: List<TotalOwnerContributionUiModel>
 )
 

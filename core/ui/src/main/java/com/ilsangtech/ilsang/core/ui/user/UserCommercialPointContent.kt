@@ -73,9 +73,11 @@ internal fun UserCommercialPointContent(
                     style = heading02
                 )
                 Spacer(Modifier.height(24.dp))
-                TopCommercialAreaContent(
-                    topCommercialArea = userCommercialPoint.topCommercialArea
-                )
+                userCommercialPoint.topCommercialArea?.let {
+                    TopCommercialAreaContent(
+                        topCommercialArea = userCommercialPoint.topCommercialArea
+                    )
+                }
                 Spacer(Modifier.height(48.dp))
                 TotalOwnerContributionContent(
                     totalOwnerContributions = userCommercialPoint.totalOwnerContributions

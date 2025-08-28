@@ -27,11 +27,13 @@ internal fun UserPointSummaryResponse.toUserPointSummary(): UserPointSummary {
 
 internal fun UserCommercialPointResponse.toUserCommercialPoint(): UserCommercialPoint {
     return UserCommercialPoint(
-        topCommercialArea = TopCommercialArea(
-            commercialAreaCode = topCommercialArea.commercialAreaCode,
-            ownerContributionPercent = topCommercialArea.ownerContributionPercent,
-            point = topCommercialArea.point
-        ),
+        topCommercialArea = topCommercialArea?.let {
+            TopCommercialArea(
+                commercialAreaCode = it.commercialAreaCode,
+                ownerContributionPercent = it.ownerContributionPercent,
+                point = it.point
+            )
+        },
         totalOwnerContributions = totalOwnerContributions.map { contribution ->
             com.ilsangtech.ilsang.core.model.user.TotalOwnerContribution(
                 commercialAreaCode = contribution.commercialAreaCode,
