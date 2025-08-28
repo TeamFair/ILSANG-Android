@@ -20,7 +20,7 @@ data class TotalOwnerContributionUiModel(
     val point: Int
 )
 
-internal fun TopCommercialArea.toUiModel(areaName: String): TopCommercialAreaUiModel {
+fun TopCommercialArea.toUiModel(areaName: String): TopCommercialAreaUiModel {
     return TopCommercialAreaUiModel(
         commercialAreaName = areaName,
         contributionPercent = ownerContributionPercent,
@@ -28,7 +28,7 @@ internal fun TopCommercialArea.toUiModel(areaName: String): TopCommercialAreaUiM
     )
 }
 
-internal fun TotalOwnerContribution.toUiModel(areaName: String): TotalOwnerContributionUiModel {
+fun TotalOwnerContribution.toUiModel(areaName: String): TotalOwnerContributionUiModel {
     return TotalOwnerContributionUiModel(
         commercialAreaName = areaName,
         point = point
