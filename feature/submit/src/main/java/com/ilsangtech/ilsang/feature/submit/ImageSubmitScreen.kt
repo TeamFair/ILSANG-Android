@@ -98,7 +98,6 @@ internal fun ImageSubmitScreen(
             SubmitErrorDialog(
                 onDismissRequest = {
                     imageSubmitViewModel.completeSubmit()
-                    onDismiss()
                 }
             )
         }

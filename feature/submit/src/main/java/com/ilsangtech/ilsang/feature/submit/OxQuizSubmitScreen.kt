@@ -76,7 +76,6 @@ internal fun OxQuizSubmitScreen(
         is SubmitResultUiState.Error -> {
             SubmitErrorDialog {
                 viewModel.resetResultUiState()
-                onBackButtonClick()
             }
         }
 

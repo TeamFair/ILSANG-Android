@@ -77,7 +77,6 @@ internal fun WordsQuizSubmitScreen(
         SubmitResultUiState.Error -> {
             SubmitErrorDialog {
                 viewModel.resetResultUiState()
-                onBackButtonClick()
             }
         }
 
