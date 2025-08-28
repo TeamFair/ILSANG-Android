@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MissionSubmitResponse(
     val resultCode: String,
-    val challengeId: String?
+    val challengeId: Int?
 )
