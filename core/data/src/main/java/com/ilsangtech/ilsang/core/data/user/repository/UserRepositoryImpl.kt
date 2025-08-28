@@ -34,10 +34,10 @@ class UserRepositoryImpl @Inject constructor(
             userInfoResponse.toMyInfo(myZoneCommercialAreaCode)
         }
 
-    override suspend fun getUserInfo(userId: String): Result<UserInfo> {
-        return runCatching {
+    override fun getUserInfo(userId: String): Flow<UserInfo> = flow {
+        emit(
             userDataSource.getUserInfo(userId = userId).toUserInfo()
-        }
+        )
     }
 
     override fun getUserPoint(userId: String?, seasonId: Int?): Flow<UserPoint> = flow {
