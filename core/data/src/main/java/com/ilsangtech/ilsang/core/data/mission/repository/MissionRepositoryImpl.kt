@@ -98,7 +98,11 @@ class MissionRepositoryImpl(
                 quizId = quizId,
                 answer = answer
             )
-            response.resultCode == "S1000"
+            response.resultCode == SUBMIT_SUCCESS_CODE
         }
+    }
+
+    private companion object {
+        const val SUBMIT_SUCCESS_CODE = "S1000"
     }
 }
