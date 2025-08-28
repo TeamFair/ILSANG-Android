@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
@@ -45,7 +46,7 @@ import com.ilsangtech.ilsang.feature.submit.model.WordsQuizUiState
 
 @Composable
 internal fun WordsQuizSubmitScreen(
-    viewModel: WordsQuizSubmitViewModel,
+    viewModel: WordsQuizSubmitViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
     val wordsQuizUiState by viewModel.wordsQuizUiState.collectAsStateWithLifecycle()
