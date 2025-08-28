@@ -1,0 +1,10 @@
+package com.ilsangtech.ilsang.feature.profile.model
+
+import com.ilsangtech.ilsang.core.model.title.Title
+
+data class UserProfileInfoUiModel(
+    val nickname: String,
+    val profileImageId: String?,
+    val title: Title?,
+    val point: Int
+)
