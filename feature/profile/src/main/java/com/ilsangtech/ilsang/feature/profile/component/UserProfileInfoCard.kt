@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -40,11 +41,13 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.toSp
+import com.ilsangtech.ilsang.feature.profile.BuildConfig
 
 @Composable
 internal fun UserProfileInfoCard(
     modifier: Modifier = Modifier,
     nickname: String,
+    profileImageId: String?,
     title: Title?,
     point: Int
 ) {
@@ -60,10 +63,13 @@ internal fun UserProfileInfoCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.padding(bottom = 7.dp)) {
-                Icon(
-                    modifier = Modifier.size(57.dp),
-                    tint = Color.Unspecified,
-                    painter = painterResource(R.drawable.default_user_profile),
+                AsyncImage(
+                    modifier = Modifier
+                        .size(57.dp)
+                        .clip(CircleShape),
+                    model = BuildConfig.IMAGE_URL + profileImageId,
+                    placeholder = painterResource(R.drawable.default_user_profile),
+                    error = painterResource(R.drawable.default_user_profile),
                     contentDescription = null
                 )
                 Box(
@@ -171,6 +177,7 @@ private fun UserProfileInfoCardPreview() {
     UserProfileInfoCard(
         nickname = "김일상123",
         point = 650,
+        profileImageId = null,
         title = Title(
             name = "세상을 움직이는 자",
             grade = TitleGrade.Rare,
