@@ -5,10 +5,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ilsangtech.ilsang.core.data.mission.ExampleMissionHistoryPagingSource
 import com.ilsangtech.ilsang.core.data.mission.RandomMissionHistoryPagingSource
+import com.ilsangtech.ilsang.core.data.mission.UserMissionHistoryPagingSource
 import com.ilsangtech.ilsang.core.network.api.MissionApiService
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
 import kotlinx.coroutines.flow.Flow
 
 class MissionDataSourceImpl(
@@ -28,6 +30,15 @@ class MissionDataSourceImpl(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
                 ExampleMissionHistoryPagingSource(missionId, missionApiService)
+            }
+        ).flow
+    }
+
+    override fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistoryNetworkModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                UserMissionHistoryPagingSource(userId, missionApiService)
             }
         ).flow
     }
