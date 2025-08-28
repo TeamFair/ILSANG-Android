@@ -1,6 +1,6 @@
-package com.ilsangtech.ilsang.feature.profile.model
+package com.ilsangtech.ilsang.core.ui.season.model
 
-interface SeasonUiModel {
+sealed interface SeasonUiModel {
     data object Total : SeasonUiModel {
         override fun toString(): String = "전체"
     }
