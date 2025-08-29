@@ -7,13 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.FaqScreen
 import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
-import com.ilsangtech.ilsang.feature.my.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.SettingScreen
 import com.ilsangtech.ilsang.feature.my.TermsScreen
 import com.ilsangtech.ilsang.feature.my.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.WithdrawalScreen
 import com.ilsangtech.ilsang.feature.my.component.CustomerCenterScreen
+import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -70,12 +70,7 @@ fun NavGraphBuilder.myTabNavigation(
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
-            MyTabScreen(
-                navigateToNicknameEdit = navigateToNicknameEdit,
-                navigateToMyChallenge = navigateToMyChallenge,
-                navigateToSetting = navigateToSetting,
-                navigateToMyTitle = navigateToMyTitle
-            )
+            MyTabScreen()
         }
         composable<MyEditRoute>(
             enterTransition = {
