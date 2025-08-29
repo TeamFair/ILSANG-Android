@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
+import kotlin.math.roundToInt
 
 internal fun UserPointResponse.toUserPoint(): UserPoint {
     return UserPoint(
@@ -30,7 +31,7 @@ internal fun UserCommercialPointResponse.toUserCommercialPoint(): UserCommercial
         topCommercialArea = topCommercialArea?.let {
             TopCommercialArea(
                 commercialAreaCode = it.commercialAreaCode,
-                ownerContributionPercent = it.ownerContributionPercent,
+                ownerContributionPercent = it.ownerContributionPercent.roundToInt(),
                 point = it.point
             )
         },
