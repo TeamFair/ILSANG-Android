@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +32,6 @@ import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray400
-import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.designsystem.theme.heading02
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -48,39 +44,52 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
-internal fun UserCommercialPointContent(
+fun TopCommercialAreaContent(
     modifier: Modifier = Modifier,
-    userCommercialPoint: UserCommercialPointUiModel
+    topCommercialArea: TopCommercialAreaUiModel
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
-            text = "${userCommercialPoint.nickname} 님의 일상존",
-            style = heading01,
-            color = Color.Black
+            text = "일상존 점수",
+            style = heading02
         )
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(12.dp)
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Icon(
+                modifier = Modifier.size(67.dp),
+                painter = painterResource(R.drawable.icon_commercial_reward),
+                tint = Color.Unspecified,
+                contentDescription = null
+            )
+            Column {
                 Text(
-                    text = "일상존 점수",
-                    style = heading02
+                    text = topCommercialArea.commercialAreaName,
+                    style = title02
                 )
-                Spacer(Modifier.height(24.dp))
-                userCommercialPoint.topCommercialArea?.let {
-                    TopCommercialAreaContent(
-                        topCommercialArea = userCommercialPoint.topCommercialArea
-                    )
-                }
-                Spacer(Modifier.height(48.dp))
-                TotalOwnerContributionContent(
-                    totalOwnerContributions = userCommercialPoint.totalOwnerContributions
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = String.format(
+                        Locale.getDefault(),
+                        "%,d",
+                        topCommercialArea.point
+                    ) + "P",
+                    style = title01,
+                    color = primary500
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = "${topCommercialArea.commercialAreaName} 전체 기여자 중 " +
+                            "${topCommercialArea.contributionPercent}%" +
+                            "를 기여했어요!",
+                    style = caption02,
+                    color = gray400
                 )
             }
         }
@@ -88,50 +97,7 @@ internal fun UserCommercialPointContent(
 }
 
 @Composable
-private fun TopCommercialAreaContent(
-    modifier: Modifier = Modifier,
-    topCommercialArea: TopCommercialAreaUiModel
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(67.dp),
-            painter = painterResource(R.drawable.icon_commercial_reward),
-            tint = Color.Unspecified,
-            contentDescription = null
-        )
-        Column {
-            Text(
-                text = topCommercialArea.commercialAreaName,
-                style = title02
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = String.format(
-                    Locale.getDefault(),
-                    "%,d",
-                    topCommercialArea.point
-                ) + "P",
-                style = title01,
-                color = primary500
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = "${topCommercialArea.commercialAreaName} 전체 기여자 중 " +
-                        "${topCommercialArea.contributionPercent}%" +
-                        "를 기여했어요!",
-                style = caption02,
-                color = gray400
-            )
-        }
-    }
-}
-
-@Composable
-private fun TotalOwnerContributionContent(
+fun TotalOwnerContributionContent(
     modifier: Modifier = Modifier,
     totalOwnerContributions: List<TotalOwnerContributionUiModel>
 ) {
@@ -255,7 +221,7 @@ private fun TotalOwnerContributionItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun UserCommercialPointContentPreview() {
+private fun UserCommercialPointCardPreview() {
     val userCommercialPointUiModel = UserCommercialPointUiModel(
         nickname = "박일상 Daily Park",
         topCommercialArea = TopCommercialAreaUiModel(
@@ -279,8 +245,14 @@ private fun UserCommercialPointContentPreview() {
 
         )
     )
-    UserCommercialPointContent(
-        modifier = Modifier.padding(16.dp),
-        userCommercialPoint = userCommercialPointUiModel
-    )
+
+    Column {
+        TopCommercialAreaContent(
+            topCommercialArea = userCommercialPointUiModel.topCommercialArea!!
+        )
+        Spacer(Modifier.height(48.dp))
+        TotalOwnerContributionContent(
+            totalOwnerContributions = userCommercialPointUiModel.totalOwnerContributions
+        )
+    }
 }
