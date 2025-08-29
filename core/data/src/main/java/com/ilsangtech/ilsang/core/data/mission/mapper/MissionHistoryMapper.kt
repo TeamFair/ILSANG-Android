@@ -45,6 +45,9 @@ internal fun UserMissionHistoryNetworkModel.toUserMissionHistory(): UserMissionH
         missionHistoryId = missionHistoryId,
         title = title,
         submitImageId = submitImageId,
+        questImageId = questImageId,
+        viewCount = viewCount,
+        likeCount = likeCount,
         createdAt = createdAt
     )
 }
