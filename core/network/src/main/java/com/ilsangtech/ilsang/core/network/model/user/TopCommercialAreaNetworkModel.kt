@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TopCommercialAreaNetworkModel(
     val commercialAreaCode: String,
-    val ownerContributionPercent: Int,
+    val ownerContributionPercent: Double,
     val point: Int
 )

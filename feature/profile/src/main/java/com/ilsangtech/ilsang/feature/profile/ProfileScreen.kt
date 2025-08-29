@@ -20,24 +20,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.Challenge
-import com.ilsangtech.ilsang.core.model.UserInfo
-import com.ilsangtech.ilsang.core.model.UserXpStats
+import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
+import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.title02
-import com.ilsangtech.ilsang.feature.profile.component.UserInfoContent
-import com.ilsangtech.ilsang.feature.profile.component.UserStatsContent
-import com.ilsangtech.ilsang.feature.profile.component.userChallengeContent
-import kotlinx.coroutines.flow.flowOf
+import com.ilsangtech.ilsang.feature.profile.component.UserCommercialPointContent
+import com.ilsangtech.ilsang.feature.profile.component.UserObtainedPointContent
+import com.ilsangtech.ilsang.feature.profile.component.UserProfileInfoCard
+import com.ilsangtech.ilsang.feature.profile.component.userMissionHistoryContent
+import com.ilsangtech.ilsang.feature.profile.model.ProfileUiState
 
 @Composable
 fun ProfileScreen(
@@ -46,10 +45,14 @@ fun ProfileScreen(
     onPopBackStack: () -> Unit
 ) {
     val uiState by profileViewModel.profileUiState.collectAsStateWithLifecycle()
-    val challengePaging = profileViewModel.challengePaging.collectAsLazyPagingItems()
+    val selectedSeason by profileViewModel.selectedSeason.collectAsStateWithLifecycle()
+    val userMissionHistories = profileViewModel.missionHistories.collectAsLazyPagingItems()
+
     ProfileScreen(
         uiState = uiState,
-        challengePaging = challengePaging,
+        selectedSeason = selectedSeason,
+        userMissionHistories = userMissionHistories,
+        onSeasonChanged = profileViewModel::updateSeason,
         navigateToChallenge = navigateToChallenge,
         onBackButtonClick = onPopBackStack
     )
@@ -58,7 +61,9 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreen(
     uiState: ProfileUiState,
-    challengePaging: LazyPagingItems<Challenge>,
+    selectedSeason: SeasonUiModel,
+    userMissionHistories: LazyPagingItems<UserMissionHistoryUiModel>,
+    onSeasonChanged: (SeasonUiModel) -> Unit,
     navigateToChallenge: (Challenge) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
@@ -71,29 +76,41 @@ private fun ProfileScreen(
                 onBackButtonClick = onBackButtonClick
             )
             LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(
-                    top = 16.dp,
-                    bottom = 62.dp,
-                    start = 20.dp,
-                    end = 20.dp
+                    start = 20.dp, end = 20.dp,
+                    bottom = 72.dp
                 )
             ) {
                 when (uiState) {
                     is ProfileUiState.Success -> {
                         item {
-                            UserInfoContent(
-                                nickname = uiState.userInfo.nickname,
-                                xpPoint = uiState.userInfo.xpPoint
+                            UserProfileInfoCard(
+                                nickname = uiState.userProfileInfo.nickname,
+                                profileImageId = uiState.userProfileInfo.profileImageId,
+                                title = uiState.userProfileInfo.title,
+                                point = uiState.userProfileInfo.point,
                             )
                         }
-                        item { Spacer(Modifier.height(24.dp)) }
+                        item { Spacer(Modifier.height(48.dp)) }
                         item {
-                            UserStatsContent(userXpStats = uiState.userXpStats)
+                            UserCommercialPointContent(
+                                userCommercialPointUiModel = uiState.userCommercialPoint
+                            )
                         }
-                        item { Spacer(Modifier.height(24.dp)) }
-                        userChallengeContent(
-                            challengePaging = challengePaging,
-                            onChallengeClick = navigateToChallenge
+                        item { Spacer(Modifier.height(48.dp)) }
+                        item {
+                            UserObtainedPointContent(
+                                nickname = uiState.userProfileInfo.nickname,
+                                userObtainedPointUiModel = uiState.userPoint,
+                                selectedSeason = selectedSeason,
+                                onSeasonChange = onSeasonChanged
+                            )
+                        }
+                        item { Spacer(Modifier.height(48.dp)) }
+                        userMissionHistoryContent(
+                            userMissionHistoryItems = userMissionHistories,
+                            onClick = {}
                         )
                     }
 
@@ -142,34 +159,4 @@ private fun ProfileScreenHeader(
         )
 
     }
-}
-
-@Composable
-@Preview
-private fun ProfileScreenPreview() {
-    ProfileScreen(
-        uiState = ProfileUiState.Success(
-            userInfo = UserInfo(
-                completeChallengeCount = 0,
-                couponCount = 0,
-                nickname = "가나다라",
-                profileImage = null,
-                status = "",
-                xpPoint = 0
-            ),
-            userXpStats = UserXpStats(
-                charmStat = 0,
-                funStat = 0,
-                intellectStat = 0,
-                strengthStat = 0,
-            )
-        ),
-        challengePaging = flowOf(
-            PagingData.from(
-                data = listOf<Challenge>()
-            )
-        ).collectAsLazyPagingItems(),
-        navigateToChallenge = {},
-        onBackButtonClick = {}
-    )
 }

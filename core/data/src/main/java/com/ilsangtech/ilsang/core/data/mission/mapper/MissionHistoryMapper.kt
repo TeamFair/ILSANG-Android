@@ -4,9 +4,11 @@ import com.ilsangtech.ilsang.core.data.title.mapper.toTitle
 import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
+import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryUserNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
 
 internal fun RandomMissionHistoryNetworkModel.toRandomMissionHistory(): RandomMissionHistory {
     return RandomMissionHistory(
@@ -35,6 +37,18 @@ internal fun ExampleMissionHistoryNetworkModel.toExampleMissionHistory(): Exampl
         title = title,
         user = user.toMissionHistoryUser(),
         viewCount = viewCount
+    )
+}
+
+internal fun UserMissionHistoryNetworkModel.toUserMissionHistory(): UserMissionHistory {
+    return UserMissionHistory(
+        missionHistoryId = missionHistoryId,
+        title = title,
+        submitImageId = submitImageId,
+        questImageId = questImageId,
+        viewCount = viewCount,
+        likeCount = likeCount,
+        createdAt = createdAt
     )
 }
 

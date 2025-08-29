@@ -1,9 +1,6 @@
-package com.ilsangtech.ilsang.core.network.model.mission
+package com.ilsangtech.ilsang.core.model.mission
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class UserMissionHistoryNetworkModel(
+data class UserMissionHistory(
     val missionHistoryId: Int,
     val title: String,
     val submitImageId: String,

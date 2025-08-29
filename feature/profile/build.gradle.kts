@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:util"))
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)

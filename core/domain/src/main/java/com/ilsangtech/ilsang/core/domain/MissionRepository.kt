@@ -3,12 +3,15 @@ package com.ilsangtech.ilsang.core.domain
 import androidx.paging.PagingData
 import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
+import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
 import kotlinx.coroutines.flow.Flow
 
 interface MissionRepository {
     fun getRandomMissionHistory(): Flow<PagingData<RandomMissionHistory>>
 
     fun getExampleMissionHistory(missionId: Int): Flow<PagingData<ExampleMissionHistory>>
+
+    fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistory>>
 
     suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit>
 
