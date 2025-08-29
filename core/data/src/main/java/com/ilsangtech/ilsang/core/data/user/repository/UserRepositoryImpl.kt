@@ -17,8 +17,8 @@ import com.ilsangtech.ilsang.core.model.user.UserCommercialPoint
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -29,9 +29,14 @@ class UserRepositoryImpl @Inject constructor(
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
     override fun getMyInfo(): Flow<MyInfo> =
-        userDataStore.userMyZone.map { myZoneCommercialAreaCode ->
+        combine(userDataStore.userMyZone, getUserPoint()) { myZoneCommercialAreaCode, userPoint ->
             val userInfoResponse = userDataSource.getUserInfo(userId = null)
-            userInfoResponse.toMyInfo(myZoneCommercialAreaCode)
+            val totalPoint =
+                userPoint.metroAreaPoint + userPoint.commercialAreaPoint + userPoint.contributionPoint
+            userInfoResponse.toMyInfo(
+                totalPoint = totalPoint,
+                myZoneCommercialAreaCode = myZoneCommercialAreaCode
+            )
         }
 
     override fun getUserInfo(userId: String): Flow<UserInfo> = flow {

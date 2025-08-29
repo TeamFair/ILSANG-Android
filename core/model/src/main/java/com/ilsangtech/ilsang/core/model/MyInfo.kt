@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.model.title.Title
 data class MyInfo(
     val id: String,
     val channel: String,
+    val totalPoint: Int,
     val isCommercialAreaCode: String?,
     val myCommericalAreaCode: String,
     val email: String,
