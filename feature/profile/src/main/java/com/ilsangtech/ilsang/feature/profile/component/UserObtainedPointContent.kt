@@ -12,17 +12,14 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.core.ui.user.UserObtainedPointCard
+import com.ilsangtech.ilsang.core.ui.user.model.UserObtainedPointUiModel
 import com.ilsangtech.ilsang.designsystem.theme.heading01
 
 @Composable
 internal fun UserObtainedPointContent(
     modifier: Modifier = Modifier,
     nickname: String,
-    completedQuestCount: Int,
-    metroAreaPoint: RewardPoint.Metro,
-    commercialAreaPoint: RewardPoint.Commercial,
-    contributionPoint: RewardPoint.Contribute,
-    seasonList: List<SeasonUiModel>,
+    userObtainedPointUiModel: UserObtainedPointUiModel,
     selectedSeason: SeasonUiModel,
     onSeasonChange: (SeasonUiModel) -> Unit
 ) {
@@ -36,11 +33,11 @@ internal fun UserObtainedPointContent(
             color = Color.Black
         )
         UserObtainedPointCard(
-            completedQuestCount = completedQuestCount,
-            metroAreaPoint = metroAreaPoint,
-            commercialAreaPoint = commercialAreaPoint,
-            contributionPoint = contributionPoint,
-            seasonList = seasonList,
+            completedQuestCount = userObtainedPointUiModel.completedQuestCount,
+            metroAreaPoint = userObtainedPointUiModel.metroAreaPoint,
+            commercialAreaPoint = userObtainedPointUiModel.commercialAreaPoint,
+            contributionPoint = userObtainedPointUiModel.contributionPoint,
+            seasonList = userObtainedPointUiModel.seasonList,
             selectedSeason = selectedSeason,
             onSeasonChange = onSeasonChange
         )
@@ -58,11 +55,13 @@ private fun UserObtainedPointContentPreview() {
     )
     UserObtainedPointContent(
         nickname = "일상맨",
-        completedQuestCount = 10,
-        metroAreaPoint = RewardPoint.Metro(1100),
-        commercialAreaPoint = RewardPoint.Commercial(2200),
-        contributionPoint = RewardPoint.Contribute(2300),
-        seasonList = seasonList,
+        userObtainedPointUiModel = UserObtainedPointUiModel(
+            completedQuestCount = 10,
+            metroAreaPoint = RewardPoint.Metro(1100),
+            commercialAreaPoint = RewardPoint.Commercial(2200),
+            contributionPoint = RewardPoint.Contribute(2300),
+            seasonList = seasonList
+        ),
         selectedSeason = seasonList.first(),
         onSeasonChange = {}
     )
