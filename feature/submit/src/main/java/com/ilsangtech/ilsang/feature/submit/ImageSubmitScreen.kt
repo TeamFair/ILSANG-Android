@@ -50,17 +50,18 @@ import com.ilsangtech.ilsang.designsystem.theme.title02
 import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
+import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import java.io.File
 
 @Composable
-fun SubmitScreen(
-    submitViewModel: SubmitViewModel = hiltViewModel(),
+internal fun ImageSubmitScreen(
+    imageSubmitViewModel: ImageSubmitViewModel = hiltViewModel(),
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val submitUiState by submitViewModel.submitUiState.collectAsStateWithLifecycle()
+    val submitUiState by imageSubmitViewModel.submitUiState.collectAsStateWithLifecycle()
 
-    val tempFile by submitViewModel.capturedImageFile.collectAsStateWithLifecycle()
+    val tempFile by imageSubmitViewModel.capturedImageFile.collectAsStateWithLifecycle()
     val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
     var lastModified by remember { mutableLongStateOf(tempFile.lastModified()) }
 
@@ -78,26 +79,25 @@ fun SubmitScreen(
     }
 
     when (submitUiState) {
-        is SubmitUiState.Loading -> {
+        is SubmitResultUiState.Loading -> {
             SubmitLoadingDialog()
         }
 
-        is SubmitUiState.Success -> {
-            val rewardList = (submitUiState as SubmitUiState.Success).rewardList
+        is SubmitResultUiState.Success -> {
+            val rewardList = (submitUiState as SubmitResultUiState.Success).rewardPoints
             SubmitSuccessDialog(
-                rewardList = rewardList,
-                onDismiss = {
-                    submitViewModel.completeSubmit()
+                rewardPoints = rewardList,
+                onDismissRequest = {
+                    imageSubmitViewModel.completeSubmit()
                     onDismiss()
                 }
             )
         }
 
-        is SubmitUiState.Error -> {
+        is SubmitResultUiState.Error -> {
             SubmitErrorDialog(
                 onDismissRequest = {
-                    submitViewModel.completeSubmit()
-                    onDismiss()
+                    imageSubmitViewModel.completeSubmit()
                 }
             )
         }
@@ -105,19 +105,19 @@ fun SubmitScreen(
         else -> {}
     }
 
-    SubmitScreen(
+    ImageSubmitScreen(
         imageFile = tempFile,
         lastModifyTime = lastModified,
         onBackButtonClick = onDismiss,
         onRetakeButtonClick = {
             imageCaptureLauncher.launch(tempFileUri)
         },
-        onSubmitButtonClick = submitViewModel::submitApproveImage
+        onSubmitButtonClick = imageSubmitViewModel::submitApproveImage
     )
 }
 
 @Composable
-private fun SubmitScreen(
+private fun ImageSubmitScreen(
     imageFile: File,
     lastModifyTime: Long,
     onBackButtonClick: () -> Unit,
@@ -130,7 +130,7 @@ private fun SubmitScreen(
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        SubmitScreenHeader(onBackButtonClick)
+        ImageSubmitScreenHeader(onBackButtonClick)
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -146,7 +146,7 @@ private fun SubmitScreen(
                     .padding(bottom = 58.dp)
             )
             Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                SubmitScreenFooter(
+                ImageSubmitScreenFooter(
                     onRetakeButtonClick = onRetakeButtonClick,
                     onSubmitButtonClick = onSubmitButtonClick
                 )
@@ -156,7 +156,7 @@ private fun SubmitScreen(
 }
 
 @Composable
-private fun SubmitScreenHeader(
+private fun ImageSubmitScreenHeader(
     onBackButtonClick: () -> Unit
 ) {
     Box(
@@ -188,7 +188,7 @@ private fun SubmitScreenHeader(
 }
 
 @Composable
-private fun SubmitScreenFooter(
+private fun ImageSubmitScreenFooter(
     onRetakeButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit
 ) {
@@ -244,6 +244,14 @@ private fun SubmitScreenFooter(
 
 @Preview
 @Composable
-private fun SubmitScreenPreview() {
-    SubmitScreen(File.createTempFile("", ""), 0L, {}, {}, {})
+private fun ImageSubmitScreenPreview() {
+    ImageSubmitScreen(
+        File.createTempFile(
+            "", ""
+        ),
+        0L,
+        {},
+        {},
+        {}
+    )
 }

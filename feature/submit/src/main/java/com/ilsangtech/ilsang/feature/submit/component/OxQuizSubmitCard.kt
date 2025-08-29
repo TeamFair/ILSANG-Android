@@ -34,13 +34,13 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.subTitle02
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.designsystem.theme.toSp
-import com.ilsangtech.ilsang.feature.submit.OxQuizSubmitUiState
-import com.ilsangtech.ilsang.feature.submit.QuizUiState
+import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
 
 @Composable
 internal fun OxQuizSubmitCard(
     modifier: Modifier = Modifier,
-    oxQuizUiState: QuizUiState.OxQuizUiState,
+    question: String,
+    quizSubmitUiState: OxQuizSubmitUiState,
     onCorrectButtonClick: () -> Unit,
     onIncorrectButtonClick: () -> Unit,
 ) {
@@ -83,7 +83,7 @@ internal fun OxQuizSubmitCard(
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                text = oxQuizUiState.question,
+                text = question,
                 style = subTitle02,
                 color = Color.Black
             )
@@ -95,13 +95,13 @@ internal fun OxQuizSubmitCard(
                 OxQuizButton(
                     modifier = Modifier.weight(1f),
                     text = "O",
-                    isSelected = oxQuizUiState.submitState is OxQuizSubmitUiState.Correct,
+                    isSelected = quizSubmitUiState == OxQuizSubmitUiState.Correct,
                     onClick = onCorrectButtonClick
                 )
                 OxQuizButton(
                     modifier = Modifier.weight(1f),
                     text = "X",
-                    isSelected = oxQuizUiState.submitState is OxQuizSubmitUiState.Incorrect,
+                    isSelected = quizSubmitUiState == OxQuizSubmitUiState.Incorrect,
                     onClick = onIncorrectButtonClick
                 )
             }
@@ -136,37 +136,13 @@ private fun OxQuizButton(
 @Preview
 @Composable
 private fun OxQuizSubmitCardPreview() {
-    var oxQuizUiState by remember {
-        mutableStateOf(
-            QuizUiState.OxQuizUiState(
-                question = "야미돈까스에서 파는 메뉴 중 ‘치킨까스' 는 케첩소스와 함께 제공된다.",
-                submitState = OxQuizSubmitUiState.NotSelected
-            )
-        )
-    }
+    val question = "야미돈까스에서 파는 메뉴 중 ‘치킨까스' 는 케첩소스와 함께 제공된다."
+    var quizSubmitUiState by remember { mutableStateOf(OxQuizSubmitUiState.NotSelected) }
+
     OxQuizSubmitCard(
-        oxQuizUiState = oxQuizUiState,
-        onCorrectButtonClick = {
-            if (oxQuizUiState.submitState == OxQuizSubmitUiState.Correct) {
-                oxQuizUiState = oxQuizUiState.copy(
-                    submitState = OxQuizSubmitUiState.NotSelected
-                )
-            } else {
-                oxQuizUiState = oxQuizUiState.copy(
-                    submitState = OxQuizSubmitUiState.Correct
-                )
-            }
-        },
-        onIncorrectButtonClick = {
-            if (oxQuizUiState.submitState == OxQuizSubmitUiState.Incorrect) {
-                oxQuizUiState = oxQuizUiState.copy(
-                    submitState = OxQuizSubmitUiState.NotSelected
-                )
-            } else {
-                oxQuizUiState = oxQuizUiState.copy(
-                    submitState = OxQuizSubmitUiState.Incorrect
-                )
-            }
-        }
+        question = question,
+        quizSubmitUiState = quizSubmitUiState,
+        onCorrectButtonClick = {},
+        onIncorrectButtonClick = {}
     )
 }

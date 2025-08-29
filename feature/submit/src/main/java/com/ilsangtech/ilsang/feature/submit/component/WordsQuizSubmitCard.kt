@@ -32,12 +32,13 @@ import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.subTitle02
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.designsystem.theme.toSp
-import com.ilsangtech.ilsang.feature.submit.QuizUiState
 
 @Composable
 internal fun WordsQuizSubmitCard(
     modifier: Modifier = Modifier,
-    wordsQuizUiState: QuizUiState.WordsQuizUiState
+    question: String,
+    hint: String?,
+    answer: TextFieldState
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -82,7 +83,7 @@ internal fun WordsQuizSubmitCard(
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = wordsQuizUiState.question,
+                    text = question,
                     style = subTitle02,
                     color = Color.Black
                 )
@@ -95,14 +96,14 @@ internal fun WordsQuizSubmitCard(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = wordsQuizUiState.hint,
+                    text = hint ?: "없음",
                     style = subTitle02,
                     color = gray300
                 )
             }
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
-                state = wordsQuizUiState.answer,
+                state = answer,
                 textStyle = caption01.copy(color = Color.Black),
                 decorator = { innerTextField ->
                     Box(
@@ -115,7 +116,7 @@ internal fun WordsQuizSubmitCard(
                                 horizontal = 16.dp
                             )
                     ) {
-                        if (wordsQuizUiState.answer.text.isEmpty()) {
+                        if (answer.text.isEmpty()) {
                             Text(
                                 text = "정답을 입력해 주세요.",
                                 style = caption01,
@@ -134,10 +135,8 @@ internal fun WordsQuizSubmitCard(
 @Composable
 private fun WordsQuizSubmitCardPreview() {
     WordsQuizSubmitCard(
-        wordsQuizUiState = QuizUiState.WordsQuizUiState(
-            question = "야미돈까스 정자동점의 베스트셀러 메뉴는?",
-            hint = "등심",
-            answer = TextFieldState(initialText = "등심 돈까스")
-        )
+        question = "야미돈까스 정자동점의 베스트셀러 메뉴는?",
+        hint = "등심",
+        answer = TextFieldState()
     )
 }

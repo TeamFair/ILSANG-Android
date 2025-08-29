@@ -18,7 +18,7 @@ fun NavGraphBuilder.homeNavigation(
     navigateToRankingTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToSubmit: (String) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,

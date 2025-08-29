@@ -47,7 +47,7 @@ internal fun HomeTabScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (String) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onMissionImageClick: (Int) -> Unit,
@@ -83,7 +83,7 @@ private fun HomeTabScreen(
     selectedQuest: QuestDetail?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (String) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onBannerClick: (Banner) -> Unit,
@@ -114,9 +114,12 @@ private fun HomeTabScreen(
             },
             onApproveButtonClick = {
                 coroutineScope.launch {
+                    val mission = selectedQuest.missions.firstOrNull()
                     bottomSheetState.hide()
                     onUnselectQuest()
-                    //TODO 제출 화면으로 이동 구현
+                    mission?.let { missionId ->
+                        navigateToSubmit(selectedQuest.id, mission.id, mission.type)
+                    }
                 }
             }
         )
@@ -348,7 +351,7 @@ private fun HomeTabScreenPreview() {
         selectedQuest = null,
         navigateToQuestTab = {},
         navigateToMyTab = {},
-        navigateToSubmit = {},
+        navigateToSubmit = { _, _, _ -> },
         navigateToRankingTab = {},
         navigateToProfile = {},
         onBannerClick = {},

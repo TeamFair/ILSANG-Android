@@ -22,4 +22,8 @@ interface MissionRepository {
     suspend fun unhateMissionHistory(missionHistoryId: Int): Result<Unit>
 
     suspend fun reportMissionHistory(missionHistoryId: Int): Result<Unit>
+
+    suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit>
+
+    suspend fun submitQuizMission(missionId: Int, quizId: Int, answer: String): Result<Boolean>
 }

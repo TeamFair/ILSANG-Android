@@ -77,4 +77,32 @@ class MissionRepositoryImpl(
             missionDataSource.reportMissionHistory(missionHistoryId)
         }
     }
+
+    override suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit> {
+        return runCatching {
+            missionDataSource.submitMission(
+                missionId = missionId,
+                imageId = imageId
+            )
+        }
+    }
+
+    override suspend fun submitQuizMission(
+        missionId: Int,
+        quizId: Int,
+        answer: String
+    ): Result<Boolean> {
+        return runCatching {
+            val response = missionDataSource.submitMission(
+                missionId = missionId,
+                quizId = quizId,
+                answer = answer
+            )
+            response.resultCode == SUBMIT_SUCCESS_CODE
+        }
+    }
+
+    private companion object {
+        const val SUBMIT_SUCCESS_CODE = "S1000"
+    }
 }

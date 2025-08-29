@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int) -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
     navigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {
@@ -92,11 +92,11 @@ fun QuestTabScreen(
                 }
             }
         },
-        onApproveButtonClick = { questId ->
+        onApproveButtonClick = { questId, missionId, missionType ->
             coroutineScope.launch {
                 bottomSheetState.hide()
                 questTabViewModel.unselectQuest()
-                navigateToSubmit(questId)
+                navigateToSubmit(questId, missionId, missionType)
             }
         }
     )
@@ -117,7 +117,7 @@ private fun QuestTabScreen(
     onSelectSortType: (SortTypeUiModel) -> Unit,
     onQuestClick: (Int) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
-    onApproveButtonClick: (Int) -> Unit,
+    onApproveButtonClick: (Int, Int, String) -> Unit,
     onMyZoneClick: () -> Unit,
     onMissionImageClick: (Int?) -> Unit,
     onDismissRequest: () -> Unit
@@ -131,7 +131,13 @@ private fun QuestTabScreen(
                 onMissionImageClick(selectedQuest.missions.firstOrNull()?.id)
             },
             onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
-            onApproveButtonClick = { onApproveButtonClick(selectedQuest.id) }
+            onApproveButtonClick = {
+                val questId = selectedQuest.id
+                val mission = selectedQuest.missions.firstOrNull()
+                mission?.let {
+                    onApproveButtonClick(questId, mission.id, mission.type)
+                }
+            }
         )
     }
 
@@ -231,7 +237,7 @@ private fun QuestTabScreenPreview() {
         onSelectSortType = {},
         onQuestClick = {},
         onFavoriteClick = { _, _ -> },
-        onApproveButtonClick = {},
+        onApproveButtonClick = { _, _, _ -> },
         onMyZoneClick = {},
         onMissionImageClick = {},
         onDismissRequest = {}

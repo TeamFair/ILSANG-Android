@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.data.mission.datasource
 
 import androidx.paging.PagingData
+import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
@@ -18,4 +19,11 @@ interface MissionDataSource {
     suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 
     suspend fun reportMissionHistory(missionHistoryId: Int)
+
+    suspend fun submitMission(
+        missionId: Int,
+        imageId: String? = null,
+        quizId: Int? = null,
+        answer: String? = null
+    ): MissionSubmitResponse
 }
