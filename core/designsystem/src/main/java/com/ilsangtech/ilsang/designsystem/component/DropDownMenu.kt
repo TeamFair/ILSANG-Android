@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +40,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 @Composable
 fun <T> DropDownMenu(
     modifier: Modifier = Modifier,
+    isBordered: Boolean = false,
     list: List<T>,
     selectedItem: T,
     onItemSelected: (T) -> Unit
@@ -51,11 +52,16 @@ fun <T> DropDownMenu(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(
-                    shape = if (!expanded) {
-                        RoundedCornerShape(8.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .then(
+                    if (isBordered) {
+                        Modifier.border(
+                            width = 1.dp,
+                            color = gray200,
+                            shape = RoundedCornerShape(8.dp)
+                        )
                     } else {
-                        RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+                        Modifier
                     }
                 )
                 .background(Color.White)
@@ -90,23 +96,35 @@ fun <T> DropDownMenu(
             }
         }
         if (expanded) {
-            Box(modifier = Modifier.align(Alignment.BottomStart)) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .offset(y = 4.dp)
+            ) {
                 Popup(
                     properties = PopupProperties(focusable = true, clippingEnabled = false),
                     onDismissRequest = { expanded = false }
                 ) {
-                    Column(modifier = Modifier.width(150.dp)) {
-                        unselectedList.forEachIndexed { index, item ->
+                    Column(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .then(
+                                if (isBordered) {
+                                    Modifier.border(
+                                        width = 1.dp,
+                                        color = gray200,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                } else {
+                                    Modifier
+                                }
+                            )
+                    ) {
+                        unselectedList.forEach { item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clip(
-                                        shape = if (index == unselectedList.lastIndex) {
-                                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                                        } else {
-                                            RectangleShape
-                                        }
-                                    )
                                     .background(Color.White)
                                     .clickable(
                                         onClick = {
@@ -116,7 +134,8 @@ fun <T> DropDownMenu(
                                         indication = null,
                                         interactionSource = null
                                     )
-                                    .padding(vertical = 10.dp, horizontal = 12.dp)
+                                    .padding(vertical = 10.dp, horizontal = 12.dp),
+                                contentAlignment = Alignment.CenterStart
                             ) {
                                 Text(
                                     text = item.toString(),
@@ -138,105 +157,13 @@ fun <T> BorderedDropDownMenu(
     selectedItem: T,
     onItemSelected: (T) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val unselectedList = list.filter { it != selectedItem }
-
-    Box(
-        modifier = modifier
-            .width(150.dp)
-            .then(
-                if (!expanded) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = gray200,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                } else {
-                    Modifier
-                }
-            )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(
-                    shape = if (!expanded) {
-                        RoundedCornerShape(8.dp)
-                    } else {
-                        RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
-                    }
-                )
-                .background(Color.White)
-                .clickable(
-                    onClick = { expanded = !expanded },
-                    indication = null,
-                    interactionSource = null
-                )
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 12.dp
-                )
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = selectedItem.toString(),
-                    style = dropDownMenuTextStyle()
-                )
-                Spacer(Modifier.width(10.dp))
-                Icon(
-                    painter = painterResource(
-                        if (expanded) {
-                            R.drawable.icon_under
-                        } else {
-                            R.drawable.icon_up
-                        }
-                    ),
-                    tint = gray500,
-                    contentDescription = null
-                )
-            }
-        }
-        if (expanded) {
-            Box(modifier = Modifier.align(Alignment.BottomStart)) {
-                Popup(
-                    properties = PopupProperties(focusable = true, clippingEnabled = false),
-                    onDismissRequest = { expanded = false }
-                ) {
-                    Column(modifier = Modifier.width(150.dp)) {
-                        unselectedList.forEachIndexed { index, item ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(
-                                        shape = if (index == unselectedList.lastIndex) {
-                                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                                        } else {
-                                            RectangleShape
-                                        }
-                                    )
-                                    .background(Color.White)
-                                    .clickable(
-                                        onClick = {
-                                            onItemSelected(item)
-                                            expanded = false
-                                        },
-                                        indication = null,
-                                        interactionSource = null
-                                    )
-                                    .padding(vertical = 10.dp, horizontal = 12.dp)
-                            ) {
-                                Text(
-                                    text = item.toString(),
-                                    style = dropDownMenuTextStyle()
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    DropDownMenu(
+        modifier = modifier,
+        list = list,
+        isBordered = true,
+        selectedItem = selectedItem,
+        onItemSelected = onItemSelected
+    )
 }
 
 @Composable
