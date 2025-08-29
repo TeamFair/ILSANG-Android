@@ -5,10 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.SeasonRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.season.Season
+import com.ilsangtech.ilsang.core.ui.mission.model.toUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
+import com.ilsangtech.ilsang.core.ui.season.model.toUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.UserCommercialPointUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.toUiModel
 import com.ilsangtech.ilsang.feature.profile.model.ProfileUiState
@@ -23,12 +28,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     userRepository: UserRepository,
+    seasonRepository: SeasonRepository,
     areaRepository: AreaRepository,
     missionRepository: MissionRepository
 ) : ViewModel() {
@@ -37,7 +44,11 @@ class ProfileViewModel @Inject constructor(
     private val _selectedSeason = MutableStateFlow<SeasonUiModel>(SeasonUiModel.Total)
     val selectedSeason = _selectedSeason.asStateFlow()
 
-    val missionHistories = missionRepository.getUserMissionHistory(userId).cachedIn(viewModelScope)
+    val missionHistories = missionRepository.getUserMissionHistory(userId)
+        .cachedIn(viewModelScope)
+        .map { pagingData ->
+            pagingData.map { it.toUiModel() }
+        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val profileUiState = combine(
@@ -50,12 +61,15 @@ class ProfileViewModel @Inject constructor(
         selectedSeason.flatMapLatest { season ->
             val seasonId = (season as? SeasonUiModel.Specific)?.id
             userRepository.getUserPoint(userId, seasonId).map { userPoint ->
+                val totalPoint =
+                    userTotalPoint.metroAreaPoint + userTotalPoint.commercialAreaPoint + userTotalPoint.contributionPoint
                 ProfileUiState.Success(
-                    userProfileInfo = userInfo.toUserProfileInfoUiModel(
-                        userTotalPoint.metroAreaPoint + userTotalPoint.commercialAreaPoint
-                                + userTotalPoint.contributionPoint
+                    userProfileInfo = userInfo.toUserProfileInfoUiModel(totalPoint),
+                    userPoint = userPoint.toUiModel(
+                        seasonList =
+                            listOf(SeasonUiModel.Total) + seasonRepository.getSeasonList()
+                                .map(Season::toUiModel)
                     ),
-                    userPoint = userPoint,
                     userCommercialPoint = UserCommercialPointUiModel(
                         nickname = userInfo.nickname,
                         topCommercialArea = userCommercialPoint.topCommercialArea?.let { topCommercialArea ->
