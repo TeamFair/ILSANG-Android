@@ -95,4 +95,8 @@ class ProfileViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ProfileUiState.Loading
     )
+
+    fun updateSeason(season: SeasonUiModel) {
+        _selectedSeason.update { season }
+    }
 }
