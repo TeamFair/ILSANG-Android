@@ -13,10 +13,10 @@ data class MyPointSummaryUiModel(
     val seasonEndDate: String
 )
 
-internal fun UserPointSummary.toMyPointSummaryUiModel(
+internal suspend fun UserPointSummary.toMyPointSummaryUiModel(
     nickName: String,
     season: Season,
-    changeAreaCodeToName: (String) -> String
+    changeAreaCodeToName: suspend (String) -> String
 ): MyPointSummaryUiModel {
     return MyPointSummaryUiModel(
         nickName = nickName,
