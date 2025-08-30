@@ -78,7 +78,7 @@ class UserRepositoryImpl @Inject constructor(
         userDataSource.updateUserNickname(nickname = nickname)
     }
 
-    override suspend fun updateUserImage(profileImageId: String): Result<Unit> {
+    override suspend fun updateUserImage(profileImageId: String?): Result<Unit> {
         return runCatching {
             userDataSource.updateUserImage(profileImageId)
         }

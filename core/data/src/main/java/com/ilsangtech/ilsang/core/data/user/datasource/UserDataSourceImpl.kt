@@ -46,7 +46,7 @@ class UserDataSourceImpl @Inject constructor(
         return userApiService.updateUserNickname(NicknameUpdateRequest(nickname))
     }
 
-    override suspend fun updateUserImage(imageId: String): UserImageUpdateResponse {
+    override suspend fun updateUserImage(imageId: String?): UserImageUpdateResponse {
         return userApiService.updateUserImage(UserImageUpdateRequest(imageId))
     }
 
