@@ -62,7 +62,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.model.MyProfileInfoUiModel
 internal fun MyProfileInfoCard(
     modifier: Modifier = Modifier,
     myProfileInfo: MyProfileInfoUiModel,
-    onNicknameEditButtonClick: () -> Unit,
+    onProfileEditButtonClick: () -> Unit,
     onTitleClick: () -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
@@ -87,7 +87,7 @@ internal fun MyProfileInfoCard(
             MyNicknameInfoRow(
                 modifier = Modifier.padding(top = 16.dp),
                 nickname = myProfileInfo.nickname,
-                onNicknameEditButtonClick = onNicknameEditButtonClick
+                onNicknameEditButtonClick = onProfileEditButtonClick
             )
             myProfileInfo.title?.let {
                 MyTitleBadge(
@@ -371,7 +371,7 @@ private fun MyProfileInfoCardPreview() {
     )
     MyProfileInfoCard(
         myProfileInfo = myProfileInfo,
-        onNicknameEditButtonClick = {},
+        onProfileEditButtonClick = {},
         onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
