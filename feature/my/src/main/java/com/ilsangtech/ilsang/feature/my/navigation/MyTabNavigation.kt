@@ -2,18 +2,20 @@ package com.ilsangtech.ilsang.feature.my.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.ilsangtech.ilsang.feature.my.FaqScreen
 import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
-import com.ilsangtech.ilsang.feature.my.SettingScreen
-import com.ilsangtech.ilsang.feature.my.TermsScreen
 import com.ilsangtech.ilsang.feature.my.UserProfileEditScreen
-import com.ilsangtech.ilsang.feature.my.WithdrawalScreen
-import com.ilsangtech.ilsang.feature.my.component.CustomerCenterScreen
+import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
+import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
+import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
+import com.ilsangtech.ilsang.feature.my.screens.terms.TermsScreen
+import com.ilsangtech.ilsang.feature.my.screens.withdrawal.WithdrawalScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -55,6 +57,9 @@ data class MyTitleRoute(
     val titleId: String?
 )
 
+
+fun NavController.navigateToSetting() = navigate(SettingRoute)
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
@@ -70,7 +75,9 @@ fun NavGraphBuilder.myTabNavigation(
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
-            MyTabScreen()
+            MyTabScreen(
+                onSettingButtonClick = navigateToSetting
+            )
         }
         composable<MyEditRoute>(
             enterTransition = {

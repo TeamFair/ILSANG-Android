@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.faq
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -37,7 +37,8 @@ import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
-import kotlinx.serialization.Serializable
+import com.ilsangtech.ilsang.feature.my.R
+import com.ilsangtech.ilsang.feature.my.screens.faq.model.FaqUiModel
 import kotlinx.serialization.json.Json
 
 @Composable
@@ -48,7 +49,7 @@ internal fun FaqScreen(
     val faqList = remember {
         context.resources.openRawResource(R.raw.setting_faq_list).use { inputStream ->
             val jsonString = inputStream.bufferedReader().use { it.readText() }
-            Json.decodeFromString<List<FaqModel>>(jsonString)
+            Json.decodeFromString<List<FaqUiModel>>(jsonString)
         }
     }
 
@@ -72,7 +73,7 @@ internal fun FaqScreen(
 }
 
 @Composable
-private fun FaqItem(faqModel: FaqModel) {
+private fun FaqItem(faqModel: FaqUiModel) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     Column {
         Surface(
@@ -168,9 +169,3 @@ private fun FaqScreenHeader(
         )
     }
 }
-
-@Serializable
-private data class FaqModel(
-    val question: String,
-    val answer: String
-)

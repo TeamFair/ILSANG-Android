@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.withdrawal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,18 +11,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(
+class WithdrawalViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _logoutState = MutableStateFlow<Boolean?>(false)
-    val logoutState = _logoutState.asStateFlow()
+    private val _withdrawalState = MutableStateFlow<Boolean?>(null)
+    val withdrawalState = _withdrawalState.asStateFlow()
 
-    fun logout() {
+    fun withdraw() {
         viewModelScope.launch {
-            authRepository.logout().onSuccess {
-                _logoutState.update { true }
+            authRepository.withdraw().onSuccess {
+                _withdrawalState.update { true }
             }.onFailure {
-                _logoutState.update { false }
+                _withdrawalState.update { false }
             }
         }
     }

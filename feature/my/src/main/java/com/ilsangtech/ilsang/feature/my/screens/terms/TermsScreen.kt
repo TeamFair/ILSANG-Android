@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.terms
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -43,6 +43,7 @@ import androidx.core.graphics.createBitmap
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.feature.my.R
 import java.io.File
 import java.io.FileOutputStream
 
