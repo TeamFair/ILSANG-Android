@@ -73,7 +73,10 @@ private fun UserMissionHistoryItemPreview() {
         missionHistoryId = 1,
         title = "겨울 간식 먹기",
         submitImageId = "sample_image_id",
-        createdAt = "2025.10.27"
+        createdAt = "2025.10.27",
+        likeCount = 10,
+        viewCount = 100,
+        questImageId = null
     )
     UserMissionHistoryItem(userMissionHistory = userMissionHistory, onClick = {})
 }
