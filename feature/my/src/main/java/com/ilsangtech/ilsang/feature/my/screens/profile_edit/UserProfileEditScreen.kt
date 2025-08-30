@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.feature.my.screens.profile_edit
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,8 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.EditButton
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.EditNicknameCancelDialog
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.NicknameEditContent
-import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.NicknameEditHeader
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.ProfileEditHeader
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.UserImageEditContent
 
 @Composable
@@ -37,6 +39,7 @@ fun UserProfileEditScreen(
     val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
     val nicknameEditErrorMessage by homeViewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
     val isUserProfileEditSuccess by homeViewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()
+    var showCancelDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isUserProfileEditSuccess) {
         if (isUserProfileEditSuccess != null) {
@@ -45,18 +48,27 @@ fun UserProfileEditScreen(
         }
     }
 
+    BackHandler { showCancelDialog = true }
+    if (showCancelDialog) {
+        EditNicknameCancelDialog(
+            onDismissRequest = { showCancelDialog = false },
+            onConfirm = {
+                showCancelDialog = false
+                navigateToMyTabMain()
+            },
+            onCancel = { showCancelDialog = false }
+        )
+    }
+
     UserProfileEditScreen(
-        originNickname = originUserInfo?.nickname ?: "",
+        originNickname = originUserInfo?.nickname.orEmpty(),
         nickname = nickname,
         imageId = originUserInfo?.profileImageId,
         nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = homeViewModel::changeNickname,
         onEditButtonClick = homeViewModel::updateUserProfile,
         onDeleteUserImage = homeViewModel::deleteUserProfileImage,
-        navigateToMyTabMain = {
-            navigateToMyTabMain()
-            homeViewModel.resetUserProfileEditSuccess()
-        }
+        onBackButtonClick = { showCancelDialog = true }
     )
 }
 
@@ -69,7 +81,7 @@ fun UserProfileEditScreen(
     onNicknameChange: (String) -> Unit,
     onEditButtonClick: (Uri?) -> Unit,
     onDeleteUserImage: () -> Unit,
-    navigateToMyTabMain: () -> Unit
+    onBackButtonClick: () -> Unit
 ) {
     var updatedImage by remember { mutableStateOf<Uri?>(null) }
     Surface(
@@ -82,7 +94,7 @@ fun UserProfileEditScreen(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            NicknameEditHeader(navigateToMyTabMain)
+            ProfileEditHeader(onBackButtonClick = onBackButtonClick)
             Spacer(Modifier.height(35.dp))
             UserImageEditContent(
                 model = updatedImage ?: (BuildConfig.IMAGE_URL + imageId),
@@ -118,6 +130,6 @@ fun UserProfileEditScreenPreview() {
         onNicknameChange = {},
         onEditButtonClick = {},
         onDeleteUserImage = {},
-        navigateToMyTabMain = {}
+        onBackButtonClick = {}
     )
 }
