@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.profile_edit
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column

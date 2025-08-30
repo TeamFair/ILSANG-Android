@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.profile_edit
 
 import android.content.Context
 import android.net.Uri
