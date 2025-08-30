@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.withdrawal
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.feature.my.R
 import com.ilsangtech.ilsang.feature.my.component.WithdrawalButton
 import com.ilsangtech.ilsang.feature.my.component.WithdrawalContent
 import com.ilsangtech.ilsang.feature.my.component.WithdrawalDialog
