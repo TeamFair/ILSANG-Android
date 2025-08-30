@@ -28,6 +28,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.R
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.SettingItem
 
 private val settingItemTitleStyle = TextStyle(
     fontFamily = pretendardFontFamily,

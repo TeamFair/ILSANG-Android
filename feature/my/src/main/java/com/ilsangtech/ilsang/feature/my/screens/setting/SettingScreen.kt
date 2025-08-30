@@ -32,14 +32,14 @@ import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.my.R
-import com.ilsangtech.ilsang.feature.my.component.CustomerCenterItem
-import com.ilsangtech.ilsang.feature.my.component.FaqItem
-import com.ilsangtech.ilsang.feature.my.component.LicenseItem
-import com.ilsangtech.ilsang.feature.my.component.LogoutDialog
-import com.ilsangtech.ilsang.feature.my.component.LogoutItem
-import com.ilsangtech.ilsang.feature.my.component.TermsItem
-import com.ilsangtech.ilsang.feature.my.component.VersionItem
-import com.ilsangtech.ilsang.feature.my.component.WithdrawalItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.CustomerCenterItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.FaqItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.LicenseItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.LogoutDialog
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.LogoutItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.TermsItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.VersionItem
+import com.ilsangtech.ilsang.feature.my.screens.setting.component.WithdrawalItem
 
 @Composable
 internal fun SettingScreen(
