@@ -62,7 +62,7 @@ private fun MyTabScreen(
     selectedSeason: SeasonUiModel,
     onSeasonChanged: (SeasonUiModel) -> Unit,
     onSettingButtonClick: () -> Unit,
-    onNicknameEditButtonClick: () -> Unit,
+    onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onTitleClick: () -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
@@ -90,7 +90,12 @@ private fun MyTabScreen(
                     item {
                         MyProfileInfoCard(
                             myProfileInfo = uiState.myProfileInfo,
-                            onNicknameEditButtonClick = onNicknameEditButtonClick,
+                            onProfileEditButtonClick = {
+                                onProfileEditButtonClick(
+                                    uiState.myProfileInfo.nickname,
+                                    uiState.myProfileInfo.profileImageId
+                                )
+                            },
                             onTitleClick = onTitleClick,
                             onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                             onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
@@ -185,7 +190,7 @@ fun MyTabScreenPreview() {
         selectedSeason = selectedSeason,
         onSeasonChanged = {},
         onSettingButtonClick = {},
-        onNicknameEditButtonClick = {},
+        onProfileEditButtonClick = { _, _ -> },
         onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
