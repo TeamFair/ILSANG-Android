@@ -12,7 +12,7 @@ interface AuthApiService {
         @Body oAuthLoginRequest: OAuthLoginRequest
     ): OAuthLoginResponse
 
-    @GET("api/v1/logout")
+    @POST("api/v1/logout")
     suspend fun logout()
 
     @GET("api/v1/withdraw")
