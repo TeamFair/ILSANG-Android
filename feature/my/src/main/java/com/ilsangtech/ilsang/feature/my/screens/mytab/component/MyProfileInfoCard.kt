@@ -315,7 +315,7 @@ private fun MyProfileInfoBottomItemsRow(
         )
         MyProfileInfoBottomItem(
             modifier = Modifier.weight(1f),
-            title = "나의 쿠폰",
+            title = "쿠폰",
             icon = {
                 Icon(
                     modifier = Modifier.size(36.dp),
