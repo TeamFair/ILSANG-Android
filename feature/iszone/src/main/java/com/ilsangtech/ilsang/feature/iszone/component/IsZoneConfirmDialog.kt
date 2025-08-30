@@ -118,7 +118,8 @@ private fun IsZoneConfirmDialogPreview() {
             code = "1001491",
             areaName = "명동",
             description = "명동 관광특구 주요 상권으로 의류/잡화 및 음식 업종이 고루 분포하며, 관광객 수요 풍부",
-            metroAreaCode = "1000001"
+            metroAreaCode = "1000001",
+            images = emptyList()
         ),
         onConfirm = {},
         onDismissRequest = {}
