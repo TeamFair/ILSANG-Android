@@ -76,7 +76,7 @@ internal fun MyProfileInfoCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ProfileImageWithLevel(
