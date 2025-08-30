@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)

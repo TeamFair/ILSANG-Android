@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.mytab.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -12,24 +12,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.gray500
+import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.my.R
 
 @Composable
 fun MyTabHeader(
-    onSettingIconClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onSettingButtonClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp),
+            .padding(
+                vertical = 10.dp,
+                horizontal = 20.dp
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -41,7 +44,7 @@ fun MyTabHeader(
             modifier = Modifier.clickable(
                 interactionSource = null,
                 indication = null,
-                onClick = onSettingIconClick
+                onClick = onSettingButtonClick
             ),
             painter = painterResource(R.drawable.setting),
             contentDescription = "설정",
@@ -51,7 +54,8 @@ fun MyTabHeader(
 }
 
 private val myTabHeaderTitleTextStyle = TextStyle(
-    fontFamily = FontFamily(Font(pretendard_bold)),
+    fontFamily = pretendardFontFamily,
+    fontWeight = FontWeight.Bold,
     fontSize = 21.sp,
     lineHeight = 1.4.em,
     color = gray500
@@ -59,6 +63,6 @@ private val myTabHeaderTitleTextStyle = TextStyle(
 
 @Preview(showBackground = true, backgroundColor = 0xF6F6F6)
 @Composable
-fun MyTabHeaderPreview() {
+private fun MyTabHeaderPreview() {
     MyTabHeader {}
 }
