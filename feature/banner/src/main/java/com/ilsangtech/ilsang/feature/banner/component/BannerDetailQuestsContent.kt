@@ -29,7 +29,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
-import com.ilsangtech.ilsang.designsystem.component.DropDownMenu
+import com.ilsangtech.ilsang.designsystem.component.BorderedDropDownMenu
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -109,7 +109,7 @@ internal fun LazyListScope.bannerDetailQuestsContent(
                 text = "특별 퀘스트 모음",
                 style = title02
             )
-            DropDownMenu(
+            BorderedDropDownMenu(
                 list = BannerDetailSortType.entries,
                 selectedItem = selectedSortType,
                 onItemSelected = onSortTypeChanged,
