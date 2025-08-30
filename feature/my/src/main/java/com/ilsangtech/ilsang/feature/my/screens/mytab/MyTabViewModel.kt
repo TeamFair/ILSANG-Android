@@ -80,7 +80,10 @@ class MyTabViewModel @Inject constructor(
             myPointSummary = userPointSummary.toMyPointSummaryUiModel(
                 nickName = myInfo.nickname,
                 season = seasonRepository.getCurrentSeason(),
-                changeAreaCodeToName = { areaCode ->
+                changeCodeToMetroName = { areaCode ->
+                    areaRepository.getMetroArea(areaCode).areaName
+                },
+                changeCodeToCommercialName = { areaCode ->
                     areaRepository.getCommercialArea(areaCode).areaName
                 }
             )

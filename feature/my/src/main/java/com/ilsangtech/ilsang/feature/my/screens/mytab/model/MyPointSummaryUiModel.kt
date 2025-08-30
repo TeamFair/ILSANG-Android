@@ -16,12 +16,13 @@ data class MyPointSummaryUiModel(
 internal suspend fun UserPointSummary.toMyPointSummaryUiModel(
     nickName: String,
     season: Season,
-    changeAreaCodeToName: suspend (String) -> String
+    changeCodeToMetroName: suspend (String) -> String,
+    changeCodeToCommercialName: suspend (String) -> String
 ): MyPointSummaryUiModel {
     return MyPointSummaryUiModel(
         nickName = nickName,
-        topCommercialAreaName = changeAreaCodeToName(topCommercialAreaCode),
-        topMetroAreaName = changeAreaCodeToName(topMetroAreaCode),
+        topCommercialAreaName = changeCodeToCommercialName(topCommercialAreaCode),
+        topMetroAreaName = changeCodeToMetroName(topMetroAreaCode),
         topContributionPoint = topContributionPoint,
         seasonNumber = season.seasonNumber,
         seasonStartDate = season.startDate,
