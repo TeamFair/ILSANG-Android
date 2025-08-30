@@ -17,6 +17,15 @@ class ImageRepositoryImpl @Inject constructor(
         ).id
     }
 
+    override suspend fun uploadProfileImage(imageBytes: ByteArray): Result<String> {
+        return runCatching {
+            imageDataSource.uploadImage(
+                type = "USER_PROFILE_IMAGE",
+                imageBytes = imageBytes
+            ).id
+        }
+    }
+
     override suspend fun uploadMissionImage(imageBytes: ByteArray): Result<String> {
         return runCatching {
             imageDataSource.uploadImage(

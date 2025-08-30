@@ -6,6 +6,9 @@ interface ImageRepository {
         imageBytes: ByteArray
     ): String
 
+    suspend fun uploadProfileImage(imageBytes: ByteArray): Result<String>
+
     suspend fun uploadMissionImage(imageBytes: ByteArray): Result<String>
+
     suspend fun deleteImage(id: String): Result<Unit>
 }
