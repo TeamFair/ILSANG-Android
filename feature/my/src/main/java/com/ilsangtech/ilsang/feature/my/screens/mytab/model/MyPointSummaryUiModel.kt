@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.feature.my.screens.mytab.model
 
 import com.ilsangtech.ilsang.core.model.season.Season
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
+import com.ilsangtech.ilsang.core.util.DateConverter
 
 data class MyPointSummaryUiModel(
     val nickName: String,
@@ -25,7 +26,7 @@ internal suspend fun UserPointSummary.toMyPointSummaryUiModel(
         topMetroAreaName = changeCodeToMetroName(topMetroAreaCode),
         topContributionPoint = topContributionPoint,
         seasonNumber = season.seasonNumber,
-        seasonStartDate = season.startDate,
-        seasonEndDate = season.endDate
+        seasonStartDate = DateConverter.formatDate(season.startDate),
+        seasonEndDate = DateConverter.formatDate(season.endDate)
     )
 }
