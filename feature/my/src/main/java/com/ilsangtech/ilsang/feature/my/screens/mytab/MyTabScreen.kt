@@ -47,6 +47,7 @@ internal fun MyTabScreen(
         onSeasonChanged = viewModel::updateSeason,
         onSettingButtonClick = {},
         onNicknameEditButtonClick = {},
+        onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},
@@ -61,6 +62,7 @@ private fun MyTabScreen(
     onSeasonChanged: (SeasonUiModel) -> Unit,
     onSettingButtonClick: () -> Unit,
     onNicknameEditButtonClick: () -> Unit,
+    onTitleClick: () -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
     onCouponButtonClick: () -> Unit,
@@ -88,6 +90,7 @@ private fun MyTabScreen(
                         MyProfileInfoCard(
                             myProfileInfo = uiState.myProfileInfo,
                             onNicknameEditButtonClick = onNicknameEditButtonClick,
+                            onTitleClick = onTitleClick,
                             onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                             onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
                             onCouponButtonClick = onCouponButtonClick
@@ -182,6 +185,7 @@ fun MyTabScreenPreview() {
         onSeasonChanged = {},
         onSettingButtonClick = {},
         onNicknameEditButtonClick = {},
+        onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},

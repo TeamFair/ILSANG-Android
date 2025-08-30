@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +63,7 @@ internal fun MyProfileInfoCard(
     modifier: Modifier = Modifier,
     myProfileInfo: MyProfileInfoUiModel,
     onNicknameEditButtonClick: () -> Unit,
+    onTitleClick: () -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
     onCouponButtonClick: () -> Unit
@@ -89,7 +93,7 @@ internal fun MyProfileInfoCard(
                 MyTitleBadge(
                     modifier = Modifier.padding(top = 8.dp),
                     title = myProfileInfo.title,
-                    onTitleClick = {}
+                    onTitleClick = onTitleClick
                 )
             }
             MyProfileInfoBottomItemsRow(
@@ -268,7 +272,9 @@ private fun MyProfileInfoBottomItemsRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 21.dp)
+            .height(IntrinsicSize.Min)
+            .padding(top = 21.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         MyProfileInfoBottomItem(
             modifier = Modifier.weight(1f),
@@ -285,6 +291,10 @@ private fun MyProfileInfoBottomItemsRow(
             },
             onClick = onMissionHistoryButtonClick
         )
+        VerticalDivider(
+            modifier = Modifier.height(48.5.dp),
+            color = gray100
+        )
         MyProfileInfoBottomItem(
             modifier = Modifier.weight(1f),
             title = "즐겨찾기 퀘스트",
@@ -298,6 +308,10 @@ private fun MyProfileInfoBottomItemsRow(
                 )
             },
             onClick = onFavoriteQuestButtonClick
+        )
+        VerticalDivider(
+            modifier = Modifier.height(48.5.dp),
+            color = gray100
         )
         MyProfileInfoBottomItem(
             modifier = Modifier.weight(1f),
@@ -358,6 +372,7 @@ private fun MyProfileInfoCardPreview() {
     MyProfileInfoCard(
         myProfileInfo = myProfileInfo,
         onNicknameEditButtonClick = {},
+        onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {}
