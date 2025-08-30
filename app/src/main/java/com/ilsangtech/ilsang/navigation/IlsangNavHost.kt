@@ -42,10 +42,10 @@ import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyEditRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
-import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
+import com.ilsangtech.ilsang.feature.my.navigation.navigateToSetting
 import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
 import com.ilsangtech.ilsang.feature.myzone.navigation.myZoneNavigation
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
@@ -153,9 +153,7 @@ fun IlsangNavHost(
                         )
                     )
                 },
-                navigateToSetting = {
-                    navController.navigate(SettingRoute)
-                },
+                navigateToSetting = navController::navigateToSetting,
                 navigateToCustomerCenter = {
                     navController.navigate(CustomerCenterRoute)
                 },

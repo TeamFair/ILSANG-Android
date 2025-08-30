@@ -36,7 +36,8 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.model.MyTabScreenUiState
 
 @Composable
 internal fun MyTabScreen(
-    viewModel: MyTabViewModel = hiltViewModel()
+    viewModel: MyTabViewModel = hiltViewModel(),
+    onSettingButtonClick: () -> Unit
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
     val selectedSeason by viewModel.selectedSeason.collectAsStateWithLifecycle()
@@ -45,7 +46,7 @@ internal fun MyTabScreen(
         uiState = uiState,
         selectedSeason = selectedSeason,
         onSeasonChanged = viewModel::updateSeason,
-        onSettingButtonClick = {},
+        onSettingButtonClick = onSettingButtonClick,
         onNicknameEditButtonClick = {},
         onTitleClick = {},
         onMissionHistoryButtonClick = {},

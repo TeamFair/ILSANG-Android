@@ -57,6 +57,9 @@ data class MyTitleRoute(
     val titleId: String?
 )
 
+
+fun NavController.navigateToSetting() = navigate(SettingRoute)
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
@@ -72,7 +75,9 @@ fun NavGraphBuilder.myTabNavigation(
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
-            MyTabScreen()
+            MyTabScreen(
+                onSettingButtonClick = navigateToSetting
+            )
         }
         composable<MyEditRoute>(
             enterTransition = {
