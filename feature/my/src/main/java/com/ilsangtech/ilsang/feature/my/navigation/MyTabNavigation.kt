@@ -10,10 +10,10 @@ import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.SettingScreen
 import com.ilsangtech.ilsang.feature.my.TermsScreen
-import com.ilsangtech.ilsang.feature.my.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.WithdrawalScreen
 import com.ilsangtech.ilsang.feature.my.component.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
