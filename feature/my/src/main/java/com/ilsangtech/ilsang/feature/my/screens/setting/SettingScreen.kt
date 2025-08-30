@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.feature.my.R
 import com.ilsangtech.ilsang.feature.my.component.CustomerCenterItem
 import com.ilsangtech.ilsang.feature.my.component.FaqItem
 import com.ilsangtech.ilsang.feature.my.component.LicenseItem

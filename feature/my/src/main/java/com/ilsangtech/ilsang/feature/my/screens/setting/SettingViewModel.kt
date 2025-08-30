@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
