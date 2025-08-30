@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.profile_edit.component
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

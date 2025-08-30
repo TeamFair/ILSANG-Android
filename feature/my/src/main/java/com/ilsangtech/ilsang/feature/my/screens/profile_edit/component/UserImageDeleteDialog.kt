@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.profile_edit.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

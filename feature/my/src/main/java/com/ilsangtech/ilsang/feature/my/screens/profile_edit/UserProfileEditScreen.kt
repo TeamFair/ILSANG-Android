@@ -2,19 +2,13 @@ package com.ilsangtech.ilsang.feature.my.screens.profile_edit
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,20 +18,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
-import com.ilsangtech.ilsang.designsystem.theme.gray300
-import com.ilsangtech.ilsang.designsystem.theme.primary
-import com.ilsangtech.ilsang.feature.my.component.NicknameEditContent
-import com.ilsangtech.ilsang.feature.my.component.NicknameEditHeader
-import com.ilsangtech.ilsang.feature.my.component.UserImageEditContent
+import com.ilsangtech.ilsang.feature.my.BuildConfig
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.EditButton
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.NicknameEditContent
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.NicknameEditHeader
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.UserImageEditContent
 
 @Composable
 fun UserProfileEditScreen(
@@ -59,7 +48,7 @@ fun UserProfileEditScreen(
     UserProfileEditScreen(
         originNickname = originUserInfo?.nickname ?: "",
         nickname = nickname,
-        imageId = originUserInfo?.profileImage,
+        imageId = originUserInfo?.profileImageId,
         nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = homeViewModel::changeNickname,
         onEditButtonClick = homeViewModel::updateUserProfile,
@@ -117,39 +106,6 @@ fun UserProfileEditScreen(
         }
     }
 }
-
-@Composable
-fun EditButton(
-    modifier: Modifier = Modifier,
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            disabledContainerColor = gray300,
-            containerColor = primary,
-            disabledContentColor = Color.White
-        ),
-        enabled = enabled,
-        shape = RoundedCornerShape(12.dp),
-        contentPadding = PaddingValues(vertical = 16.dp)
-    ) {
-        Text(
-            text = "변경 완료",
-            style = editButtonTextStyle
-        )
-    }
-}
-
-private val editButtonTextStyle = TextStyle(
-    fontSize = 16.sp,
-    lineHeight = 18.sp,
-    fontFamily = FontFamily(Font(pretendard_semibold)),
-)
 
 @Preview(showBackground = true)
 @Composable
