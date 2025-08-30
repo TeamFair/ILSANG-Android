@@ -36,11 +36,19 @@ internal fun SettingScreen(
     popBackStack: () -> Unit
 ) {
     val logoutState by settingViewModel.logoutState.collectAsStateWithLifecycle()
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(logoutState) {
         if (logoutState == true) {
             navigateToLogin()
         }
+    }
+
+    if (showLogoutDialog) {
+        LogoutDialog(
+            onLogoutButtonClick = { showLogoutDialog = false },
+            onDismissRequest = { showLogoutDialog = false }
+        )
     }
 
     SettingScreen(
@@ -64,20 +72,6 @@ private fun SettingScreen(
     navigateToWithdrawal: () -> Unit,
     popBackStack: () -> Unit
 ) {
-    var showLogoutDialog by remember { mutableStateOf(false) }
-
-    if (showLogoutDialog) {
-        LogoutDialog(
-            onLogoutButtonClick = {
-                onLogoutButtonClick()
-                showLogoutDialog = false
-            },
-            onDismissRequest = {
-                showLogoutDialog = false
-            }
-        )
-    }
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = background
@@ -89,7 +83,7 @@ private fun SettingScreen(
             TermsItem(onTermsItemClick = navigateToTerms)
             LicenseItem(onLicenseItemClick = navigateToLicense)
             VersionItem()
-            LogoutItem { showLogoutDialog = true }
+            LogoutItem(onLogoutItemClick = onLogoutButtonClick)
             WithdrawalItem(onWithdrawalItemClick = navigateToWithdrawal)
         }
     }
