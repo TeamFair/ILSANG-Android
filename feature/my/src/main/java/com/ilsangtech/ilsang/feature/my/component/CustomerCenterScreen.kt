@@ -28,7 +28,6 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.R
-import com.ilsangtech.ilsang.feature.my.screens.setting.component.SettingItem
 
 private val settingItemTitleStyle = TextStyle(
     fontFamily = pretendardFontFamily,
@@ -55,7 +54,7 @@ internal fun CustomerCenterScreen(
         val uriHandler = LocalUriHandler.current
         Column {
             CustomerCenterScreenHeader(onBackButtonClick)
-            SettingItem(
+            DefaultSettingListItem(
                 title = {
                     Text(
                         text = "인스타그램",
@@ -75,7 +74,7 @@ internal fun CustomerCenterScreen(
                     uriHandler.openUri("https://www.instagram.com/illsang.official/")
                 }
             )
-            SettingItem(
+            DefaultSettingListItem(
                 title = {
                     Text(
                         text = "디스코드",
@@ -91,7 +90,7 @@ internal fun CustomerCenterScreen(
                     )
                 }
             )
-            SettingItem(
+            DefaultSettingListItem(
                 title = {
                     Text(
                         text = "이메일",
