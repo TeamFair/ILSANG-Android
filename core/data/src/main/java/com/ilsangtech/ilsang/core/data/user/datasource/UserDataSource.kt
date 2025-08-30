@@ -23,7 +23,7 @@ interface UserDataSource {
 
     suspend fun updateUserNickname(nickname: String): NicknameUpdateResponse
 
-    suspend fun updateUserImage(imageId: String): UserImageUpdateResponse
+    suspend fun updateUserImage(imageId: String?): UserImageUpdateResponse
 
     suspend fun deleteUserImage(): UserImageDeleteResponse
 

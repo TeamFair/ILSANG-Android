@@ -25,7 +25,7 @@ interface UserRepository {
 
     suspend fun updateUserNickname(nickname: String)
 
-    suspend fun updateUserImage(profileImageId: String): Result<Unit>
+    suspend fun updateUserImage(profileImageId: String?): Result<Unit>
 
     suspend fun deleteUserImage(): Result<Unit>
 
