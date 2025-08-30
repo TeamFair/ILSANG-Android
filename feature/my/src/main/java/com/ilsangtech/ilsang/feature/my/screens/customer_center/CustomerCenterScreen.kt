@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.customer_center
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,7 +54,7 @@ internal fun CustomerCenterScreen(
         val uriHandler = LocalUriHandler.current
         Column {
             CustomerCenterScreenHeader(onBackButtonClick)
-            DefaultSettingListItem(
+            _root_ide_package_.com.ilsangtech.ilsang.feature.my.component.DefaultSettingListItem(
                 title = {
                     Text(
                         text = "인스타그램",
@@ -74,7 +74,7 @@ internal fun CustomerCenterScreen(
                     uriHandler.openUri("https://www.instagram.com/illsang.official/")
                 }
             )
-            DefaultSettingListItem(
+            _root_ide_package_.com.ilsangtech.ilsang.feature.my.component.DefaultSettingListItem(
                 title = {
                     Text(
                         text = "디스코드",
@@ -90,7 +90,7 @@ internal fun CustomerCenterScreen(
                     )
                 }
             )
-            DefaultSettingListItem(
+            _root_ide_package_.com.ilsangtech.ilsang.feature.my.component.DefaultSettingListItem(
                 title = {
                     Text(
                         text = "이메일",
