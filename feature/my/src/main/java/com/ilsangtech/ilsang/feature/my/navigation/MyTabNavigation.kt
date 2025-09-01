@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
+import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
@@ -43,6 +44,9 @@ data class MyProfileEditRoute(
 )
 
 @Serializable
+data object MyChallengeRoute
+
+@Serializable
 data class MyChallengeDetailRoute(
     val challengeId: String,
     val receiptImageId: String?,
@@ -72,7 +76,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
     navigateToMyProfileEdit: (String, String?) -> Unit,
-    navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
+    navigateToMyChallenge: () -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
@@ -85,7 +89,8 @@ fun NavGraphBuilder.myTabNavigation(
         composable<MyRoute> {
             MyTabScreen(
                 onSettingButtonClick = navigateToSetting,
-                onProfileEditButtonClick = navigateToMyProfileEdit
+                onProfileEditButtonClick = navigateToMyProfileEdit,
+                onMissionHistoryButtonClick = navigateToMyChallenge
             )
         }
         composable<MyProfileEditRoute>(
@@ -104,6 +109,14 @@ fun NavGraphBuilder.myTabNavigation(
         ) {
             UserProfileEditScreen(
                 navigateToMyTabMain = navigateToMyTabMain
+            )
+        }
+
+        composable<MyChallengeRoute> {
+            MyChallengeScreen(
+                onMissionHistoryClick = {},
+                onQuestNavButtonClick = {},
+                onBackButtonClick = navigateToMyTabMain
             )
         }
 
