@@ -36,7 +36,7 @@ import com.ilsangtech.ilsang.feature.my.R
 
 
 @Composable
-fun MyChallengeHeader(
+fun MyChallengeDetailHeader(
     modifier: Modifier = Modifier,
     onBackButtonClick: () -> Unit,
     onShareButtonClick: () -> Unit,
@@ -198,8 +198,8 @@ private val myChallengeDropDownMenuTextStyle = TextStyle(
 
 @Preview(showBackground = true)
 @Composable
-fun MyChallengeHeaderPreview() {
-    MyChallengeHeader(
+fun MyChallengeDetailHeaderPreview() {
+    MyChallengeDetailHeader(
         onBackButtonClick = {},
         onShareButtonClick = {},
         onDeleteButtonClick = {}
