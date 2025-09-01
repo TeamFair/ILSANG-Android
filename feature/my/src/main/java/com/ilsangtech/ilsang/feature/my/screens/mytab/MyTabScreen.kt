@@ -39,7 +39,8 @@ internal fun MyTabScreen(
     viewModel: MyTabViewModel = hiltViewModel(),
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
-    onSettingButtonClick: () -> Unit
+    onSettingButtonClick: () -> Unit,
+    onQuestNavButtonClick: () -> Unit
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
     val selectedSeason by viewModel.selectedSeason.collectAsStateWithLifecycle()
@@ -53,7 +54,7 @@ internal fun MyTabScreen(
         onMissionHistoryButtonClick = onMissionHistoryButtonClick,
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},
-        onQuestNavButtonClick = {},
+        onQuestNavButtonClick = onQuestNavButtonClick,
         onProfileEditButtonClick = onProfileEditButtonClick
     )
 }

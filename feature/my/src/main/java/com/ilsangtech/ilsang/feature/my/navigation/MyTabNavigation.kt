@@ -83,14 +83,16 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToMyTitle: (titleId: String?) -> Unit
+    navigateToMyTitle: (titleId: String?) -> Unit,
+    navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
             MyTabScreen(
                 onSettingButtonClick = navigateToSetting,
                 onProfileEditButtonClick = navigateToMyProfileEdit,
-                onMissionHistoryButtonClick = navigateToMyChallenge
+                onMissionHistoryButtonClick = navigateToMyChallenge,
+                onQuestNavButtonClick = navigateToQuestTab
             )
         }
         composable<MyProfileEditRoute>(
@@ -115,7 +117,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<MyChallengeRoute> {
             MyChallengeScreen(
                 onMissionHistoryClick = {},
-                onQuestNavButtonClick = {},
+                onQuestNavButtonClick = navigateToQuestTab,
                 onBackButtonClick = navigateToMyTabMain
             )
         }

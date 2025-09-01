@@ -161,6 +161,9 @@ fun IlsangNavHost(
                 },
                 navigateToMyTitle = {
                     navController.navigate(MyTitleRoute(it))
+                },
+                navigateToQuestTab = {
+                    navController.navigateToTopLevelDestination(BottomTab.Quest)
                 }
             )
 
