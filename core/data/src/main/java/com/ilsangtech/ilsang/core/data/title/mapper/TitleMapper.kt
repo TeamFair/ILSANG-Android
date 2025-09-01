@@ -3,9 +3,9 @@ package com.ilsangtech.ilsang.core.data.title.mapper
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
-import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 
-internal fun TitleNetworkModel.toTitle(): Title {
+internal fun UserTitleNetworkModel.toTitle(): Title {
     return Title(
         name = name,
         grade = when (grade) {
