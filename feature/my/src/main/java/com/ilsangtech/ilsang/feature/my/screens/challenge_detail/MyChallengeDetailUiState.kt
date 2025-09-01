@@ -1,9 +1,9 @@
 package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
 data class MyChallengeDetailUiState(
-    val challengeId: String,
+    val missionHistoryId: Int,
     val title: String,
-    val receiptImageId: String?,
+    val submitImageId: String,
     val questImageId: String?,
     val likeCount: Int
 )

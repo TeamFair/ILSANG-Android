@@ -130,7 +130,7 @@ fun MyChallengeDetailScreen(
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = BuildConfig.IMAGE_URL + challenge?.receiptImageId,
+                    model = BuildConfig.IMAGE_URL + challenge?.submitImageId,
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null
                 )
@@ -153,11 +153,11 @@ fun MyChallengeDetailScreen(
 fun MyChallengeDetailScreenPreview() {
     MyChallengeDetailScreen(
         challenge = MyChallengeDetailUiState(
-            challengeId = "",
+            missionHistoryId = 0,
             likeCount = 13,
             title = "겨울 간식 먹기",
             questImageId = "",
-            receiptImageId = ""
+            submitImageId = ""
         ),
         onDeleteButtonClick = {},
         navigateToMyTabMain = {}

@@ -136,11 +136,11 @@ private val myChallengeInfoCardBodyTextStyle = TextStyle(
 fun MyChallengeDetailInfoCardPreview() {
     MyChallengeDetailInfoCard(
         challenge = MyChallengeDetailUiState(
-            challengeId = "",
+            missionHistoryId = 0,
             likeCount = 13,
             title = "겨울 간식 먹기",
             questImageId = "",
-            receiptImageId = ""
+            submitImageId = ""
         )
     )
 }
