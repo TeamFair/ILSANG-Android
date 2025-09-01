@@ -32,19 +32,19 @@ import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.UserImage
 
 @Composable
 fun UserProfileEditScreen(
-    homeViewModel: UserProfileEditViewModel = hiltViewModel(),
+    viewModel: UserProfileEditViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
-    val originUserInfo by homeViewModel.myInfo.collectAsStateWithLifecycle()
-    val nickname by homeViewModel.editNickname.collectAsStateWithLifecycle()
-    val nicknameEditErrorMessage by homeViewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
-    val isUserProfileEditSuccess by homeViewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()
+    val originUserInfo by viewModel.myInfo.collectAsStateWithLifecycle()
+    val nickname by viewModel.editNickname.collectAsStateWithLifecycle()
+    val nicknameEditErrorMessage by viewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
+    val isUserProfileEditSuccess by viewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()
     var showCancelDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isUserProfileEditSuccess) {
         if (isUserProfileEditSuccess != null) {
             navigateToMyTabMain()
-            homeViewModel.resetUserProfileEditSuccess()
+            viewModel.resetUserProfileEditSuccess()
         }
     }
 
@@ -65,9 +65,9 @@ fun UserProfileEditScreen(
         nickname = nickname,
         imageId = originUserInfo?.profileImageId,
         nicknameEditErrorMessage = nicknameEditErrorMessage,
-        onNicknameChange = homeViewModel::changeNickname,
-        onEditButtonClick = homeViewModel::updateUserProfile,
-        onDeleteUserImage = homeViewModel::deleteUserProfileImage,
+        onNicknameChange = viewModel::changeNickname,
+        onEditButtonClick = viewModel::updateUserProfile,
+        onDeleteUserImage = viewModel::deleteUserProfileImage,
         onBackButtonClick = { showCancelDialog = true }
     )
 }
