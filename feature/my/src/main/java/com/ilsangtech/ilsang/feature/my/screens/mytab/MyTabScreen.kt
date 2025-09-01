@@ -41,7 +41,8 @@ internal fun MyTabScreen(
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onSettingButtonClick: () -> Unit,
-    onQuestNavButtonClick: () -> Unit
+    onQuestNavButtonClick: () -> Unit,
+    onTitleClick: (Int?) -> Unit
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
     val selectedSeason by viewModel.selectedSeason.collectAsStateWithLifecycle()
@@ -51,7 +52,7 @@ internal fun MyTabScreen(
         selectedSeason = selectedSeason,
         onSeasonChanged = viewModel::updateSeason,
         onSettingButtonClick = onSettingButtonClick,
-        onTitleClick = {},
+        onTitleClick = onTitleClick,
         onMissionHistoryButtonClick = onMissionHistoryButtonClick,
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},
@@ -67,7 +68,7 @@ private fun MyTabScreen(
     onSeasonChanged: (SeasonUiModel) -> Unit,
     onSettingButtonClick: () -> Unit,
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
-    onTitleClick: () -> Unit,
+    onTitleClick: (Int?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
     onCouponButtonClick: () -> Unit,
@@ -100,7 +101,7 @@ private fun MyTabScreen(
                                     uiState.myProfileInfo.profileImageId
                                 )
                             },
-                            onTitleClick = onTitleClick,
+                            onTitleClick = { onTitleClick(uiState.myProfileInfo.userTitle?.titleHistoryId) },
                             onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                             onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
                             onCouponButtonClick = onCouponButtonClick

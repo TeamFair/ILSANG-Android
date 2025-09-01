@@ -106,7 +106,8 @@ fun NavGraphBuilder.myTabNavigation(
                 onSettingButtonClick = navigateToSetting,
                 onProfileEditButtonClick = navigateToMyProfileEdit,
                 onMissionHistoryButtonClick = navigateToMyChallenge,
-                onQuestNavButtonClick = navigateToQuestTab
+                onQuestNavButtonClick = navigateToQuestTab,
+                onTitleClick = navigateToMyTitle
             )
         }
         composable<MyProfileEditRoute>(
