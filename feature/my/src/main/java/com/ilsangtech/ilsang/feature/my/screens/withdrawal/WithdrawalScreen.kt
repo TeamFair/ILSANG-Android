@@ -30,9 +30,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.feature.my.R
-import com.ilsangtech.ilsang.feature.my.component.WithdrawalButton
-import com.ilsangtech.ilsang.feature.my.component.WithdrawalContent
-import com.ilsangtech.ilsang.feature.my.component.WithdrawalDialog
+import com.ilsangtech.ilsang.feature.my.screens.withdrawal.component.WithdrawalButton
+import com.ilsangtech.ilsang.feature.my.screens.withdrawal.component.WithdrawalContent
+import com.ilsangtech.ilsang.feature.my.screens.withdrawal.component.WithdrawalDialog
 
 @Composable
 internal fun WithdrawalScreen(
