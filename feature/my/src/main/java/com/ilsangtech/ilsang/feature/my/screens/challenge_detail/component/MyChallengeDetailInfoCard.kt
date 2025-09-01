@@ -16,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,30 +75,6 @@ fun MyChallengeDetailInfoCard(
                 )
                 Spacer(Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        modifier = Modifier.size(12.dp),
-                        painter = painterResource(R.drawable.eye),
-                        tint = gray500,
-                        contentDescription = null
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Text(
-                        text = String.format(
-                            locale = Locale.KOREA,
-                            format = "%,d",
-                            challenge.viewCount
-                        ),
-                        style = myChallengeInfoCardBodyTextStyle
-                    )
-                    Box(
-                        modifier = Modifier.width(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        VerticalDivider(
-                            modifier = Modifier.height(12.dp),
-                            color = gray300
-                        )
-                    }
                     Icon(
                         modifier = Modifier.size(12.dp),
                         painter = painterResource(R.drawable.like),
