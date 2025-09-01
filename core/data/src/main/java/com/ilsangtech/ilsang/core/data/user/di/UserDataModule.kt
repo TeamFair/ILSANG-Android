@@ -4,7 +4,6 @@ import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
 import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSourceImpl
 import com.ilsangtech.ilsang.core.data.user.repository.UserRepositoryImpl
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
-import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import dagger.Module
@@ -26,13 +25,11 @@ object UserDataModule {
     @Singleton
     fun provideUserRepository(
         userDataSource: UserDataSource,
-        userDataStore: UserDataStore,
-        imageRepository: ImageRepository
+        userDataStore: UserDataStore
     ): UserRepository {
         return UserRepositoryImpl(
             userDataSource = userDataSource,
-            userDataStore = userDataStore,
-            imageRepository = imageRepository
+            userDataStore = userDataStore
         )
     }
 }

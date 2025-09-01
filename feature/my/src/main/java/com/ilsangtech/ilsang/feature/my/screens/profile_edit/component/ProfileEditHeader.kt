@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.profile_edit.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -30,20 +26,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.my.R
 
 @Composable
-fun NicknameEditHeader(navigateToMyTabMain: () -> Unit) {
-    var showCancelDialog by remember { mutableStateOf(false) }
-
-    if (showCancelDialog) {
-        EditNicknameCancelDialog(
-            onDismissRequest = { showCancelDialog = false },
-            onConfirm = {
-                showCancelDialog = false
-                navigateToMyTabMain()
-            },
-            onCancel = { showCancelDialog = false }
-        )
-    }
-
+fun ProfileEditHeader(onBackButtonClick: () -> Unit) {
     Box(
         modifier = Modifier
             .statusBarsPadding()
@@ -62,7 +45,7 @@ fun NicknameEditHeader(navigateToMyTabMain: () -> Unit) {
             modifier = Modifier
                 .padding(start = 15.dp)
                 .clickable(
-                    onClick = { showCancelDialog = true },
+                    onClick = onBackButtonClick,
                     interactionSource = null,
                     indication = null
                 ),
@@ -87,8 +70,8 @@ private val nicknameEditHeaderTextStyle = TextStyle(
 
 @Preview(showBackground = true)
 @Composable
-fun NicknameEditHeaderPreview() {
+fun ProfileEditHeaderPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        NicknameEditHeader {}
+        ProfileEditHeader {}
     }
 }

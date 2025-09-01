@@ -8,7 +8,6 @@ import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.UserDataStore
-import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
@@ -23,8 +22,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
-    private val userDataStore: UserDataStore,
-    private val imageRepository: ImageRepository
+    private val userDataStore: UserDataStore
 ) : UserRepository {
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
@@ -80,13 +78,9 @@ class UserRepositoryImpl @Inject constructor(
         userDataSource.updateUserNickname(nickname = nickname)
     }
 
-    override suspend fun updateUserImage(imageData: ByteArray): Result<Unit> {
+    override suspend fun updateUserImage(profileImageId: String?): Result<Unit> {
         return runCatching {
-            val imageId = imageRepository.uploadImage(
-                type = "USER_PROFILE_IMAGE",
-                imageBytes = imageData
-            )
-            userDataSource.updateUserImage(imageId)
+            userDataSource.updateUserImage(profileImageId)
         }
     }
 

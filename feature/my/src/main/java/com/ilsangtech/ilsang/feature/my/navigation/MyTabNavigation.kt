@@ -9,10 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
-import com.ilsangtech.ilsang.feature.my.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
+import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
 import com.ilsangtech.ilsang.feature.my.screens.terms.TermsScreen
 import com.ilsangtech.ilsang.feature.my.screens.withdrawal.WithdrawalScreen
@@ -37,7 +37,10 @@ data object CustomerCenterRoute
 data object MyRoute
 
 @Serializable
-data object MyEditRoute
+data class MyProfileEditRoute(
+    val nickname: String,
+    val profileImageId: String?
+)
 
 @Serializable
 data class MyChallengeRoute(
@@ -57,13 +60,18 @@ data class MyTitleRoute(
     val titleId: String?
 )
 
+fun NavHostController.navigateToMyProfileEdit(
+    nickname: String,
+    profileImageId: String?
+) = navigate(MyProfileEditRoute(nickname, profileImageId))
+
 
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
-    navigateToNicknameEdit: () -> Unit,
+    navigateToMyProfileEdit: (String, String?) -> Unit,
     navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
@@ -76,10 +84,11 @@ fun NavGraphBuilder.myTabNavigation(
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
             MyTabScreen(
-                onSettingButtonClick = navigateToSetting
+                onSettingButtonClick = navigateToSetting,
+                onProfileEditButtonClick = navigateToMyProfileEdit
             )
         }
-        composable<MyEditRoute>(
+        composable<MyProfileEditRoute>(
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300),

@@ -92,7 +92,7 @@ class MyTabViewModel @Inject constructor(
         emit(MyTabScreenUiState.Error(e.message.orEmpty()))
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(0),
         initialValue = MyTabScreenUiState.Loading
     )
 

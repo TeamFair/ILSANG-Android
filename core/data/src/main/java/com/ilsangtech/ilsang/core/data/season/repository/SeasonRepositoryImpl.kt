@@ -17,13 +17,14 @@ class SeasonRepositoryImpl(
     }
 
     override suspend fun getCurrentSeason(): Season {
-        return getSeasonList().first {
+        val seasonList = getSeasonList()
+        return seasonList.firstOrNull {
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             val start = simpleDateFormat.parse(it.startDate)
             val end = simpleDateFormat.parse(it.endDate)
             val current = Date()
 
             current.after(start) && current.before(end)
-        }
+        } ?: seasonList.last()
     }
 }

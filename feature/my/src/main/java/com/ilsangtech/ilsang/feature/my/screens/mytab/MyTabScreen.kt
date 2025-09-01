@@ -37,6 +37,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.model.MyTabScreenUiState
 @Composable
 internal fun MyTabScreen(
     viewModel: MyTabViewModel = hiltViewModel(),
+    onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onSettingButtonClick: () -> Unit
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
@@ -47,12 +48,12 @@ internal fun MyTabScreen(
         selectedSeason = selectedSeason,
         onSeasonChanged = viewModel::updateSeason,
         onSettingButtonClick = onSettingButtonClick,
-        onNicknameEditButtonClick = {},
         onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},
-        onQuestNavButtonClick = {}
+        onQuestNavButtonClick = {},
+        onProfileEditButtonClick = onProfileEditButtonClick
     )
 }
 
@@ -62,7 +63,7 @@ private fun MyTabScreen(
     selectedSeason: SeasonUiModel,
     onSeasonChanged: (SeasonUiModel) -> Unit,
     onSettingButtonClick: () -> Unit,
-    onNicknameEditButtonClick: () -> Unit,
+    onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onTitleClick: () -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
@@ -90,7 +91,12 @@ private fun MyTabScreen(
                     item {
                         MyProfileInfoCard(
                             myProfileInfo = uiState.myProfileInfo,
-                            onNicknameEditButtonClick = onNicknameEditButtonClick,
+                            onProfileEditButtonClick = {
+                                onProfileEditButtonClick(
+                                    uiState.myProfileInfo.nickname,
+                                    uiState.myProfileInfo.profileImageId
+                                )
+                            },
                             onTitleClick = onTitleClick,
                             onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                             onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
@@ -185,7 +191,7 @@ fun MyTabScreenPreview() {
         selectedSeason = selectedSeason,
         onSeasonChanged = {},
         onSettingButtonClick = {},
-        onNicknameEditButtonClick = {},
+        onProfileEditButtonClick = { _, _ -> },
         onTitleClick = {},
         onMissionHistoryButtonClick = {},
         onFavoriteQuestButtonClick = {},

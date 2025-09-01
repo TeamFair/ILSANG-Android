@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserImageUpdateRequest(
-    val imageId: String
+    val imageId: String?
 )
