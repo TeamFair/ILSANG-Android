@@ -44,6 +44,7 @@ import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
+import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyChallengeDetail
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyProfileEdit
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToSetting
 import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
@@ -142,6 +143,7 @@ fun IlsangNavHost(
                 },
                 navigateToMyProfileEdit = navController::navigateToMyProfileEdit,
                 navigateToMyChallenge = { navController.navigate(MyChallengeRoute) },
+                navigateToMyChallengeDetail = navController::navigateToMyChallengeDetail,
                 navigateToSetting = navController::navigateToSetting,
                 navigateToCustomerCenter = {
                     navController.navigate(CustomerCenterRoute)
