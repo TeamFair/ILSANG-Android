@@ -43,7 +43,7 @@ data class MyProfileEditRoute(
 )
 
 @Serializable
-data class MyChallengeRoute(
+data class MyChallengeDetailRoute(
     val challengeId: String,
     val receiptImageId: String?,
     val questImageId: String?,
@@ -107,7 +107,7 @@ fun NavGraphBuilder.myTabNavigation(
             )
         }
 
-        composable<MyChallengeRoute> {
+        composable<MyChallengeDetailRoute> {
             MyChallengeDetailScreen(
                 navigateToMyTabMain = navigateToMyTabMain
             )

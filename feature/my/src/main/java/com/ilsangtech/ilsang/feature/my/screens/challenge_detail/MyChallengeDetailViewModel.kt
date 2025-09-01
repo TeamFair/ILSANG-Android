@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.ChallengeRepository
-import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
+import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +22,7 @@ class MyChallengeDetailViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
     val challengeUiState = flow {
-        val challenge = savedStateHandle.toRoute<MyChallengeRoute>()
+        val challenge = savedStateHandle.toRoute<MyChallengeDetailRoute>()
         emit(
             MyChallengeDetailUiState(
                 title = challenge.title,
