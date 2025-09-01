@@ -27,7 +27,7 @@ interface UserDataSource {
 
     suspend fun deleteUserImage(): UserImageDeleteResponse
 
-    suspend fun updateUserTitle(titleHistoryId: String): UserTitleUpdateResponse
+    suspend fun updateUserTitle(titleHistoryId: Int): UserTitleUpdateResponse
 
     suspend fun updateUserIsZone(commericalAreaCode: String): UserInfoResponse
 }
