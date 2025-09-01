@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.my.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.FaqScreen
@@ -35,7 +36,10 @@ data object CustomerCenterRoute
 data object MyRoute
 
 @Serializable
-data object MyProfileEditRoute
+data class MyProfileEditRoute(
+    val nickname: String,
+    val profileImageId: String?
+)
 
 @Serializable
 data class MyChallengeRoute(
@@ -55,10 +59,15 @@ data class MyTitleRoute(
     val titleId: String?
 )
 
+fun NavHostController.navigateToMyProfileEdit(
+    nickname: String,
+    profileImageId: String?
+) = navigate(MyProfileEditRoute(nickname, profileImageId))
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
-    navigateToNicknameEdit: () -> Unit,
+    navigateToMyProfileEdit: (String, String?) -> Unit,
     navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
@@ -70,7 +79,7 @@ fun NavGraphBuilder.myTabNavigation(
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
-            MyTabScreen()
+            MyTabScreen(onProfileEditButtonClick = navigateToMyProfileEdit)
         }
         composable<MyProfileEditRoute>(
             enterTransition = {

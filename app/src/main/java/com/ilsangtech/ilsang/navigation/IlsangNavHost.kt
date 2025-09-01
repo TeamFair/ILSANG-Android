@@ -40,12 +40,12 @@ import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeRoute
-import com.ilsangtech.ilsang.feature.my.navigation.MyProfileEditRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
 import com.ilsangtech.ilsang.feature.my.navigation.SettingRoute
 import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
+import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyProfileEdit
 import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
 import com.ilsangtech.ilsang.feature.myzone.navigation.myZoneNavigation
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
@@ -140,7 +140,7 @@ fun IlsangNavHost(
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
-                navigateToNicknameEdit = { navController.navigate(MyProfileEditRoute) },
+                navigateToMyProfileEdit = navController::navigateToMyProfileEdit,
                 navigateToMyChallenge = { id, receiptImageId, questImageId, title, viewCount, likeCount ->
                     navController.navigate(
                         MyChallengeRoute(
