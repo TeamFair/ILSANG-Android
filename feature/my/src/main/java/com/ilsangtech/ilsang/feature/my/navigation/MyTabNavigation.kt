@@ -59,9 +59,7 @@ data class MyChallengeDetailRoute(
 data object TermsRoute
 
 @Serializable
-data class MyTitleRoute(
-    val titleId: String?
-)
+data class MyTitleRoute(val titleHistoryId: Int?)
 
 fun NavHostController.navigateToMyProfileEdit(
     nickname: String,
@@ -99,7 +97,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToMyTitle: (titleId: String?) -> Unit,
+    navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
     navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
