@@ -45,6 +45,7 @@ import com.ilsangtech.ilsang.feature.my.navigation.TermsRoute
 import com.ilsangtech.ilsang.feature.my.navigation.WithdrawalRoute
 import com.ilsangtech.ilsang.feature.my.navigation.myTabNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyChallengeDetail
+import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyFavoriteQuest
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyProfileEdit
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToSetting
 import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
@@ -164,6 +165,7 @@ fun IlsangNavHost(
                 navigateToMyTitle = {
                     navController.navigate(MyTitleRoute(it))
                 },
+                navigateToMyFavoriteQuest = navController::navigateToMyFavoriteQuest,
                 navigateToQuestTab = {
                     navController.navigateToTopLevelDestination(BottomTab.Quest)
                 }

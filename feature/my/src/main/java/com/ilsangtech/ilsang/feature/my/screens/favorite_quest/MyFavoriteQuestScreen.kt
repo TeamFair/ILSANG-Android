@@ -8,7 +8,8 @@ import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 
 @Composable
 internal fun MyFavoriteQuestScreen(
-    viewModel: MyFavoriteQuestViewModel = hiltViewModel()
+    viewModel: MyFavoriteQuestViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit
 ) {
     val favoriteQuestList = viewModel.favoriteQuestList.collectAsLazyPagingItems()
     MyFavoriteQuestScreen(favoriteQuestList)

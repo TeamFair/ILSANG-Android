@@ -11,6 +11,7 @@ import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
+import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.MyFavoriteQuestScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
@@ -61,6 +62,9 @@ data object TermsRoute
 @Serializable
 data class MyTitleRoute(val titleHistoryId: Int?)
 
+@Serializable
+data object MyFavoriteQuestRoute
+
 fun NavHostController.navigateToMyProfileEdit(
     nickname: String,
     profileImageId: String?
@@ -85,6 +89,8 @@ fun NavHostController.navigateToMyChallengeDetail(
 
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
+fun NavHostController.navigateToMyFavoriteQuest() = navigate(MyFavoriteQuestRoute)
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
@@ -98,6 +104,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
+    navigateToMyFavoriteQuest: () -> Unit,
     navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
@@ -106,6 +113,7 @@ fun NavGraphBuilder.myTabNavigation(
                 onSettingButtonClick = navigateToSetting,
                 onProfileEditButtonClick = navigateToMyProfileEdit,
                 onMissionHistoryButtonClick = navigateToMyChallenge,
+                onFavoriteQuestButtonClick = navigateToMyFavoriteQuest,
                 onQuestNavButtonClick = navigateToQuestTab,
                 onTitleClick = navigateToMyTitle
             )
@@ -187,6 +195,11 @@ fun NavGraphBuilder.myTabNavigation(
         }
         composable<MyTitleRoute> {
             MyTitleScreen(
+                onBackButtonClick = navigateToMyTabMain
+            )
+        }
+        composable<MyFavoriteQuestRoute> {
+            MyFavoriteQuestScreen(
                 onBackButtonClick = navigateToMyTabMain
             )
         }

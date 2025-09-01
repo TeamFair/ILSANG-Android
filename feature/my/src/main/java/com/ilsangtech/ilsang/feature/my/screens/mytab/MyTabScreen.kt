@@ -40,6 +40,7 @@ internal fun MyTabScreen(
     viewModel: MyTabViewModel = hiltViewModel(),
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
+    onFavoriteQuestButtonClick: () -> Unit,
     onSettingButtonClick: () -> Unit,
     onQuestNavButtonClick: () -> Unit,
     onTitleClick: (Int?) -> Unit
@@ -54,7 +55,7 @@ internal fun MyTabScreen(
         onSettingButtonClick = onSettingButtonClick,
         onTitleClick = onTitleClick,
         onMissionHistoryButtonClick = onMissionHistoryButtonClick,
-        onFavoriteQuestButtonClick = {},
+        onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
         onCouponButtonClick = {},
         onQuestNavButtonClick = onQuestNavButtonClick,
         onProfileEditButtonClick = onProfileEditButtonClick
