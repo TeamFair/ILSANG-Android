@@ -42,7 +42,7 @@ fun MyChallengeDetailScreen(
     myChallengeViewModel: MyChallengeDetailViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
-    val challengeUiState by myChallengeViewModel.challengeUiState.collectAsStateWithLifecycle()
+    val challengeUiState = myChallengeViewModel.challengeUiState
     val isChallengeDeleteSuccess by myChallengeViewModel.isChallengeDeleteSuccess.collectAsStateWithLifecycle()
 
     LaunchedEffect(isChallengeDeleteSuccess) {

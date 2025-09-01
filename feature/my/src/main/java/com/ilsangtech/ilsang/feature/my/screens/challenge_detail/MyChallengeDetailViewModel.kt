@@ -8,10 +8,7 @@ import com.ilsangtech.ilsang.core.domain.ChallengeRepository
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,21 +18,13 @@ class MyChallengeDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
-    val challengeUiState = flow {
-        val challenge = savedStateHandle.toRoute<MyChallengeDetailRoute>()
-        emit(
-            MyChallengeDetailUiState(
-                title = challenge.title,
-                challengeId = challenge.challengeId,
-                receiptImageId = challenge.receiptImageId,
-                questImageId = challenge.questImageId,
-                likeCount = challenge.likeCount
-            )
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
+    private val challengeData = savedStateHandle.toRoute<MyChallengeDetailRoute>()
+    val challengeUiState = MyChallengeDetailUiState(
+        title = challengeData.title,
+        challengeId = challengeData.challengeId,
+        receiptImageId = challengeData.receiptImageId,
+        questImageId = challengeData.questImageId,
+        likeCount = challengeData.likeCount
     )
 
     private val _isChallengeDeleteSuccess = MutableStateFlow<Boolean?>(null)
@@ -45,7 +34,7 @@ class MyChallengeDetailViewModel @Inject constructor(
     fun deleteChallenge() {
         viewModelScope.launch {
             challengeRepository.deleteChallenge(
-                challengeUiState.value!!.challengeId
+                challengeUiState.challengeId
             ).onSuccess {
                 _isChallengeDeleteSuccess.update { true }
             }.onFailure {
