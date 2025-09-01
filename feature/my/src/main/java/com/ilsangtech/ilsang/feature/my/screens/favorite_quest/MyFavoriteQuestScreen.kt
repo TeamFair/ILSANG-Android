@@ -34,6 +34,7 @@ internal fun MyFavoriteQuestScreen(
         commercialAreaName = commercialAreaName,
         favoriteQuestList = favoriteQuestList,
         onMyZoneClick = onMyZoneClick,
+        onFavoriteClick = viewModel::updateFavoriteStatus,
         onBackButtonClick = onBackButtonClick
     )
 }
@@ -43,6 +44,7 @@ private fun MyFavoriteQuestScreen(
     commercialAreaName: String?,
     favoriteQuestList: LazyPagingItems<TypedQuest>,
     onMyZoneClick: () -> Unit,
+    onFavoriteClick: (TypedQuest) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     Surface(
@@ -69,7 +71,7 @@ private fun MyFavoriteQuestScreen(
                         QuestCardWithFavorite(
                             quest = item,
                             onClick = {},
-                            onFavoriteClick = {}
+                            onFavoriteClick = { onFavoriteClick(item) }
                         )
                     }
                 }
