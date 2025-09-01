@@ -11,7 +11,7 @@ interface MissionRepository {
 
     fun getExampleMissionHistory(missionId: Int): Flow<PagingData<ExampleMissionHistory>>
 
-    fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistory>>
+    fun getUserMissionHistory(userId: String? = null): Flow<PagingData<UserMissionHistory>>
 
     suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit>
 
@@ -26,4 +26,6 @@ interface MissionRepository {
     suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit>
 
     suspend fun submitQuizMission(missionId: Int, quizId: Int, answer: String): Result<Boolean>
+
+    suspend fun deleteMissionHistory(missionHistoryId: Int): Result<Unit>
 }

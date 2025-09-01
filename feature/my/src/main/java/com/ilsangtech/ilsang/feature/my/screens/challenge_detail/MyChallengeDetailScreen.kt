@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -30,18 +30,20 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.feature.my.component.ChallengeDeleteDialog
-import com.ilsangtech.ilsang.feature.my.component.MyChallengeHeader
-import com.ilsangtech.ilsang.feature.my.component.MyChallengeInfoCard
+import com.ilsangtech.ilsang.feature.my.BuildConfig
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.ChallengeDeleteDialog
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailHeader
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailInfoCard
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model.MyChallengeDetailUiState
 import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
-fun MyChallengeScreen(
-    myChallengeViewModel: MyChallengeViewModel = hiltViewModel(),
+fun MyChallengeDetailScreen(
+    myChallengeViewModel: MyChallengeDetailViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
-    val challengeUiState by myChallengeViewModel.challengeUiState.collectAsStateWithLifecycle()
+    val challengeUiState = myChallengeViewModel.challengeUiState
     val isChallengeDeleteSuccess by myChallengeViewModel.isChallengeDeleteSuccess.collectAsStateWithLifecycle()
 
     LaunchedEffect(isChallengeDeleteSuccess) {
@@ -50,7 +52,7 @@ fun MyChallengeScreen(
         }
     }
 
-    MyChallengeScreen(
+    MyChallengeDetailScreen(
         challenge = challengeUiState,
         onDeleteButtonClick = myChallengeViewModel::deleteChallenge,
         navigateToMyTabMain = navigateToMyTabMain
@@ -58,8 +60,8 @@ fun MyChallengeScreen(
 }
 
 @Composable
-fun MyChallengeScreen(
-    challenge: MyChallengeUiState?,
+fun MyChallengeDetailScreen(
+    challenge: MyChallengeDetailUiState,
     onDeleteButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
@@ -84,7 +86,7 @@ fun MyChallengeScreen(
         color = Color.White
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            MyChallengeHeader(
+            MyChallengeDetailHeader(
                 onBackButtonClick = navigateToMyTabMain,
                 onShareButtonClick = {
                     coroutineScope.launch {
@@ -105,7 +107,7 @@ fun MyChallengeScreen(
                             file
                         )
                         val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "image/png"
+                            setType("image/png")
                             putExtra(Intent.EXTRA_STREAM, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             setDataAndType(uri, "image/png")
@@ -129,19 +131,17 @@ fun MyChallengeScreen(
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = BuildConfig.IMAGE_URL + challenge?.receiptImageId,
+                    model = BuildConfig.IMAGE_URL + challenge.submitImageId,
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null
                 )
-                challenge?.let {
-                    MyChallengeInfoCard(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 16.dp)
-                            .padding(horizontal = 20.dp),
-                        challenge = challenge
-                    )
-                }
+                MyChallengeDetailInfoCard(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp)
+                        .padding(horizontal = 20.dp),
+                    challenge = challenge
+                )
             }
         }
     }
@@ -149,15 +149,14 @@ fun MyChallengeScreen(
 
 @Preview
 @Composable
-fun MyChallengeScreenPreview() {
-    MyChallengeScreen(
-        challenge = MyChallengeUiState(
-            challengeId = "",
+fun MyChallengeDetailScreenPreview() {
+    MyChallengeDetailScreen(
+        challenge = MyChallengeDetailUiState(
+            missionHistoryId = 0,
             likeCount = 13,
             title = "겨울 간식 먹기",
             questImageId = "",
-            receiptImageId = "",
-            viewCount = 1302
+            submitImageId = ""
         ),
         onDeleteButtonClick = {},
         navigateToMyTabMain = {}

@@ -7,8 +7,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.ilsangtech.ilsang.feature.my.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
+import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
@@ -43,12 +44,14 @@ data class MyProfileEditRoute(
 )
 
 @Serializable
-data class MyChallengeRoute(
-    val challengeId: String,
-    val receiptImageId: String?,
+data object MyChallengeRoute
+
+@Serializable
+data class MyChallengeDetailRoute(
+    val missionHistoryId: Int,
+    val submitImageId: String,
     val questImageId: String?,
     val title: String,
-    val viewCount: Int,
     val likeCount: Int
 )
 
@@ -66,26 +69,46 @@ fun NavHostController.navigateToMyProfileEdit(
 ) = navigate(MyProfileEditRoute(nickname, profileImageId))
 
 
+fun NavHostController.navigateToMyChallengeDetail(
+    missionHistoryId: Int,
+    receiptImageId: String,
+    questImageId: String?,
+    title: String,
+    likeCount: Int
+) = navigate(
+    MyChallengeDetailRoute(
+        missionHistoryId = missionHistoryId,
+        submitImageId = receiptImageId,
+        questImageId = questImageId,
+        title = title,
+        likeCount = likeCount
+    )
+)
+
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToMyTabMain: () -> Unit,
     navigateToMyProfileEdit: (String, String?) -> Unit,
-    navigateToMyChallenge: (String, String?, String?, String, Int, Int) -> Unit,
+    navigateToMyChallenge: () -> Unit,
+    navigateToMyChallengeDetail: (Int, String, String?, String, Int) -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToMyTitle: (titleId: String?) -> Unit
+    navigateToMyTitle: (titleId: String?) -> Unit,
+    navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
             MyTabScreen(
                 onSettingButtonClick = navigateToSetting,
-                onProfileEditButtonClick = navigateToMyProfileEdit
+                onProfileEditButtonClick = navigateToMyProfileEdit,
+                onMissionHistoryButtonClick = navigateToMyChallenge,
+                onQuestNavButtonClick = navigateToQuestTab
             )
         }
         composable<MyProfileEditRoute>(
@@ -109,6 +132,22 @@ fun NavGraphBuilder.myTabNavigation(
 
         composable<MyChallengeRoute> {
             MyChallengeScreen(
+                onMissionHistoryClick = { missionHistory ->
+                    navigateToMyChallengeDetail(
+                        missionHistory.missionHistoryId,
+                        missionHistory.submitImageId,
+                        missionHistory.questImageId,
+                        missionHistory.title,
+                        missionHistory.likeCount
+                    )
+                },
+                onQuestNavButtonClick = navigateToQuestTab,
+                onBackButtonClick = navigateToMyTabMain
+            )
+        }
+
+        composable<MyChallengeDetailRoute> {
+            MyChallengeDetailScreen(
                 navigateToMyTabMain = navigateToMyTabMain
             )
         }

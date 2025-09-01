@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +37,14 @@ import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.feature.my.BuildConfig
-import com.ilsangtech.ilsang.feature.my.MyChallengeUiState
 import com.ilsangtech.ilsang.feature.my.R
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model.MyChallengeDetailUiState
 import java.util.Locale
 
 @Composable
-fun MyChallengeInfoCard(
+fun MyChallengeDetailInfoCard(
     modifier: Modifier = Modifier,
-    challenge: MyChallengeUiState
+    challenge: MyChallengeDetailUiState
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -76,30 +75,6 @@ fun MyChallengeInfoCard(
                 )
                 Spacer(Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        modifier = Modifier.size(12.dp),
-                        painter = painterResource(R.drawable.eye),
-                        tint = gray500,
-                        contentDescription = null
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Text(
-                        text = String.format(
-                            locale = Locale.KOREA,
-                            format = "%,d",
-                            challenge.viewCount
-                        ),
-                        style = myChallengeInfoCardBodyTextStyle
-                    )
-                    Box(
-                        modifier = Modifier.width(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        VerticalDivider(
-                            modifier = Modifier.height(12.dp),
-                            color = gray300
-                        )
-                    }
                     Icon(
                         modifier = Modifier.size(12.dp),
                         painter = painterResource(R.drawable.like),
@@ -158,15 +133,14 @@ private val myChallengeInfoCardBodyTextStyle = TextStyle(
 
 @Preview
 @Composable
-fun MyChallengeInfoCardPreview() {
-    MyChallengeInfoCard(
-        challenge = MyChallengeUiState(
-            challengeId = "",
+fun MyChallengeDetailInfoCardPreview() {
+    MyChallengeDetailInfoCard(
+        challenge = MyChallengeDetailUiState(
+            missionHistoryId = 0,
             likeCount = 13,
             title = "겨울 간식 먹기",
             questImageId = "",
-            receiptImageId = "",
-            viewCount = 1302
+            submitImageId = ""
         )
     )
 }
