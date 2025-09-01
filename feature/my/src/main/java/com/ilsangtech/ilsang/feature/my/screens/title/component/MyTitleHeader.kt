@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.title.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
