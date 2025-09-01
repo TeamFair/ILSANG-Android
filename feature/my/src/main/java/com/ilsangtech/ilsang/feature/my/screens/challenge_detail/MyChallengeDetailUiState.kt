@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
-data class MyChallengeUiState(
+data class MyChallengeDetailUiState(
     val challengeId: String,
     val title: String,
     val receiptImageId: String?,

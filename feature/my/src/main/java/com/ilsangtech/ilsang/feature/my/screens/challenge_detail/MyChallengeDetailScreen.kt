@@ -32,14 +32,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.component.ChallengeDeleteDialog
-import com.ilsangtech.ilsang.feature.my.component.MyChallengeHeader
-import com.ilsangtech.ilsang.feature.my.component.MyChallengeInfoCard
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailInfoCard
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeHeader
 import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
-fun MyChallengeScreen(
-    myChallengeViewModel: MyChallengeViewModel = hiltViewModel(),
+fun MyChallengeDetailScreen(
+    myChallengeViewModel: MyChallengeDetailViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
     val challengeUiState by myChallengeViewModel.challengeUiState.collectAsStateWithLifecycle()
@@ -51,7 +51,7 @@ fun MyChallengeScreen(
         }
     }
 
-    MyChallengeScreen(
+    MyChallengeDetailScreen(
         challenge = challengeUiState,
         onDeleteButtonClick = myChallengeViewModel::deleteChallenge,
         navigateToMyTabMain = navigateToMyTabMain
@@ -59,8 +59,8 @@ fun MyChallengeScreen(
 }
 
 @Composable
-fun MyChallengeScreen(
-    challenge: MyChallengeUiState?,
+fun MyChallengeDetailScreen(
+    challenge: MyChallengeDetailUiState?,
     onDeleteButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
@@ -106,7 +106,7 @@ fun MyChallengeScreen(
                             file
                         )
                         val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            Intent.setType = "image/png"
+                            setType("image/png")
                             putExtra(Intent.EXTRA_STREAM, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             setDataAndType(uri, "image/png")
@@ -135,7 +135,7 @@ fun MyChallengeScreen(
                     contentDescription = null
                 )
                 challenge?.let {
-                    MyChallengeInfoCard(
+                    MyChallengeDetailInfoCard(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(bottom = 16.dp)
@@ -150,9 +150,9 @@ fun MyChallengeScreen(
 
 @Preview
 @Composable
-fun MyChallengeScreenPreview() {
-    MyChallengeScreen(
-        challenge = MyChallengeUiState(
+fun MyChallengeDetailScreenPreview() {
+    MyChallengeDetailScreen(
+        challenge = MyChallengeDetailUiState(
             challengeId = "",
             likeCount = 13,
             title = "겨울 간식 먹기",

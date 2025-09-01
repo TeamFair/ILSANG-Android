@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.ilsangtech.ilsang.feature.my.MyTitleScreen
-import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeScreen
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
@@ -108,7 +108,7 @@ fun NavGraphBuilder.myTabNavigation(
         }
 
         composable<MyChallengeRoute> {
-            MyChallengeScreen(
+            MyChallengeDetailScreen(
                 navigateToMyTabMain = navigateToMyTabMain
             )
         }

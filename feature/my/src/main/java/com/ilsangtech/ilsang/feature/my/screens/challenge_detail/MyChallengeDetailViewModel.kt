@@ -17,14 +17,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyChallengeViewModel @Inject constructor(
+class MyChallengeDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
     val challengeUiState = flow {
         val challenge = savedStateHandle.toRoute<MyChallengeRoute>()
         emit(
-            MyChallengeUiState(
+            MyChallengeDetailUiState(
                 title = challenge.title,
                 challengeId = challenge.challengeId,
                 receiptImageId = challenge.receiptImageId,

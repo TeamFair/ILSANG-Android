@@ -39,13 +39,13 @@ import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.R
-import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeUiState
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailUiState
 import java.util.Locale
 
 @Composable
-fun MyChallengeInfoCard(
+fun MyChallengeDetailInfoCard(
     modifier: Modifier = Modifier,
-    challenge: MyChallengeUiState
+    challenge: MyChallengeDetailUiState
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -158,9 +158,9 @@ private val myChallengeInfoCardBodyTextStyle = TextStyle(
 
 @Preview
 @Composable
-fun MyChallengeInfoCardPreview() {
-    MyChallengeInfoCard(
-        challenge = MyChallengeUiState(
+fun MyChallengeDetailInfoCardPreview() {
+    MyChallengeDetailInfoCard(
+        challenge = MyChallengeDetailUiState(
             challengeId = "",
             likeCount = 13,
             title = "겨울 간식 먹기",
