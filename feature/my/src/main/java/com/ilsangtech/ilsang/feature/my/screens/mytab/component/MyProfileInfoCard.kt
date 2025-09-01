@@ -90,13 +90,11 @@ internal fun MyProfileInfoCard(
                 nickname = myProfileInfo.nickname,
                 onNicknameEditButtonClick = onProfileEditButtonClick
             )
-            myProfileInfo.userTitle?.let {
-                MyTitleBadge(
-                    modifier = Modifier.padding(top = 8.dp),
-                    title = myProfileInfo.userTitle.title,
-                    onTitleClick = onTitleClick
-                )
-            }
+            MyTitleBadge(
+                modifier = Modifier.padding(top = 8.dp),
+                title = myProfileInfo.userTitle?.title,
+                onTitleClick = onTitleClick
+            )
             MyProfileInfoBottomItemsRow(
                 onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                 onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
@@ -201,7 +199,7 @@ private fun MyNicknameInfoRow(
 @Composable
 fun MyTitleBadge(
     modifier: Modifier = Modifier,
-    title: Title,
+    title: Title?,
     onTitleClick: () -> Unit
 ) {
     Surface(
@@ -219,15 +217,23 @@ fun MyTitleBadge(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            TitleGradeIcon(
-                modifier = Modifier.size(20.dp),
-                titleGrade = title.grade
-            )
-            Text(
-                text = title.name,
-                style = badge01TextStyle,
-                color = gray500
-            )
+            if (title != null) {
+                TitleGradeIcon(
+                    modifier = Modifier.size(20.dp),
+                    titleGrade = title.grade
+                )
+                Text(
+                    text = title.name,
+                    style = badge01TextStyle,
+                    color = gray500
+                )
+            } else {
+                Text(
+                    text = "칭호를 선택해 주세요",
+                    style = badge01TextStyle,
+                    color = gray500
+                )
+            }
         }
     }
 }
