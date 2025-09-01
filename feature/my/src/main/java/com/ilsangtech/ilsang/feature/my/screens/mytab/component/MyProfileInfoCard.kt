@@ -45,6 +45,7 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.title.TitleGradeIcon
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
@@ -92,7 +93,7 @@ internal fun MyProfileInfoCard(
             myProfileInfo.title?.let {
                 MyTitleBadge(
                     modifier = Modifier.padding(top = 8.dp),
-                    title = myProfileInfo.title,
+                    title = myProfileInfo.title.title,
                     onTitleClick = onTitleClick
                 )
             }
@@ -363,10 +364,13 @@ private fun MyProfileInfoCardPreview() {
         profileImageId = "some_image_id",
         levelProgress = 0.5f,
         level = 5,
-        title = Title(
-            name = "세상을 움직이는 자",
-            grade = TitleGrade.Standard,
-            type = TitleType.Contribution
+        title = UserTitle(
+            titleHistoryId = 1,
+            title = Title(
+                name = "세상을 움직이는 자",
+                grade = TitleGrade.Standard,
+                type = TitleType.Contribution
+            )
         )
     )
     MyProfileInfoCard(

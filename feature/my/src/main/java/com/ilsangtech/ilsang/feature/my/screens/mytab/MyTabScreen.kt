@@ -19,6 +19,7 @@ import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TopCommercialAreaUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TotalOwnerContributionUiModel
@@ -138,10 +139,13 @@ fun MyTabScreenPreview() {
             profileImageId = "",
             levelProgress = 0.5f,
             level = 1,
-            title = Title(
-                name = "세상을 움직이는 자",
-                grade = TitleGrade.Standard,
-                type = TitleType.Metro
+            title = UserTitle(
+                titleHistoryId = 1,
+                title = Title(
+                    name = "세상을 움직이는 자",
+                    grade = TitleGrade.Standard,
+                    type = TitleType.Metro
+                )
             )
         ),
         myCommercialPoint = UserCommercialPointUiModel(
