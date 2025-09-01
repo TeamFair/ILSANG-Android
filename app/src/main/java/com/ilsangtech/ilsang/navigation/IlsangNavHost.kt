@@ -48,8 +48,8 @@ import com.ilsangtech.ilsang.feature.my.navigation.navigateToMyProfileEdit
 import com.ilsangtech.ilsang.feature.my.navigation.navigateToSetting
 import com.ilsangtech.ilsang.feature.myzone.navigation.MyZoneBaseRoute
 import com.ilsangtech.ilsang.feature.myzone.navigation.myZoneNavigation
-import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
+import com.ilsangtech.ilsang.feature.profile.navigation.navigateToChallenge
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
@@ -176,16 +176,7 @@ fun IlsangNavHost(
             )
 
             profileRoute(
-                navigateToChallenge = {
-                    navController.navigate(
-                        ChallengeRoute(
-                            receiptImageId = it.receiptImageId,
-                            questImageId = it.questImage,
-                            likeCount = it.likeCnt,
-                            title = it.missionTitle
-                        )
-                    )
-                },
+                navigateToChallenge = navController::navigateToChallenge,
                 popBackStack = navController::popBackStack
             )
 

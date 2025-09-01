@@ -1,10 +1,10 @@
 package com.ilsangtech.ilsang.feature.profile.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
-import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.feature.profile.ChallengeScreen
 import com.ilsangtech.ilsang.feature.profile.ProfileScreen
 import kotlinx.serialization.Serializable
@@ -17,14 +17,28 @@ data class ProfileRoute(val userId: String)
 
 @Serializable
 data class ChallengeRoute(
-    val receiptImageId: String?,
+    val receiptImageId: String,
     val questImageId: String?,
     val likeCount: Int,
     val title: String
 )
 
+fun NavHostController.navigateToChallenge(
+    submitImageId: String,
+    questImageId: String?,
+    likeCount: Int,
+    title: String
+) = navigate(
+    ChallengeRoute(
+        receiptImageId = submitImageId,
+        questImageId = questImageId,
+        likeCount = likeCount,
+        title = title
+    )
+)
+
 fun NavGraphBuilder.profileRoute(
-    navigateToChallenge: (Challenge) -> Unit,
+    navigateToChallenge: (String, String?, Int, String) -> Unit,
     popBackStack: () -> Unit
 ) {
     navigation<ProfileBaseRoute>(
@@ -32,7 +46,14 @@ fun NavGraphBuilder.profileRoute(
     ) {
         composable<ProfileRoute> {
             ProfileScreen(
-                navigateToChallenge = navigateToChallenge,
+                navigateToChallenge = {
+                    navigateToChallenge(
+                        it.submitImageId,
+                        it.questImageId,
+                        it.likeCount,
+                        it.title
+                    )
+                },
                 onPopBackStack = popBackStack
             )
         }
