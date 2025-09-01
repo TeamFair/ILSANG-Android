@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.ilsangtech.ilsang.feature.my.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
@@ -16,6 +15,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
 import com.ilsangtech.ilsang.feature.my.screens.terms.TermsScreen
+import com.ilsangtech.ilsang.feature.my.screens.title.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.withdrawal.WithdrawalScreen
 import kotlinx.serialization.Serializable
 

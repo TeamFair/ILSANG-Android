@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.title
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

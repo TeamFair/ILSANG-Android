@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.title
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +35,7 @@ import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
+import com.ilsangtech.ilsang.feature.my.R
 import com.ilsangtech.ilsang.feature.my.component.MyTitleHeader
 import com.ilsangtech.ilsang.feature.my.component.MyTitleUpdateDialog
 import com.ilsangtech.ilsang.feature.my.component.TitleTypeChipRow
