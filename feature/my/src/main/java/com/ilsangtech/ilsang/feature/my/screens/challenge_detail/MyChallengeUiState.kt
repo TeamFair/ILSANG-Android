@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
 data class MyChallengeUiState(
     val challengeId: String,

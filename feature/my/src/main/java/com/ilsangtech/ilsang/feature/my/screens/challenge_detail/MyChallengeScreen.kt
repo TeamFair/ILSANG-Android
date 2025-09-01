@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.component.ChallengeDeleteDialog
 import com.ilsangtech.ilsang.feature.my.component.MyChallengeHeader
 import com.ilsangtech.ilsang.feature.my.component.MyChallengeInfoCard
@@ -105,7 +106,7 @@ fun MyChallengeScreen(
                             file
                         )
                         val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            type = "image/png"
+                            Intent.setType = "image/png"
                             putExtra(Intent.EXTRA_STREAM, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                             setDataAndType(uri, "image/png")

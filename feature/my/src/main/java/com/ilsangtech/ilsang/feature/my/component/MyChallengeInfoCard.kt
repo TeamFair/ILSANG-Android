@@ -38,8 +38,8 @@ import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary100
 import com.ilsangtech.ilsang.feature.my.BuildConfig
-import com.ilsangtech.ilsang.feature.my.MyChallengeUiState
 import com.ilsangtech.ilsang.feature.my.R
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeUiState
 import java.util.Locale
 
 @Composable
