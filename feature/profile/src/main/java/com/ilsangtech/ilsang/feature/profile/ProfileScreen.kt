@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.Challenge
 import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.designsystem.R
@@ -41,7 +40,7 @@ import com.ilsangtech.ilsang.feature.profile.model.ProfileUiState
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    navigateToChallenge: (Challenge) -> Unit,
+    navigateToChallenge: (UserMissionHistoryUiModel) -> Unit,
     onPopBackStack: () -> Unit
 ) {
     val uiState by profileViewModel.profileUiState.collectAsStateWithLifecycle()
@@ -53,7 +52,7 @@ fun ProfileScreen(
         selectedSeason = selectedSeason,
         userMissionHistories = userMissionHistories,
         onSeasonChanged = profileViewModel::updateSeason,
-        navigateToChallenge = navigateToChallenge,
+        onMissionHistoryClick = navigateToChallenge,
         onBackButtonClick = onPopBackStack
     )
 }
@@ -64,7 +63,7 @@ private fun ProfileScreen(
     selectedSeason: SeasonUiModel,
     userMissionHistories: LazyPagingItems<UserMissionHistoryUiModel>,
     onSeasonChanged: (SeasonUiModel) -> Unit,
-    navigateToChallenge: (Challenge) -> Unit,
+    onMissionHistoryClick: (UserMissionHistoryUiModel) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     Surface(
@@ -110,7 +109,7 @@ private fun ProfileScreen(
                         item { Spacer(Modifier.height(48.dp)) }
                         userMissionHistoryContent(
                             userMissionHistoryItems = userMissionHistories,
-                            onClick = {}
+                            onClick = onMissionHistoryClick
                         )
                     }
 
