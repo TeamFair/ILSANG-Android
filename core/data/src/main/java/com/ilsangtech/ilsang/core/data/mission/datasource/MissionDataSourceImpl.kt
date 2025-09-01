@@ -78,4 +78,8 @@ class MissionDataSourceImpl(
             )
         )
     }
+
+    override suspend fun deleteMissionHistory(missionHistoryId: Int) {
+        return missionApiService.deleteMissionHistory(missionHistoryId)
+    }
 }
