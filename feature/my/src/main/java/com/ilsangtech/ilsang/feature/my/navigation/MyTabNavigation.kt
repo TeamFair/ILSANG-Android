@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.ilsangtech.ilsang.feature.my.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
@@ -16,6 +15,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
 import com.ilsangtech.ilsang.feature.my.screens.terms.TermsScreen
+import com.ilsangtech.ilsang.feature.my.screens.title.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.withdrawal.WithdrawalScreen
 import kotlinx.serialization.Serializable
 
@@ -59,9 +59,7 @@ data class MyChallengeDetailRoute(
 data object TermsRoute
 
 @Serializable
-data class MyTitleRoute(
-    val titleId: String?
-)
+data class MyTitleRoute(val titleHistoryId: Int?)
 
 fun NavHostController.navigateToMyProfileEdit(
     nickname: String,
@@ -99,7 +97,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToLicense: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToMyTitle: (titleId: String?) -> Unit,
+    navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
     navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
@@ -108,7 +106,8 @@ fun NavGraphBuilder.myTabNavigation(
                 onSettingButtonClick = navigateToSetting,
                 onProfileEditButtonClick = navigateToMyProfileEdit,
                 onMissionHistoryButtonClick = navigateToMyChallenge,
-                onQuestNavButtonClick = navigateToQuestTab
+                onQuestNavButtonClick = navigateToQuestTab,
+                onTitleClick = navigateToMyTitle
             )
         }
         composable<MyProfileEditRoute>(

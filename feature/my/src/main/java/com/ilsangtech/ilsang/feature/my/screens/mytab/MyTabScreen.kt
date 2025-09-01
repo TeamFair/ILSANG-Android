@@ -19,6 +19,7 @@ import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TopCommercialAreaUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TotalOwnerContributionUiModel
@@ -40,7 +41,8 @@ internal fun MyTabScreen(
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onSettingButtonClick: () -> Unit,
-    onQuestNavButtonClick: () -> Unit
+    onQuestNavButtonClick: () -> Unit,
+    onTitleClick: (Int?) -> Unit
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
     val selectedSeason by viewModel.selectedSeason.collectAsStateWithLifecycle()
@@ -50,7 +52,7 @@ internal fun MyTabScreen(
         selectedSeason = selectedSeason,
         onSeasonChanged = viewModel::updateSeason,
         onSettingButtonClick = onSettingButtonClick,
-        onTitleClick = {},
+        onTitleClick = onTitleClick,
         onMissionHistoryButtonClick = onMissionHistoryButtonClick,
         onFavoriteQuestButtonClick = {},
         onCouponButtonClick = {},
@@ -66,7 +68,7 @@ private fun MyTabScreen(
     onSeasonChanged: (SeasonUiModel) -> Unit,
     onSettingButtonClick: () -> Unit,
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
-    onTitleClick: () -> Unit,
+    onTitleClick: (Int?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
     onCouponButtonClick: () -> Unit,
@@ -99,7 +101,7 @@ private fun MyTabScreen(
                                     uiState.myProfileInfo.profileImageId
                                 )
                             },
-                            onTitleClick = onTitleClick,
+                            onTitleClick = { onTitleClick(uiState.myProfileInfo.userTitle?.titleHistoryId) },
                             onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                             onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
                             onCouponButtonClick = onCouponButtonClick
@@ -138,10 +140,13 @@ fun MyTabScreenPreview() {
             profileImageId = "",
             levelProgress = 0.5f,
             level = 1,
-            title = Title(
-                name = "세상을 움직이는 자",
-                grade = TitleGrade.Standard,
-                type = TitleType.Metro
+            userTitle = UserTitle(
+                titleHistoryId = 1,
+                title = Title(
+                    name = "세상을 움직이는 자",
+                    grade = TitleGrade.Standard,
+                    type = TitleType.Metro
+                )
             )
         ),
         myCommercialPoint = UserCommercialPointUiModel(

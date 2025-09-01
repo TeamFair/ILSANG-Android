@@ -94,7 +94,7 @@ class UserRepositoryImpl @Inject constructor(
         userDataStore.setShouldShowOnBoarding(false)
     }
 
-    override suspend fun updateUserTitle(titleHistoryId: String): Result<Unit> {
+    override suspend fun updateUserTitle(titleHistoryId: Int): Result<Unit> {
         return runCatching {
             userDataSource.updateUserTitle(titleHistoryId)
         }

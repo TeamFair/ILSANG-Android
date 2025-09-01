@@ -54,7 +54,7 @@ class MyTabViewModel @Inject constructor(
                 profileImageId = myInfo.profileImageId,
                 levelProgress = XpLevelCalculator.getLevelProgress(myInfo.totalPoint),
                 level = XpLevelCalculator.getCurrentLevel(myInfo.totalPoint),
-                title = myInfo.title
+                userTitle = myInfo.title
             ),
             myCommercialPoint = UserCommercialPointUiModel(
                 nickname = myInfo.nickname,

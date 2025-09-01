@@ -1,22 +1,22 @@
 package com.ilsangtech.ilsang.core.data.title.repository
 
 import com.ilsangtech.ilsang.core.data.title.datasource.TitleDataSource
+import com.ilsangtech.ilsang.core.data.title.mapper.toTitleDetail
+import com.ilsangtech.ilsang.core.data.title.mapper.toUserTitle
 import com.ilsangtech.ilsang.core.domain.TitleRepository
-import com.ilsangtech.ilsang.core.model.Title
+import com.ilsangtech.ilsang.core.model.title.TitleDetail
+import com.ilsangtech.ilsang.core.model.title.UserTitle
+import com.ilsangtech.ilsang.core.network.model.title.TitleDetailNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 
 class TitleRepositoryImpl(
     private val titleDataSource: TitleDataSource
 ) : TitleRepository {
-    override suspend fun getTitleList(): List<Title> {
-        return titleDataSource.getTitleList().data.map { (title, history) ->
-            Title(
-                id = title.id,
-                historyId = history?.id,
-                name = title.name,
-                type = title.type,
-                condition = title.condition,
-                createdAt = title.createdAt
-            )
-        }
+    override suspend fun getTitleList(): List<TitleDetail> {
+        return titleDataSource.getTitleList().map(TitleDetailNetworkModel::toTitleDetail)
+    }
+
+    override suspend fun getUserTitleList(): List<UserTitle> {
+        return titleDataSource.getUserTitleList().map(UserTitleNetworkModel::toUserTitle)
     }
 }

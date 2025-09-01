@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.title.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,55 +18,49 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.title.TitleGrade
+import com.ilsangtech.ilsang.core.ui.title.TitleGradeIcon
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.toSp
-import com.ilsangtech.ilsang.feature.my.R
 
 @Composable
 internal fun TitleTypeChipRow(
-    selectedType: String,
-    onChipClick: (String) -> Unit
+    selectedType: TitleGrade,
+    onChipClick: (TitleGrade) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        listOf("STANDARD", "RARE", "LEGEND").forEach { type ->
-            TitleTypeChip(
-                modifier = Modifier.weight(1f),
-                selected = selectedType == type,
-                type = type,
-                onClick = { onChipClick(type) }
-            )
-        }
+        listOf(TitleGrade.Standard, TitleGrade.Rare, TitleGrade.Legend)
+            .forEach { type ->
+                TitleTypeChip(
+                    modifier = Modifier.weight(1f),
+                    selected = selectedType == type,
+                    grade = type,
+                    onClick = { onChipClick(type) }
+                )
+            }
     }
 }
 
 @Composable
 private fun TitleTypeChip(
     modifier: Modifier = Modifier,
+    grade: TitleGrade,
     selected: Boolean,
-    type: String,
     onClick: () -> Unit
 ) {
-    val typeName = when (type) {
-        "STANDARD" -> "일반"
-        "RARE" -> "희귀"
-        else -> "전설"
+    val typeName = when (grade) {
+        TitleGrade.Standard -> "일반"
+        TitleGrade.Rare -> "희귀"
+        TitleGrade.Legend -> "전설"
     }
-    val painter = painterResource(
-        when (type) {
-            "STANDARD" -> R.drawable.icon_normal_title
-            "RARE" -> R.drawable.icon_rare_title
-            else -> R.drawable.icon_legend_title
-        }
-    )
 
     Surface(
         modifier = modifier,
@@ -81,11 +74,9 @@ private fun TitleTypeChip(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(
+            TitleGradeIcon(
                 modifier = Modifier.size(18.dp),
-                painter = painter,
-                contentDescription = "칭호 아이콘",
-                tint = Color.Unspecified
+                titleGrade = grade
             )
             Spacer(Modifier.width(8.dp))
             Text(
@@ -102,6 +93,8 @@ private fun TitleTypeChip(
 @Composable
 @Preview
 private fun TitleTypeChipRowPreview() {
-    var selectedType by remember { mutableStateOf("STANDARD") }
+    var selectedType by remember {
+        mutableStateOf<TitleGrade>(TitleGrade.Standard)
+    }
     TitleTypeChipRow(selectedType) { selectedType = it }
 }

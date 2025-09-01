@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.network.model.challenge
 
-import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,5 +16,5 @@ data class RandomChallengeNetworkModel(
     val userNickName: String,
     val userProfileImage: String?,
     val viewCount: Int,
-    val title: TitleNetworkModel? = null
+    val title: UserTitleNetworkModel? = null
 )

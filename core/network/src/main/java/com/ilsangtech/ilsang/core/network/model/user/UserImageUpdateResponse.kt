@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.network.model.user
 
-import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,5 +13,5 @@ data class UserImageUpdateResponse(
     val profileImageId: String,
     val status: String,
     val statusUpdatedAt: String,
-    val title: TitleNetworkModel
+    val title: UserTitleNetworkModel
 )

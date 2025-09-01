@@ -45,6 +45,7 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.title.TitleGradeIcon
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
@@ -89,13 +90,11 @@ internal fun MyProfileInfoCard(
                 nickname = myProfileInfo.nickname,
                 onNicknameEditButtonClick = onProfileEditButtonClick
             )
-            myProfileInfo.title?.let {
-                MyTitleBadge(
-                    modifier = Modifier.padding(top = 8.dp),
-                    title = myProfileInfo.title,
-                    onTitleClick = onTitleClick
-                )
-            }
+            MyTitleBadge(
+                modifier = Modifier.padding(top = 8.dp),
+                title = myProfileInfo.userTitle?.title,
+                onTitleClick = onTitleClick
+            )
             MyProfileInfoBottomItemsRow(
                 onMissionHistoryButtonClick = onMissionHistoryButtonClick,
                 onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
@@ -200,7 +199,7 @@ private fun MyNicknameInfoRow(
 @Composable
 fun MyTitleBadge(
     modifier: Modifier = Modifier,
-    title: Title,
+    title: Title?,
     onTitleClick: () -> Unit
 ) {
     Surface(
@@ -218,15 +217,23 @@ fun MyTitleBadge(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            TitleGradeIcon(
-                modifier = Modifier.size(20.dp),
-                titleGrade = title.grade
-            )
-            Text(
-                text = title.name,
-                style = badge01TextStyle,
-                color = gray500
-            )
+            if (title != null) {
+                TitleGradeIcon(
+                    modifier = Modifier.size(20.dp),
+                    titleGrade = title.grade
+                )
+                Text(
+                    text = title.name,
+                    style = badge01TextStyle,
+                    color = gray500
+                )
+            } else {
+                Text(
+                    text = "칭호를 선택해 주세요",
+                    style = badge01TextStyle,
+                    color = gray500
+                )
+            }
         }
     }
 }
@@ -363,10 +370,13 @@ private fun MyProfileInfoCardPreview() {
         profileImageId = "some_image_id",
         levelProgress = 0.5f,
         level = 5,
-        title = Title(
-            name = "세상을 움직이는 자",
-            grade = TitleGrade.Standard,
-            type = TitleType.Contribution
+        userTitle = UserTitle(
+            titleHistoryId = 1,
+            title = Title(
+                name = "세상을 움직이는 자",
+                grade = TitleGrade.Standard,
+                type = TitleType.Contribution
+            )
         )
     )
     MyProfileInfoCard(
