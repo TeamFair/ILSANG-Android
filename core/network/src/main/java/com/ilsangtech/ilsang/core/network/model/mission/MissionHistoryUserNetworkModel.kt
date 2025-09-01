@@ -1,12 +1,12 @@
 package com.ilsangtech.ilsang.core.network.model.mission
 
-import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.TitleNetworkModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class MissionHistoryUserNetworkModel(
     val nickname: String,
     val profileImageId: String?,
-    val title: UserTitleNetworkModel?,
+    val title: TitleNetworkModel?,
     val userId: String
 )
