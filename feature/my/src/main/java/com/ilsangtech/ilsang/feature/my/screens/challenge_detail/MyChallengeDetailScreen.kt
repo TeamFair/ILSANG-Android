@@ -60,7 +60,7 @@ fun MyChallengeDetailScreen(
 
 @Composable
 fun MyChallengeDetailScreen(
-    challenge: MyChallengeDetailUiState?,
+    challenge: MyChallengeDetailUiState,
     onDeleteButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
@@ -130,19 +130,17 @@ fun MyChallengeDetailScreen(
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = BuildConfig.IMAGE_URL + challenge?.submitImageId,
+                    model = BuildConfig.IMAGE_URL + challenge.submitImageId,
                     contentScale = ContentScale.FillWidth,
                     contentDescription = null
                 )
-                challenge?.let {
-                    MyChallengeDetailInfoCard(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 16.dp)
-                            .padding(horizontal = 20.dp),
-                        challenge = challenge
-                    )
-                }
+                MyChallengeDetailInfoCard(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp)
+                        .padding(horizontal = 20.dp),
+                    challenge = challenge
+                )
             }
         }
     }
