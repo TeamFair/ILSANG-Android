@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.my.navigation.MyProfileEditRoute
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class UserProfileEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
+    private val imageRepository: ImageRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
     val originNickname = savedStateHandle.toRoute<MyProfileEditRoute>().nickname
@@ -52,15 +54,16 @@ class UserProfileEditViewModel @Inject constructor(
     fun updateUserProfile(uri: Uri?) {
         viewModelScope.launch {
             runCatching {
-                if (uri != null) {
+                uri?.let {
                     val fileData = FileManager.getBytesFromUri(context, uri)
-                    userRepository.updateUserImage(fileData)
+                    imageRepository.uploadProfileImage(fileData).onSuccess { imageId ->
+                        userRepository.updateUserImage(imageId)
+                    }
                 }
                 if (editNickname.value != originNickname) {
                     userRepository.updateUserNickname(editNickname.value)
                 }
             }.onSuccess {
-                userRepository.updateMyInfo()
                 _isUserProfileEditSuccess.update { true }
             }.onFailure {
                 _isUserProfileEditSuccess.update { false }
@@ -70,10 +73,12 @@ class UserProfileEditViewModel @Inject constructor(
 
     fun deleteUserProfileImage() {
         viewModelScope.launch {
-            userRepository.deleteUserImage()
+            userRepository.updateUserImage(null)
                 .onSuccess {
-                    userRepository.updateMyInfo()
-                    _isUserProfileEditSuccess.update { true }
+                    profileImageId?.let {
+                        imageRepository.deleteImage(profileImageId)
+                        _isUserProfileEditSuccess.update { true }
+                    }
                 }.onFailure {
                     _isUserProfileEditSuccess.update { false }
                 }
