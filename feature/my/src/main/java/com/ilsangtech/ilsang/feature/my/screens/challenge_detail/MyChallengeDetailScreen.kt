@@ -157,8 +157,7 @@ fun MyChallengeDetailScreenPreview() {
             likeCount = 13,
             title = "겨울 간식 먹기",
             questImageId = "",
-            receiptImageId = "",
-            viewCount = 1302
+            receiptImageId = ""
         ),
         onDeleteButtonClick = {},
         navigateToMyTabMain = {}

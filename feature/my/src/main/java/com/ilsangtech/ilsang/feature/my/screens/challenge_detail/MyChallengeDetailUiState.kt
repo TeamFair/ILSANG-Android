@@ -5,6 +5,5 @@ data class MyChallengeDetailUiState(
     val title: String,
     val receiptImageId: String?,
     val questImageId: String?,
-    val viewCount: Int,
     val likeCount: Int
 )

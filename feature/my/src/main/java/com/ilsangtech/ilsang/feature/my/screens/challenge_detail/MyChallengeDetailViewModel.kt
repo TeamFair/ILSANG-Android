@@ -29,7 +29,6 @@ class MyChallengeDetailViewModel @Inject constructor(
                 challengeId = challenge.challengeId,
                 receiptImageId = challenge.receiptImageId,
                 questImageId = challenge.questImageId,
-                viewCount = challenge.viewCount,
                 likeCount = challenge.likeCount
             )
         )
