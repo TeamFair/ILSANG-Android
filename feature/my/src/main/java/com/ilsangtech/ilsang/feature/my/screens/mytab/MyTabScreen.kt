@@ -139,7 +139,7 @@ fun MyTabScreenPreview() {
             profileImageId = "",
             levelProgress = 0.5f,
             level = 1,
-            title = UserTitle(
+            userTitle = UserTitle(
                 titleHistoryId = 1,
                 title = Title(
                     name = "세상을 움직이는 자",

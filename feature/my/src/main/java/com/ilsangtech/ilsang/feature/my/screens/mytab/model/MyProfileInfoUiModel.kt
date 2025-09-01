@@ -7,5 +7,5 @@ data class MyProfileInfoUiModel(
     val profileImageId: String?,
     val levelProgress: Float,
     val level: Int,
-    val title: UserTitle?
+    val userTitle: UserTitle?
 )

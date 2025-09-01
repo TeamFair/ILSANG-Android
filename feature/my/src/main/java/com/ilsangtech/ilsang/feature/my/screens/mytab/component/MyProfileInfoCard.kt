@@ -90,10 +90,10 @@ internal fun MyProfileInfoCard(
                 nickname = myProfileInfo.nickname,
                 onNicknameEditButtonClick = onProfileEditButtonClick
             )
-            myProfileInfo.title?.let {
+            myProfileInfo.userTitle?.let {
                 MyTitleBadge(
                     modifier = Modifier.padding(top = 8.dp),
-                    title = myProfileInfo.title.title,
+                    title = myProfileInfo.userTitle.title,
                     onTitleClick = onTitleClick
                 )
             }
@@ -364,7 +364,7 @@ private fun MyProfileInfoCardPreview() {
         profileImageId = "some_image_id",
         levelProgress = 0.5f,
         level = 5,
-        title = UserTitle(
+        userTitle = UserTitle(
             titleHistoryId = 1,
             title = Title(
                 name = "세상을 움직이는 자",
