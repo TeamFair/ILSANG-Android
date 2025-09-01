@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.component
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
