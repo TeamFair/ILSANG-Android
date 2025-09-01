@@ -2,15 +2,16 @@ package com.ilsangtech.ilsang.feature.my.screens.profile_edit
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.util.FileManager
+import com.ilsangtech.ilsang.feature.my.navigation.MyProfileEditRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,14 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileEditViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _myInfo: MutableStateFlow<MyInfo?> =
-        MutableStateFlow(userRepository.currentUser)
-    val myInfo: StateFlow<MyInfo?> = _myInfo.asStateFlow()
+    val originNickname = savedStateHandle.toRoute<MyProfileEditRoute>().nickname
+    val profileImageId = savedStateHandle.toRoute<MyProfileEditRoute>().profileImageId
 
-    private val _editNickname = MutableStateFlow(myInfo.value?.nickname ?: "")
+    private val _editNickname = MutableStateFlow(originNickname)
     val editNickname = _editNickname.asStateFlow()
 
     private val _nicknameEditErrorMessage = MutableStateFlow<String?>(null)
@@ -55,12 +56,11 @@ class UserProfileEditViewModel @Inject constructor(
                     val fileData = FileManager.getBytesFromUri(context, uri)
                     userRepository.updateUserImage(fileData)
                 }
-                if (editNickname.value != myInfo.value?.nickname) {
+                if (editNickname.value != originNickname) {
                     userRepository.updateUserNickname(editNickname.value)
                 }
             }.onSuccess {
                 userRepository.updateMyInfo()
-                _myInfo.update { userRepository.currentUser }
                 _isUserProfileEditSuccess.update { true }
             }.onFailure {
                 _isUserProfileEditSuccess.update { false }
@@ -73,7 +73,6 @@ class UserProfileEditViewModel @Inject constructor(
             userRepository.deleteUserImage()
                 .onSuccess {
                     userRepository.updateMyInfo()
-                    _myInfo.update { userRepository.currentUser }
                     _isUserProfileEditSuccess.update { true }
                 }.onFailure {
                     _isUserProfileEditSuccess.update { false }
@@ -82,7 +81,7 @@ class UserProfileEditViewModel @Inject constructor(
     }
 
     fun resetUserProfileEditSuccess() {
-        _editNickname.value = _myInfo.value?.nickname ?: ""
+        _editNickname.update { originNickname }
         _nicknameEditErrorMessage.update { null }
         _isUserProfileEditSuccess.update { null }
     }
