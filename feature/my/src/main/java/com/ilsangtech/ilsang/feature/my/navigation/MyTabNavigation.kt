@@ -35,7 +35,7 @@ data object CustomerCenterRoute
 data object MyRoute
 
 @Serializable
-data object MyEditRoute
+data object MyProfileEditRoute
 
 @Serializable
 data class MyChallengeRoute(
@@ -72,7 +72,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<MyRoute> {
             MyTabScreen()
         }
-        composable<MyEditRoute>(
+        composable<MyProfileEditRoute>(
             enterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(300),
