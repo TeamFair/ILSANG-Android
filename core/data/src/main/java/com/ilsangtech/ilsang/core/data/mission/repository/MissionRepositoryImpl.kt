@@ -102,6 +102,12 @@ class MissionRepositoryImpl(
         }
     }
 
+    override suspend fun deleteMissionHistory(missionHistoryId: Int): Result<Unit> {
+        return runCatching {
+            missionDataSource.deleteMissionHistory(missionHistoryId)
+        }
+    }
+
     private companion object {
         const val SUBMIT_SUCCESS_CODE = "S1000"
     }
