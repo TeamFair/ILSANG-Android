@@ -48,11 +48,10 @@ data object MyChallengeRoute
 
 @Serializable
 data class MyChallengeDetailRoute(
-    val challengeId: String,
-    val receiptImageId: String?,
+    val missionHistoryId: Int,
+    val submitImageId: String,
     val questImageId: String?,
     val title: String,
-    val viewCount: Int,
     val likeCount: Int
 )
 
