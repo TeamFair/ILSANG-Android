@@ -35,7 +35,9 @@ fun UserProfileEditScreen(
     viewModel: UserProfileEditViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
-    val originUserInfo by viewModel.myInfo.collectAsStateWithLifecycle()
+    val originNickname = viewModel.originNickname
+    val profileImageId = viewModel.profileImageId
+
     val nickname by viewModel.editNickname.collectAsStateWithLifecycle()
     val nicknameEditErrorMessage by viewModel.nicknameEditErrorMessage.collectAsStateWithLifecycle()
     val isUserProfileEditSuccess by viewModel.isUserProfileEditSuccess.collectAsStateWithLifecycle()
@@ -61,9 +63,9 @@ fun UserProfileEditScreen(
     }
 
     UserProfileEditScreen(
-        originNickname = originUserInfo?.nickname.orEmpty(),
+        originNickname = originNickname,
         nickname = nickname,
-        imageId = originUserInfo?.profileImageId,
+        imageId = profileImageId,
         nicknameEditErrorMessage = nicknameEditErrorMessage,
         onNicknameChange = viewModel::changeNickname,
         onEditButtonClick = viewModel::updateUserProfile,
