@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.my.screens.challenge.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +28,6 @@ internal fun MyChallengeHeader(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .statusBarsPadding()
             .padding(vertical = 12.dp),
     ) {
