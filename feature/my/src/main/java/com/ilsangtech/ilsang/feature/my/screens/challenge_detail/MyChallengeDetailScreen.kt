@@ -34,6 +34,7 @@ import com.ilsangtech.ilsang.feature.my.BuildConfig
 import com.ilsangtech.ilsang.feature.my.component.ChallengeDeleteDialog
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailHeader
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailInfoCard
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model.MyChallengeDetailUiState
 import kotlinx.coroutines.launch
 import java.io.File
 

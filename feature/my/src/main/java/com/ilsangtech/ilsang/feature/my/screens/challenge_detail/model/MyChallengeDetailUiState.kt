@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
+package com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model
 
 data class MyChallengeDetailUiState(
     val missionHistoryId: Int,

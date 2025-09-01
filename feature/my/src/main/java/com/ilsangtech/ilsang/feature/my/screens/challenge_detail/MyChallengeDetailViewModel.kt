@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyChallengeDetailRoute
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model.MyChallengeDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
