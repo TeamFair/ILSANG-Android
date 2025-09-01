@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.my.screens.title
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.title.Title
+import com.ilsangtech.ilsang.core.model.title.TitleGrade
+import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -41,17 +44,19 @@ import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateDia
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TitleTypeChipRow
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TypeTitleListHeader
 import com.ilsangtech.ilsang.feature.my.screens.title.component.typeTitleList
+import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleScreenUiState
+import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleUiModel
 
 @Composable
 internal fun MyTitleScreen(
     myTitleViewModel: MyTitleViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit
 ) {
-    val titleList by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
+    val uiState by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
 
-    var selectedType by remember { mutableStateOf("STANDARD") }
+    var selectedType by remember { mutableStateOf<TitleGrade>(TitleGrade.Standard) }
     var showUpdateDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isTitleUpdated) {
@@ -60,9 +65,10 @@ internal fun MyTitleScreen(
         }
     }
 
-//    BackHandler(myTitleViewModel.previousTitleId != selectedTitle?.id) {
-//        showUpdateDialog = true
-//    }
+    BackHandler(
+        enabled = myTitleViewModel.originTitleHistoryId != selectedTitle?.titleHistoryId,
+        onBack = { showUpdateDialog = true }
+    )
 
     if (showUpdateDialog) {
         MyTitleUpdateDialog(
@@ -72,12 +78,12 @@ internal fun MyTitleScreen(
     }
 
     MyTitleScreen(
-        titleList = titleList,
-        selectedType = selectedType,
+        uiState = uiState,
+        selectedTitleGrade = selectedType,
         selectedTitle = selectedTitle,
         onTypeChipClick = { selectedType = it },
         onBackButtonClick = {
-            if (myTitleViewModel.previousTitleId == "") {
+            if (myTitleViewModel.originTitleHistoryId == null) {
                 onBackButtonClick()
             } else {
                 showUpdateDialog = true
@@ -89,12 +95,12 @@ internal fun MyTitleScreen(
 
 @Composable
 private fun MyTitleScreen(
-    titleList: List<Title>,
-    selectedType: String,
-    selectedTitle: Title?,
+    uiState: MyTitleScreenUiState,
+    selectedTitleGrade: TitleGrade,
+    selectedTitle: MyTitleUiModel?,
     onBackButtonClick: () -> Unit,
-    onTypeChipClick: (String) -> Unit,
-    onTitleSelect: (Title) -> Unit
+    onTypeChipClick: (TitleGrade) -> Unit,
+    onTitleSelect: (MyTitleUiModel) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -110,21 +116,25 @@ private fun MyTitleScreen(
                 item { Spacer(Modifier.height(36.dp)) }
                 item {
                     TitleTypeChipRow(
-                        selectedType = selectedType,
+                        selectedType = selectedTitleGrade,
                         onChipClick = onTypeChipClick
                     )
                 }
                 item {
                     TypeTitleListHeader(
                         modifier = Modifier.padding(vertical = 16.dp),
-                        selectedType = selectedType
+                        selectedGrade = selectedTitleGrade
                     )
                 }
-                typeTitleList(
-                    titleList = titleList,
-                    selectedTitle = selectedTitle,
-                    onTitleSelect = onTitleSelect
-                )
+                if (uiState is MyTitleScreenUiState.Success) {
+                    typeTitleList(
+                        titleList = uiState.titleList.filter {
+                            it.title.grade == selectedTitleGrade
+                        },
+                        selectedTitle = selectedTitle,
+                        onTitleSelect = onTitleSelect
+                    )
+                }
             }
         }
     }
@@ -169,15 +179,36 @@ private fun MyTitleTopBar(
     }
 }
 
-@Composable
 @Preview
+@Composable
 private fun MyTitleScreenPreview() {
+    val sampleTitles = listOf(
+        MyTitleUiModel(
+            titleHistoryId = 1,
+            title = Title(name = "초보 탐험가", grade = TitleGrade.Standard, type = TitleType.Metro),
+            condition = "지하철역 10회 방문"
+        ),
+        MyTitleUiModel(
+            titleHistoryId = 2,
+            title = Title(name = "상권 분석가", grade = TitleGrade.Rare, type = TitleType.Commercial),
+            condition = "상권 5곳 방문"
+        ),
+        MyTitleUiModel(
+            titleHistoryId = 3,
+            title = Title(
+                name = "도시 기여자",
+                grade = TitleGrade.Legend,
+                type = TitleType.Contribution
+            ),
+            condition = "장소 100곳 제보"
+        )
+    )
     MyTitleScreen(
-        titleList = emptyList(),
-        selectedType = "STANDARD",
-        selectedTitle = null,
+        uiState = MyTitleScreenUiState.Success(titleList = sampleTitles),
+        selectedTitleGrade = TitleGrade.Standard,
+        selectedTitle = sampleTitles.first(),
         onBackButtonClick = {},
-        onTitleSelect = {},
-        onTypeChipClick = {}
+        onTypeChipClick = {},
+        onTitleSelect = {}
     )
 }
