@@ -1,22 +1,79 @@
 package com.ilsangtech.ilsang.feature.my.screens.favorite_quest
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
+import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
+import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
+import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.component.MyFavoriteQuestHeader
 
 @Composable
 internal fun MyFavoriteQuestScreen(
     viewModel: MyFavoriteQuestViewModel = hiltViewModel(),
+    onMyZoneClick: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val favoriteQuestList = viewModel.favoriteQuestList.collectAsLazyPagingItems()
-    MyFavoriteQuestScreen(favoriteQuestList)
+    val commercialAreaName by viewModel.commercialAreaName.collectAsStateWithLifecycle()
+
+    MyFavoriteQuestScreen(
+        commercialAreaName = commercialAreaName,
+        favoriteQuestList = favoriteQuestList,
+        onMyZoneClick = onMyZoneClick,
+        onBackButtonClick = onBackButtonClick
+    )
 }
 
 @Composable
 private fun MyFavoriteQuestScreen(
-    favoriteQuestList: LazyPagingItems<TypedQuest>
+    commercialAreaName: String?,
+    favoriteQuestList: LazyPagingItems<TypedQuest>,
+    onMyZoneClick: () -> Unit,
+    onBackButtonClick: () -> Unit
 ) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = background
+    ) {
+        Column {
+            MyFavoriteQuestHeader(onBackButtonClick = onBackButtonClick)
+            MyZoneSelector(
+                modifier = Modifier.padding(top = 16.dp, start = 20.dp),
+                myCommercialAreaName = commercialAreaName.orEmpty(),
+                onMyZoneClick = onMyZoneClick
+            )
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = 24.dp, bottom = 72.dp,
+                    start = 20.dp, end = 20.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(favoriteQuestList.itemCount) {
+                    val item = favoriteQuestList[it]
+                    item?.let {
+                        QuestCardWithFavorite(
+                            quest = item,
+                            onClick = {},
+                            onFavoriteClick = {}
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

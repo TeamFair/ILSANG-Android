@@ -105,6 +105,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
     navigateToMyFavoriteQuest: () -> Unit,
+    navigateToMyZone: () -> Unit,
     navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
@@ -200,6 +201,7 @@ fun NavGraphBuilder.myTabNavigation(
         }
         composable<MyFavoriteQuestRoute> {
             MyFavoriteQuestScreen(
+                onMyZoneClick = navigateToMyZone,
                 onBackButtonClick = navigateToMyTabMain
             )
         }

@@ -166,6 +166,9 @@ fun IlsangNavHost(
                     navController.navigate(MyTitleRoute(it))
                 },
                 navigateToMyFavoriteQuest = navController::navigateToMyFavoriteQuest,
+                navigateToMyZone = {
+                    navController.navigate(MyZoneBaseRoute)
+                },
                 navigateToQuestTab = {
                     navController.navigateToTopLevelDestination(BottomTab.Quest)
                 }
