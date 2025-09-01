@@ -3,7 +3,15 @@ package com.ilsangtech.ilsang.core.data.title.mapper
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
+
+internal fun UserTitleNetworkModel.toUserTitle(): UserTitle {
+    return UserTitle(
+        titleHistoryId = titleHistoryId,
+        title = this.toTitle()
+    )
+}
 
 internal fun UserTitleNetworkModel.toTitle(): Title {
     return Title(
