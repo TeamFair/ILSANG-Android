@@ -185,6 +185,9 @@ fun IlsangNavHost(
                 navigateToRankingDetail = { rankingDetailRoute ->
                     navController.navigate(rankingDetailRoute)
                 },
+                navigateToUserProfile = { userId ->
+                    navController.navigate(ProfileRoute(userId))
+                },
                 onBackButtonClick = navController::popBackStack
             )
 

@@ -61,7 +61,8 @@ import java.util.Locale
 @Composable
 fun RankingTabScreen(
     rankingViewModel: RankingTabViewModel = hiltViewModel(),
-    navigateToRankingDetail: (RankingDetailRoute) -> Unit
+    navigateToRankingDetail: (RankingDetailRoute) -> Unit,
+    navigateToUserProfile: (String) -> Unit
 ) {
     val seasonList by rankingViewModel.seasonList.collectAsStateWithLifecycle()
     val currentSeason by rankingViewModel.currentSeason.collectAsStateWithLifecycle()
@@ -88,6 +89,9 @@ fun RankingTabScreen(
                 )
             )
         },
+        onUserRankClick = { userRankUiModel ->
+            navigateToUserProfile(userRankUiModel.userId)
+        },
         onSeasonFinished = rankingViewModel::refreshSeason
     )
 }
@@ -101,6 +105,7 @@ private fun RankingTabScreen(
     rankingTabUiState: RankingTabUiState,
     onSeasonSelected: (SeasonUiModel) -> Unit,
     onAreaClick: (AreaRankUiModel, Boolean) -> Unit,
+    onUserRankClick: (UserRankUiModel) -> Unit,
     onSeasonFinished: () -> Unit
 ) {
     var selectedReward by remember { mutableStateOf(RewardUiModel.Metro) }
@@ -220,7 +225,8 @@ private fun RankingTabScreen(
                                             rank = contributionRankUser.rank,
                                             point = contributionRankUser.point,
                                             titleName = contributionRankUser.titleName,
-                                            titleGrade = contributionRankUser.titleGrade
+                                            titleGrade = contributionRankUser.titleGrade,
+                                            onClick = { onUserRankClick(contributionRankUser) }
                                         )
                                     }
                                 }
@@ -366,6 +372,7 @@ private fun RankingTabScreenPreview() {
         rankingTabUiState = rankingTabUiState,
         onSeasonSelected = {},
         onAreaClick = { _, _ -> },
+        onUserRankClick = {},
         onSeasonFinished = {}
     )
 }

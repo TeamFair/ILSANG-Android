@@ -52,9 +52,13 @@ internal fun UserRankItem(
     titleName: String?,
     titleGrade: TitleGrade?,
     rank: Int?,
-    point: Int
+    point: Int,
+    onClick: () -> Unit
 ) {
-    DefaultUserRankCard(modifier = modifier.fillMaxWidth()) {
+    DefaultUserRankCard(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -173,10 +177,12 @@ internal fun MyRankCard(
 @Composable
 private fun DefaultUserRankCard(
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
         modifier = modifier,
+        onClick = { onClick?.invoke() },
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape(16.dp),
     ) {
@@ -265,7 +271,8 @@ private fun UserRankItemPreview() {
         titleName = titleName,
         titleGrade = titleGrade,
         rank = rank,
-        point = point
+        point = point,
+        onClick = {}
     )
 }
 

@@ -137,6 +137,7 @@ private fun RankingDetailScreen(
                             titleGrade = item.titleGrade,
                             point = item.point,
                             rank = item.rank,
+                            onClick = {}
                         )
                         if (index != userRankList.lastIndex) {
                             Spacer(Modifier.height(12.dp))
