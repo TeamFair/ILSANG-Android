@@ -11,7 +11,9 @@ import com.ilsangtech.ilsang.navigation.IlsangNavHost
 fun IlsangApp(
     isLoggedIn: Boolean?,
     shouldShowOnBoarding: Boolean,
+    shouldShowIsZoneDialog: Boolean,
     completeOnBoarding: () -> Unit,
+    shownIsZoneDialog: (Boolean) -> Unit,
     login: () -> Unit
 ) {
     ILSANGTheme {
@@ -23,7 +25,9 @@ fun IlsangApp(
                         shouldShowOnBoarding -> TutorialBaseRoute::class
                         else -> HomeBaseRoute::class
                     },
+                shouldShowIsZoneDialog = shouldShowIsZoneDialog,
                 completeOnBoarding = completeOnBoarding,
+                shownIsZoneDialog = shownIsZoneDialog,
                 login = login
             )
         }

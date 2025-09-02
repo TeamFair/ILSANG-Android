@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
@@ -57,15 +58,16 @@ import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
 import com.ilsangtech.ilsang.feature.submit.navigation.navigateToSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
-import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
 import kotlin.reflect.KClass
 
 @Composable
 fun IlsangNavHost(
     startDestination: KClass<*>,
+    shouldShowIsZoneDialog: Boolean,
     login: () -> Unit,
-    completeOnBoarding: () -> Unit
+    completeOnBoarding: () -> Unit,
+    shownIsZoneDialog: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val navController = rememberNavController()
@@ -73,6 +75,17 @@ fun IlsangNavHost(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
     val topLevelDestinations = BottomTab.entries
+
+    if (shouldShowIsZoneDialog
+        && currentBackStackEntry?.destination?.hierarchy?.any {
+            it.hasRoute(HomeBaseRoute::class)
+        } == true
+    ) {
+        IsZoneSuggestionDialog(
+            onConfirm = { navController.navigate(IsZoneBaseRoute) },
+            onDismissRequest = shownIsZoneDialog
+        )
+    }
 
     Scaffold(
         bottomBar = {
@@ -96,9 +109,6 @@ fun IlsangNavHost(
             tutorialNavigation(
                 navigateToHome = {
                     completeOnBoarding()
-                    navController.navigate(HomeBaseRoute) {
-                        popUpTo(TutorialBaseRoute) { inclusive = true }
-                    }
                 }
             )
 
