@@ -268,27 +268,27 @@ private fun RankingTabScreenPreview() {
         SeasonUiModel.Season(
             seasonId = 1,
             seasonNumber = 1,
-            startDate = "2023-01-01",
-            endDate = "2023-03-31"
+            startDate = "2023.01.01",
+            endDate = "2023.03.31"
         ),
         SeasonUiModel.Season(
             seasonId = 2,
             seasonNumber = 2,
-            startDate = "2023-04-01",
-            endDate = "2023-06-30"
+            startDate = "2023.04.01",
+            endDate = "2023.06.30"
         )
     )
     val currentSeason = SeasonUiModel.Season(
         seasonId = 2,
         seasonNumber = 2,
-        startDate = "2023-04-01",
-        endDate = "2023-06-30"
+        startDate = "2023.04.01",
+        endDate = "2023.06.30"
     )
     val selectedSeason = SeasonUiModel.Season(
         seasonId = 2,
         seasonNumber = 2,
-        startDate = "2023-04-01",
-        endDate = "2023-06-30"
+        startDate = "2023.04.01",
+        endDate = "2023.06.30"
     )
     val rankingTabUiState = RankingTabUiState.Success(
         metroRankAreas = listOf(
