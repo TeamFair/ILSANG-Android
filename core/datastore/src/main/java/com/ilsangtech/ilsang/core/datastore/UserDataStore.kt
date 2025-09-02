@@ -19,6 +19,11 @@ class UserDataStore(context: Context) {
         preferences[shouldShowOnBoardingKey] ?: true
     }
 
+    private val showIsZoneDialogAgainKey = booleanPreferencesKey("show_is_zone_dialog_again")
+    val showIsZoneDialogAgain = userDataStore.data.map { preferences ->
+        preferences[showIsZoneDialogAgainKey] ?: true
+    }
+
     private val userMyZoneKey = stringPreferencesKey("user_my_zone")
     val userMyZone = userDataStore.data.map { preferences ->
         preferences[userMyZoneKey] ?: "R100"
@@ -37,6 +42,12 @@ class UserDataStore(context: Context) {
     suspend fun setShouldShowOnBoarding(shouldShow: Boolean) {
         userDataStore.edit { preferences ->
             preferences[shouldShowOnBoardingKey] = shouldShow
+        }
+    }
+
+    suspend fun setShowIsZoneDialogAgain(showAgain: Boolean) {
+        userDataStore.edit { preferences ->
+            preferences[showIsZoneDialogAgainKey] = showAgain
         }
     }
 
