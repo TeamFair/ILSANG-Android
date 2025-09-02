@@ -5,7 +5,7 @@ sealed interface RankingDetailUiState {
     data class Success(
         val currentSeason: SeasonUiModel.Season,
         val areaRankUiModel: AreaRankUiModel,
-        val myRankUiModel: UserRankUiModel,
+        val myRankUiModel: MyAreaRankUiModel,
         val userRankList: List<UserRankUiModel>
     ) : RankingDetailUiState
 
