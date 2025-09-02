@@ -13,5 +13,6 @@ data class MyInfo(
     val profileImageId: String?,
     val status: String,
     val statusUpdatedAt: String,
-    val title: UserTitle?
+    val title: UserTitle?,
+    val showIsZoneDialogAgain: Boolean
 )

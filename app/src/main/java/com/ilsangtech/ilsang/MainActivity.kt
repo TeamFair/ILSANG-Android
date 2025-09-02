@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,10 +43,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isLoggedIn by mainActivityViewModel.isLoggedIn.collectAsStateWithLifecycle()
             val shouldShowOnBoarding by mainActivityViewModel.shouldShowOnBoarding.collectAsStateWithLifecycle()
+            val shouldShowIsZoneDialog by mainActivityViewModel.shouldShowIsZoneDialog.collectAsStateWithLifecycle()
+
+            Log.d("shouldShowIsZoneDialog", shouldShowIsZoneDialog.toString())
             IlsangApp(
                 isLoggedIn = isLoggedIn,
                 shouldShowOnBoarding = shouldShowOnBoarding,
+                shouldShowIsZoneDialog = shouldShowIsZoneDialog,
                 completeOnBoarding = mainActivityViewModel::completeOnBoarding,
+                shownIsZoneDialog = { checked -> mainActivityViewModel.shownIsZoneDialog(!checked) },
                 login = {
                     loginWithGoogle(
                         onLoginSuccess = { idToken ->

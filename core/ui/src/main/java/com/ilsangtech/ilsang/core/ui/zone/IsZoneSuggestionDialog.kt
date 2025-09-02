@@ -29,17 +29,16 @@ import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 @Composable
 fun IsZoneSuggestionDialog(
     onConfirm: () -> Unit,
-    onCancel: (checked: Boolean) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: (checked: Boolean) -> Unit
 ) {
     var checked by remember { mutableStateOf(false) }
 
     ILSANGDialog(
         positiveButtonText = "일상존 선택하기",
         negativeButtonText = "취소",
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { onDismissRequest(checked) },
         onPositiveButtonClick = onConfirm,
-        onNegativeButtonClick = { onCancel(checked) }
+        onNegativeButtonClick = { onDismissRequest(checked) }
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -93,7 +92,6 @@ fun IsZoneSuggestionDialog(
 private fun IsZoneSuggestionDialogPreview() {
     IsZoneSuggestionDialog(
         onConfirm = {},
-        onCancel = {},
         onDismissRequest = {}
     )
 }

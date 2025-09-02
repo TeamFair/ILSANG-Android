@@ -12,8 +12,8 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 private val ilsangButtonRadius = 12.dp
 
@@ -33,9 +33,9 @@ fun ILSANGButton(
         Text(
             text = text,
             style = TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.sp,
+                fontSize = 14.dp.toSp(),
+                lineHeight = 24.dp.toSp(),
+                letterSpacing = 0.dp.toSp(),
                 fontFamily = FontFamily(Font(R.font.pretendard_semibold)),
             )
         )
