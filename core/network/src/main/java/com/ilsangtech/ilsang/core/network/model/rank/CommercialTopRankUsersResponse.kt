@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CommercialTopRankUsersResponse(
     val ranks: List<UserRankNetworkModel>,
-    val user: UserRankNetworkModel
+    val user: MyAreaRankNetworkModel
 )

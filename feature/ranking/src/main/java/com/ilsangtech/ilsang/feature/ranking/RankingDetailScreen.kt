@@ -31,6 +31,7 @@ import com.ilsangtech.ilsang.feature.ranking.component.RankingDetailHeader
 import com.ilsangtech.ilsang.feature.ranking.component.TimeRemainingCard
 import com.ilsangtech.ilsang.feature.ranking.component.UserRankItem
 import com.ilsangtech.ilsang.feature.ranking.model.AreaRankUiModel
+import com.ilsangtech.ilsang.feature.ranking.model.MyAreaRankUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.RankingDetailUiState
 import com.ilsangtech.ilsang.feature.ranking.model.SeasonUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.UserRankUiModel
@@ -63,7 +64,7 @@ fun RankingDetailScreen(
 private fun RankingDetailScreen(
     currentSeason: SeasonUiModel.Season,
     areaRankUiModel: AreaRankUiModel,
-    myRankUiModel: UserRankUiModel,
+    myRankUiModel: MyAreaRankUiModel,
     userRankList: List<UserRankUiModel>,
     onBackButtonClick: () -> Unit,
     onSeasonFinished: () -> Unit
@@ -108,9 +109,7 @@ private fun RankingDetailScreen(
                             titleGrade = myRankUiModel.titleGrade,
                             point = myRankUiModel.point,
                             rank = myRankUiModel.rank,
-                            requiredPoint = userRankList.find {
-                                it.rank == myRankUiModel.rank?.minus(1)
-                            }?.point?.minus(myRankUiModel.point) ?: 0
+                            requiredPoint = myRankUiModel.pointGap
                         )
                     }
                     item { Spacer(Modifier.height(12.dp)) }
@@ -154,14 +153,15 @@ private fun RankingDetailScreenPreview() {
         images = listOf("image1", "image2", "image3"),
         areaCode = ""
     )
-    val myRankUiModel = UserRankUiModel(
+    val myRankUiModel = MyAreaRankUiModel(
         userId = "1",
         profileImageId = "profile1",
         nickname = "일상유저123닉네임 길어",
         point = 81223840,
         rank = 10,
         titleName = "모두의 시선을 받는 자",
-        titleGrade = TitleGrade.Standard
+        titleGrade = TitleGrade.Standard,
+        pointGap = 1000
     )
     val userRankList = listOf(
         UserRankUiModel(

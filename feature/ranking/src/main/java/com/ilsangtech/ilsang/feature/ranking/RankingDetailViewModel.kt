@@ -11,6 +11,7 @@ import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.feature.ranking.model.AreaRankUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.RankingDetailUiState
 import com.ilsangtech.ilsang.feature.ranking.model.SeasonUiModel
+import com.ilsangtech.ilsang.feature.ranking.model.toMyAreaRankUiModel
 import com.ilsangtech.ilsang.feature.ranking.model.toUserRankUiModel
 import com.ilsangtech.ilsang.feature.ranking.navigation.RankingDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,7 +73,7 @@ class RankingDetailViewModel @Inject constructor(
                     )
                 ),
                 areaRankUiModel = areaRankUiModel,
-                myRankUiModel = it.myRank.toUserRankUiModel(),
+                myRankUiModel = it.myRank.toMyAreaRankUiModel(),
                 userRankList = it.userRanks.map { userRank -> userRank.toUserRankUiModel() }
             )
         }
