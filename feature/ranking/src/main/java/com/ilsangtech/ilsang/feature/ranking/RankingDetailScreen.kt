@@ -40,6 +40,7 @@ import java.util.Locale
 @Composable
 fun RankingDetailScreen(
     rankingDetailViewModel: RankingDetailViewModel = hiltViewModel(),
+    navigateToUserProfile: (String) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val rankingDetailUiState by
@@ -54,7 +55,10 @@ fun RankingDetailScreen(
             myRankUiModel = rankingDetailUiState.myRankUiModel,
             userRankList = rankingDetailUiState.userRankList,
             onBackButtonClick = onBackButtonClick,
-            onSeasonFinished = rankingDetailViewModel::refreshSeason
+            onSeasonFinished = rankingDetailViewModel::refreshSeason,
+            onUserItemClick = { userRankUiModel ->
+                navigateToUserProfile(userRankUiModel.userId)
+            }
         )
     }
 }
@@ -66,6 +70,7 @@ private fun RankingDetailScreen(
     myRankUiModel: MyAreaRankUiModel,
     userRankList: List<UserRankUiModel>,
     onBackButtonClick: () -> Unit,
+    onUserItemClick: (UserRankUiModel) -> Unit,
     onSeasonFinished: () -> Unit
 ) {
     val endDate = remember(currentSeason) {
@@ -137,7 +142,7 @@ private fun RankingDetailScreen(
                             titleGrade = item.titleGrade,
                             point = item.point,
                             rank = item.rank,
-                            onClick = {}
+                            onClick = { onUserItemClick(item) }
                         )
                         if (index != userRankList.lastIndex) {
                             Spacer(Modifier.height(12.dp))
@@ -200,6 +205,7 @@ private fun RankingDetailScreenPreview() {
         myRankUiModel = myRankUiModel,
         userRankList = userRankList,
         onBackButtonClick = {},
-        onSeasonFinished = {}
+        onSeasonFinished = {},
+        onUserItemClick = {}
     )
 }

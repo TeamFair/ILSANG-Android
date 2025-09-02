@@ -38,7 +38,10 @@ fun NavGraphBuilder.rankingNavigation(
         }
 
         composable<RankingDetailRoute> {
-            RankingDetailScreen(onBackButtonClick = onBackButtonClick)
+            RankingDetailScreen(
+                onBackButtonClick = onBackButtonClick,
+                navigateToUserProfile = navigateToUserProfile
+            )
         }
     }
 }
