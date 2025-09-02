@@ -33,11 +33,13 @@ internal fun RankingDetailHeader(
             .padding(top = 12.dp, bottom = 11.dp)
     ) {
         Icon(
-            modifier = Modifier.clickable(
-                onClick = onBackButtonClick,
-                interactionSource = null,
-                indication = null
-            ),
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .clickable(
+                    onClick = onBackButtonClick,
+                    interactionSource = null,
+                    indication = null
+                ),
             painter = painterResource(R.drawable.icon_chevron_back),
             tint = gray500,
             contentDescription = "뒤로 가기"
