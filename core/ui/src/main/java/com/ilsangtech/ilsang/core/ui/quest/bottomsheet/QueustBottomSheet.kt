@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
@@ -119,15 +120,26 @@ private fun QuestBottomSheetContent(
     ) {
         QuestInfoContent(quest = quest)
         Row(modifier = Modifier.fillMaxWidth()) {
-            QuestApprovalExample(
-                modifier = Modifier.weight(1f),
-                imageId = quest.missions.firstOrNull()?.exampleImageIds?.firstOrNull(),
-                onImageClick = onImageClick
-            )
-            MyQuestRank(
-                modifier = Modifier.weight(1f),
-                rank = quest.userRank
-            )
+            if (quest.missions.firstOrNull()?.type == "PHOTO") {
+                val imageIds = if (quest.questType is NewQuestType.Repeat) {
+                    listOf(quest.missions.first().exampleImageIds.firstOrNull())
+                } else {
+                    quest.missions.first().exampleImageIds
+                        .plus(List(3 - quest.missions.first().exampleImageIds.size) { null })
+                }
+
+                QuestApprovalExample(
+                    modifier = Modifier.weight(1f),
+                    imageIds = imageIds,
+                    onImageClick = onImageClick
+                )
+            }
+            if (quest.questType is NewQuestType.Repeat) {
+                MyQuestRank(
+                    modifier = Modifier.weight(1f),
+                    rank = quest.userRank
+                )
+            }
         }
         ObtainablePointContent(rewardPoints = quest.rewards)
     }
@@ -197,8 +209,15 @@ fun QuestBottomSheetPreviewQuestDetail() {
         favoriteYn = true,
         imageId = "imageId",
         mainImageId = "mainImageId",
-        missions = emptyList(),
-        questType = NewQuestType.Repeat.Weekly,
+        missions = listOf(
+            Mission(
+                id = 1,
+                exampleImageIds = listOf("imageId1", "imageId2"),
+                title = "사진 인증 미션",
+                type = "PHOTO"
+            )
+        ),
+        questType = NewQuestType.Normal,
         rewards = listOf(
             RewardPoint.Metro(2),
             RewardPoint.Commercial(5),

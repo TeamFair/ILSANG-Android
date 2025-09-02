@@ -128,7 +128,10 @@ private fun QuestTabScreen(
             bottomSheetState = bottomSheetState,
             onDismiss = onDismissRequest,
             onMissionImageClick = {
-                onMissionImageClick(selectedQuest.missions.firstOrNull()?.id)
+                val mission = selectedQuest.missions.firstOrNull()
+                if (mission?.exampleImageIds?.isNotEmpty() == true) {
+                    onMissionImageClick(selectedQuest.missions.firstOrNull()?.id)
+                }
             },
             onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
             onApproveButtonClick = {
