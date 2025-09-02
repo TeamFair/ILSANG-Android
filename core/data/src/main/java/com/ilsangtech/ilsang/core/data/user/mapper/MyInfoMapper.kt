@@ -6,7 +6,8 @@ import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 
 fun UserInfoResponse.toMyInfo(
     totalPoint: Int,
-    myZoneCommercialAreaCode: String
+    myZoneCommercialAreaCode: String,
+    showIsZoneDialogAgain: Boolean
 ): MyInfo {
     return MyInfo(
         id = id,
@@ -19,6 +20,7 @@ fun UserInfoResponse.toMyInfo(
         profileImageId = profileImageId,
         status = status,
         statusUpdatedAt = statusUpdatedAt,
-        title = title?.toUserTitle()
+        title = title?.toUserTitle(),
+        showIsZoneDialogAgain = showIsZoneDialogAgain
     )
 }
