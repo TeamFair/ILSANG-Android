@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -36,6 +37,7 @@ import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.quest.component.EmptyQuestContent
 import com.ilsangtech.ilsang.feature.quest.component.QuestTabHeader
 import com.ilsangtech.ilsang.feature.quest.component.SortTypeMenuContent
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
@@ -172,6 +174,13 @@ private fun QuestTabScreen(
                     onSelectRepeatType = onSelectRepeatType,
                     onSelectSortType = onSelectSortType
                 )
+
+                if (typedQuests.loadState.refresh is LoadState.NotLoading
+                    && typedQuests.itemCount == 0
+                ) {
+                    EmptyQuestContent(selectedQuestType = selectedQuestTab)
+                }
+
                 LazyColumn(
                     modifier = Modifier
                         .offset(y = 64.dp)
