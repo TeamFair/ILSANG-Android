@@ -105,10 +105,12 @@ private fun HomeTabScreen(
             onFavoriteClick = onFavoriteClick,
             onMissionImageClick = {
                 selectedQuest.missions.firstOrNull()?.let { mission ->
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
-                        onUnselectQuest()
-                        onMissionImageClick(mission.id)
+                    if (mission.exampleImageIds.isNotEmpty()) {
+                        coroutineScope.launch {
+                            bottomSheetState.hide()
+                            onUnselectQuest()
+                            onMissionImageClick(mission.id)
+                        }
                     }
                 }
             },
