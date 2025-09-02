@@ -185,6 +185,12 @@ fun IlsangNavHost(
                 navigateToRankingDetail = { rankingDetailRoute ->
                     navController.navigate(rankingDetailRoute)
                 },
+                navigateToUserProfile = { userId ->
+                    navController.navigate(ProfileRoute(userId))
+                },
+                navigateToQuestTab = {
+                    navController.navigateToTopLevelDestination(BottomTab.Quest)
+                },
                 onBackButtonClick = navController::popBackStack
             )
 
