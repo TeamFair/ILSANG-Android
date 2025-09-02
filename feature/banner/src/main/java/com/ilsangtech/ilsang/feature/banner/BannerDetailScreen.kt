@@ -1,13 +1,16 @@
 package com.ilsangtech.ilsang.feature.banner
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
@@ -72,7 +75,10 @@ private fun BannerDetailScreen(
                 bannerTitle = title,
                 onBackButtonClick = onBackButtonClick
             )
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier.navigationBarsPadding(),
+                contentPadding = PaddingValues(bottom = 72.dp)
+            ) {
                 bannerDetailInfoContent(
                     imageId = imageId,
                     title = title,
