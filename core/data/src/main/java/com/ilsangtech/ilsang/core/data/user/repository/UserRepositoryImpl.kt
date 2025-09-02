@@ -27,13 +27,18 @@ class UserRepositoryImpl @Inject constructor(
     override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
 
     override fun getMyInfo(): Flow<MyInfo> =
-        combine(userDataStore.userMyZone, getUserPoint()) { myZoneCommercialAreaCode, userPoint ->
+        combine(
+            userDataStore.userMyZone,
+            userDataStore.showIsZoneDialogAgain,
+            getUserPoint()
+        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, userPoint ->
             val userInfoResponse = userDataSource.getUserInfo(userId = null)
             val totalPoint =
                 userPoint.metroAreaPoint + userPoint.commercialAreaPoint + userPoint.contributionPoint
             userInfoResponse.toMyInfo(
                 totalPoint = totalPoint,
-                myZoneCommercialAreaCode = myZoneCommercialAreaCode
+                myZoneCommercialAreaCode = myZoneCommercialAreaCode,
+                showIsZoneDialogAgain = showIsZoneDialogAgain
             )
         }
 
