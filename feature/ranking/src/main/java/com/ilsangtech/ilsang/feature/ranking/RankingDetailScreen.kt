@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.feature.ranking
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.heading02
+import com.ilsangtech.ilsang.feature.ranking.component.BoxWithOverlay
 import com.ilsangtech.ilsang.feature.ranking.component.MyRankCard
 import com.ilsangtech.ilsang.feature.ranking.component.RankingDetailAreaInfoCard
 import com.ilsangtech.ilsang.feature.ranking.component.RankingDetailHeader
@@ -84,10 +83,27 @@ private fun RankingDetailScreen(
                 .navigationBarsPadding()
         ) {
             RankingDetailHeader(onBackButtonClick = onBackButtonClick)
-            Box(modifier = Modifier.weight(1f)) {
+            BoxWithOverlay(
+                modifier = Modifier.fillMaxSize(),
+                overlay = {
+                    if (endDate != null) {
+                        TimeRemainingCard(
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .padding(bottom = 20.dp),
+                            seasonNumber = currentSeason.seasonNumber,
+                            endDate = endDate,
+                            onSeasonFinished = onSeasonFinished
+                        )
+                    }
+                }
+            ) { paddingValues ->
                 LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
-                        start = 20.dp, end = 20.dp, bottom = 72.dp
+                        start = 20.dp,
+                        end = 20.dp,
+                        bottom = paddingValues.calculateBottomPadding() + 20.dp
                     )
                 ) {
                     item {
@@ -126,17 +142,6 @@ private fun RankingDetailScreen(
                             Spacer(Modifier.height(12.dp))
                         }
                     }
-                }
-                endDate?.let {
-                    TimeRemainingCard(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 20.dp)
-                            .padding(bottom = 20.dp),
-                        seasonNumber = currentSeason.seasonNumber,
-                        endDate = endDate,
-                        onSeasonFinished = onSeasonFinished
-                    )
                 }
             }
         }

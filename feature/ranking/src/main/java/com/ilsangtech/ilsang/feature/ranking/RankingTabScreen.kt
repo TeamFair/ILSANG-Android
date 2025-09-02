@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -44,6 +43,7 @@ import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.feature.ranking.component.AreaRankItem
+import com.ilsangtech.ilsang.feature.ranking.component.BoxWithOverlay
 import com.ilsangtech.ilsang.feature.ranking.component.RankingTabBanner
 import com.ilsangtech.ilsang.feature.ranking.component.RewardTabRow
 import com.ilsangtech.ilsang.feature.ranking.component.SeasonSelector
@@ -162,17 +162,27 @@ private fun RankingTabScreen(
                     selectedReward = selectedReward,
                     onRewardSelect = { selectedReward = it }
                 )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
+                BoxWithOverlay(
+                    modifier = Modifier.fillMaxSize(),
+                    overlay = {
+                        if (endDate != null) {
+                            TimeRemainingCard(
+                                modifier = Modifier
+                                    .padding(horizontal = 20.dp)
+                                    .padding(bottom = 20.dp),
+                                seasonNumber = currentSeason!!.seasonNumber,
+                                endDate = endDate,
+                                onSeasonFinished = onSeasonFinished
+                            )
+                        }
+                    }
+                ) { paddingValues ->
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(background),
                         contentPadding = PaddingValues(
-                            top = 16.dp, bottom = 72.dp,
+                            top = 16.dp, bottom = paddingValues.calculateBottomPadding() + 20.dp,
                             start = 20.dp, end = 20.dp
                         ),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -216,18 +226,6 @@ private fun RankingTabScreen(
                                 }
                             }
                         }
-                    }
-
-                    endDate?.let {
-                        TimeRemainingCard(
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(horizontal = 20.dp)
-                                .padding(bottom = 20.dp),
-                            seasonNumber = currentSeason!!.seasonNumber,
-                            endDate = endDate,
-                            onSeasonFinished = onSeasonFinished
-                        )
                     }
                 }
             }
