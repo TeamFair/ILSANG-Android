@@ -62,7 +62,8 @@ import java.util.Locale
 fun RankingTabScreen(
     rankingViewModel: RankingTabViewModel = hiltViewModel(),
     navigateToRankingDetail: (RankingDetailRoute) -> Unit,
-    navigateToUserProfile: (String) -> Unit
+    navigateToUserProfile: (String) -> Unit,
+    navigateToQuestTab: () -> Unit
 ) {
     val seasonList by rankingViewModel.seasonList.collectAsStateWithLifecycle()
     val currentSeason by rankingViewModel.currentSeason.collectAsStateWithLifecycle()
@@ -92,6 +93,7 @@ fun RankingTabScreen(
         onUserRankClick = { userRankUiModel ->
             navigateToUserProfile(userRankUiModel.userId)
         },
+        onQuestButtonClick = navigateToQuestTab,
         onSeasonFinished = rankingViewModel::refreshSeason
     )
 }
@@ -106,6 +108,7 @@ private fun RankingTabScreen(
     onSeasonSelected: (SeasonUiModel) -> Unit,
     onAreaClick: (AreaRankUiModel, Boolean) -> Unit,
     onUserRankClick: (UserRankUiModel) -> Unit,
+    onQuestButtonClick: () -> Unit,
     onSeasonFinished: () -> Unit
 ) {
     var selectedReward by remember { mutableStateOf(RewardUiModel.Metro) }
@@ -160,7 +163,7 @@ private fun RankingTabScreen(
                             .padding(horizontal = 20.dp)
                             .padding(bottom = 24.dp),
                         season = currentSeason,
-                        onQuestButtonClick = {}
+                        onQuestButtonClick = onQuestButtonClick
                     )
                 }
                 RewardTabRow(
@@ -373,6 +376,7 @@ private fun RankingTabScreenPreview() {
         onSeasonSelected = {},
         onAreaClick = { _, _ -> },
         onUserRankClick = {},
+        onQuestButtonClick = {},
         onSeasonFinished = {}
     )
 }

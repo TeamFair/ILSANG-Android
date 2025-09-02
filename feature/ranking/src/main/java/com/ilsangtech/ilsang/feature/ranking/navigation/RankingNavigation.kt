@@ -27,13 +27,15 @@ data class RankingDetailRoute(
 fun NavGraphBuilder.rankingNavigation(
     navigateToRankingDetail: (RankingDetailRoute) -> Unit,
     navigateToUserProfile: (String) -> Unit,
+    navigateToQuestTab: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     navigation<RankingBaseRoute>(startDestination = RankingRoute) {
         composable<RankingRoute> {
             RankingTabScreen(
                 navigateToRankingDetail = navigateToRankingDetail,
-                navigateToUserProfile = navigateToUserProfile
+                navigateToUserProfile = navigateToUserProfile,
+                navigateToQuestTab = navigateToQuestTab
             )
         }
 

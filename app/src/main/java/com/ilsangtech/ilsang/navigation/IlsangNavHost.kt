@@ -188,6 +188,9 @@ fun IlsangNavHost(
                 navigateToUserProfile = { userId ->
                     navController.navigate(ProfileRoute(userId))
                 },
+                navigateToQuestTab = {
+                    navController.navigateToTopLevelDestination(BottomTab.Quest)
+                },
                 onBackButtonClick = navController::popBackStack
             )
 
