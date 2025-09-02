@@ -352,8 +352,8 @@ private fun DrawScope.drawUserLevelProgress(progress: Float) {
             -this.center.y / 4
         ),
         color = primary500,
-        startAngle = 267f,
-        sweepAngle = -(267f * progress),
+        startAngle = 139f,
+        sweepAngle = 262f * progress,
         useCenter = false,
         style = Stroke(
             width = 9.dp.toPx(),
@@ -368,7 +368,7 @@ private fun MyProfileInfoCardPreview() {
     val myProfileInfo = MyProfileInfoUiModel(
         nickname = "김일상123닉네임 길이가 길어",
         profileImageId = "some_image_id",
-        levelProgress = 0.5f,
+        levelProgress = 1.0f,
         level = 5,
         userTitle = UserTitle(
             titleHistoryId = 1,
