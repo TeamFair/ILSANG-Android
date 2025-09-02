@@ -27,16 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading01
+import com.ilsangtech.ilsang.designsystem.theme.heading03
 import com.ilsangtech.ilsang.feature.ranking.BuildConfig
 import com.ilsangtech.ilsang.feature.ranking.model.AreaRankUiModel
 import java.util.Locale
@@ -56,21 +60,39 @@ internal fun RankingDetailAreaInfoCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = RoundedCornerShape(12.dp)
     ) {
-        HorizontalPager(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 12.dp, topEnd = 12.dp
-                    )
-                ),
-            state = pagerState
-        ) { page ->
-            AsyncImage(
-                modifier = Modifier.height(150.dp),
-                model = BuildConfig.IMAGE_URL + areaRankUiModel.images[page],
-                contentDescription = null
-            )
+        if (areaRankUiModel.images.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .background(gray100),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "아직 사진이\n등록되지 않았어요",
+                    textAlign = TextAlign.Center,
+                    style = heading03,
+                    color = gray200
+                )
+            }
+        } else {
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 12.dp, topEnd = 12.dp
+                        )
+                    ),
+                state = pagerState
+            ) { page ->
+                AsyncImage(
+                    modifier = Modifier.height(150.dp),
+                    model = BuildConfig.IMAGE_URL + areaRankUiModel.images[page],
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null
+                )
+            }
         }
 
         Row(
