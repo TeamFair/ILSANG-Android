@@ -116,4 +116,8 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.updateUserIsZone(commericalAreaCode)
         }
     }
+
+    override suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean) {
+        return userDataStore.setShowIsZoneDialogAgain(showAgain)
+    }
 }
