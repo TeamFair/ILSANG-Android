@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -17,21 +16,26 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
-import com.ilsangtech.ilsang.designsystem.component.BorderedDropDownMenu
+import com.ilsangtech.ilsang.designsystem.component.DropDownMenu
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray300
+import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -109,7 +113,7 @@ internal fun LazyListScope.bannerDetailQuestsContent(
                 text = "특별 퀘스트 모음",
                 style = title02
             )
-            BorderedDropDownMenu(
+            DropDownMenu(
                 list = BannerDetailSortType.entries,
                 selectedItem = selectedSortType,
                 onItemSelected = onSortTypeChanged,
@@ -124,6 +128,48 @@ internal fun LazyListScope.bannerDetailQuestsContent(
         } else {
             completedQuests
         }
+
+    if (bannerQuests.loadState.refresh is LoadState.NotLoading
+        && bannerQuests.itemCount == 0
+    ) {
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 70.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val (headingText, subText) =
+                    if (selectedQuestType == BannerDetailQuestType.OnGoing) {
+                        "퀘스트를 모두 완료하셨어요!" to "상상할 수 없는 퀘스트를 준비중이니\n" +
+                                "다음 업데이트를 기대해주세요!"
+                    } else {
+                        "완료된 퀘스트가 없어요" to "퀘스트를 수행하러 가볼까요?"
+                    }
+                Text(
+                    text = headingText,
+                    style = TextStyle(
+                        fontFamily = pretendardFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 21.sp,
+                        lineHeight = 1.5.em
+                    ),
+                    color = gray500
+                )
+                Text(
+                    text = subText,
+                    style = TextStyle(
+                        fontFamily = pretendardFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 17.sp,
+                        lineHeight = 1.5.em
+                    ),
+                    color = gray400
+                )
+            }
+        }
+    }
 
     items(bannerQuests.itemCount) { index ->
         val bannerQuest = bannerQuests[index]
@@ -145,12 +191,6 @@ internal fun LazyListScope.bannerDetailQuestsContent(
 
                 if (bannerQuests.itemCount - 1 != index) {
                     Spacer(Modifier.height(12.dp))
-                } else {
-                    Spacer(
-                        Modifier
-                            .padding(bottom = 72.dp)
-                            .navigationBarsPadding()
-                    )
                 }
             }
         }
