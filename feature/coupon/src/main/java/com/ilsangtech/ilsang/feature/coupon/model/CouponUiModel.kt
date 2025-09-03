@@ -9,4 +9,6 @@ data class CouponUiModel(
     val usedDate: String?,
     val isUsed: Boolean,
     val isExpired: Boolean
-)
+) {
+    val isAvailable: Boolean = !isUsed && !isExpired
+}
