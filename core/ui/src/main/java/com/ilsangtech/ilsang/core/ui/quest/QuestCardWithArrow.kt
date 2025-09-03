@@ -96,7 +96,7 @@ private fun QuestCardWithArrow(
             ) {
                 Icon(
                     modifier = Modifier.padding(5.dp),
-                    painter = painterResource(R.drawable.icon_quest_card_arrow_right),
+                    painter = painterResource(R.drawable.icon_card_arrow_right),
                     tint = gray500,
                     contentDescription = null
                 )
