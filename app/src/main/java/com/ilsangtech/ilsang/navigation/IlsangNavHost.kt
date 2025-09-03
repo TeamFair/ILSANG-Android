@@ -32,6 +32,8 @@ import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.bannerNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.navigateToBannerDetail
+import com.ilsangtech.ilsang.feature.coupon.navigation.CouponBaseRoute
+import com.ilsangtech.ilsang.feature.coupon.navigation.couponNavigation
 import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
 import com.ilsangtech.ilsang.feature.iszone.navigation.IsZoneBaseRoute
@@ -176,6 +178,9 @@ fun IlsangNavHost(
                     navController.navigate(MyTitleRoute(it))
                 },
                 navigateToMyFavoriteQuest = navController::navigateToMyFavoriteQuest,
+                navigateToCoupon = {
+                    navController.navigate(CouponBaseRoute)
+                },
                 navigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
                 },
@@ -216,6 +221,13 @@ fun IlsangNavHost(
             isZoneNavigation(onBackButtonClick = navController::popBackStack)
 
             bannerNavigation(onBackButtonClick = navController::popBackStack)
+
+            couponNavigation(
+                navigateToHome = {
+                    navController.navigateToTopLevelDestination(BottomTab.Home)
+                },
+                popBackStack = navController::popBackStack
+            )
         }
     }
 }
