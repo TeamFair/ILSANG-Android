@@ -65,7 +65,7 @@ internal fun CouponPasswordBottomSheet(
 ) {
     IlsangBottomSheet(
         modifier = modifier,
-        bottomSheetState = rememberModalBottomSheetState(),
+        bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = onDismissRequest
     ) {
         Text(
@@ -80,7 +80,7 @@ internal fun CouponPasswordBottomSheet(
         Column(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
-                .padding(bottom = 20.dp),
+                .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CouponInfoComponent(coupon = coupon)
@@ -112,7 +112,7 @@ internal fun CouponPasswordBottomSheet(
                 onClick = onButtonClick,
             ) {
                 Text(
-                    text = "버튼 사용하기",
+                    text = "쿠폰 사용하기",
                     style = buttonTextStyle
                 )
             }
@@ -226,7 +226,7 @@ private fun CouponPasswordTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-internal fun CouponPasswordBottomSheetPreview() {
+private fun CouponPasswordBottomSheetPreview() {
     val password = rememberTextFieldState()
     val coupon = CouponUiModel(
         id = 1,
