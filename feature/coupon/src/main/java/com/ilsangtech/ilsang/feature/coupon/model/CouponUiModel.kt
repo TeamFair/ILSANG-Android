@@ -6,6 +6,7 @@ data class CouponUiModel(
     val writerName: String,
     val imageId: String?,
     val expireDate: String,
+    val usedDate: String?,
     val isUsed: Boolean,
     val isExpired: Boolean
 )
