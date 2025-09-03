@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.core.data.area.repository
 
 import com.ilsangtech.ilsang.core.data.area.datasource.AreaDataSource
-import com.ilsangtech.ilsang.core.data.area.mapper.toCommercialArea
 import com.ilsangtech.ilsang.core.data.area.mapper.toMetroArea
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.model.area.CommercialArea
@@ -24,10 +23,22 @@ class AreaRepositoryImpl(
     }
 
     override suspend fun getMetroArea(metroAreaCode: String): MetroArea {
-        return areaDataSource.getMetroArea(metroAreaCode).toMetroArea()
+        if (metroAreaList.isEmpty()) {
+            metroAreaList = areaDataSource.getMetroAreaList()
+                .map(MetroAreaNetworkModel::toMetroArea)
+        }
+        return metroAreaList.first { it.code == metroAreaCode }
     }
 
     override suspend fun getCommercialArea(commercialAreaCode: String): CommercialArea {
-        return areaDataSource.geetCommercialArea(commercialAreaCode).toCommercialArea()
+        if (metroAreaList.isEmpty()) {
+            metroAreaList = areaDataSource.getMetroAreaList()
+                .map(MetroAreaNetworkModel::toMetroArea)
+        }
+        return metroAreaList.first {
+            it.commercialAreaList.any { commercialArea ->
+                commercialArea.code == commercialAreaCode
+            }
+        }.commercialAreaList.first { it.code == commercialAreaCode }
     }
 }
