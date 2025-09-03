@@ -86,10 +86,15 @@ class RankingDetailViewModel @Inject constructor(
         )
 
     init {
-        refreshSeason()
+        viewModelScope.launch {
+            refreshTrigger.emit(Unit)
+        }
     }
 
     fun refreshSeason() {
-        viewModelScope.launch { refreshTrigger.emit(Unit) }
+        viewModelScope.launch {
+            seasonRepository.getSeasonList(refresh = true)
+            refreshTrigger.emit(Unit)
+        }
     }
 }

@@ -3,7 +3,7 @@ package com.ilsangtech.ilsang.core.domain
 import com.ilsangtech.ilsang.core.model.season.Season
 
 interface SeasonRepository {
-    suspend fun getSeasonList(): List<Season>
+    suspend fun getSeasonList(refresh: Boolean = false): List<Season>
 
     suspend fun getCurrentSeason(): Season
 }

@@ -8,18 +8,26 @@ import com.ilsangtech.ilsang.core.network.model.season.SeasonNetworkModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class SeasonRepositoryImpl(
     private val seasonDataSource: SeasonDataSource
 ) : SeasonRepository {
-    override suspend fun getSeasonList(): List<Season> {
-        return seasonDataSource.getSeasonList().map(SeasonNetworkModel::toSeason)
+    private var seasonList: List<Season>? = null
+    override suspend fun getSeasonList(refresh: Boolean): List<Season> {
+        if (seasonList == null || refresh) {
+            seasonList = seasonDataSource.getSeasonList().map(SeasonNetworkModel::toSeason)
+        }
+        return seasonList!!
     }
 
     override suspend fun getCurrentSeason(): Season {
         val seasonList = getSeasonList()
         return seasonList.firstOrNull {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val simpleDateFormat =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).apply {
+                    timeZone = TimeZone.getTimeZone("Asia/Seoul")
+                }
             val start = simpleDateFormat.parse(it.startDate)
             val end = simpleDateFormat.parse(it.endDate)
             val current = Date()

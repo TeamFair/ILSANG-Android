@@ -104,6 +104,7 @@ class RankingTabViewModel @Inject constructor(
 
     fun refreshSeason() {
         viewModelScope.launch {
+            seasonRepository.getSeasonList(refresh = true)
             refreshTrigger.emit(Unit)
         }
     }
