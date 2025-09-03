@@ -12,8 +12,12 @@ import java.util.Locale
 class SeasonRepositoryImpl(
     private val seasonDataSource: SeasonDataSource
 ) : SeasonRepository {
-    override suspend fun getSeasonList(): List<Season> {
-        return seasonDataSource.getSeasonList().map(SeasonNetworkModel::toSeason)
+    private var seasonList: List<Season>? = null
+    override suspend fun getSeasonList(refresh: Boolean): List<Season> {
+        if (seasonList == null || refresh) {
+            seasonList = seasonDataSource.getSeasonList().map(SeasonNetworkModel::toSeason)
+        }
+        return seasonList!!
     }
 
     override suspend fun getCurrentSeason(): Season {
