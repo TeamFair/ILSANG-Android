@@ -9,5 +9,7 @@ data class Coupon(
     val couponExpireYn: Boolean,
     val couponUseYn: Boolean,
     val usedAt: String?,
-    val description: String?
+    val description: String?,
+    val validFrom: String,
+    val validTo: String
 )

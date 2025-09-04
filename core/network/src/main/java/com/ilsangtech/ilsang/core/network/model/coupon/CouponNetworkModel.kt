@@ -9,5 +9,7 @@ data class CouponNetworkModel(
     val storeName: String,
     val imageId: String?,
     val name: String,
-    val description: String?
+    val description: String?,
+    val validFrom: String,
+    val validTo: String
 )
