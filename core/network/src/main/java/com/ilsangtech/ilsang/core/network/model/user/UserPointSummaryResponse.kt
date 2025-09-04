@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserPointSummaryResponse(
-    val topCommercialAreaCode: String,
-    val topContributionPoint: Int,
-    val topMetroAreaCode: String
+    val topCommercialAreaCode: String?,
+    val topContributionPoint: Int?,
+    val topMetroAreaCode: String?
 )

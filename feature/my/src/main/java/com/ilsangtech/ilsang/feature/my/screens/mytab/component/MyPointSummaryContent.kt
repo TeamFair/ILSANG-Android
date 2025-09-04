@@ -48,28 +48,35 @@ internal fun MyPointSummaryContent(
             color = Color.Black
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            MyPointSummaryItemCard(
-                iconRes = R.drawable.icon_metro_reward,
-                heading = "${myPointSummary.nickName}님의 퀘스트 최다 달성 지역은?",
-                title = myPointSummary.topMetroAreaName,
-                seasonInfo = seasonInfo
-            )
-            MyPointSummaryItemCard(
-                iconRes = R.drawable.icon_commercial_reward,
-                heading = "${myPointSummary.nickName}님의 퀘스트 최다 달성 일상존은?",
-                title = myPointSummary.topCommercialAreaName,
-                seasonInfo = seasonInfo
-            )
-            MyPointSummaryItemCard(
-                iconRes = R.drawable.icon_contribute_reward,
-                heading = "${myPointSummary.nickName}님의 가장 높은 기여도 점수는?",
-                title = String.format(
-                    Locale.getDefault(),
-                    "%,d",
-                    myPointSummary.topContributionPoint
-                ) + "P",
-                seasonInfo = seasonInfo
-            )
+            if (myPointSummary.topMetroAreaName == null
+                || myPointSummary.topCommercialAreaName == null
+                || myPointSummary.topContributionPoint == null
+            ) {
+                
+            } else {
+                MyPointSummaryItemCard(
+                    iconRes = R.drawable.icon_metro_reward,
+                    heading = "${myPointSummary.nickName}님의 퀘스트 최다 달성 지역은?",
+                    title = myPointSummary.topMetroAreaName,
+                    seasonInfo = seasonInfo
+                )
+                MyPointSummaryItemCard(
+                    iconRes = R.drawable.icon_commercial_reward,
+                    heading = "${myPointSummary.nickName}님의 퀘스트 최다 달성 일상존은?",
+                    title = myPointSummary.topCommercialAreaName,
+                    seasonInfo = seasonInfo
+                )
+                MyPointSummaryItemCard(
+                    iconRes = R.drawable.icon_contribute_reward,
+                    heading = "${myPointSummary.nickName}님의 가장 높은 기여도 점수는?",
+                    title = String.format(
+                        Locale.getDefault(),
+                        "%,d",
+                        myPointSummary.topContributionPoint
+                    ) + "P",
+                    seasonInfo = seasonInfo
+                )
+            }
         }
     }
 }
