@@ -19,6 +19,8 @@ internal fun CouponDetailNetworkModel.toCoupon(): Coupon {
         couponExpireYn = couponExpireYn,
         couponUseYn = couponUseYn,
         usedAt = usedAt,
-        description = coupon.description
+        description = coupon.description,
+        validFrom = coupon.validFrom,
+        validTo = coupon.validTo
     )
 }
