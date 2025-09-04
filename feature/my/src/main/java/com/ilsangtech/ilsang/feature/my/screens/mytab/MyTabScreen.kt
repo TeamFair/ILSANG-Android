@@ -108,11 +108,13 @@ private fun MyTabScreen(
                             onCouponButtonClick = onCouponButtonClick
                         )
                     }
-                    item {
-                        MyCommercialPointContent(
-                            myCommercialPoint = uiState.myCommercialPoint,
-                            onQuestNavButtonClick = onQuestNavButtonClick
-                        )
+                    uiState.myCommercialPoint.topCommercialArea?.let {
+                        item {
+                            MyCommercialPointContent(
+                                myCommercialPoint = uiState.myCommercialPoint,
+                                onQuestNavButtonClick = onQuestNavButtonClick
+                            )
+                        }
                     }
                     item {
                         MyObtainedPointContent(

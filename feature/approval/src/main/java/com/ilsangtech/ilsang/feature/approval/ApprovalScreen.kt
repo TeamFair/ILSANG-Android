@@ -90,7 +90,7 @@ private fun ApprovalScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_approval_empty),
+                        painter = painterResource(R.drawable.icon_item_empty),
                         tint = Color.Unspecified,
                         contentDescription = null
                     )
