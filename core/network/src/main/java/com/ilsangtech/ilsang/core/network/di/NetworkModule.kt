@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.api.AreaApiService
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
 import com.ilsangtech.ilsang.core.network.api.ChallengeApiService
+import com.ilsangtech.ilsang.core.network.api.CouponApiService
 import com.ilsangtech.ilsang.core.network.api.EmojiApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.MissionApiService
@@ -265,5 +266,11 @@ object NetworkModule {
     @Singleton
     fun provideQuizApiService(retrofit: Retrofit): QuizApiService {
         return retrofit.create(QuizApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provieCouponApiService(retrofit: Retrofit): CouponApiService {
+        return retrofit.create(CouponApiService::class.java)
     }
 }
