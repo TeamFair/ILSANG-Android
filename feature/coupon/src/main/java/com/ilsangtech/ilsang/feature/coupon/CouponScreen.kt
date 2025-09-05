@@ -9,11 +9,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.designsystem.theme.background
@@ -29,6 +34,7 @@ import com.ilsangtech.ilsang.feature.coupon.component.UsedOrExpiredCouponCard
 import com.ilsangtech.ilsang.feature.coupon.model.CouponTab
 import com.ilsangtech.ilsang.feature.coupon.model.CouponUiModel
 import com.ilsangtech.ilsang.feature.coupon.model.CouponUseUiState
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun CouponScreen(
@@ -178,4 +184,78 @@ private fun CouponScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun CouponScreenPreview() {
+    var selectedCouponTab by remember { mutableStateOf(CouponTab.Available) }
+
+    val availableCouponItems = flowOf(
+        PagingData.from(
+            listOf(
+                CouponUiModel(
+                    1,
+                    "Available Coupon 1",
+                    "Store A",
+                    null,
+                    "2024.12.31 23:59",
+                    null,
+                    false,
+                    false
+                ),
+                CouponUiModel(
+                    2,
+                    "Available Coupon 2",
+                    "Store B",
+                    null,
+                    "2024.12.31 23:59",
+                    null,
+                    false,
+                    false
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+
+    val usedOrExpiredCouponItems = flowOf(
+        PagingData.from(
+            listOf(
+                CouponUiModel(
+                    3,
+                    "Used Coupon",
+                    "Store C",
+                    null,
+                    "2023.12.31 23:59",
+                    "2023.12.01",
+                    true,
+                    false
+                ),
+                CouponUiModel(
+                    4,
+                    "Expired Coupon",
+                    "Store D",
+                    null,
+                    "2023.01.01 23:59",
+                    null,
+                    false,
+                    true
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+
+    CouponScreen(
+        selectedCouponTab = selectedCouponTab,
+        availableCouponItems = availableCouponItems,
+        usedOrExpiredCouponItems = usedOrExpiredCouponItems,
+        couponUseUiState = CouponUseUiState.Initial,
+        onCouponTabSelected = { selectedCouponTab = it },
+        onCouponClick = {},
+        onCouponUseButtonClick = {},
+        onVerifyButtonClick = {},
+        onDismissRequest = {},
+        onQuestNavButtonClick = {},
+        onBackButtonClick = {}
+    )
 }
