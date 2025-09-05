@@ -9,10 +9,14 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CouponApiService {
     @GET("api/v1/user/coupon")
-    suspend fun getCouponList(page: Int, size: Int): List<CouponDetailNetworkModel>
+    suspend fun getCouponList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): List<CouponDetailNetworkModel>
 
     @POST("api/v1/user/coupon/{id}/verify-password")
     suspend fun verifyPassword(
