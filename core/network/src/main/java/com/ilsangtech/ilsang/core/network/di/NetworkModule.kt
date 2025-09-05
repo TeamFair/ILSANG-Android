@@ -96,7 +96,7 @@ object NetworkModule {
                             .header("Authorization", "Bearer ${refreshResponse.accessToken}")
                             .build()
 
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         return@runBlocking null
                     }
                 }
@@ -137,27 +137,33 @@ object NetworkModule {
         authenticator: Authenticator,
         authInterceptor: Interceptor
     ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .authenticator(authenticator)
-            .addNetworkInterceptor(
+        val builder = OkHttpClient.Builder().apply {
+            addInterceptor(authInterceptor)
+            authenticator(authenticator)
+        }
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 }
-            ).build()
+            )
+        }
+        return builder.build()
     }
 
     @BaseOkHttpClient
     @Provides
     @Singleton
     fun provideBaseOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addNetworkInterceptor(
+        val builder = OkHttpClient.Builder()
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 }
             )
-            .build()
+        }
+        return builder.build()
     }
 
     @Provides
