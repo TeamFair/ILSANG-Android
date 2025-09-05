@@ -41,6 +41,7 @@ internal fun MyTabScreen(
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
     onFavoriteQuestButtonClick: () -> Unit,
+    onCouponButtonClick: () -> Unit,
     onSettingButtonClick: () -> Unit,
     onQuestNavButtonClick: () -> Unit,
     onTitleClick: (Int?) -> Unit
@@ -56,7 +57,7 @@ internal fun MyTabScreen(
         onTitleClick = onTitleClick,
         onMissionHistoryButtonClick = onMissionHistoryButtonClick,
         onFavoriteQuestButtonClick = onFavoriteQuestButtonClick,
-        onCouponButtonClick = {},
+        onCouponButtonClick = onCouponButtonClick,
         onQuestNavButtonClick = onQuestNavButtonClick,
         onProfileEditButtonClick = onProfileEditButtonClick
     )

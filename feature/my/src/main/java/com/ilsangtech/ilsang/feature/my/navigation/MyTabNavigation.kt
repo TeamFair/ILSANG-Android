@@ -105,6 +105,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
     navigateToMyFavoriteQuest: () -> Unit,
+    navigateToCoupon: () -> Unit,
     navigateToMyZone: () -> Unit,
     navigateToQuestTab: () -> Unit
 ) {
@@ -115,6 +116,7 @@ fun NavGraphBuilder.myTabNavigation(
                 onProfileEditButtonClick = navigateToMyProfileEdit,
                 onMissionHistoryButtonClick = navigateToMyChallenge,
                 onFavoriteQuestButtonClick = navigateToMyFavoriteQuest,
+                onCouponButtonClick = navigateToCoupon,
                 onQuestNavButtonClick = navigateToQuestTab,
                 onTitleClick = navigateToMyTitle
             )

@@ -6,7 +6,7 @@ import com.ilsangtech.ilsang.core.network.model.coupon.CouponDetailNetworkModel
 
 internal fun CouponDetailNetworkModel.toCoupon(): Coupon {
     return Coupon(
-        id = coupon.couponId,
+        id = id,
         name = coupon.name,
         storeName = coupon.storeName,
         couponType = when (coupon.couponType) {

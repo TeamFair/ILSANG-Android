@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":feature:myzone"))
     implementation(project(":feature:iszone"))
     implementation(project(":feature:banner"))
+    implementation(project(":feature:coupon"))
 
     implementation(libs.coil)
     implementation(libs.androidx.appcompat)
