@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.designsystem.theme.background
@@ -22,6 +23,7 @@ import com.ilsangtech.ilsang.feature.coupon.component.CouponScreenHeader
 import com.ilsangtech.ilsang.feature.coupon.component.CouponTabRow
 import com.ilsangtech.ilsang.feature.coupon.component.CouponUseBottomSheet
 import com.ilsangtech.ilsang.feature.coupon.component.CouponUseSuccessDialog
+import com.ilsangtech.ilsang.feature.coupon.component.EmptyCouponContent
 import com.ilsangtech.ilsang.feature.coupon.component.InvalidCouponPasswordDialog
 import com.ilsangtech.ilsang.feature.coupon.component.UsedOrExpiredCouponCard
 import com.ilsangtech.ilsang.feature.coupon.model.CouponTab
@@ -128,6 +130,25 @@ private fun CouponScreen(
                 selectedTab = selectedCouponTab,
                 onTabSelected = onCouponTabSelected
             )
+
+            val (itemCount, loadState) =
+                if (selectedCouponTab == CouponTab.Available) {
+                    availableCouponItems.itemCount to
+                            availableCouponItems.loadState.refresh
+                } else {
+                    usedOrExpiredCouponItems.itemCount to
+                            usedOrExpiredCouponItems.loadState.refresh
+                }
+
+
+            if (loadState is LoadState.NotLoading && itemCount == 0) {
+                EmptyCouponContent(
+                    modifier = Modifier.weight(1f),
+                    selectedCouponTab = selectedCouponTab,
+                    onQuestNavButtonClick = onQuestNavButtonClick
+                )
+            }
+
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(
