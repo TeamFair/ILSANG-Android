@@ -17,7 +17,7 @@ fun NavGraphBuilder.myZoneNavigation(
 ) {
     navigation<MyZoneBaseRoute>(startDestination = MyZoneRoute) {
         composable<MyZoneRoute> {
-            MyZoneScreen(onBackButtonClick = onBackButtonClick)
+            MyZoneScreen(popBackStack = onBackButtonClick)
         }
     }
 }
