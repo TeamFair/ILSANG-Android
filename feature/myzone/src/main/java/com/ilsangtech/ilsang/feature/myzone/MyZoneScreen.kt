@@ -31,20 +31,17 @@ import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.feature.myzone.component.MyZoneFailureDialog
 import com.ilsangtech.ilsang.feature.myzone.component.MyZoneHeader
-import com.ilsangtech.ilsang.feature.myzone.component.MyZoneSuccessDialog
 
 @Composable
 fun MyZoneScreen(
     myZoneViewModel: MyZoneViewModel = hiltViewModel(),
-    onBackButtonClick: () -> Unit
+    popBackStack: () -> Unit
 ) {
     val myZoneUiState by myZoneViewModel.myZoneUiState.collectAsStateWithLifecycle()
 
     if (myZoneUiState.isMyZoneUpdateSuccess == true) {
-        MyZoneSuccessDialog(onDismissRequest = {
-            myZoneViewModel.resetMyZoneUpdateStatus()
-            onBackButtonClick()
-        })
+        myZoneViewModel.resetMyZoneUpdateStatus()
+        popBackStack()
     } else if (myZoneUiState.isMyZoneUpdateSuccess == false) {
         MyZoneFailureDialog(onDismissRequest = myZoneViewModel::resetMyZoneUpdateStatus)
     }
@@ -56,7 +53,7 @@ fun MyZoneScreen(
         onMetroAreaClick = myZoneViewModel::updateSelectedMetroArea,
         onCommercialAreaClick = myZoneViewModel::updateSelectedCommercialArea,
         onSelectButtonClick = myZoneViewModel::selectMyZone,
-        onBackButtonClick = onBackButtonClick
+        onBackButtonClick = popBackStack
     )
 }
 
