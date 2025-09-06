@@ -11,7 +11,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +32,7 @@ import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.zone.IsZoneSelectDisabledDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.home.component.BannerContent
 import com.ilsangtech.ilsang.feature.home.component.HomeTabHeader
@@ -96,6 +100,11 @@ private fun HomeTabScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showZoneSelectDisabledDialog by remember { mutableStateOf(false) }
+
+    if (showZoneSelectDisabledDialog) {
+        IsZoneSelectDisabledDialog { showZoneSelectDisabledDialog = false }
+    }
 
     if (selectedQuest != null) {
         QuestBottomSheet(
@@ -143,7 +152,13 @@ private fun HomeTabScreen(
                         isCommercialAreaName = userInfo.isCommericalAreaName,
                         onProfileClick = navigateToMyTab,
                         onMyZoneClick = onMyZoneClick,
-                        onIsZoneClick = onIsZoneClick
+                        onIsZoneClick = {
+                            if (userInfo.isCommericalAreaName != null) {
+                                showZoneSelectDisabledDialog = true
+                            } else {
+                                onIsZoneClick()
+                            }
+                        }
                     )
                 }
                 item {
