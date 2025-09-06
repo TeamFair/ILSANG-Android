@@ -17,10 +17,10 @@ class CouponPagingSource(
             )
 
             val prevKey = if (pageNumber == 0) null else pageNumber - 1
-            val nextKey = if (response.isEmpty()) null else pageNumber + 1
+            val nextKey = if (response.isLast) null else pageNumber + 1
 
             LoadResult.Page(
-                data = response,
+                data = response.content,
                 prevKey = prevKey,
                 nextKey = nextKey
             )

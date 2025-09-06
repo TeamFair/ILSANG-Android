@@ -3,8 +3,7 @@ package com.ilsangtech.ilsang.core.model.coupon
 data class Coupon(
     val id: Int,
     val name: String,
-    val storeName: String,
-    val couponType: CouponType,
+    val storeName: String?,
     val imageId: String?,
     val couponExpireYn: Boolean,
     val couponUseYn: Boolean,
