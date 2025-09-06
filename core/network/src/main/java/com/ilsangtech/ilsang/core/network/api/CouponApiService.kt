@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.coupon.CouponDetailNetworkModel
+import com.ilsangtech.ilsang.core.network.model.coupon.CouponListResponse
 import com.ilsangtech.ilsang.core.network.model.coupon.CouponPasswordVerifyRequest
 import com.ilsangtech.ilsang.core.network.model.coupon.CouponPasswordVerifyResponse
 import com.ilsangtech.ilsang.core.network.model.coupon.CouponUpdateRequest
@@ -16,7 +17,7 @@ interface CouponApiService {
     suspend fun getCouponList(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): List<CouponDetailNetworkModel>
+    ): CouponListResponse
 
     @POST("api/v1/user/coupon/{id}/verify-password")
     suspend fun verifyPassword(
