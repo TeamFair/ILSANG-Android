@@ -119,7 +119,7 @@ class QuestDataSourceImpl @Inject constructor(
                     orderExpiredDesc = orderExpiredDesc,
                     orderRewardDesc = orderRewardDesc,
                     favoriteYn = favoriteYn,
-                    completeYn = completeYn
+                    completedYn = completeYn
                 )
             }
         ).flow

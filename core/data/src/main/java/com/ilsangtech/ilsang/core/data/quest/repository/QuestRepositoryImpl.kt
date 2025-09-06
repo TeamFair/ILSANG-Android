@@ -79,7 +79,7 @@ class QuestRepositoryImpl(
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
-        completeYn: Boolean
+        completedYn: Boolean
     ): Flow<PagingData<TypedQuest>> {
         val (type, repeatFrequency) = when (questType) {
             is NewQuestType.Normal -> "NORMAL" to null
@@ -99,7 +99,7 @@ class QuestRepositoryImpl(
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
             favoriteYn = favoriteYn,
-            completeYn = completeYn
+            completeYn = completedYn
         ).map { it.map(TypedQuestNetworkModel::toTypedQuest) }
     }
 

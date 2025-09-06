@@ -98,14 +98,14 @@ class QuestTabViewModel @Inject constructor(
             else -> null
         }
         val orderExpiredDesc = if (sortType == SortTypeUiModel.ExpireDate) true else null
-        val completeYn = questTab == QuestTabUiModel.COMPLETED
+        val completedYn = questTab == QuestTabUiModel.COMPLETED
 
         QuestFilterCondition(
             areaCode = areaCode,
             questType = questType,
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
-            completeYn = completeYn,
+            completedYn = completedYn,
         )
     }.flatMapLatest { questFilterCondition ->
         questRepository.getTypedQuests(
@@ -113,7 +113,7 @@ class QuestTabViewModel @Inject constructor(
             questType = questFilterCondition.questType,
             orderExpiredDesc = questFilterCondition.orderExpiredDesc,
             orderRewardDesc = questFilterCondition.orderRewardDesc,
-            completeYn = questFilterCondition.completeYn
+            completedYn = questFilterCondition.completedYn
         )
     }.cachedIn(viewModelScope)
 
