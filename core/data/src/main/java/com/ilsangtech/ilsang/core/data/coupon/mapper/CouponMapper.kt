@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.core.data.coupon.mapper
 
 import com.ilsangtech.ilsang.core.model.coupon.Coupon
-import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.network.model.coupon.CouponDetailNetworkModel
 
 internal fun CouponDetailNetworkModel.toCoupon(): Coupon {
@@ -9,12 +8,6 @@ internal fun CouponDetailNetworkModel.toCoupon(): Coupon {
         id = id,
         name = coupon.name,
         storeName = coupon.storeName,
-        couponType = when (coupon.couponType) {
-            "WEEK" -> CouponType.Week
-            "MONTH" -> CouponType.Month
-            "SEASON" -> CouponType.Season
-            else -> throw IllegalArgumentException("Unknown coupon type: ${coupon.couponType}")
-        },
         imageId = coupon.imageId,
         couponExpireYn = couponExpireYn,
         couponUseYn = couponUseYn,
