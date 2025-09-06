@@ -20,7 +20,7 @@ internal fun Coupon.toUiModel(): CouponUiModel {
     return CouponUiModel(
         id = id,
         title = name,
-        writerName = storeName,
+        writerName = storeName.orEmpty(),
         imageId = imageId,
         expireDate = DateConverter.formatDate(
             input = validTo,

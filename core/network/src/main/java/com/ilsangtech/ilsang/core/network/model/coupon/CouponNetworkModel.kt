@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class CouponNetworkModel(
     val couponId: Int,
     val couponType: String,
-    val storeName: String,
+    val storeName: String?,
     val imageId: String?,
     val name: String,
     val description: String?,
