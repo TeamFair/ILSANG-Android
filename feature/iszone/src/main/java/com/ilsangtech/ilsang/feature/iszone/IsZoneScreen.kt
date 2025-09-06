@@ -14,6 +14,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +32,7 @@ import com.ilsangtech.ilsang.core.model.area.MetroArea
 import com.ilsangtech.ilsang.core.ui.zone.ZoneListContent
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
+import com.ilsangtech.ilsang.feature.iszone.component.IsZoneConfirmDialog
 import com.ilsangtech.ilsang.feature.iszone.component.IsZoneFailureDialog
 import com.ilsangtech.ilsang.feature.iszone.component.IsZoneHeader
 import com.ilsangtech.ilsang.feature.iszone.component.IsZoneSuccessDialog
@@ -39,6 +43,18 @@ internal fun IsZoneScreen(
     onBackButtonClick: () -> Unit
 ) {
     val isZoneUiState by isZoneViewModel.isZoneUiState.collectAsStateWithLifecycle()
+    var showConfirmDialog by remember { mutableStateOf(false) }
+
+    if (showConfirmDialog && isZoneUiState.selectedMetroArea != null) {
+        IsZoneConfirmDialog(
+            selectedCommercialArea = isZoneUiState.selectedCommercialArea!!,
+            onConfirm = {
+                isZoneViewModel.selectIsZone()
+                showConfirmDialog = false
+            },
+            onDismissRequest = { showConfirmDialog = false }
+        )
+    }
 
     if (isZoneUiState.isIsZoneUpdateSuccess == true) {
         IsZoneSuccessDialog(onDismissRequest = {
@@ -55,7 +71,7 @@ internal fun IsZoneScreen(
         areaList = isZoneUiState.areaList,
         onMetroAreaClick = isZoneViewModel::updateSelectedMetroArea,
         onCommercialAreaClick = isZoneViewModel::updateSelectedCommercialArea,
-        onSelectButtonClick = isZoneViewModel::selectIsZone,
+        onSelectButtonClick = { showConfirmDialog = true },
         onBackButtonClick = onBackButtonClick
     )
 }
