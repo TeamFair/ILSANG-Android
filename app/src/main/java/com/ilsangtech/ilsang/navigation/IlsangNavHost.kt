@@ -38,7 +38,6 @@ import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.homeNavigation
 import com.ilsangtech.ilsang.feature.iszone.navigation.IsZoneBaseRoute
 import com.ilsangtech.ilsang.feature.iszone.navigation.isZoneNavigation
-import com.ilsangtech.ilsang.feature.login.navigation.LoginRoute
 import com.ilsangtech.ilsang.feature.login.navigation.loginNavigation
 import com.ilsangtech.ilsang.feature.my.navigation.CustomerCenterRoute
 import com.ilsangtech.ilsang.feature.my.navigation.FaqRoute
@@ -68,6 +67,7 @@ fun IlsangNavHost(
     startDestination: KClass<*>,
     shouldShowIsZoneDialog: Boolean,
     login: () -> Unit,
+    logout: () -> Unit,
     completeOnBoarding: () -> Unit,
     shownIsZoneDialog: (Boolean) -> Unit
 ) {
@@ -147,9 +147,10 @@ fun IlsangNavHost(
             myTabNavigation(
                 navigateToLogin = {
                     Firebase.auth.signOut()
-                    navController.navigate(LoginRoute) {
-                        popUpTo(HomeBaseRoute) { inclusive = true }
-                    }
+                    logout()
+//                    navController.navigate(LoginRoute) {
+//                        popUpTo(HomeBaseRoute) { inclusive = true }
+//                    }
                 },
                 navigateToMyTabMain = {
                     navController.popBackStack()
