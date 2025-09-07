@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.quest
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -175,41 +176,42 @@ private fun QuestTabScreen(
                     onSelectSortType = onSelectSortType
                 )
 
-                if (typedQuests.loadState.refresh is LoadState.NotLoading
-                    && typedQuests.itemCount == 0
-                ) {
-                    EmptyQuestContent(selectedQuestType = selectedQuestTab)
-                }
-
-                LazyColumn(
-                    modifier = Modifier
-                        .offset(y = 64.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(typedQuests.itemCount) { index ->
-                        val quest = typedQuests[index]
-                        quest?.let {
-                            if (selectedQuestTab == QuestTabUiModel.COMPLETED) {
-                                CompletedQuestCard(
-                                    quest = quest,
-                                    onClick = { onQuestClick(quest.questId) }
-                                )
-                            } else {
-                                QuestCardWithFavorite(
-                                    quest = quest,
-                                    onFavoriteClick = {
-                                        onFavoriteClick(
-                                            quest.questId,
-                                            quest.favoriteYn
+                if (typedQuests.loadState.refresh is LoadState.NotLoading) {
+                    if (typedQuests.itemCount == 0) {
+                        EmptyQuestContent(selectedQuestType = selectedQuestTab)
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.offset(y = 64.dp),
+                            contentPadding = PaddingValues(
+                                start = 20.dp, end = 20.dp, bottom = 72.dp
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(typedQuests.itemCount) { index ->
+                                val quest = typedQuests[index]
+                                quest?.let {
+                                    if (selectedQuestTab == QuestTabUiModel.COMPLETED) {
+                                        CompletedQuestCard(
+                                            quest = quest,
+                                            onClick = { onQuestClick(quest.questId) }
                                         )
-                                    },
-                                    onClick = { onQuestClick(quest.questId) }
-                                )
+                                    } else {
+                                        QuestCardWithFavorite(
+                                            quest = quest,
+                                            onFavoriteClick = {
+                                                onFavoriteClick(
+                                                    quest.questId,
+                                                    quest.favoriteYn
+                                                )
+                                            },
+                                            onClick = { onQuestClick(quest.questId) }
+                                        )
+                                    }
+                                }
                             }
+                            item { Spacer(Modifier.height(64.dp)) }
                         }
                     }
-                    item { Spacer(Modifier.height(64.dp)) }
                 }
             }
         }

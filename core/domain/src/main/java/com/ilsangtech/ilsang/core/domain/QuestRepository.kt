@@ -31,7 +31,7 @@ interface QuestRepository {
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
-        completeYn: Boolean = false
+        completedYn: Boolean = false
     ): Flow<PagingData<TypedQuest>>
 
     // 미완료한 기본 퀘스트 목록 조회

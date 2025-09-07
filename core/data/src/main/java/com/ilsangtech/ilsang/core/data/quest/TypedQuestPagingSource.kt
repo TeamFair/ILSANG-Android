@@ -13,7 +13,7 @@ class TypedQuestPagingSource(
     private val orderExpiredDesc: Boolean?,
     private val orderRewardDesc: Boolean?,
     private val favoriteYn: Boolean?,
-    private val completeYn: Boolean
+    private val completedYn: Boolean
 ) : PagingSource<Int, TypedQuestNetworkModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TypedQuestNetworkModel> {
         return try {
@@ -25,7 +25,7 @@ class TypedQuestPagingSource(
                 orderExpiredDesc = orderExpiredDesc,
                 orderRewardDesc = orderRewardDesc,
                 favoriteYn = favoriteYn,
-                completeYn = completeYn,
+                completedYn = completedYn,
                 page = pageNumber,
                 size = params.loadSize,
             )

@@ -38,7 +38,7 @@ import com.ilsangtech.ilsang.feature.submit.BuildConfig
 @Composable
 internal fun QuizQuestInfoCard(
     modifier: Modifier = Modifier,
-    questImageId: String,
+    questImageId: String?,
     title: String,
     writerName: String,
     questType: NewQuestType,

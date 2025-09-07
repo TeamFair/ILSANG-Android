@@ -7,5 +7,5 @@ data class QuestFilterCondition(
     val questType: NewQuestType?,
     val orderExpiredDesc: Boolean?,
     val orderRewardDesc: Boolean?,
-    val completeYn: Boolean
+    val completedYn: Boolean
 )

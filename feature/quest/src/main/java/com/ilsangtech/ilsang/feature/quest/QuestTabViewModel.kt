@@ -7,7 +7,6 @@ import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.feature.quest.model.QuestFilterCondition
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -48,7 +48,11 @@ class QuestTabViewModel @Inject constructor(
 
     private val selectedQuestId = MutableStateFlow<Int?>(null)
 
-    private val myInfo = userRepository.getMyInfo()
+    private val myInfo = userRepository.getMyInfo().shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        replay = 1
+    )
 
     val areaName = myInfo.map { myInfo ->
         areaRepository.getCommercialArea(
@@ -73,49 +77,95 @@ class QuestTabViewModel @Inject constructor(
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val typedQuests = combine(
-        myInfo,
-        selectedQuestTab,
-        selectedRepeatType,
-        selectedSortType
-    ) { myInfo, questTab, repeatType, sortType ->
+    private val normalQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
-        val questType = when (questTab) {
-            QuestTabUiModel.NORMAL -> NewQuestType.Normal
-            QuestTabUiModel.REPEAT -> when (repeatType) {
+        selectedSortType.flatMapLatest {
+            questRepository.getTypedQuests(
+                questType = NewQuestType.Normal,
+                commercialAreaCode = areaCode,
+                orderRewardDesc = when (it) {
+                    SortTypeUiModel.PointDesc -> true
+                    SortTypeUiModel.PointAsc -> false
+                    else -> null
+                }
+            )
+        }
+    }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val repeatQuests = myInfo.flatMapLatest { myInfo ->
+        val areaCode = myInfo.myCommericalAreaCode
+        combine(
+            selectedSortType, selectedRepeatType
+        ) { sortType, repeatType ->
+            sortType to repeatType
+        }.flatMapLatest { (sortType, repeatType) ->
+            val questType = when (repeatType) {
                 RepeatQuestTypeUiModel.Daily -> NewQuestType.Repeat.Daily
                 RepeatQuestTypeUiModel.Weekly -> NewQuestType.Repeat.Weekly
                 RepeatQuestTypeUiModel.Monthly -> NewQuestType.Repeat.Monthly
                 else -> null
             }
-
-            QuestTabUiModel.EVENT -> NewQuestType.Event
-            else -> null
+            questRepository.getTypedQuests(
+                questType = questType,
+                commercialAreaCode = areaCode,
+                orderRewardDesc = when (sortType) {
+                    SortTypeUiModel.PointDesc -> true
+                    SortTypeUiModel.PointAsc -> false
+                    else -> null
+                }
+            )
         }
-        val orderRewardDesc = when (sortType) {
-            SortTypeUiModel.PointDesc -> true
-            SortTypeUiModel.PointAsc -> false
-            else -> null
-        }
-        val orderExpiredDesc = if (sortType == SortTypeUiModel.ExpireDate) true else null
-        val completeYn = questTab == QuestTabUiModel.COMPLETED
-
-        QuestFilterCondition(
-            areaCode = areaCode,
-            questType = questType,
-            orderExpiredDesc = orderExpiredDesc,
-            orderRewardDesc = orderRewardDesc,
-            completeYn = completeYn,
-        )
-    }.flatMapLatest { questFilterCondition ->
-        questRepository.getTypedQuests(
-            commercialAreaCode = questFilterCondition.areaCode,
-            questType = questFilterCondition.questType,
-            orderExpiredDesc = questFilterCondition.orderExpiredDesc,
-            orderRewardDesc = questFilterCondition.orderRewardDesc,
-            completeYn = questFilterCondition.completeYn
-        )
     }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val eventQuests = myInfo.flatMapLatest { myInfo ->
+        val areaCode = myInfo.myCommericalAreaCode
+        selectedSortType.flatMapLatest {
+            questRepository.getTypedQuests(
+                questType = NewQuestType.Event,
+                commercialAreaCode = areaCode,
+                orderRewardDesc = when (it) {
+                    SortTypeUiModel.PointDesc -> true
+                    SortTypeUiModel.PointAsc -> false
+                    else -> null
+                }
+            )
+        }
+    }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val completedQuests = myInfo.flatMapLatest { myInfo ->
+        val areaCode = myInfo.myCommericalAreaCode
+        selectedSortType.flatMapLatest {
+            questRepository.getTypedQuests(
+                commercialAreaCode = areaCode,
+                orderRewardDesc = when (it) {
+                    SortTypeUiModel.PointDesc -> true
+                    SortTypeUiModel.PointAsc -> false
+                    else -> null
+                },
+                completedYn = true
+            )
+        }
+    }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val typedQuests = selectedQuestTab.flatMapLatest { selectedQuestTab ->
+        combine(
+            normalQuests,
+            repeatQuests,
+            eventQuests,
+            completedQuests
+        ) { normalQuests, repeatQuests, eventQuests, completedQuests ->
+            when (selectedQuestTab) {
+                QuestTabUiModel.NORMAL -> normalQuests
+                QuestTabUiModel.REPEAT -> repeatQuests
+                QuestTabUiModel.EVENT -> eventQuests
+                QuestTabUiModel.COMPLETED -> completedQuests
+            }
+        }
+    }
 
     fun selectQuest(questId: Int) {
         selectedQuestId.update { questId }
