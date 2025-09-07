@@ -8,7 +8,7 @@ data class TypedQuest(
     val expireDate: String,
     val favoriteYn: Boolean,
     val imageId: String,
-    val mainImageId: String,
+    val mainImageId: String?,
     val rewards: List<RewardPoint>,
     val title: String,
     val writerName: String,

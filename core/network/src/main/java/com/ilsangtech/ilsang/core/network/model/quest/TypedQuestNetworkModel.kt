@@ -8,7 +8,7 @@ data class TypedQuestNetworkModel(
     val expireDate: String,
     val favoriteYn: Boolean,
     val imageId: String,
-    val mainImageId: String,
+    val mainImageId: String?,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
     val writerName: String,
