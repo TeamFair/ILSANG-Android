@@ -3,7 +3,6 @@ package com.ilsangtech.ilsang.core.network.api
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthApiService {
@@ -15,6 +14,6 @@ interface AuthApiService {
     @POST("api/v1/logout")
     suspend fun logout()
 
-    @GET("api/v1/withdraw")
+    @POST("api/v1/withdraw")
     suspend fun withdraw()
 }
