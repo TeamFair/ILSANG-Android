@@ -14,7 +14,8 @@ fun IlsangApp(
     shouldShowIsZoneDialog: Boolean,
     completeOnBoarding: () -> Unit,
     shownIsZoneDialog: (Boolean) -> Unit,
-    login: () -> Unit
+    login: () -> Unit,
+    logout: () -> Unit
 ) {
     ILSANGTheme {
         isLoggedIn?.let {
@@ -28,7 +29,8 @@ fun IlsangApp(
                 shouldShowIsZoneDialog = shouldShowIsZoneDialog,
                 completeOnBoarding = completeOnBoarding,
                 shownIsZoneDialog = shownIsZoneDialog,
-                login = login
+                login = login,
+                logout = logout
             )
         }
     }

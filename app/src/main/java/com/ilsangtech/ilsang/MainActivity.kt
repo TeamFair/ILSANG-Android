@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -45,7 +44,6 @@ class MainActivity : ComponentActivity() {
             val shouldShowOnBoarding by mainActivityViewModel.shouldShowOnBoarding.collectAsStateWithLifecycle()
             val shouldShowIsZoneDialog by mainActivityViewModel.shouldShowIsZoneDialog.collectAsStateWithLifecycle()
 
-            Log.d("shouldShowIsZoneDialog", shouldShowIsZoneDialog.toString())
             IlsangApp(
                 isLoggedIn = isLoggedIn,
                 shouldShowOnBoarding = shouldShowOnBoarding,
@@ -58,7 +56,8 @@ class MainActivity : ComponentActivity() {
                             mainActivityViewModel.login(idToken)
                         }
                     )
-                }
+                },
+                logout = mainActivityViewModel::refreshLoginState
             )
         }
     }

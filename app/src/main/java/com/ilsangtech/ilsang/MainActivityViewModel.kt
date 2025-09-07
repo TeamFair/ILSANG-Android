@@ -64,6 +64,12 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun refreshLoginState() {
+        viewModelScope.launch {
+            loginTrigger.emit(Unit)
+        }
+    }
+
     fun completeOnBoarding() {
         viewModelScope.launch {
             userRepository.completeOnBoarding()
