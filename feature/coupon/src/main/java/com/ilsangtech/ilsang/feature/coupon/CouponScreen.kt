@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +31,6 @@ import com.ilsangtech.ilsang.feature.coupon.component.CouponTabRow
 import com.ilsangtech.ilsang.feature.coupon.component.CouponUseBottomSheet
 import com.ilsangtech.ilsang.feature.coupon.component.CouponUseSuccessDialog
 import com.ilsangtech.ilsang.feature.coupon.component.EmptyCouponContent
-import com.ilsangtech.ilsang.feature.coupon.component.InvalidCouponPasswordDialog
 import com.ilsangtech.ilsang.feature.coupon.component.UsedOrExpiredCouponCard
 import com.ilsangtech.ilsang.feature.coupon.model.CouponTab
 import com.ilsangtech.ilsang.feature.coupon.model.CouponUiModel
@@ -51,11 +52,15 @@ internal fun CouponScreen(
         availableCouponItems.refresh()
     }
 
+    LaunchedEffect(viewModel.couponPassword.text) {
+        viewModel.refreshCouponPasswordError()
+    }
     CouponScreen(
         selectedCouponTab = selectedCouponTab,
         availableCouponItems = availableCouponItems,
         usedOrExpiredCouponItems = usedOrExpiredCouponItems,
         couponUseUiState = couponUseUiState,
+        password = viewModel.couponPassword,
         onCouponTabSelected = viewModel::updateSelectedCouponTab,
         onCouponClick = { coupon ->
             viewModel.updateCouponUseUiState(
@@ -64,10 +69,7 @@ internal fun CouponScreen(
         },
         onCouponUseButtonClick = { coupon ->
             viewModel.updateCouponUseUiState(
-                CouponUseUiState.PasswordVerify(
-                    coupon = coupon,
-                    password = viewModel.couponPassword
-                )
+                CouponUseUiState.PasswordVerify(coupon)
             )
         },
         onVerifyButtonClick = viewModel::verifyCouponPassword,
@@ -87,6 +89,7 @@ private fun CouponScreen(
     availableCouponItems: LazyPagingItems<CouponUiModel>,
     usedOrExpiredCouponItems: LazyPagingItems<CouponUiModel>,
     couponUseUiState: CouponUseUiState,
+    password: TextFieldState,
     onCouponTabSelected: (CouponTab) -> Unit,
     onCouponClick: (CouponUiModel) -> Unit,
     onCouponUseButtonClick: (CouponUiModel) -> Unit,
@@ -107,16 +110,11 @@ private fun CouponScreen(
         is CouponUseUiState.PasswordVerify -> {
             CouponPasswordBottomSheet(
                 coupon = couponUseUiState.coupon,
-                password = couponUseUiState.password,
+                password = password,
+                isWrongPassword = couponUseUiState.isWrongPassword,
                 onButtonClick = { onVerifyButtonClick(couponUseUiState.coupon) },
                 onDismissRequest = onDismissRequest
             )
-        }
-
-        is CouponUseUiState.WrongPassword -> {
-            InvalidCouponPasswordDialog(onDismissRequest = {
-                onCouponUseButtonClick(couponUseUiState.coupon)
-            })
         }
 
         is CouponUseUiState.UseSuccess -> {
@@ -245,11 +243,13 @@ private fun CouponScreenPreview() {
         )
     ).collectAsLazyPagingItems()
 
+    val password = TextFieldState()
     CouponScreen(
         selectedCouponTab = selectedCouponTab,
         availableCouponItems = availableCouponItems,
         usedOrExpiredCouponItems = usedOrExpiredCouponItems,
         couponUseUiState = CouponUseUiState.Initial,
+        password = password,
         onCouponTabSelected = { selectedCouponTab = it },
         onCouponClick = {},
         onCouponUseButtonClick = {},

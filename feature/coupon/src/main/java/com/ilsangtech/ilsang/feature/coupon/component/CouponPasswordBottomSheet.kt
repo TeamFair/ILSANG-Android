@@ -1,12 +1,15 @@
 package com.ilsangtech.ilsang.feature.coupon.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,8 +17,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +46,7 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
+import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray300
@@ -60,6 +67,7 @@ internal fun CouponPasswordBottomSheet(
     modifier: Modifier = Modifier,
     coupon: CouponUiModel,
     password: TextFieldState,
+    isWrongPassword: Boolean,
     onDismissRequest: () -> Unit,
     onButtonClick: () -> Unit
 ) {
@@ -86,10 +94,24 @@ internal fun CouponPasswordBottomSheet(
             CouponInfoComponent(coupon = coupon)
             CouponPasswordTextField(
                 modifier = Modifier.padding(top = 18.dp),
-                password = password
+                password = password,
+                isWrongPassword = isWrongPassword
             )
+            if (isWrongPassword) {
+                Text(
+                    modifier = Modifier.padding(top = 3.dp, bottom = 12.dp),
+                    text = "비밀번호 오류입니다.",
+                    style = badge02TextStyle.copy(
+                        fontSize = 10.dp.toSp(),
+                        lineHeight = 12.dp.toSp()
+                    ),
+                    color = Color(0xFFF16969)
+                )
+            } else {
+                Spacer(Modifier.height(24.dp))
+            }
             Text(
-                modifier = Modifier.padding(top = 24.dp, bottom = 12.dp),
+                modifier = Modifier.padding(bottom = 12.dp),
                 text = "쿠폰은 사용 후 되돌릴 수 없습니다\n" +
                         "쿠폰을 사용하시겠습니까?",
                 textAlign = TextAlign.Center,
@@ -108,7 +130,7 @@ internal fun CouponPasswordBottomSheet(
                 ),
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(vertical = 16.dp),
-                enabled = password.text.length == 4,
+                enabled = password.text.length == 4 && !isWrongPassword,
                 onClick = onButtonClick,
             ) {
                 Text(
@@ -171,6 +193,7 @@ private fun CouponInfoComponent(coupon: CouponUiModel) {
 private fun CouponPasswordTextField(
     modifier: Modifier = Modifier,
     password: TextFieldState,
+    isWrongPassword: Boolean
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -186,8 +209,10 @@ private fun CouponPasswordTextField(
             state = password,
             lineLimits = TextFieldLineLimits.SingleLine,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.NumberPassword
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Done
             ),
+            inputTransformation = InputTransformation.maxLength(4),
             decorator = { innerTextField ->
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     repeat(4) { index ->
@@ -197,6 +222,17 @@ private fun CouponPasswordTextField(
                                 .background(
                                     color = gray100,
                                     shape = RoundedCornerShape(8.dp)
+                                )
+                                .then(
+                                    if (isWrongPassword) {
+                                        Modifier.border(
+                                            width = 2.dp,
+                                            color = Color(0xFFF16969),
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                    } else {
+                                        Modifier
+                                    }
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
@@ -209,6 +245,7 @@ private fun CouponPasswordTextField(
                                         fontWeight = FontWeight.SemiBold,
                                         fontSize = 20.dp.toSp()
                                     ),
+                                    color = if (isWrongPassword) Color(0xFFF16969) else Color.Black,
                                     textAlign = TextAlign.Center
                                 )
                             }
@@ -241,6 +278,7 @@ private fun CouponPasswordBottomSheetPreview() {
     CouponPasswordBottomSheet(
         coupon = coupon,
         password = password,
+        isWrongPassword = false,
         onDismissRequest = {},
         onButtonClick = {}
     )
