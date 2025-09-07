@@ -92,12 +92,18 @@ private fun ProfileScreen(
                             )
                         }
                         item { Spacer(Modifier.height(48.dp)) }
-                        item {
-                            UserCommercialPointContent(
-                                userCommercialPointUiModel = uiState.userCommercialPoint
-                            )
+
+                        if (uiState.userCommercialPoint.topCommercialArea != null &&
+                            uiState.userCommercialPoint.totalOwnerContributions.isNotEmpty()
+                        ) {
+                            item {
+                                UserCommercialPointContent(
+                                    userCommercialPointUiModel = uiState.userCommercialPoint
+                                )
+                            }
+                            item { Spacer(Modifier.height(48.dp)) }
                         }
-                        item { Spacer(Modifier.height(48.dp)) }
+
                         item {
                             UserObtainedPointContent(
                                 nickname = uiState.userProfileInfo.nickname,
