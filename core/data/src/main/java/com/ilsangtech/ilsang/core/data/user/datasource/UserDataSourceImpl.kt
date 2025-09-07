@@ -54,7 +54,7 @@ class UserDataSourceImpl @Inject constructor(
         return userApiService.deleteUserImage()
     }
 
-    override suspend fun updateUserTitle(titleHistoryId: Int): UserTitleUpdateResponse {
+    override suspend fun updateUserTitle(titleHistoryId: Int?): UserTitleUpdateResponse {
         return userApiService.updateUserTitle(UserTitleUpdateRequest(titleHistoryId))
     }
 

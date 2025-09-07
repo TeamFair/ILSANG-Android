@@ -64,9 +64,9 @@ class MyTitleViewModel @Inject constructor(
     fun updateUserTitle() {
         viewModelScope.launch {
             try {
-                selectedTitle.value?.titleHistoryId?.let {
-                    userRepository.updateUserTitle(it)
-                }
+                userRepository.updateUserTitle(
+                    titleHistoryId = selectedTitle.value?.titleHistoryId
+                )
             } catch (_: Exception) {
             } finally {
                 _isTitleUpdated.update { true }
