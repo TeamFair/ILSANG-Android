@@ -50,6 +50,19 @@ class CouponViewModel @Inject constructor(
         _couponUseUiState.update { state }
     }
 
+    fun refreshCouponPasswordError() {
+        if (couponUseUiState.value is CouponUseUiState.PasswordVerify
+            && (couponUseUiState.value as CouponUseUiState.PasswordVerify).isWrongPassword
+        ) {
+            _couponUseUiState.update {
+                CouponUseUiState.PasswordVerify(
+                    coupon = (couponUseUiState.value as CouponUseUiState.PasswordVerify).coupon,
+                    isWrongPassword = false
+                )
+            }
+        }
+    }
+
     fun verifyCouponPassword(coupon: CouponUiModel) {
         viewModelScope.launch {
             val id = coupon.id
@@ -61,10 +74,20 @@ class CouponViewModel @Inject constructor(
                     .onSuccess {
                         _couponUseUiState.update { CouponUseUiState.UseSuccess }
                     }.onFailure {
-                        _couponUseUiState.update { CouponUseUiState.WrongPassword(coupon) }
+                        _couponUseUiState.update {
+                            CouponUseUiState.PasswordVerify(
+                                coupon = coupon,
+                                isWrongPassword = true
+                            )
+                        }
                     }
             }.onFailure {
-                _couponUseUiState.update { CouponUseUiState.WrongPassword(coupon) }
+                _couponUseUiState.update {
+                    CouponUseUiState.PasswordVerify(
+                        coupon = coupon,
+                        isWrongPassword = true
+                    )
+                }
             }
         }
     }
