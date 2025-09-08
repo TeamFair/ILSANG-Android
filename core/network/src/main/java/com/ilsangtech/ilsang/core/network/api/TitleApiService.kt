@@ -10,4 +10,7 @@ interface TitleApiService {
 
     @GET("api/v1/user/title")
     suspend fun getUserTitleList(): List<UserTitleNetworkModel>
+
+    @GET("api/v1/user/title/unread")
+    suspend fun getUnreadTitleList(): List<UserTitleNetworkModel>
 }
