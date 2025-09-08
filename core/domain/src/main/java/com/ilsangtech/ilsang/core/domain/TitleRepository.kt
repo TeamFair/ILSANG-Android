@@ -7,4 +7,6 @@ interface TitleRepository {
     suspend fun getTitleList(): List<TitleDetail>
 
     suspend fun getUserTitleList(): List<UserTitle>
+
+    suspend fun getUnreadTitleList(): List<UserTitle>
 }

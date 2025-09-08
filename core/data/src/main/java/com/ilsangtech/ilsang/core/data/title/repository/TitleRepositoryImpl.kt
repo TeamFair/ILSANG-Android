@@ -19,4 +19,8 @@ class TitleRepositoryImpl(
     override suspend fun getUserTitleList(): List<UserTitle> {
         return titleDataSource.getUserTitleList().map(UserTitleNetworkModel::toUserTitle)
     }
+
+    override suspend fun getUnreadTitleList(): List<UserTitle> {
+        return titleDataSource.getUnreadTitleList().map(UserTitleNetworkModel::toUserTitle)
+    }
 }
