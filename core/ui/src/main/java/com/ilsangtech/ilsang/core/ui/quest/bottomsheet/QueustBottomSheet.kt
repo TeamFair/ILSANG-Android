@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
@@ -121,7 +121,7 @@ private fun QuestBottomSheetContent(
         QuestInfoContent(quest = quest)
         Row(modifier = Modifier.fillMaxWidth()) {
             if (quest.missions.firstOrNull()?.type == "PHOTO") {
-                val imageIds = if (quest.questType is NewQuestType.Repeat) {
+                val imageIds = if (quest.questType is QuestType.Repeat) {
                     listOf(quest.missions.first().exampleImageIds.firstOrNull())
                 } else {
                     quest.missions.first().exampleImageIds
@@ -134,7 +134,7 @@ private fun QuestBottomSheetContent(
                     onImageClick = onImageClick
                 )
             }
-            if (quest.questType is NewQuestType.Repeat) {
+            if (quest.questType is QuestType.Repeat) {
                 MyQuestRank(
                     modifier = Modifier.weight(1f),
                     rank = quest.userRank
@@ -217,7 +217,7 @@ fun QuestBottomSheetPreviewQuestDetail() {
                 type = "PHOTO"
             )
         ),
-        questType = NewQuestType.Normal,
+        questType = QuestType.Normal,
         rewards = listOf(
             RewardPoint.Metro(2),
             RewardPoint.Commercial(5),

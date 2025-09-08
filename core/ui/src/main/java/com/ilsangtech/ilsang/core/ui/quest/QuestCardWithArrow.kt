@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
@@ -60,7 +60,7 @@ private fun QuestCardWithArrow(
     modifier: Modifier = Modifier,
     title: String,
     writer: String,
-    questType: NewQuestType? = null,
+    questType: QuestType? = null,
     rewardPoints: List<RewardPoint>,
     imageId: String?,
     onClick: () -> Unit

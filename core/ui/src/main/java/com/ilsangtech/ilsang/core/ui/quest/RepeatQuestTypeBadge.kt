@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 
@@ -73,24 +73,24 @@ fun RepeatQuestTypeBadge(
 @Composable
 fun RepeatQuestTypeBadge(
     modifier: Modifier = Modifier,
-    repeatType: NewQuestType.Repeat
+    repeatType: QuestType.Repeat
 ) {
     val badgeBrush = when (repeatType) {
-        NewQuestType.Repeat.Daily -> Brush.horizontalGradient(
+        QuestType.Repeat.Daily -> Brush.horizontalGradient(
             colors = listOf(
                 Color(0xFF7D17FF),
                 Color(0xFFA45DFF)
             )
         )
 
-        NewQuestType.Repeat.Weekly -> Brush.horizontalGradient(
+        QuestType.Repeat.Weekly -> Brush.horizontalGradient(
             colors = listOf(
                 Color(0xFF45009E),
                 Color(0xFF7000FF)
             )
         )
 
-        NewQuestType.Repeat.Monthly -> Brush.horizontalGradient(
+        QuestType.Repeat.Monthly -> Brush.horizontalGradient(
             colors = listOf(
                 Color(0xFF00DA30),
                 Color(0xFFD1FF05)
@@ -112,16 +112,16 @@ fun RepeatQuestTypeBadge(
     ) {
         Text(
             text = when (repeatType) {
-                NewQuestType.Repeat.Daily -> "일간"
-                NewQuestType.Repeat.Weekly -> "주간"
-                NewQuestType.Repeat.Monthly -> "월간"
+                QuestType.Repeat.Daily -> "일간"
+                QuestType.Repeat.Weekly -> "주간"
+                QuestType.Repeat.Monthly -> "월간"
             },
             style = badge02TextStyle.copy(
                 fontSize = 10.dp.toSp(),
                 lineHeight = 12.dp.toSp(),
                 letterSpacing = (-0.3).dp.toSp()
             ),
-            color = if (repeatType is NewQuestType.Repeat.Monthly) {
+            color = if (repeatType is QuestType.Repeat.Monthly) {
                 monthlyBadgeTextColor
             } else {
                 Color.White

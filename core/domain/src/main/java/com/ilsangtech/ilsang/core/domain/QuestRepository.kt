@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.domain
 
 import androidx.paging.PagingData
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
@@ -26,7 +26,7 @@ interface QuestRepository {
 
     fun getTypedQuests(
         commercialAreaCode: String,
-        questType: NewQuestType? = null,
+        questType: QuestType? = null,
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray300
@@ -177,7 +177,7 @@ private fun WordsQuizScreenPreview() {
             questImageId = "",
             title = "정자동 최고의 돈까스 가게 가기",
             writerName = "야미돈까스 정자동점",
-            questType = NewQuestType.Event,
+            questType = QuestType.Event,
             rewards = listOf(
                 RewardPoint.Metro(5),
                 RewardPoint.Commercial(10),

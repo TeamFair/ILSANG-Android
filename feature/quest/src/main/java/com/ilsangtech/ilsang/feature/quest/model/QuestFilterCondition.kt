@@ -1,10 +1,10 @@
 package com.ilsangtech.ilsang.feature.quest.model
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 
 data class QuestFilterCondition(
     val areaCode: String,
-    val questType: NewQuestType?,
+    val questType: QuestType?,
     val orderExpiredDesc: Boolean?,
     val orderRewardDesc: Boolean?,
     val completedYn: Boolean

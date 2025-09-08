@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
 import com.ilsangtech.ilsang.core.data.mission.mapper.toMission
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
@@ -16,15 +16,15 @@ internal fun QuestDetailResponse.toQuestDetail(): QuestDetail {
         mainImageId = mainImageId,
         missions = missions.map(MissionNetworkModel::toMission),
         questType = when (questType) {
-            "NORMAL" -> NewQuestType.Normal
+            "NORMAL" -> QuestType.Normal
             "REPEAT" -> when (repeatFrequency) {
-                "DAILY" -> NewQuestType.Repeat.Daily
-                "WEEKLY" -> NewQuestType.Repeat.Weekly
-                "MONTHLY" -> NewQuestType.Repeat.Monthly
+                "DAILY" -> QuestType.Repeat.Daily
+                "WEEKLY" -> QuestType.Repeat.Weekly
+                "MONTHLY" -> QuestType.Repeat.Monthly
                 else -> throw IllegalArgumentException("Unknown repeat frequency: $repeatFrequency")
             }
 
-            "EVENT" -> NewQuestType.Event
+            "EVENT" -> QuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),

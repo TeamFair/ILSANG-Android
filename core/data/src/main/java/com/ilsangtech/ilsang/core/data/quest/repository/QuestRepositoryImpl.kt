@@ -10,7 +10,7 @@ import com.ilsangtech.ilsang.core.data.quest.mapper.toQuestDetail
 import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toTypedQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
@@ -72,19 +72,19 @@ class QuestRepositoryImpl(
 
     override fun getTypedQuests(
         commercialAreaCode: String,
-        questType: NewQuestType?,
+        questType: QuestType?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
         completedYn: Boolean
     ): Flow<PagingData<TypedQuest>> {
         val (type, repeatFrequency) = when (questType) {
-            is NewQuestType.Normal -> "NORMAL" to null
-            is NewQuestType.Event -> "EVENT" to null
-            is NewQuestType.Repeat -> "REPEAT" to when (questType) {
-                is NewQuestType.Repeat.Daily -> "DAILY"
-                is NewQuestType.Repeat.Weekly -> "WEEKLY"
-                is NewQuestType.Repeat.Monthly -> "MONTHLY"
+            is QuestType.Normal -> "NORMAL" to null
+            is QuestType.Event -> "EVENT" to null
+            is QuestType.Repeat -> "REPEAT" to when (questType) {
+                is QuestType.Repeat.Daily -> "DAILY"
+                is QuestType.Repeat.Weekly -> "WEEKLY"
+                is QuestType.Repeat.Monthly -> "MONTHLY"
             }
 
             else -> null to null

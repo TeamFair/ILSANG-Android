@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
@@ -239,7 +239,7 @@ private fun HomeTabScreenPreview() {
                     expireDate = "2023-12-31",
                     imageId = "imageId1",
                     mainImageId = "mainImageId1",
-                    questType = NewQuestType.Event,
+                    questType = QuestType.Event,
                     title = "첫 번째 인기 퀘스트",
                     writerName = "작가 1"
                 ),
@@ -248,7 +248,7 @@ private fun HomeTabScreenPreview() {
                     expireDate = "2024-01-15",
                     imageId = "imageId2",
                     mainImageId = "mainImageId2",
-                    questType = NewQuestType.Repeat.Daily,
+                    questType = QuestType.Repeat.Daily,
                     title = "두 번째 인기 퀘스트 - 이것은 매우 긴 제목으로 두 줄을 넘을 수 있습니다. 확인해 보세요.",
                     writerName = "작가 2"
                 ),
@@ -257,7 +257,7 @@ private fun HomeTabScreenPreview() {
                     expireDate = "2024-02-28",
                     imageId = "imageId3",
                     mainImageId = "mainImageId3",
-                    questType = NewQuestType.Normal,
+                    questType = QuestType.Normal,
                     title = "세 번째 인기 퀘스트",
                     writerName = "작가 3"
                 ),
@@ -266,7 +266,7 @@ private fun HomeTabScreenPreview() {
                     expireDate = "2024-03-10",
                     imageId = "imageId4",
                     mainImageId = "mainImageId4",
-                    questType = NewQuestType.Event,
+                    questType = QuestType.Event,
                     title = "네 번째 인기 퀘스트",
                     writerName = "작가 4"
                 )

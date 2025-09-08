@@ -21,7 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
@@ -150,7 +150,7 @@ private fun CompletedQuestCardNewQuestPreview() {
             ),
             title = "새로운 퀘스트 타이틀",
             writerName = "새로운 작성자",
-            questType = NewQuestType.Repeat.Daily
+            questType = QuestType.Repeat.Daily
         ),
         onClick = {}
     )

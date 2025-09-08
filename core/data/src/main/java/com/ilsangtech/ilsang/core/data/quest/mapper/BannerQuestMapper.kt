@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
@@ -9,15 +9,15 @@ internal fun BannerQuestNetworkModel.toBannerQuest(): BannerQuest {
     return BannerQuest(
         questId = questId,
         questType = when (questType) {
-            "NORMAL" -> NewQuestType.Normal
+            "NORMAL" -> QuestType.Normal
             "REPEAT" -> when (repeatFrequency) {
-                "DAILY" -> NewQuestType.Repeat.Daily
-                "WEEKLY" -> NewQuestType.Repeat.Weekly
-                "MONTHLY" -> NewQuestType.Repeat.Monthly
+                "DAILY" -> QuestType.Repeat.Daily
+                "WEEKLY" -> QuestType.Repeat.Weekly
+                "MONTHLY" -> QuestType.Repeat.Monthly
                 else -> throw IllegalArgumentException("Unknown repeat frequency: $repeatFrequency")
             }
 
-            "EVENT" -> NewQuestType.Event
+            "EVENT" -> QuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
         expireDate = expireDate,

@@ -1,12 +1,12 @@
 package com.ilsangtech.ilsang.feature.submit.model
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 
 data class SubmitQuestUiState(
     val questImageId: String?,
     val title: String,
     val writerName: String,
-    val questType: NewQuestType,
+    val questType: QuestType,
     val rewards: List<RewardPoint>
 )

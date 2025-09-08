@@ -233,7 +233,7 @@ private fun QuestTabScreenPreview() {
             rewards = emptyList(),
             title = "Quest Title $index",
             writerName = "Writer $index",
-            questType = com.ilsangtech.ilsang.core.model.NewQuestType.Normal
+            questType = com.ilsangtech.ilsang.core.model.QuestType.Normal
         )
     }
     val typedQuests = flowOf(PagingData.from(typedQuestsData)).collectAsLazyPagingItems()

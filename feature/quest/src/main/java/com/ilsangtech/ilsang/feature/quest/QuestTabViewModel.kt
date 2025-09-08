@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
@@ -81,7 +81,7 @@ class QuestTabViewModel @Inject constructor(
         val areaCode = myInfo.myCommericalAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
-                questType = NewQuestType.Normal,
+                questType = QuestType.Normal,
                 commercialAreaCode = areaCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
@@ -101,9 +101,9 @@ class QuestTabViewModel @Inject constructor(
             sortType to repeatType
         }.flatMapLatest { (sortType, repeatType) ->
             val questType = when (repeatType) {
-                RepeatQuestTypeUiModel.Daily -> NewQuestType.Repeat.Daily
-                RepeatQuestTypeUiModel.Weekly -> NewQuestType.Repeat.Weekly
-                RepeatQuestTypeUiModel.Monthly -> NewQuestType.Repeat.Monthly
+                RepeatQuestTypeUiModel.Daily -> QuestType.Repeat.Daily
+                RepeatQuestTypeUiModel.Weekly -> QuestType.Repeat.Weekly
+                RepeatQuestTypeUiModel.Monthly -> QuestType.Repeat.Monthly
                 else -> null
             }
             questRepository.getTypedQuests(
@@ -123,7 +123,7 @@ class QuestTabViewModel @Inject constructor(
         val areaCode = myInfo.myCommericalAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
-                questType = NewQuestType.Event,
+                questType = QuestType.Event,
                 commercialAreaCode = areaCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true

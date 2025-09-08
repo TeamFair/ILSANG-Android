@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.designsystem.R
@@ -44,11 +44,11 @@ fun QuestCardWithFavorite(
                     QuestImageWithBadge(
                         imageId = quest.imageId,
                         badge = {
-                            if (quest.questType is NewQuestType.Repeat) {
+                            if (quest.questType is QuestType.Repeat) {
                                 RepeatQuestTypeBadge(
-                                    repeatType = quest.questType as NewQuestType.Repeat,
+                                    repeatType = quest.questType as QuestType.Repeat,
                                 )
-                            } else if (quest.questType is NewQuestType.Event) {
+                            } else if (quest.questType is QuestType.Event) {
                                 EventQuestTypeBadge()
                             }
                         },
@@ -92,7 +92,7 @@ private fun QuestCardWithFavoritePreviewNew() {
         ),
         title = "Sample Quest Title",
         writerName = "Sample Writer",
-        questType = NewQuestType.Normal
+        questType = QuestType.Normal
     )
     QuestCardWithFavorite(
         quest = quest,
