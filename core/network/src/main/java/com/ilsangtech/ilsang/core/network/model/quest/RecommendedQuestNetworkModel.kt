@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RecommendedQuestNetworkModel(
-    val imageId: String,
-    val mainImageId: String,
+    val imageId: String?,
+    val mainImageId: String?,
     val questId: Int,
     val title: String,
     val writerName: String
