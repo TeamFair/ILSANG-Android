@@ -7,4 +7,6 @@ interface TitleDataSource {
     suspend fun getTitleList(): List<TitleDetailNetworkModel>
 
     suspend fun getUserTitleList(): List<UserTitleNetworkModel>
+
+    suspend fun getUnreadTitleList(): List<UserTitleNetworkModel>
 }
