@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.designsystem.theme.background
@@ -106,6 +107,7 @@ private fun BannerDetailScreenPreview() {
             listOf(
                 BannerQuest(
                     questId = 1,
+                    questType = NewQuestType.Event,
                     expireDate = "2023-12-31",
                     imageId = "sample_image_1",
                     mainImageId = "sample_main_image_1",
@@ -119,6 +121,7 @@ private fun BannerDetailScreenPreview() {
                 ),
                 BannerQuest(
                     questId = 2,
+                    questType = NewQuestType.Normal,
                     expireDate = "2024-01-15",
                     imageId = "sample_image_2",
                     mainImageId = "sample_main_image_2",
@@ -139,6 +142,7 @@ private fun BannerDetailScreenPreview() {
             listOf(
                 BannerQuest(
                     questId = 3,
+                    questType = NewQuestType.Event,
                     expireDate = "2023-11-30",
                     imageId = "sample_image_3",
                     mainImageId = "sample_main_image_3",
