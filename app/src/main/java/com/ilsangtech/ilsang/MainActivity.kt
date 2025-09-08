@@ -43,13 +43,16 @@ class MainActivity : ComponentActivity() {
             val isLoggedIn by mainActivityViewModel.isLoggedIn.collectAsStateWithLifecycle()
             val shouldShowOnBoarding by mainActivityViewModel.shouldShowOnBoarding.collectAsStateWithLifecycle()
             val shouldShowIsZoneDialog by mainActivityViewModel.shouldShowIsZoneDialog.collectAsStateWithLifecycle()
+            val unreadTitleList by mainActivityViewModel.unreadTitleList.collectAsStateWithLifecycle()
 
             IlsangApp(
                 isLoggedIn = isLoggedIn,
                 shouldShowOnBoarding = shouldShowOnBoarding,
                 shouldShowIsZoneDialog = shouldShowIsZoneDialog,
+                unreadTitleList = unreadTitleList,
                 completeOnBoarding = mainActivityViewModel::completeOnBoarding,
                 shownIsZoneDialog = { checked -> mainActivityViewModel.shownIsZoneDialog(!checked) },
+                onDismissTitleDialog = mainActivityViewModel::readTitle,
                 login = {
                     loginWithGoogle(
                         onLoginSuccess = { idToken ->
