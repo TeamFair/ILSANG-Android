@@ -3,9 +3,7 @@ package com.ilsangtech.ilsang.feature.my.screens.mytab.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -52,31 +50,34 @@ internal fun MyCommercialPointContent(
             shape = RoundedCornerShape(12.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                TopCommercialAreaContent(
-                    topCommercialArea = myCommercialPoint.topCommercialArea!!
-                )
-                Spacer(Modifier.height(28.dp))
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = primary,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = onQuestNavButtonClick
-                ) {
-                    Text(
-                        text = "퀘스트 바로가기",
-                        style = TextStyle(
-                            fontFamily = pretendardFontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
-                            lineHeight = 18.sp
-                        )
+                myCommercialPoint.topCommercialArea?.let { topCommercialArea ->
+                    TopCommercialAreaContent(
+                        modifier = Modifier.fillMaxWidth(),
+                        topCommercialArea = topCommercialArea
                     )
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 28.dp, bottom = 48.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp),
+                        onClick = onQuestNavButtonClick
+                    ) {
+                        Text(
+                            text = "퀘스트 바로가기",
+                            style = TextStyle(
+                                fontFamily = pretendardFontFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp
+                            )
+                        )
+                    }
                 }
-                Spacer(Modifier.height(48.dp))
                 TotalOwnerContributionContent(
                     totalOwnerContributions = myCommercialPoint.totalOwnerContributions
                 )

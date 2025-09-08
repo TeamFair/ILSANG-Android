@@ -43,9 +43,12 @@ internal fun UserCommercialPointContent(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(48.dp)
             ) {
-                TopCommercialAreaContent(
-                    topCommercialArea = userCommercialPointUiModel.topCommercialArea!!
-                )
+                userCommercialPointUiModel.topCommercialArea?.let { topCommercialArea ->
+                    TopCommercialAreaContent(
+                        modifier = Modifier.fillMaxWidth(),
+                        topCommercialArea = topCommercialArea
+                    )
+                }
                 TotalOwnerContributionContent(
                     totalOwnerContributions = userCommercialPointUiModel.totalOwnerContributions
                 )

@@ -109,7 +109,9 @@ private fun MyTabScreen(
                             onCouponButtonClick = onCouponButtonClick
                         )
                     }
-                    uiState.myCommercialPoint.topCommercialArea?.let {
+                    if (uiState.myCommercialPoint.topCommercialArea != null
+                        && uiState.myCommercialPoint.totalOwnerContributions.isNotEmpty()
+                    ) {
                         item {
                             MyCommercialPointContent(
                                 myCommercialPoint = uiState.myCommercialPoint,
@@ -117,6 +119,7 @@ private fun MyTabScreen(
                             )
                         }
                     }
+
                     item {
                         MyObtainedPointContent(
                             myPoint = uiState.myObtainedPoint,
