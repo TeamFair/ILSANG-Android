@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -55,6 +56,7 @@ internal fun MyTitleScreen(
     val uiState by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
+    val unreadTitleList by myTitleViewModel.unreadTitleList.collectAsStateWithLifecycle()
 
     var selectedType by remember { mutableStateOf<TitleGrade>(TitleGrade.Standard) }
     var showUpdateDialog by remember { mutableStateOf(false) }
@@ -75,6 +77,13 @@ internal fun MyTitleScreen(
             onUpdateButtonClick = myTitleViewModel::updateUserTitle,
             onDismissRequest = { showUpdateDialog = false }
         )
+    }
+
+    if (unreadTitleList.isNotEmpty()) {
+        val userTitle = unreadTitleList.first()
+        TitleObtainmentDialog(title = userTitle.title) {
+            myTitleViewModel.readTitle(userTitle.titleHistoryId)
+        }
     }
 
     MyTitleScreen(

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.TitleRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
 import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleScreenUiState
 import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleUiModel
@@ -35,6 +36,9 @@ class MyTitleViewModel @Inject constructor(
     private val _isTitleUpdated = MutableStateFlow(false)
     val isTitleUpdated = _isTitleUpdated.asStateFlow()
 
+    private val _unreadTitleList = MutableStateFlow<List<UserTitle>>(emptyList())
+    val unreadTitleList = _unreadTitleList.asStateFlow()
+
     val myTitleUiState = combine(
         flow { emit(titleRepository.getTitleList()) },
         flow { emit(titleRepository.getUserTitleList()) }
@@ -57,6 +61,12 @@ class MyTitleViewModel @Inject constructor(
         initialValue = MyTitleScreenUiState.Loading
     )
 
+    init {
+        viewModelScope.launch {
+            _unreadTitleList.update { titleRepository.getUnreadTitleList() }
+        }
+    }
+
     fun selectTitle(title: MyTitleUiModel) {
         _selectedTitle.update { if (it != title) title else null }
     }
@@ -70,6 +80,17 @@ class MyTitleViewModel @Inject constructor(
             } catch (_: Exception) {
             } finally {
                 _isTitleUpdated.update { true }
+            }
+        }
+    }
+
+    fun readTitle(titleHistoryId: Int) {
+        viewModelScope.launch {
+            titleRepository.readTitle(titleHistoryId)
+            _unreadTitleList.update {
+                it.filter { userTitle ->
+                    userTitle.titleHistoryId != titleHistoryId
+                }
             }
         }
     }

@@ -25,6 +25,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.ilsangtech.ilsang.core.model.title.UserTitle
+import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
@@ -66,10 +68,12 @@ import kotlin.reflect.KClass
 fun IlsangNavHost(
     startDestination: KClass<*>,
     shouldShowIsZoneDialog: Boolean,
+    unreadTitleList: List<UserTitle>,
     login: () -> Unit,
     logout: () -> Unit,
     completeOnBoarding: () -> Unit,
-    shownIsZoneDialog: (Boolean) -> Unit
+    shownIsZoneDialog: (Boolean) -> Unit,
+    onDismissTitleDialog: (Int) -> Unit
 ) {
     val context = LocalContext.current
     val navController = rememberNavController()
@@ -77,7 +81,6 @@ fun IlsangNavHost(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
     val topLevelDestinations = BottomTab.entries
-
     if (shouldShowIsZoneDialog
         && currentBackStackEntry?.destination?.hierarchy?.any {
             it.hasRoute(HomeBaseRoute::class)
@@ -86,6 +89,18 @@ fun IlsangNavHost(
         IsZoneSuggestionDialog(
             onConfirm = { navController.navigate(IsZoneBaseRoute) },
             onDismissRequest = shownIsZoneDialog
+        )
+    }
+
+    if (unreadTitleList.isNotEmpty()
+        && currentBackStackEntry?.destination?.hierarchy?.any {
+            it.hasRoute(HomeBaseRoute::class)
+        } == true
+    ) {
+        val userTitle = unreadTitleList.first()
+        TitleObtainmentDialog(
+            title = userTitle.title,
+            onDismissRequest = { onDismissTitleDialog(userTitle.titleHistoryId) }
         )
     }
 
