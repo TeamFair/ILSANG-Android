@@ -21,8 +21,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle

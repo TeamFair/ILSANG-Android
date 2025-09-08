@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.feature.submit.model
 
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 
 sealed interface SubmitResultUiState {
     data object NotSubmitted : SubmitResultUiState

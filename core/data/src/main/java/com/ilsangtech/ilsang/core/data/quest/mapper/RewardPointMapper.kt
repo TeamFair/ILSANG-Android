@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 
 fun RewardPointNetworkModel.toRewardPoint(): RewardPoint {

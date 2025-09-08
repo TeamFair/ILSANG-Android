@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.quest.RewardPointIcon
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.designsystem.component.BorderedDropDownMenu

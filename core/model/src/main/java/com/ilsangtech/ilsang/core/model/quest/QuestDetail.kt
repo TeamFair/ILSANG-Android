@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.model.quest
 
-import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.mission.Mission
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 
 data class QuestDetail(
     val id: Int,

@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.model.quest
 
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 
 data class LargeRewardQuest(
     val questId: Int,
