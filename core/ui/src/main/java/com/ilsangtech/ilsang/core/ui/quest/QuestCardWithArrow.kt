@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
@@ -47,6 +48,7 @@ fun QuestCardWithArrow(
         modifier = modifier,
         title = quest.title,
         writer = quest.writerName,
+        questType = quest.questType,
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
         onClick = onClick
@@ -58,6 +60,7 @@ private fun QuestCardWithArrow(
     modifier: Modifier = Modifier,
     title: String,
     writer: String,
+    questType: NewQuestType? = null,
     rewardPoints: List<RewardPoint>,
     imageId: String?,
     onClick: () -> Unit
@@ -80,10 +83,18 @@ private fun QuestCardWithArrow(
                 writer = writer,
                 rewardPoints = rewardPoints,
                 questImage = {
-                    DefaultQuestImage(
-                        imageId = imageId,
-                        contentDescription = "퀘스트 이미지"
-                    )
+                    if (questType == null) {
+                        DefaultQuestImage(
+                            imageId = imageId,
+                            contentDescription = "퀘스트 이미지"
+                        )
+                    } else {
+                        QuestImageWithBadge(
+                            imageId = imageId,
+                            questType = questType,
+                            contentDescription = "퀘스트 타입 이미지"
+                        )
+                    }
                 }
             )
             Box(
