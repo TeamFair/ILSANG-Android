@@ -53,8 +53,10 @@ class MyTitleViewModel @Inject constructor(
             }
         )
     }.onEach { state ->
-        state.titleList.find { it.titleHistoryId == originTitleHistoryId }
-            ?.let { title -> _selectedTitle.update { title } }
+        originTitleHistoryId?.let {
+            state.titleList.find { it.titleHistoryId == originTitleHistoryId }
+                ?.let { title -> _selectedTitle.update { title } }
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
