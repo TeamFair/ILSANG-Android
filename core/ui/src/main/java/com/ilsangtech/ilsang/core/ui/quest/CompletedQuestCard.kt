@@ -22,8 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.Quest
-import com.ilsangtech.ilsang.core.model.Reward
 import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
@@ -153,112 +151,6 @@ private fun CompletedQuestCardNewQuestPreview() {
             title = "새로운 퀘스트 타이틀",
             writerName = "새로운 작성자",
             questType = NewQuestType.Repeat.Daily
-        ),
-        onClick = {}
-    )
-}
-
-@Composable
-fun CompletedQuestCard(
-    modifier: Modifier = Modifier,
-    quest: Quest,
-    onClick: () -> Unit
-) {
-    DefaultQuestCard(
-        modifier = modifier.fillMaxWidth(),
-        onClick = onClick
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 13.5.dp,
-                    vertical = 20.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            DefaultQuestContent(
-                modifier = Modifier.weight(1f),
-                quest = quest,
-                questImage = {
-                    QuestImageWithBadge(
-                        imageId = quest.imageId,
-                        contentDescription = "퀘스트 이미지"
-                    )
-                }
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(26.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFECFAF1))
-                ) {
-                    Icon(
-                        modifier = Modifier.padding(
-                            top = 9.dp,
-                            bottom = 6.64.dp,
-                            start = 6.dp,
-                            end = 6.37.dp
-                        ),
-                        painter = painterResource(R.drawable.icon_completed_quest_checkmark),
-                        contentDescription = "퀘스트 완료 체크",
-                        tint = Color.Unspecified
-                    )
-                }
-                Text(
-                    text = "적립완료",
-                    style = TextStyle(
-                        fontFamily = pretendardFontFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.dp.toSp(),
-                        lineHeight = 16.dp.toSp(),
-                        letterSpacing = -0.3.dp.toSp(),
-                        color = Color(0xFF3FCC6F)
-                    )
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CompletedQuestCardPreview() {
-    CompletedQuestCard(
-        quest = Quest(
-            createDate = "2023-10-27",
-            creatorRole = "USER",
-            expireDate = "2023-11-27",
-            favoriteYn = false,
-            imageId = "sample_image_id",
-            mainImageId = "sample_main_image_id",
-            marketId = "sample_market_id",
-            missionId = "sample_mission_id",
-            missionTitle = "Sample Mission Title",
-            missionType = "ETC",
-            popularYn = false,
-            questId = "sample_quest_id",
-            rewardList = listOf(
-                Reward(
-                    content = "Sample Reward Content",
-                    discountRate = 10,
-                    quantity = 1,
-                    questId = "sample_quest_id",
-                    rewardId = "sample_reward_id",
-                    target = "USER",
-                    title = "Sample Reward Title",
-                    type = "COUPON"
-                )
-            ),
-            score = 100,
-            status = "COMPLETED",
-            target = "USER",
-            type = "NORMAL",
-            writer = "Sample Writer"
         ),
         onClick = {}
     )
