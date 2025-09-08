@@ -1,8 +1,7 @@
 package com.ilsangtech.ilsang.core.model.quest
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.mission.Mission
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 
 data class QuestDetail(
     val id: Int,
@@ -11,7 +10,7 @@ data class QuestDetail(
     val imageId: String?,
     val mainImageId: String?,
     val missions: List<Mission>,
-    val questType: NewQuestType,
+    val questType: QuestType,
     val rewards: List<RewardPoint>,
     val title: String,
     val userRank: Int?,

@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.model
+package com.ilsangtech.ilsang.core.model.reward
 
 sealed class RewardPoint(open val point: Int) {
     data class Metro(override val point: Int) : RewardPoint(point)

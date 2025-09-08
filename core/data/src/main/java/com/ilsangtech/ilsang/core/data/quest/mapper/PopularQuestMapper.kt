@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 
 internal fun PopularQuestNetworkModel.toPopularQuest(): PopularQuest {
@@ -10,17 +10,17 @@ internal fun PopularQuestNetworkModel.toPopularQuest(): PopularQuest {
         imageId = imageId,
         mainImageId = mainImageId,
         questType = when (questType) {
-            "NORMAL" -> NewQuestType.Normal
+            "NORMAL" -> QuestType.Normal
             "REPEAT" -> {
                 when (repeatFrequency) {
-                    "DAILY" -> NewQuestType.Repeat.Daily
-                    "WEEKLY" -> NewQuestType.Repeat.Weekly
-                    "MONTHLY" -> NewQuestType.Repeat.Monthly
+                    "DAILY" -> QuestType.Repeat.Daily
+                    "WEEKLY" -> QuestType.Repeat.Weekly
+                    "MONTHLY" -> QuestType.Repeat.Monthly
                     else -> throw IllegalArgumentException("Unknown repeat frequency: $repeatFrequency")
                 }
             }
 
-            "EVENT" -> NewQuestType.Event
+            "EVENT" -> QuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
         title = title,

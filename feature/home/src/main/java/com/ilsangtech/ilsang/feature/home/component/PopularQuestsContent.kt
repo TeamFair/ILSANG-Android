@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
@@ -134,11 +134,11 @@ private fun PopularQuestCard(
                     .align(Alignment.TopEnd)
                     .padding(top = 16.dp, end = 16.dp)
             ) {
-                if (quest.questType is NewQuestType.Repeat) {
+                if (quest.questType is QuestType.Repeat) {
                     RepeatQuestTypeBadge(
-                        repeatType = quest.questType as NewQuestType.Repeat
+                        repeatType = quest.questType as QuestType.Repeat
                     )
-                } else if (quest.questType is NewQuestType.Event) {
+                } else if (quest.questType is QuestType.Event) {
                     EventQuestTypeBadge()
                 }
             }
@@ -206,7 +206,7 @@ private fun PopularQuestsContentPreview() {
             expireDate = "2023-12-31",
             imageId = "imageId1",
             mainImageId = "mainImageId1",
-            questType = NewQuestType.Event,
+            questType = QuestType.Event,
             title = "첫 번째 인기 퀘스트",
             writerName = "작가 1"
         ),
@@ -215,7 +215,7 @@ private fun PopularQuestsContentPreview() {
             expireDate = "2024-01-15",
             imageId = "imageId2",
             mainImageId = "mainImageId2",
-            questType = NewQuestType.Repeat.Daily,
+            questType = QuestType.Repeat.Daily,
             title = "두 번째 인기 퀘스트 - 이것은 매우 긴 제목으로 두 줄을 넘을 수 있습니다. 확인해 보세요.",
             writerName = "작가 2"
         ),
@@ -224,7 +224,7 @@ private fun PopularQuestsContentPreview() {
             expireDate = "2024-02-28",
             imageId = "imageId3",
             mainImageId = "mainImageId3",
-            questType = NewQuestType.Normal,
+            questType = QuestType.Normal,
             title = "세 번째 인기 퀘스트",
             writerName = "작가 3"
         ),
@@ -233,7 +233,7 @@ private fun PopularQuestsContentPreview() {
             expireDate = "2024-03-10",
             imageId = "imageId4",
             mainImageId = "mainImageId4",
-            questType = NewQuestType.Event,
+            questType = QuestType.Event,
             title = "네 번째 인기 퀘스트",
             writerName = "작가 4"
         )
@@ -252,7 +252,7 @@ private fun PopularQuestCardPreview() {
         expireDate = "2023-12-31",
         imageId = "imageId",
         mainImageId = "mainImageId",
-        questType = NewQuestType.Event,
+        questType = QuestType.Event,
         title = "퀘스트 제목입니다. 퀘스트 제목은 두 줄까지 표시될 수 있습니다. 퀘스트 제목입니다.",
         writerName = "작성자 이름"
     )

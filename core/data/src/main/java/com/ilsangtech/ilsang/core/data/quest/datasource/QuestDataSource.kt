@@ -7,9 +7,6 @@ import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -58,22 +55,6 @@ interface QuestDataSource {
         favoriteYn: Boolean? = null,
         completeYn: Boolean = false
     ): Flow<PagingData<TypedQuestNetworkModel>>
-
-    suspend fun getUncompletedNormalQuest(
-        page: Int,
-        size: Int
-    ): UncompletedNormalQuestResponse
-
-    suspend fun getUncompletedRepeatQuest(
-        page: Int,
-        size: Int,
-        status: String = "NONE"
-    ): UncompletedRepeatQuestResponse
-
-    suspend fun getUncompletedEventQuest(
-        page: Int,
-        size: Int
-    ): UncompletedEventQuestResponse
 
     suspend fun getQuestDetail(questId: Int): QuestDetailResponse
 

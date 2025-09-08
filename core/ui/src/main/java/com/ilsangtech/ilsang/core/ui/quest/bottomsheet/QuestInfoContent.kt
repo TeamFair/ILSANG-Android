@@ -22,10 +22,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.RewardPoint
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.quest.QuestType
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.BuildConfig
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
@@ -61,9 +61,9 @@ internal fun QuestInfoContent(
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                if (quest.questType is NewQuestType.Repeat) {
-                    RepeatQuestTypeBadge(repeatType = quest.questType as NewQuestType.Repeat)
-                } else if (quest.questType is NewQuestType.Event) {
+                if (quest.questType is QuestType.Repeat) {
+                    RepeatQuestTypeBadge(repeatType = quest.questType as QuestType.Repeat)
+                } else if (quest.questType is QuestType.Event) {
                     EventQuestTypeBadge()
                 }
                 quest.missions.firstOrNull()?.type?.let { missionType ->
@@ -128,7 +128,7 @@ internal fun QuestDetailInfoContentPreview() {
                 type = "REVIEW"
             )
         ),
-        questType = NewQuestType.Event,
+        questType = QuestType.Event,
         rewards = listOf(
             RewardPoint.Metro(2),
             RewardPoint.Commercial(5),

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.NewQuestType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
@@ -41,7 +41,7 @@ internal fun QuizQuestInfoCard(
     questImageId: String?,
     title: String,
     writerName: String,
-    questType: NewQuestType,
+    questType: QuestType,
     point: Int
 ) {
     Card(
@@ -85,9 +85,9 @@ internal fun QuizQuestInfoCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (questType is NewQuestType.Event) {
+                if (questType is QuestType.Event) {
                     EventQuestTypeBadge()
-                } else if (questType is NewQuestType.Repeat) {
+                } else if (questType is QuestType.Repeat) {
                     RepeatQuestTypeBadge(repeatType = questType)
                 }
             }
@@ -115,7 +115,7 @@ private fun QuizQuestInfoCardPreview() {
         questImageId = "some_image_id",
         title = "정자동 최고의 돈까스 가게 가기",
         writerName = "야미돈까스 정자동점",
-        questType = NewQuestType.Repeat.Daily,
+        questType = QuestType.Repeat.Daily,
         point = 100
     )
 }

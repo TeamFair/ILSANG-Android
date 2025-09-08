@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.ui.user.model
 
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 

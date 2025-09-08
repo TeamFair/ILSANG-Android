@@ -29,8 +29,8 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.NewQuestType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
 import com.ilsangtech.ilsang.designsystem.component.DropDownMenu
@@ -206,7 +206,7 @@ private fun BannerDetailQuestsContentPreview() {
             listOf(
                 BannerQuest(
                     questId = 1,
-                    questType = NewQuestType.Normal,
+                    questType = QuestType.Normal,
                     expireDate = "2023-12-31",
                     imageId = "imageId1",
                     mainImageId = "mainImageId1",
@@ -216,7 +216,7 @@ private fun BannerDetailQuestsContentPreview() {
                 ),
                 BannerQuest(
                     questId = 2,
-                    questType = NewQuestType.Event,
+                    questType = QuestType.Event,
                     expireDate = "2024-01-15",
                     imageId = "imageId2",
                     mainImageId = "mainImageId2",
@@ -233,7 +233,7 @@ private fun BannerDetailQuestsContentPreview() {
             listOf(
                 BannerQuest(
                     questId = 3,
-                    questType = NewQuestType.Repeat.Daily,
+                    questType = QuestType.Repeat.Daily,
                     expireDate = "2023-11-30",
                     imageId = "imageId3",
                     mainImageId = "mainImageId3",

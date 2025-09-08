@@ -1,11 +1,10 @@
 package com.ilsangtech.ilsang.core.model.quest
 
-import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.RewardPoint
+import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 
 data class BannerQuest(
     val questId: Int,
-    val questType: NewQuestType,
+    val questType: QuestType,
     val expireDate: String,
     val imageId: String?,
     val mainImageId: String?,

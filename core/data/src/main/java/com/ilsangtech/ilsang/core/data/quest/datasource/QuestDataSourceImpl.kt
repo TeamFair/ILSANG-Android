@@ -14,9 +14,6 @@ import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedEventQuestResponse
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedNormalQuestResponse
-import com.ilsangtech.ilsang.core.network.model.quest.UncompletedRepeatQuestResponse
 import com.ilsangtech.ilsang.core.network.model.quest.UncompletedTotalQuestResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -123,38 +120,6 @@ class QuestDataSourceImpl @Inject constructor(
                 )
             }
         ).flow
-    }
-
-    override suspend fun getUncompletedNormalQuest(
-        page: Int,
-        size: Int
-    ): UncompletedNormalQuestResponse {
-        return questApiService.getUncompletedNormalQuest(
-            page = page,
-            size = size
-        )
-    }
-
-    override suspend fun getUncompletedRepeatQuest(
-        page: Int,
-        size: Int,
-        status: String
-    ): UncompletedRepeatQuestResponse {
-        return questApiService.getUncompletedRepeatQuest(
-            page = page,
-            size = size,
-            status = status
-        )
-    }
-
-    override suspend fun getUncompletedEventQuest(
-        page: Int,
-        size: Int
-    ): UncompletedEventQuestResponse {
-        return questApiService.getUncompletedEventQuest(
-            page = page,
-            size = size
-        )
     }
 
     override suspend fun getQuestDetail(questId: Int): QuestDetailResponse {
