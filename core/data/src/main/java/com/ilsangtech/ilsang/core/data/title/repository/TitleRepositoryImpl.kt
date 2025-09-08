@@ -23,4 +23,8 @@ class TitleRepositoryImpl(
     override suspend fun getUnreadTitleList(): List<UserTitle> {
         return titleDataSource.getUnreadTitleList().map(UserTitleNetworkModel::toUserTitle)
     }
+
+    override suspend fun readTitle(titleHistoryId: Int): Result<Unit> {
+        return runCatching { titleDataSource.readTitle(titleHistoryId) }
+    }
 }
