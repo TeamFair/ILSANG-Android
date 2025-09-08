@@ -236,7 +236,13 @@ fun IlsangNavHost(
 
             isZoneNavigation(onBackButtonClick = navController::popBackStack)
 
-            bannerNavigation(onBackButtonClick = navController::popBackStack)
+            bannerNavigation(
+                onBackButtonClick = navController::popBackStack,
+                navigateToSubmit = navController::navigateToSubmit,
+                navigateToMissionExample = { missionId ->
+                    navController.navigate(ApprovalExampleRoute(missionId))
+                }
+            )
 
             couponNavigation(
                 navigateToHome = {

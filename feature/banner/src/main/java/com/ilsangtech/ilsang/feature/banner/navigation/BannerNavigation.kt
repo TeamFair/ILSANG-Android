@@ -31,11 +31,17 @@ fun NavHostController.navigateToBannerDetail(banner: Banner) {
 }
 
 fun NavGraphBuilder.bannerNavigation(
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    navigateToSubmit: (Int, Int, String) -> Unit,
+    navigateToMissionExample: (Int) -> Unit
 ) {
     navigation<BannerBaseRoute>(startDestination = BannerDetailRoute::class) {
         composable<BannerDetailRoute> {
-            BannerDetailScreen(onBackButtonClick = onBackButtonClick)
+            BannerDetailScreen(
+                onBackButtonClick = onBackButtonClick,
+                navigateToSubmit = navigateToSubmit,
+                navigateToMissionExample = navigateToMissionExample
+            )
         }
     }
 }
