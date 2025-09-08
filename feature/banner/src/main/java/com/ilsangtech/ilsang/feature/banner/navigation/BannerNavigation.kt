@@ -35,7 +35,15 @@ fun NavGraphBuilder.bannerNavigation(
 ) {
     navigation<BannerBaseRoute>(startDestination = BannerDetailRoute::class) {
         composable<BannerDetailRoute> {
-            BannerDetailScreen(onBackButtonClick = onBackButtonClick)
+            BannerDetailScreen(
+                onBackButtonClick = onBackButtonClick,
+                navigateToSubmit = { questId, missionId, missionType ->
+
+                },
+                navigateToMissionExample = { missionId ->
+
+                }
+            )
         }
     }
 }
