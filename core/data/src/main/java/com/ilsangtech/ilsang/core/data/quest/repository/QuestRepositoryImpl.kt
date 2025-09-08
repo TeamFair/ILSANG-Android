@@ -9,10 +9,8 @@ import com.ilsangtech.ilsang.core.data.quest.mapper.toPopularQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toQuestDetail
 import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toTypedQuest
-import com.ilsangtech.ilsang.core.data.quest.toQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.model.NewQuestType
-import com.ilsangtech.ilsang.core.model.Quest
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
@@ -22,7 +20,6 @@ import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
-import com.ilsangtech.ilsang.core.network.model.quest.QuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import kotlinx.coroutines.flow.Flow
@@ -101,34 +98,6 @@ class QuestRepositoryImpl(
             favoriteYn = favoriteYn,
             completeYn = completedYn
         ).map { it.map(TypedQuestNetworkModel::toTypedQuest) }
-    }
-
-    override suspend fun getUncompletedNormalQuests(): Flow<List<Quest>> = flow {
-        emit(
-            questDataSource.getUncompletedNormalQuest(
-                page = 0,
-                size = 60
-            ).data.map(QuestNetworkModel::toQuest)
-        )
-    }
-
-    override suspend fun getUncompletedRepeatQuests(status: String): Flow<List<Quest>> = flow {
-        emit(
-            questDataSource.getUncompletedRepeatQuest(
-                page = 0,
-                size = 60,
-                status = status
-            ).data.map(QuestNetworkModel::toQuest)
-        )
-    }
-
-    override suspend fun getUncompletedEventQuests(): Flow<List<Quest>> = flow {
-        emit(
-            questDataSource.getUncompletedEventQuest(
-                page = 0,
-                size = 60
-            ).data.map(QuestNetworkModel::toQuest)
-        )
     }
 
     override fun getQuestDetail(questId: Int): Flow<QuestDetail> = flow {
