@@ -16,4 +16,8 @@ class TitleDataSourceImpl(private val titleApiService: TitleApiService) : TitleD
     override suspend fun getUnreadTitleList(): List<UserTitleNetworkModel> {
         return titleApiService.getUnreadTitleList()
     }
+
+    override suspend fun readTitle(titleHistoryId: Int) {
+        return titleApiService.readTitle(titleHistoryId)
+    }
 }

@@ -9,4 +9,6 @@ interface TitleDataSource {
     suspend fun getUserTitleList(): List<UserTitleNetworkModel>
 
     suspend fun getUnreadTitleList(): List<UserTitleNetworkModel>
+
+    suspend fun readTitle(titleHistoryId: Int)
 }
