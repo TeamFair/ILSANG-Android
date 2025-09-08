@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
-import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 
 internal fun PopularQuestNetworkModel.toPopularQuest(): PopularQuest {

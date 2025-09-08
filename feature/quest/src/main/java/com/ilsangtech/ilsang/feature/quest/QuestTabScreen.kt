@@ -32,6 +32,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
@@ -233,7 +234,7 @@ private fun QuestTabScreenPreview() {
             rewards = emptyList(),
             title = "Quest Title $index",
             writerName = "Writer $index",
-            questType = com.ilsangtech.ilsang.core.model.QuestType.Normal
+            questType = QuestType.Normal
         )
     }
     val typedQuests = flowOf(PagingData.from(typedQuestsData)).collectAsLazyPagingItems()

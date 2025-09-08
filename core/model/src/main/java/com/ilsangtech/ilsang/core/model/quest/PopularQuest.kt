@@ -1,7 +1,5 @@
 package com.ilsangtech.ilsang.core.model.quest
 
-import com.ilsangtech.ilsang.core.model.QuestType
-
 data class PopularQuest(
     val questId: Int,
     val expireDate: String,

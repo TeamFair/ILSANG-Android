@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
-import com.ilsangtech.ilsang.core.model.QuestType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel

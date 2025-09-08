@@ -10,11 +10,11 @@ import com.ilsangtech.ilsang.core.data.quest.mapper.toQuestDetail
 import com.ilsangtech.ilsang.core.data.quest.mapper.toRecommendedQuest
 import com.ilsangtech.ilsang.core.data.quest.mapper.toTypedQuest
 import com.ilsangtech.ilsang.core.domain.QuestRepository
-import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel

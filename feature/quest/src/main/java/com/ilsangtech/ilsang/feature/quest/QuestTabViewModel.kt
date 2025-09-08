@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.QuestType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel

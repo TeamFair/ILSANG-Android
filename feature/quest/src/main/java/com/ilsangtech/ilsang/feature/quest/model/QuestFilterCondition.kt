@@ -1,6 +1,6 @@
 package com.ilsangtech.ilsang.feature.quest.model
 
-import com.ilsangtech.ilsang.core.model.QuestType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 
 data class QuestFilterCondition(
     val areaCode: String,

@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.model
+package com.ilsangtech.ilsang.core.model.quest
 
 sealed interface QuestType {
     data object Normal : QuestType

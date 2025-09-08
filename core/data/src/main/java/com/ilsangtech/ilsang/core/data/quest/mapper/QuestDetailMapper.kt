@@ -1,8 +1,8 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
 import com.ilsangtech.ilsang.core.data.mission.mapper.toMission
-import com.ilsangtech.ilsang.core.model.QuestType
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
