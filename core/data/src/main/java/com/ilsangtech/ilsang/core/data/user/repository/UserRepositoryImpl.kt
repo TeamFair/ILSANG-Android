@@ -30,15 +30,17 @@ class UserRepositoryImpl @Inject constructor(
         combine(
             userDataStore.userMyZone,
             userDataStore.showIsZoneDialogAgain,
+            userDataStore.shouldShowSeasonOpenDialog,
             getUserPoint()
-        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, userPoint ->
+        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, shouldShowSeasonOpenDialog, userPoint ->
             val userInfoResponse = userDataSource.getUserInfo(userId = null)
             val totalPoint =
                 userPoint.metroAreaPoint + userPoint.commercialAreaPoint + userPoint.contributionPoint
             userInfoResponse.toMyInfo(
                 totalPoint = totalPoint,
                 myZoneCommercialAreaCode = myZoneCommercialAreaCode,
-                showIsZoneDialogAgain = showIsZoneDialogAgain
+                showIsZoneDialogAgain = showIsZoneDialogAgain,
+                shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog
             )
         }
 
@@ -119,5 +121,9 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean) {
         return userDataStore.setShowIsZoneDialogAgain(showAgain)
+    }
+
+    override suspend fun updateShouldShowSeasonOpenDialog(shouldShow: Boolean) {
+        return userDataStore.setShouldShowSeasonOpenDialog(shouldShow)
     }
 }

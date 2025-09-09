@@ -38,4 +38,6 @@ interface UserRepository {
     suspend fun updateUserIsZone(commericalAreaCode: String): Result<Unit>
 
     suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean)
+
+    suspend fun updateShouldShowSeasonOpenDialog(shouldShow: Boolean)
 }

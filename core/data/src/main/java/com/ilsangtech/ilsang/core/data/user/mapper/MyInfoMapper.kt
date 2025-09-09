@@ -7,7 +7,8 @@ import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 fun UserInfoResponse.toMyInfo(
     totalPoint: Int,
     myZoneCommercialAreaCode: String,
-    showIsZoneDialogAgain: Boolean
+    showIsZoneDialogAgain: Boolean,
+    shouldShowSeasonOpenDialog: Boolean
 ): MyInfo {
     return MyInfo(
         id = id,
@@ -21,6 +22,7 @@ fun UserInfoResponse.toMyInfo(
         status = status,
         statusUpdatedAt = statusUpdatedAt,
         title = title?.toUserTitle(),
-        showIsZoneDialogAgain = showIsZoneDialogAgain
+        showIsZoneDialogAgain = showIsZoneDialogAgain,
+        shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog
     )
 }

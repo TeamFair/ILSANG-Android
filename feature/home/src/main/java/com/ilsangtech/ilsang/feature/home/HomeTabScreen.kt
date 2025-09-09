@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.season.SeasonOpenDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSelectDisabledDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.home.component.BannerContent
@@ -43,6 +45,7 @@ import com.ilsangtech.ilsang.feature.home.component.UserRankContent
 import com.ilsangtech.ilsang.feature.home.model.HomeTabSuccessData
 import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
 import com.ilsangtech.ilsang.feature.home.model.MyInfoUiModel
+import com.ilsangtech.ilsang.feature.home.model.OpenSeasonUiModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,11 +62,13 @@ internal fun HomeTabScreen(
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
 ) {
+    val shouldShowSeasonOpenDialog by homeViewModel.shouldShowSeasonOpenDialog.collectAsState()
     val homeTabUiState by homeViewModel.homeTabUiState.collectAsStateWithLifecycle()
     val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
 
     HomeTabScreen(
         homeTabUiState = homeTabUiState,
+        shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog,
         selectedQuest = selectedQuest,
         navigateToQuestTab = navigateToQuestTab,
         navigateToMyTab = navigateToMyTab,
@@ -77,6 +82,7 @@ internal fun HomeTabScreen(
         onSelectQuest = homeViewModel::selectQuest,
         onUnselectQuest = homeViewModel::unselectQuest,
         onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
+        onDismissSeasonOpenDialog = homeViewModel::seasonOpenDialogShown
     )
 }
 
@@ -84,6 +90,7 @@ internal fun HomeTabScreen(
 @Composable
 private fun HomeTabScreen(
     homeTabUiState: HomeTabUiState,
+    shouldShowSeasonOpenDialog: Boolean?,
     selectedQuest: QuestDetail?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
@@ -96,7 +103,8 @@ private fun HomeTabScreen(
     onMissionImageClick: (Int) -> Unit,
     onSelectQuest: (Int) -> Unit,
     onUnselectQuest: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onDismissSeasonOpenDialog: (Boolean) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -143,7 +151,18 @@ private fun HomeTabScreen(
         color = background
     ) {
         if (homeTabUiState is HomeTabUiState.Success) {
-            val (userInfo, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
+            val (userInfo, season, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
+
+            if (shouldShowSeasonOpenDialog == true) {
+                SeasonOpenDialog(
+                    seasonNumber = season.seasonNumber,
+                    startDate = season.startDate,
+                    endDate = season.endDate,
+                    onRankingButtonClick = navigateToRankingTab,
+                    onDismissRequest = onDismissSeasonOpenDialog
+                )
+            }
+
             LazyColumn {
                 item {
                     HomeTabHeader(
@@ -216,6 +235,11 @@ private fun HomeTabScreenPreview() {
                 profileImageId = "default_profile",
                 myCommercialAreaName = "서현역",
                 isCommericalAreaName = "서현역"
+            ),
+            season = OpenSeasonUiModel(
+                seasonNumber = 1,
+                startDate = "2023.01.01",
+                endDate = "2023.12.31"
             ),
             banners = listOf(
                 Banner(
@@ -365,6 +389,7 @@ private fun HomeTabScreenPreview() {
 
     HomeTabScreen(
         homeTabUiState = homeTabUiState,
+        shouldShowSeasonOpenDialog = false,
         selectedQuest = null,
         navigateToQuestTab = {},
         navigateToMyTab = {},
@@ -377,6 +402,7 @@ private fun HomeTabScreenPreview() {
         onMissionImageClick = {},
         onSelectQuest = {},
         onUnselectQuest = {},
-        onFavoriteClick = {}
+        onFavoriteClick = {},
+        onDismissSeasonOpenDialog = {}
     )
 }
