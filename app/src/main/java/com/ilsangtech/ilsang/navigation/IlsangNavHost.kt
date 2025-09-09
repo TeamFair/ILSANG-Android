@@ -199,9 +199,6 @@ fun IlsangNavHost(
                 },
                 navigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
-                },
-                navigateToQuestTab = {
-                    navController.navigateToTopLevelDestination(BottomTab.Quest)
                 }
             )
 
