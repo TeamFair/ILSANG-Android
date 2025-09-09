@@ -167,6 +167,9 @@ fun IlsangNavHost(
 //                        popUpTo(HomeBaseRoute) { inclusive = true }
 //                    }
                 },
+                navigateToHome = {
+                    navController.navigateToTopLevelDestination(BottomTab.Home)
+                },
                 navigateToMyTabMain = {
                     navController.popBackStack()
                 },
