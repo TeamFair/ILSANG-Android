@@ -163,9 +163,6 @@ fun IlsangNavHost(
                 navigateToLogin = {
                     Firebase.auth.signOut()
                     logout()
-//                    navController.navigate(LoginRoute) {
-//                        popUpTo(HomeBaseRoute) { inclusive = true }
-//                    }
                 },
                 navigateToHome = {
                     navController.navigateToTopLevelDestination(BottomTab.Home)
