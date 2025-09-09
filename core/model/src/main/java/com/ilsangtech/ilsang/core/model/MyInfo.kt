@@ -14,5 +14,6 @@ data class MyInfo(
     val status: String,
     val statusUpdatedAt: String,
     val title: UserTitle?,
-    val showIsZoneDialogAgain: Boolean
+    val showIsZoneDialogAgain: Boolean,
+    val shouldShowSeasonOpenDialog: Boolean
 )
