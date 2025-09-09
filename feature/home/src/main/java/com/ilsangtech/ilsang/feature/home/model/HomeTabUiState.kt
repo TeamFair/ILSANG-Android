@@ -14,6 +14,7 @@ sealed interface HomeTabUiState {
 
 data class HomeTabSuccessData(
     val myInfo: MyInfoUiModel,
+    val season: OpenSeasonUiModel,
     val banners: List<Banner>,
     val popularQuests: List<PopularQuest>,
     val recommendedQuests: List<RecommendedQuest>,

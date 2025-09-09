@@ -143,7 +143,7 @@ private fun HomeTabScreen(
         color = background
     ) {
         if (homeTabUiState is HomeTabUiState.Success) {
-            val (userInfo, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
+            val (userInfo, season, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
             LazyColumn {
                 item {
                     HomeTabHeader(
@@ -216,6 +216,11 @@ private fun HomeTabScreenPreview() {
                 profileImageId = "default_profile",
                 myCommercialAreaName = "서현역",
                 isCommericalAreaName = "서현역"
+            ),
+            season = OpenSeasonUiModel(
+                seasonNumber = 1,
+                startDate = "2023.01.01",
+                endDate = "2023.12.31"
             ),
             banners = listOf(
                 Banner(

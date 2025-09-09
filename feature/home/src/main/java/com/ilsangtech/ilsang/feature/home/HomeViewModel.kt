@@ -6,11 +6,13 @@ import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.BannerRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
+import com.ilsangtech.ilsang.core.domain.SeasonRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.feature.home.model.HomeTabSuccessData
 import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
 import com.ilsangtech.ilsang.feature.home.model.MyInfoUiModel
+import com.ilsangtech.ilsang.feature.home.model.toOpenSeasonUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,6 +33,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     userRepository: UserRepository,
+    private val seasonRepository: SeasonRepository,
     private val areaRepository: AreaRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
@@ -40,6 +43,9 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedQuestId = MutableStateFlow<Int?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
+
+    private val _shouldShowSeasonOpenDialog = MutableStateFlow(true)
+    val shouldShowSeasonOpenDialog = _shouldShowSeasonOpenDialog.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
@@ -78,6 +84,7 @@ class HomeViewModel @Inject constructor(
                             myCommercialAreaName = myCommercialAreaName,
                             isCommericalAreaName = isCommercialAreaName
                         ),
+                        season = seasonRepository.getCurrentSeason().toOpenSeasonUiModel(),
                         banners = banners,
                         popularQuests = popular,
                         recommendedQuests = recommended,
@@ -125,5 +132,9 @@ class HomeViewModel @Inject constructor(
                 result.onSuccess { questDetailRefreshTrigger.emit(Unit) }
             }
         }
+    }
+
+    fun seasonOpenDialogShown(checked: Boolean) {
+        _shouldShowSeasonOpenDialog.update { false }
     }
 }
