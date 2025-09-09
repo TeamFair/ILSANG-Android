@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    userRepository: UserRepository,
+    private val userRepository: UserRepository,
     private val seasonRepository: SeasonRepository,
     private val areaRepository: AreaRepository,
     private val bannerRepository: BannerRepository,
@@ -44,12 +44,13 @@ class HomeViewModel @Inject constructor(
     private val _selectedQuestId = MutableStateFlow<Int?>(null)
     private val selectedQuestId = _selectedQuestId.asStateFlow()
 
-    private val _shouldShowSeasonOpenDialog = MutableStateFlow(true)
+    private val _shouldShowSeasonOpenDialog = MutableStateFlow<Boolean?>(null)
     val shouldShowSeasonOpenDialog = _shouldShowSeasonOpenDialog.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
         userRepository.getMyInfo().flatMapLatest<MyInfo, HomeTabUiState> { myInfo ->
+            _shouldShowSeasonOpenDialog.update { myInfo.shouldShowSeasonOpenDialog }
             val myAreaCode = myInfo.myCommericalAreaCode
             val isAreaCode = myInfo.isCommercialAreaCode
 
@@ -135,6 +136,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun seasonOpenDialogShown(checked: Boolean) {
-        _shouldShowSeasonOpenDialog.update { false }
+        viewModelScope.launch {
+            if (checked) {
+                userRepository.updateShouldShowSeasonOpenDialog(false)
+            } else {
+                _shouldShowSeasonOpenDialog.update { false }
+            }
+        }
     }
 }
