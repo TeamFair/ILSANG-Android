@@ -108,7 +108,6 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToMyFavoriteQuest: () -> Unit,
     navigateToCoupon: () -> Unit,
     navigateToMyZone: () -> Unit,
-    navigateToQuestTab: () -> Unit
 ) {
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
@@ -118,7 +117,7 @@ fun NavGraphBuilder.myTabNavigation(
                 onMissionHistoryButtonClick = navigateToMyChallenge,
                 onFavoriteQuestButtonClick = navigateToMyFavoriteQuest,
                 onCouponButtonClick = navigateToCoupon,
-                onQuestNavButtonClick = navigateToQuestTab,
+                onQuestNavButtonClick = navigateToHome,
                 onTitleClick = navigateToMyTitle
             )
         }
@@ -152,7 +151,7 @@ fun NavGraphBuilder.myTabNavigation(
                         missionHistory.likeCount
                     )
                 },
-                onQuestNavButtonClick = navigateToQuestTab,
+                onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
             )
         }
