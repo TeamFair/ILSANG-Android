@@ -122,4 +122,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean) {
         return userDataStore.setShowIsZoneDialogAgain(showAgain)
     }
+
+    override suspend fun updateShouldShowSeasonOpenDialog(shouldShow: Boolean) {
+        return userDataStore.setShouldShowSeasonOpenDialog(shouldShow)
+    }
 }
