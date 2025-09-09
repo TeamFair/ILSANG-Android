@@ -13,18 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.component.MyFavoriteQuestEmptyContent
 import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.component.MyFavoriteQuestHeader
 
 @Composable
+
 internal fun MyFavoriteQuestScreen(
     viewModel: MyFavoriteQuestViewModel = hiltViewModel(),
     onMyZoneClick: () -> Unit,
+    onQuestNavButtonClick: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val favoriteQuestList = viewModel.favoriteQuestList.collectAsLazyPagingItems()
@@ -35,6 +39,7 @@ internal fun MyFavoriteQuestScreen(
         favoriteQuestList = favoriteQuestList,
         onMyZoneClick = onMyZoneClick,
         onFavoriteClick = viewModel::updateFavoriteStatus,
+        onQuestNavButtonClick = onQuestNavButtonClick,
         onBackButtonClick = onBackButtonClick
     )
 }
@@ -45,6 +50,7 @@ private fun MyFavoriteQuestScreen(
     favoriteQuestList: LazyPagingItems<TypedQuest>,
     onMyZoneClick: () -> Unit,
     onFavoriteClick: (TypedQuest) -> Unit,
+    onQuestNavButtonClick: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     Surface(
@@ -58,6 +64,14 @@ private fun MyFavoriteQuestScreen(
                 myCommercialAreaName = commercialAreaName.orEmpty(),
                 onMyZoneClick = onMyZoneClick
             )
+            if (favoriteQuestList.loadState.refresh is LoadState.NotLoading
+                && favoriteQuestList.itemCount == 0
+            ) {
+                MyFavoriteQuestEmptyContent(
+                    modifier = Modifier.weight(1f),
+                    onQuestNavButtonClick = onQuestNavButtonClick
+                )
+            }
             LazyColumn(
                 contentPadding = PaddingValues(
                     top = 24.dp, bottom = 72.dp,

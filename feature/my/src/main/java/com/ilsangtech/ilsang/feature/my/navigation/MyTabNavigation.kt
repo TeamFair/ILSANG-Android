@@ -93,6 +93,7 @@ fun NavHostController.navigateToMyFavoriteQuest() = navigate(MyFavoriteQuestRout
 
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
+    navigateToHome: () -> Unit,
     navigateToMyTabMain: () -> Unit,
     navigateToMyProfileEdit: (String, String?) -> Unit,
     navigateToMyChallenge: () -> Unit,
@@ -204,6 +205,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<MyFavoriteQuestRoute> {
             MyFavoriteQuestScreen(
                 onMyZoneClick = navigateToMyZone,
+                onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
             )
         }
