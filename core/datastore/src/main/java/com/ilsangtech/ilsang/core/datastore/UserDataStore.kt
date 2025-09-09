@@ -24,6 +24,12 @@ class UserDataStore(context: Context) {
         preferences[showIsZoneDialogAgainKey] ?: true
     }
 
+    private val shouldShowSeasonOpenDialogKey =
+        booleanPreferencesKey("should_show_season_open_dialog")
+    val shouldShowSeasonOpenDialog = userDataStore.data.map { preferences ->
+        preferences[shouldShowSeasonOpenDialogKey] ?: true
+    }
+
     private val userMyZoneKey = stringPreferencesKey("user_my_zone")
     val userMyZone = userDataStore.data.map { preferences ->
         preferences[userMyZoneKey] ?: "R100"
@@ -42,6 +48,12 @@ class UserDataStore(context: Context) {
     suspend fun setShouldShowOnBoarding(shouldShow: Boolean) {
         userDataStore.edit { preferences ->
             preferences[shouldShowOnBoardingKey] = shouldShow
+        }
+    }
+
+    suspend fun setShouldShowSeasonOpenDialog(shouldShow: Boolean) {
+        userDataStore.edit { preferences ->
+            preferences[shouldShowSeasonOpenDialogKey] = shouldShow
         }
     }
 
