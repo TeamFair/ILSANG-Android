@@ -1,13 +1,20 @@
 package com.ilsangtech.ilsang.core.data.title.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.data.title.datasource.TitleDataSource
+import com.ilsangtech.ilsang.core.data.title.mapper.toLegendTitle
 import com.ilsangtech.ilsang.core.data.title.mapper.toTitleDetail
 import com.ilsangtech.ilsang.core.data.title.mapper.toUserTitle
 import com.ilsangtech.ilsang.core.domain.TitleRepository
+import com.ilsangtech.ilsang.core.model.title.LegendTitle
 import com.ilsangtech.ilsang.core.model.title.TitleDetail
 import com.ilsangtech.ilsang.core.model.title.UserTitle
+import com.ilsangtech.ilsang.core.network.model.title.LegendTitleRankNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.TitleDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TitleRepositoryImpl(
     private val titleDataSource: TitleDataSource
@@ -26,5 +33,11 @@ class TitleRepositoryImpl(
 
     override suspend fun readTitle(titleHistoryId: Int): Result<Unit> {
         return runCatching { titleDataSource.readTitle(titleHistoryId) }
+    }
+
+    override fun getLegendTitleRankList(titleId: String): Flow<PagingData<LegendTitle>> {
+        return titleDataSource.getLegendTitleRankList(titleId).map { pagingData ->
+            pagingData.map(LegendTitleRankNetworkModel::toLegendTitle)
+        }
     }
 }
