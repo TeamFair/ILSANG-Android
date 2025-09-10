@@ -65,6 +65,12 @@ data class MyTitleRoute(val titleHistoryId: Int?)
 @Serializable
 data object MyFavoriteQuestRoute
 
+@Serializable
+data class LegendTitleRoute(
+    val titleId: String,
+    val titleName: String
+)
+
 fun NavHostController.navigateToMyProfileEdit(
     nickname: String,
     profileImageId: String?
@@ -90,6 +96,15 @@ fun NavHostController.navigateToMyChallengeDetail(
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
 fun NavHostController.navigateToMyFavoriteQuest() = navigate(MyFavoriteQuestRoute)
+
+fun NavHostController.navigateToLegendTitle(titleName: String, titleId: String) {
+    navigate(
+        LegendTitleRoute(
+            titleName = titleName,
+            titleId = titleId
+        )
+    )
+}
 
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
