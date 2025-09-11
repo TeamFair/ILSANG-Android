@@ -51,6 +51,7 @@ import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleUiModel
 @Composable
 internal fun MyTitleScreen(
     myTitleViewModel: MyTitleViewModel = hiltViewModel(),
+    onLegendTitleClick: (String, String) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val uiState by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
@@ -98,7 +99,8 @@ internal fun MyTitleScreen(
                 showUpdateDialog = true
             }
         },
-        onTitleSelect = myTitleViewModel::selectTitle
+        onTitleSelect = myTitleViewModel::selectTitle,
+        onLegendTitleClick = onLegendTitleClick
     )
 }
 
@@ -109,7 +111,8 @@ private fun MyTitleScreen(
     selectedTitle: MyTitleUiModel?,
     onBackButtonClick: () -> Unit,
     onTypeChipClick: (TitleGrade) -> Unit,
-    onTitleSelect: (MyTitleUiModel) -> Unit
+    onTitleSelect: (MyTitleUiModel) -> Unit,
+    onLegendTitleClick: (String, String) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -139,6 +142,9 @@ private fun MyTitleScreen(
                     typeTitleList(
                         titleList = uiState.titleList.filter {
                             it.title.grade == selectedTitleGrade
+                        },
+                        onLegendTitleItemClick = { legendTitle ->
+                            onLegendTitleClick(legendTitle.title.name, legendTitle.titleId)
                         },
                         selectedTitle = selectedTitle,
                         onTitleSelect = onTitleSelect
@@ -221,6 +227,7 @@ private fun MyTitleScreenPreview() {
         selectedTitle = sampleTitles.first(),
         onBackButtonClick = {},
         onTypeChipClick = {},
-        onTitleSelect = {}
+        onTitleSelect = {},
+        onLegendTitleClick = { _, _ -> }
     )
 }

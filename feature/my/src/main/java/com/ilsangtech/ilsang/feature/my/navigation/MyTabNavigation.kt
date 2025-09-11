@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDeta
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.MyFavoriteQuestScreen
+import com.ilsangtech.ilsang.feature.my.screens.legend_title.LegendTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
@@ -120,6 +121,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
+    navigateToLegendTitle: (String, String) -> Unit,
     navigateToMyFavoriteQuest: () -> Unit,
     navigateToCoupon: () -> Unit,
     navigateToMyZone: () -> Unit,
@@ -213,6 +215,7 @@ fun NavGraphBuilder.myTabNavigation(
         }
         composable<MyTitleRoute> {
             MyTitleScreen(
+                onLegendTitleClick = navigateToLegendTitle,
                 onBackButtonClick = navigateToMyTabMain
             )
         }
@@ -222,6 +225,9 @@ fun NavGraphBuilder.myTabNavigation(
                 onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
             )
+        }
+        composable<LegendTitleRoute> {
+            LegendTitleScreen(onBackButtonClick = navigateToMyTabMain)
         }
     }
 }
