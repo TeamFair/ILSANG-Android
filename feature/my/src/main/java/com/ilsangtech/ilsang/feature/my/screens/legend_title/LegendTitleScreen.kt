@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -32,6 +33,21 @@ import com.ilsangtech.ilsang.feature.my.screens.legend_title.component.LegendTit
 import com.ilsangtech.ilsang.feature.my.screens.legend_title.component.LegendTitleScreenHeader
 import com.ilsangtech.ilsang.feature.my.screens.legend_title.model.LegendTitleRankUiModel
 import kotlinx.coroutines.flow.flowOf
+
+@Composable
+internal fun LegendTitleScreen(
+    viewModel: LegendTitleViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit
+) {
+    val titleName = viewModel.titleName
+    val legendTitleRankPagingItems = viewModel.legendTitlePagingList.collectAsLazyPagingItems()
+
+    LegendTitleScreen(
+        titleName = titleName,
+        legendTitleRankPagingItems = legendTitleRankPagingItems,
+        onBackButtonClick = onBackButtonClick
+    )
+}
 
 @Composable
 private fun LegendTitleScreen(
