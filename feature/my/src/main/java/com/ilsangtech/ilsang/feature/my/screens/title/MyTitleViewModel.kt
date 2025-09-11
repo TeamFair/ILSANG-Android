@@ -46,6 +46,7 @@ class MyTitleViewModel @Inject constructor(
         MyTitleScreenUiState.Success(
             titleList = titleList.map { title ->
                 MyTitleUiModel(
+                    titleId = title.id,
                     titleHistoryId = userTitleList.find { it.title == title.title }?.titleHistoryId,
                     title = title.title,
                     condition = title.condition

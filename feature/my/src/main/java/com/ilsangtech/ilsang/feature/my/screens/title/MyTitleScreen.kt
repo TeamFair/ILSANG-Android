@@ -193,16 +193,19 @@ private fun MyTitleTopBar(
 private fun MyTitleScreenPreview() {
     val sampleTitles = listOf(
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 1,
             title = Title(name = "초보 탐험가", grade = TitleGrade.Standard, type = TitleType.Metro),
             condition = "지하철역 10회 방문"
         ),
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 2,
             title = Title(name = "상권 분석가", grade = TitleGrade.Rare, type = TitleType.Commercial),
             condition = "상권 5곳 방문"
         ),
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 3,
             title = Title(
                 name = "도시 기여자",
