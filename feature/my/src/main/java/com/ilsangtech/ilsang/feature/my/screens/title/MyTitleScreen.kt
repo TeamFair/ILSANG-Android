@@ -58,8 +58,8 @@ internal fun MyTitleScreen(
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
     val unreadTitleList by myTitleViewModel.unreadTitleList.collectAsStateWithLifecycle()
+    val selectedType by myTitleViewModel.selectedTitleGrade.collectAsStateWithLifecycle()
 
-    var selectedType by remember { mutableStateOf<TitleGrade>(TitleGrade.Standard) }
     var showUpdateDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isTitleUpdated) {
@@ -91,7 +91,7 @@ internal fun MyTitleScreen(
         uiState = uiState,
         selectedTitleGrade = selectedType,
         selectedTitle = selectedTitle,
-        onTypeChipClick = { selectedType = it },
+        onTypeChipClick = myTitleViewModel::updateTitleGrade,
         onBackButtonClick = {
             if (myTitleViewModel.originTitleHistoryId == null) {
                 onBackButtonClick()
