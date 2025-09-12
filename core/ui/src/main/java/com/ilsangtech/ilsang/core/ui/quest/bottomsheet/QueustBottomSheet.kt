@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
@@ -215,6 +216,16 @@ fun QuestBottomSheetPreviewQuestDetail() {
                 exampleImageIds = listOf("imageId1", "imageId2"),
                 title = "사진 인증 미션",
                 type = "PHOTO"
+            )
+        ),
+        coupons = listOf(
+            QuestDetailCoupon(
+                id = 1,
+                name = "쿠폰 이름",
+                imageId = "couponImageId",
+                storeName = "쿠폰 가게 이름",
+                validTo = "2023-12-31",
+                description = "쿠폰 설명"
             )
         ),
         questType = QuestType.Normal,

@@ -1,8 +1,10 @@
 package com.ilsangtech.ilsang.core.data.quest.mapper
 
+import com.ilsangtech.ilsang.core.data.coupon.mapper.toQuestDetailCoupon
 import com.ilsangtech.ilsang.core.data.mission.mapper.toMission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
+import com.ilsangtech.ilsang.core.network.model.coupon.QuestDetailCouponNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
@@ -28,6 +30,7 @@ internal fun QuestDetailResponse.toQuestDetail(): QuestDetail {
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
+        coupons = coupons.map(QuestDetailCouponNetworkModel::toQuestDetailCoupon),
         title = title,
         userRank = userRank,
         writerName = writerName
