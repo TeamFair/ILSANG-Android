@@ -51,14 +51,15 @@ import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleUiModel
 @Composable
 internal fun MyTitleScreen(
     myTitleViewModel: MyTitleViewModel = hiltViewModel(),
+    onLegendTitleClick: (String, String) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val uiState by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
     val unreadTitleList by myTitleViewModel.unreadTitleList.collectAsStateWithLifecycle()
+    val selectedType by myTitleViewModel.selectedTitleGrade.collectAsStateWithLifecycle()
 
-    var selectedType by remember { mutableStateOf<TitleGrade>(TitleGrade.Standard) }
     var showUpdateDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isTitleUpdated) {
@@ -90,7 +91,7 @@ internal fun MyTitleScreen(
         uiState = uiState,
         selectedTitleGrade = selectedType,
         selectedTitle = selectedTitle,
-        onTypeChipClick = { selectedType = it },
+        onTypeChipClick = myTitleViewModel::updateTitleGrade,
         onBackButtonClick = {
             if (myTitleViewModel.originTitleHistoryId == null) {
                 onBackButtonClick()
@@ -98,7 +99,8 @@ internal fun MyTitleScreen(
                 showUpdateDialog = true
             }
         },
-        onTitleSelect = myTitleViewModel::selectTitle
+        onTitleSelect = myTitleViewModel::selectTitle,
+        onLegendTitleClick = onLegendTitleClick
     )
 }
 
@@ -109,7 +111,8 @@ private fun MyTitleScreen(
     selectedTitle: MyTitleUiModel?,
     onBackButtonClick: () -> Unit,
     onTypeChipClick: (TitleGrade) -> Unit,
-    onTitleSelect: (MyTitleUiModel) -> Unit
+    onTitleSelect: (MyTitleUiModel) -> Unit,
+    onLegendTitleClick: (String, String) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -139,6 +142,9 @@ private fun MyTitleScreen(
                     typeTitleList(
                         titleList = uiState.titleList.filter {
                             it.title.grade == selectedTitleGrade
+                        },
+                        onLegendTitleItemClick = { legendTitle ->
+                            onLegendTitleClick(legendTitle.title.name, legendTitle.titleId)
                         },
                         selectedTitle = selectedTitle,
                         onTitleSelect = onTitleSelect
@@ -193,16 +199,19 @@ private fun MyTitleTopBar(
 private fun MyTitleScreenPreview() {
     val sampleTitles = listOf(
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 1,
             title = Title(name = "초보 탐험가", grade = TitleGrade.Standard, type = TitleType.Metro),
             condition = "지하철역 10회 방문"
         ),
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 2,
             title = Title(name = "상권 분석가", grade = TitleGrade.Rare, type = TitleType.Commercial),
             condition = "상권 5곳 방문"
         ),
         MyTitleUiModel(
+            titleId = "",
             titleHistoryId = 3,
             title = Title(
                 name = "도시 기여자",
@@ -218,6 +227,7 @@ private fun MyTitleScreenPreview() {
         selectedTitle = sampleTitles.first(),
         onBackButtonClick = {},
         onTypeChipClick = {},
-        onTitleSelect = {}
+        onTitleSelect = {},
+        onLegendTitleClick = { _, _ -> }
     )
 }

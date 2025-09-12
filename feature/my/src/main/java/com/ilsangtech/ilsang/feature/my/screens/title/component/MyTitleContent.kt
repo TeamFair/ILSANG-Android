@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.my.screens.title.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -74,6 +75,7 @@ private fun TypeTitleListItem(
     modifier: Modifier = Modifier,
     title: MyTitleUiModel,
     checked: Boolean,
+    onLegendTitleItemClick: () -> Unit,
     onCheckBoxClick: (Boolean) -> Unit
 ) {
     Row(
@@ -86,7 +88,18 @@ private fun TypeTitleListItem(
                     strokeWidth = 1.dp.toPx()
                 )
             }
-            .padding(vertical = 16.dp),
+            .padding(vertical = 16.dp)
+            .then(
+                if (title.title.grade == TitleGrade.Legend) {
+                    Modifier.clickable(
+                        onClick = onLegendTitleItemClick,
+                        indication = null,
+                        interactionSource = null
+                    )
+                } else {
+                    Modifier
+                }
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -135,6 +148,7 @@ private fun TypeTitleListItem(
 internal fun LazyListScope.typeTitleList(
     titleList: List<MyTitleUiModel>,
     selectedTitle: MyTitleUiModel?,
+    onLegendTitleItemClick: (MyTitleUiModel) -> Unit,
     onTitleSelect: (MyTitleUiModel) -> Unit
 ) {
     item {
@@ -193,6 +207,7 @@ internal fun LazyListScope.typeTitleList(
         TypeTitleListItem(
             title = title,
             checked = selectedTitle == title,
+            onLegendTitleItemClick = { onLegendTitleItemClick(title) },
             onCheckBoxClick = {
                 if (title.titleHistoryId != null) {
                     onTitleSelect(title)
@@ -215,6 +230,7 @@ private fun MyTitleContentPreview() {
         typeTitleList(
             titleList = emptyList(),
             selectedTitle = null,
+            onLegendTitleItemClick = {},
             onTitleSelect = {}
         )
     }

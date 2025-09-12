@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDeta
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
 import com.ilsangtech.ilsang.feature.my.screens.faq.FaqScreen
 import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.MyFavoriteQuestScreen
+import com.ilsangtech.ilsang.feature.my.screens.legend_title.LegendTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.mytab.MyTabScreen
 import com.ilsangtech.ilsang.feature.my.screens.profile_edit.UserProfileEditScreen
 import com.ilsangtech.ilsang.feature.my.screens.setting.SettingScreen
@@ -65,6 +66,12 @@ data class MyTitleRoute(val titleHistoryId: Int?)
 @Serializable
 data object MyFavoriteQuestRoute
 
+@Serializable
+data class LegendTitleRoute(
+    val titleId: String,
+    val titleName: String
+)
+
 fun NavHostController.navigateToMyProfileEdit(
     nickname: String,
     profileImageId: String?
@@ -91,6 +98,15 @@ fun NavController.navigateToSetting() = navigate(SettingRoute)
 
 fun NavHostController.navigateToMyFavoriteQuest() = navigate(MyFavoriteQuestRoute)
 
+fun NavHostController.navigateToLegendTitle(titleName: String, titleId: String) {
+    navigate(
+        LegendTitleRoute(
+            titleName = titleName,
+            titleId = titleId
+        )
+    )
+}
+
 fun NavGraphBuilder.myTabNavigation(
     navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit,
@@ -105,6 +121,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToTerms: () -> Unit,
     navigateToWithdrawal: () -> Unit,
     navigateToMyTitle: (titleHistoryId: Int?) -> Unit,
+    navigateToLegendTitle: (String, String) -> Unit,
     navigateToMyFavoriteQuest: () -> Unit,
     navigateToCoupon: () -> Unit,
     navigateToMyZone: () -> Unit,
@@ -198,6 +215,7 @@ fun NavGraphBuilder.myTabNavigation(
         }
         composable<MyTitleRoute> {
             MyTitleScreen(
+                onLegendTitleClick = navigateToLegendTitle,
                 onBackButtonClick = navigateToMyTabMain
             )
         }
@@ -207,6 +225,9 @@ fun NavGraphBuilder.myTabNavigation(
                 onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
             )
+        }
+        composable<LegendTitleRoute> {
+            LegendTitleScreen(onBackButtonClick = navigateToMyTabMain)
         }
     }
 }

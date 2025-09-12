@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.TitleRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.feature.my.navigation.MyTitleRoute
 import com.ilsangtech.ilsang.feature.my.screens.title.model.MyTitleScreenUiState
@@ -30,6 +31,9 @@ class MyTitleViewModel @Inject constructor(
 ) : ViewModel() {
     val originTitleHistoryId = savedStateHandle.toRoute<MyTitleRoute>().titleHistoryId
 
+    private val _selectedTitleGrade = MutableStateFlow<TitleGrade>(TitleGrade.Standard)
+    val selectedTitleGrade = _selectedTitleGrade.asStateFlow()
+
     private val _selectedTitle = MutableStateFlow<MyTitleUiModel?>(null)
     val selectedTitle = _selectedTitle.asStateFlow()
 
@@ -46,6 +50,7 @@ class MyTitleViewModel @Inject constructor(
         MyTitleScreenUiState.Success(
             titleList = titleList.map { title ->
                 MyTitleUiModel(
+                    titleId = title.id,
                     titleHistoryId = userTitleList.find { it.title == title.title }?.titleHistoryId,
                     title = title.title,
                     condition = title.condition
@@ -67,6 +72,10 @@ class MyTitleViewModel @Inject constructor(
         viewModelScope.launch {
             _unreadTitleList.update { titleRepository.getUnreadTitleList() }
         }
+    }
+
+    fun updateTitleGrade(titleGrade: TitleGrade) {
+        _selectedTitleGrade.update { titleGrade }
     }
 
     fun selectTitle(title: MyTitleUiModel) {
