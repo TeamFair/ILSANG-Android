@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.quest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
@@ -15,7 +16,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -34,8 +34,7 @@ class QuestTabViewModel @Inject constructor(
     areaRepository: AreaRepository,
     private val questRepository: QuestRepository
 ) : ViewModel() {
-    private val _questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
-    val questDetailRefreshTrigger = _questDetailRefreshTrigger.asSharedFlow()
+    private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
 
     private val _selectedQuestTab = MutableStateFlow(QuestTabUiModel.NORMAL)
     val selectedQuestTab = _selectedQuestTab.asStateFlow()
@@ -64,10 +63,13 @@ class QuestTabViewModel @Inject constructor(
         initialValue = null
     )
 
+    private val favoriteQuestSet = MutableStateFlow(setOf<Int>())
+    private val unfavoriteQuests = MutableStateFlow(setOf<Int>())
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = combine(
         selectedQuestId,
-        _questDetailRefreshTrigger.onStart { emit(Unit) }
+        questDetailRefreshTrigger.onStart { emit(Unit) }
     ) { questId, _ -> questId }.flatMapLatest { questId ->
         questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
     }.stateIn(
@@ -164,8 +166,16 @@ class QuestTabViewModel @Inject constructor(
                 QuestTabUiModel.EVENT -> eventQuests
                 QuestTabUiModel.COMPLETED -> completedQuests
             }
+        }.combine(favoriteQuestSet) { typedQuests, favoriteQuestSet ->
+            typedQuests.map {
+                if (it.questId in favoriteQuestSet) it.copy(favoriteYn = true) else it
+            }
+        }.combine(unfavoriteQuests) { typedQuests, unfavoriteQuests ->
+            typedQuests.map {
+                if (it.questId in unfavoriteQuests) it.copy(favoriteYn = false) else it
+            }
         }
-    }
+    }.cachedIn(viewModelScope)
 
     fun selectQuest(questId: Int) {
         selectedQuestId.update { questId }
@@ -192,14 +202,22 @@ class QuestTabViewModel @Inject constructor(
 
     fun updateQuestFavoriteStatus(questId: Int, isFavorite: Boolean) {
         viewModelScope.launch {
-            val result = if (isFavorite) {
-                questRepository.deleteFavoriteQuest(questId)
+            if (!isFavorite) {
+                questRepository.registerFavoriteQuest(questId).onSuccess {
+                    questDetailRefreshTrigger.emit(Unit)
+                    favoriteQuestSet.update { it + questId }
+                    if (questId in unfavoriteQuests.value) {
+                        unfavoriteQuests.update { it - questId }
+                    }
+                }
             } else {
-                questRepository.registerFavoriteQuest(questId)
-            }
-
-            result.onSuccess {
-                _questDetailRefreshTrigger.emit(Unit)
+                questRepository.deleteFavoriteQuest(questId).onSuccess {
+                    questDetailRefreshTrigger.emit(Unit)
+                    unfavoriteQuests.update { it + questId }
+                    if (questId in unfavoriteQuests.value) {
+                        favoriteQuestSet.update { it - questId }
+                    }
+                }
             }
         }
     }
