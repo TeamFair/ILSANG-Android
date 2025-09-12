@@ -126,7 +126,7 @@ private fun QuestTabScreen(
     onMissionImageClick: (Int?) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    if (selectedQuest != null) {
+    if (selectedQuest != null && selectedQuestTab != QuestTabUiModel.COMPLETED) {
         QuestBottomSheet(
             quest = selectedQuest,
             bottomSheetState = bottomSheetState,
