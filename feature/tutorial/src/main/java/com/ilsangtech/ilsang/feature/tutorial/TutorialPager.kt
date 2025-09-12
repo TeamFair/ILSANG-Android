@@ -150,6 +150,7 @@ internal fun TutorialButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
+            .padding(bottom = 20.dp)
     ) {
         when (pagerState.currentPage) {
             0 -> {
