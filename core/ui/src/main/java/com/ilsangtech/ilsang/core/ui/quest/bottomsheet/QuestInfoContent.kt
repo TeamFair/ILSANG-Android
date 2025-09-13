@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
@@ -133,6 +134,16 @@ internal fun QuestDetailInfoContentPreview() {
             RewardPoint.Metro(2),
             RewardPoint.Commercial(5),
             RewardPoint.Contribute(10)
+        ),
+        coupons = listOf(
+            QuestDetailCoupon(
+                id = 201,
+                name = "10% Off Coupon",
+                imageId = "coupon_image_id",
+                validTo = "2024-12-31",
+                storeName = "Store A",
+                description = "Get 10% off on your next purchase."
+            )
         ),
         title = "일상 공유하고 포인트 받기",
         userRank = 5,

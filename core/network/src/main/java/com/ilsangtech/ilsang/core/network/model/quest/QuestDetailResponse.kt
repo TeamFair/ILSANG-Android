@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.network.model.quest
 
+import com.ilsangtech.ilsang.core.network.model.coupon.QuestDetailCouponNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import kotlinx.serialization.Serializable
 
@@ -16,5 +17,6 @@ data class QuestDetailResponse(
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
     val userRank: Int?,
-    val writerName: String
+    val writerName: String,
+    val coupons: List<QuestDetailCouponNetworkModel>
 )
