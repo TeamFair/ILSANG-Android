@@ -19,6 +19,10 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +40,7 @@ import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.ui.coupon.QuestRewardCouponDialog
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
@@ -55,6 +60,15 @@ fun QuestBottomSheet(
     onApproveButtonClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    var showQuestRewardCouponDialog by remember { mutableStateOf(false) }
+
+    if (showQuestRewardCouponDialog) {
+        QuestRewardCouponDialog(
+            coupon = quest.coupons.first(),
+            onDismissRequest = { showQuestRewardCouponDialog = false }
+        )
+    }
+
     IlsangBottomSheet(
         bottomSheetState = bottomSheetState,
         onDismissRequest = onDismiss
@@ -65,7 +79,8 @@ fun QuestBottomSheet(
         )
         QuestBottomSheetContent(
             quest = quest,
-            onImageClick = onMissionImageClick
+            onImageClick = onMissionImageClick,
+            onRewardButtonClick = { showQuestRewardCouponDialog = true }
         )
         Spacer(Modifier.height(16.dp))
         QuestBottomSheetFooter(onClick = onApproveButtonClick)
@@ -110,7 +125,8 @@ private fun QuestBottomSheetHeader(
 private fun QuestBottomSheetContent(
     modifier: Modifier = Modifier,
     quest: QuestDetail,
-    onImageClick: () -> Unit
+    onImageClick: () -> Unit,
+    onRewardButtonClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -143,6 +159,12 @@ private fun QuestBottomSheetContent(
             }
         }
         ObtainablePointContent(rewardPoints = quest.rewards)
+        if (quest.coupons.isNotEmpty()) {
+            QuestRewardCouponCard(
+                modifier = Modifier.padding(top = 24.dp),
+                onRewardButtonClick = onRewardButtonClick
+            )
+        }
     }
 }
 
