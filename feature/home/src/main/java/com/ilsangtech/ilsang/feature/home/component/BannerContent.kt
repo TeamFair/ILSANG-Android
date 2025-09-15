@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,13 +46,12 @@ internal fun BannerContent(
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(11 / 10f)
+                    .aspectRatio(3 / 2f)
                     .clickable(
                         onClick = { onClick(banners[page]) },
                         indication = null,
                         interactionSource = null
                     ),
-                contentScale = ContentScale.Crop,
                 model = BuildConfig.IMAGE_URL + banners[page].bannerImageId,
                 contentDescription = banners[page].description
             )
