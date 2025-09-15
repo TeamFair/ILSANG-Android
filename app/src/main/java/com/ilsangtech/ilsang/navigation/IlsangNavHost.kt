@@ -1,6 +1,8 @@
 package com.ilsangtech.ilsang.navigation
 
 import android.content.Intent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -119,6 +121,8 @@ fun IlsangNavHost(
                 bottom = paddingValues.calculateBottomPadding()
                         - WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
             ),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
             navController = navController,
             startDestination = startDestination
         ) {
