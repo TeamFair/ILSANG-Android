@@ -1,29 +1,39 @@
 package com.ilsangtech.ilsang.navigation
 
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalBaseRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalRoute
+import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.home.navigation.HomeRoute
+import com.ilsangtech.ilsang.feature.my.navigation.MyBaseRoute
 import com.ilsangtech.ilsang.feature.my.navigation.MyRoute
+import com.ilsangtech.ilsang.feature.quest.navigation.QuestBaseRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.QuestRoute
+import com.ilsangtech.ilsang.feature.ranking.navigation.RankingBaseRoute
 import com.ilsangtech.ilsang.feature.ranking.navigation.RankingRoute
 import kotlin.reflect.KClass
 
 fun NavHostController.navigateToTopLevelDestination(bottomTab: BottomTab) {
     val navOptions = navOptions {
-        popUpTo(HomeRoute) {
-            saveState = true
+        popUpTo(graph.findStartDestination().id) {
+            saveState = BottomTab.entries.any {
+                currentBackStackEntry?.destination?.hasRoute(it.route) == true
+            }
+
         }
         launchSingleTop = true
         restoreState = true
     }
     when (bottomTab) {
-        BottomTab.Home -> navigate(HomeRoute, navOptions)
-        BottomTab.Quest -> navigate(QuestRoute, navOptions)
-        BottomTab.Approval -> navigate(ApprovalRoute, navOptions)
-        BottomTab.Ranking -> navigate(RankingRoute, navOptions)
-        BottomTab.My -> navigate(MyRoute, navOptions)
+        BottomTab.Home -> navigate(HomeBaseRoute, navOptions)
+        BottomTab.Quest -> navigate(QuestBaseRoute, navOptions)
+        BottomTab.Approval -> navigate(ApprovalBaseRoute, navOptions)
+        BottomTab.Ranking -> navigate(RankingBaseRoute, navOptions)
+        BottomTab.My -> navigate(MyBaseRoute, navOptions)
     }
 }
 
