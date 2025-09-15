@@ -58,9 +58,7 @@ internal fun SeasonSelector(
                 color = gray500
             )
             Icon(
-                painter = painterResource(
-                    if (expanded) R.drawable.icon_under else R.drawable.icon_up
-                ),
+                painter = painterResource(R.drawable.icon_under),
                 contentDescription = null,
                 tint = gray500
             )
