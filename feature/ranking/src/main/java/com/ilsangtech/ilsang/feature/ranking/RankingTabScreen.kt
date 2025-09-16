@@ -163,7 +163,8 @@ private fun RankingTabScreen(
                             .padding(horizontal = 20.dp)
                             .padding(bottom = 24.dp),
                         season = currentSeason,
-                        onQuestButtonClick = onQuestButtonClick
+                        onQuestButtonClick = onQuestButtonClick,
+                        onSeasonRewardButtonClick = {}
                     )
                 }
                 RewardTabRow(

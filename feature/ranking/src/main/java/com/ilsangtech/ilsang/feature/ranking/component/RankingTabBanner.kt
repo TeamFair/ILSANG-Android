@@ -37,7 +37,8 @@ import com.ilsangtech.ilsang.feature.ranking.model.SeasonUiModel
 internal fun RankingTabBanner(
     modifier: Modifier = Modifier,
     season: SeasonUiModel.Season,
-    onQuestButtonClick: () -> Unit
+    onQuestButtonClick: () -> Unit,
+    onSeasonRewardButtonClick: () -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -74,21 +75,18 @@ internal fun RankingTabBanner(
                     )
                 )
                 Spacer(Modifier.height(13.dp))
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = primary500,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(36.dp),
-                    contentPadding = PaddingValues(
-                        top = 8.dp, bottom = 8.dp,
-                        start = 12.dp, end = 8.dp
-                    ),
-                    onClick = onQuestButtonClick
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary500,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(36.dp),
+                        contentPadding = PaddingValues(
+                            top = 8.dp, bottom = 8.dp,
+                            start = 12.dp, end = 8.dp
+                        ),
+                        onClick = onQuestButtonClick
                     ) {
                         Text(
                             text = "퀘스트 수행하기",
@@ -96,7 +94,35 @@ internal fun RankingTabBanner(
                             color = Color.White
                         )
                         Icon(
-                            modifier = Modifier.size(16.dp),
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .size(16.dp),
+                            painter = painterResource(R.drawable.icon_right),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary500,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(36.dp),
+                        contentPadding = PaddingValues(
+                            top = 8.dp, bottom = 8.dp,
+                            start = 12.dp, end = 8.dp
+                        ),
+                        onClick = onSeasonRewardButtonClick
+                    ) {
+                        Text(
+                            text = "시즌 보상",
+                            style = caption02,
+                            color = Color.White
+                        )
+                        Icon(
+                            modifier = Modifier
+                                .padding(start = 4.dp)
+                                .size(16.dp),
                             painter = painterResource(R.drawable.icon_right),
                             tint = Color.White,
                             contentDescription = null
@@ -124,6 +150,7 @@ private fun RankingTabBannerPreview() {
     )
     RankingTabBanner(
         season = season,
-        onQuestButtonClick = {}
+        onQuestButtonClick = {},
+        onSeasonRewardButtonClick = {}
     )
 }
