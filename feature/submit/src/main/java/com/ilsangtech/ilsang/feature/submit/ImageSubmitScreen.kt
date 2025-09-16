@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.feature.submit
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,26 +20,19 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.addLastModifiedToFileCacheKey
-import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -51,32 +43,14 @@ import com.ilsangtech.ilsang.feature.submit.component.SubmitErrorDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitLoadingDialog
 import com.ilsangtech.ilsang.feature.submit.component.SubmitSuccessDialog
 import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
-import java.io.File
 
 @Composable
 internal fun ImageSubmitScreen(
     imageSubmitViewModel: ImageSubmitViewModel = hiltViewModel(),
-    onDismiss: () -> Unit
+    popBackStack: () -> Unit,
+    onSubmitSuccess: () -> Unit
 ) {
-    val context = LocalContext.current
     val submitUiState by imageSubmitViewModel.submitUiState.collectAsStateWithLifecycle()
-
-    val tempFile by imageSubmitViewModel.capturedImageFile.collectAsStateWithLifecycle()
-    val tempFileUri = remember(tempFile) { FileManager.getUriForFile(tempFile, context) }
-    var lastModified by remember { mutableLongStateOf(tempFile.lastModified()) }
-
-    val imageCaptureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
-            if (isSuccess) {
-                lastModified = tempFile.lastModified()
-            } else {
-                onDismiss()
-            }
-        }
-
-    LaunchedEffect(Unit) {
-        imageCaptureLauncher.launch(tempFileUri)
-    }
 
     when (submitUiState) {
         is SubmitResultUiState.Loading -> {
@@ -89,7 +63,7 @@ internal fun ImageSubmitScreen(
                 rewardPoints = rewardList,
                 onDismissRequest = {
                     imageSubmitViewModel.completeSubmit()
-                    onDismiss()
+                    onSubmitSuccess()
                 }
             )
         }
@@ -106,25 +80,20 @@ internal fun ImageSubmitScreen(
     }
 
     ImageSubmitScreen(
-        imageFile = tempFile,
-        lastModifyTime = lastModified,
-        onBackButtonClick = onDismiss,
-        onRetakeButtonClick = {
-            imageCaptureLauncher.launch(tempFileUri)
-        },
+        imageUri = imageSubmitViewModel.imageUri,
+        onBackButtonClick = popBackStack,
+        onRetakeButtonClick = popBackStack,
         onSubmitButtonClick = imageSubmitViewModel::submitApproveImage
     )
 }
 
 @Composable
 private fun ImageSubmitScreen(
-    imageFile: File,
-    lastModifyTime: Long,
+    imageUri: Uri,
     onBackButtonClick: () -> Unit,
     onRetakeButtonClick: () -> Unit,
     onSubmitButtonClick: () -> Unit
 ) {
-    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -133,11 +102,7 @@ private fun ImageSubmitScreen(
         ImageSubmitScreenHeader(onBackButtonClick)
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(imageFile)
-                    .memoryCacheKey("$imageFile?t=$lastModifyTime")
-                    .addLastModifiedToFileCacheKey(true)
-                    .build(),
+                model = imageUri,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
@@ -246,10 +211,7 @@ private fun ImageSubmitScreenFooter(
 @Composable
 private fun ImageSubmitScreenPreview() {
     ImageSubmitScreen(
-        File.createTempFile(
-            "", ""
-        ),
-        0L,
+        "".toUri(),
         {},
         {},
         {}
