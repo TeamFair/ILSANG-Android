@@ -111,6 +111,10 @@ class ImageCaptureViewModel @Inject constructor(
         }
     }
 
+    fun selectGalleryImage(uri: Uri) {
+        _selectedImageUri.update { uri }
+    }
+
     fun clearSelectedImage() {
         _selectedImageUri.update { null }
     }

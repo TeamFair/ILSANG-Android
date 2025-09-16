@@ -2,6 +2,9 @@ package com.ilsangtech.ilsang.feature.submit
 
 import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.compose.CameraXViewfinder
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -71,6 +74,11 @@ internal fun ImageCaptureScreen(
 
     var showCameraPermissionDialog by remember { mutableStateOf(false) }
     var showMediaAccessPermissionDialog by remember { mutableStateOf(false) }
+
+    val pickImage =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            uri?.let { viewModel.selectGalleryImage(it) }
+        }
 
     val cameraZoom by produceState(1f) {
         viewModel.camera.collect { camera ->
@@ -197,7 +205,13 @@ internal fun ImageCaptureScreen(
                 .padding(start = 30.dp, bottom = 54.dp)
                 .navigationBarsPadding(),
             imageUri = latestImageUri,
-            onClick = {}
+            onClick = {
+                pickImage.launch(
+                    PickVisualMediaRequest(
+                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                    )
+                )
+            }
         )
     }
 }
