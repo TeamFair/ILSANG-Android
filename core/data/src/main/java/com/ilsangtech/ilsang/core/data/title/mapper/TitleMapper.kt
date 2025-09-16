@@ -29,6 +29,7 @@ internal fun UserTitleNetworkModel.toTitle(): Title {
             "METRO" -> TitleType.Metro
             "COMMERCIAL" -> TitleType.Commercial
             "CONTRIBUTION" -> TitleType.Contribution
+            "NONE" -> TitleType.None
             else -> throw IllegalArgumentException("Unknown title type: $type")
         }
     )
@@ -49,6 +50,7 @@ internal fun TitleDetailNetworkModel.toTitleDetail(): TitleDetail {
                 "METRO" -> TitleType.Metro
                 "COMMERCIAL" -> TitleType.Commercial
                 "CONTRIBUTION" -> TitleType.Contribution
+                "NONE" -> TitleType.None
                 else -> throw IllegalArgumentException("Unknown title type: $type")
             }
         ),
@@ -69,6 +71,7 @@ internal fun TitleNetworkModel.toTitle(): Title {
             "METRO" -> TitleType.Metro
             "COMMERCIAL" -> TitleType.Commercial
             "CONTRIBUTION" -> TitleType.Contribution
+            "NONE" -> TitleType.None
             else -> throw IllegalArgumentException("Unknown title type: $type")
         }
     )

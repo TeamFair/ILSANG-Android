@@ -24,6 +24,7 @@ internal fun LegendTitleRankNetworkModel.toLegendTitle(): LegendTitle {
                 "METRO" -> TitleType.Metro
                 "COMMERCIAL" -> TitleType.Commercial
                 "CONTRIBUTION" -> TitleType.Contribution
+                "NONE" -> TitleType.None
                 else -> throw IllegalArgumentException("Unknown title type: ${title.grade}")
             }
         ),
