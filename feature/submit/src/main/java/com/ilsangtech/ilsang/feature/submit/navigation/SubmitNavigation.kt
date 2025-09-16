@@ -63,8 +63,16 @@ fun NavGraphBuilder.submitNavigation(
 ) {
     navigation<ImageSubmitBaseRoute>(startDestination = ImageCaptureRoute::class) {
         composable<ImageCaptureRoute> {
+            ImageCaptureScreen(
+                navigateToImageSubmit = navigateToImageSubmit,
+                popBackStack = popBackStack
+            )
         }
         composable<ImageSubmitRoute> {
+            ImageSubmitScreen(
+                onSubmitSuccess = navigateToHomeOrQuest,
+                popBackStack = popBackStack
+            )
         }
     }
     composable<OxQuizSubmitRoute> {
