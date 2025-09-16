@@ -57,7 +57,6 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:ui"))
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.camera.core)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
