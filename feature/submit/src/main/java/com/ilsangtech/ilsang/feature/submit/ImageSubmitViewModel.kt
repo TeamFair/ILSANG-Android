@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.feature.submit
 
 import android.content.Context
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,8 +30,7 @@ class ImageSubmitViewModel @Inject constructor(
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<ImageSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
-    private val _capturedImageUri = MutableStateFlow<Uri?>(null)
-    val capturedImageFile = MutableStateFlow(FileManager.createCacheFile(context)).asStateFlow()
+    val imageUri = savedStateHandle.toRoute<ImageSubmitRoute>().imageUri.toUri()
 
     private val _submitUiState =
         MutableStateFlow<SubmitResultUiState>(SubmitResultUiState.NotSubmitted)
@@ -41,7 +40,7 @@ class ImageSubmitViewModel @Inject constructor(
         viewModelScope.launch {
             _submitUiState.update { SubmitResultUiState.Loading }
             imageRepository.uploadMissionImage(
-                imageBytes = FileManager.getBytesFromFile(context, capturedImageFile.value),
+                imageBytes = FileManager.getBytesFromUri(context, imageUri),
             ).onSuccess { imageId ->
                 missionRepository.submitImageMission(
                     missionId = missionId,
@@ -61,11 +60,5 @@ class ImageSubmitViewModel @Inject constructor(
 
     fun completeSubmit() {
         _submitUiState.update { SubmitResultUiState.NotSubmitted }
-        _capturedImageUri.update { null }
-    }
-
-    override fun onCleared() {
-        capturedImageFile.value.delete()
-        super.onCleared()
     }
 }
