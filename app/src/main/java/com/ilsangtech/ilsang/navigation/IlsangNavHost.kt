@@ -63,6 +63,8 @@ import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.SeasonRewardRoute
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
+import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitBaseRoute
+import com.ilsangtech.ilsang.feature.submit.navigation.navigateToImageSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.navigateToSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
 import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
@@ -214,7 +216,16 @@ fun IlsangNavHost(
                 popBackStack = navController::popBackStack
             )
 
-            submitNavigation(popBackStack = navController::popBackStack)
+            submitNavigation(
+                navigateToImageSubmit = navController::navigateToImageSubmit,
+                navigateToHomeOrQuest = {
+                    navController.popBackStack(
+                        route = ImageSubmitBaseRoute,
+                        inclusive = true
+                    )
+                },
+                popBackStack = navController::popBackStack
+            )
 
             rankingNavigation(
                 navigateToRankingDetail = { rankingDetailRoute ->

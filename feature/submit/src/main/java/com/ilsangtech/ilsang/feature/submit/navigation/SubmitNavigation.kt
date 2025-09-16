@@ -3,16 +3,25 @@ package com.ilsangtech.ilsang.feature.submit.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import com.ilsangtech.ilsang.feature.submit.ImageCaptureScreen
 import com.ilsangtech.ilsang.feature.submit.ImageSubmitScreen
 import com.ilsangtech.ilsang.feature.submit.OxQuizSubmitScreen
 import com.ilsangtech.ilsang.feature.submit.WordsQuizSubmitScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object SubmitBaseRoute
+data object ImageSubmitBaseRoute
+
+@Serializable
+data class ImageCaptureRoute(
+    val questId: Int,
+    val missionId: Int
+)
 
 @Serializable
 data class ImageSubmitRoute(
+    val imageUri: String,
     val questId: Int,
     val missionId: Int
 )
@@ -35,15 +44,28 @@ fun NavHostController.navigateToSubmit(
     type: String
 ) {
     when (type) {
-        "PHOTO" -> navigate(ImageSubmitRoute(questId, missionId))
+        "PHOTO" -> navigate(ImageCaptureRoute(questId, missionId))
         "OX" -> navigate(OxQuizSubmitRoute(questId, missionId))
         "WORDS" -> navigate(WordsQuizSubmitRoute(questId, missionId))
     }
 }
 
-fun NavGraphBuilder.submitNavigation(popBackStack: () -> Unit) {
-    composable<ImageSubmitRoute> {
-        ImageSubmitScreen(onDismiss = popBackStack)
+fun NavHostController.navigateToImageSubmit(
+    imageUri: String,
+    questId: Int,
+    missionId: Int
+) = navigate(ImageSubmitRoute(imageUri, questId, missionId))
+
+fun NavGraphBuilder.submitNavigation(
+    navigateToImageSubmit: (String, Int, Int) -> Unit,
+    navigateToHomeOrQuest: () -> Unit,
+    popBackStack: () -> Unit
+) {
+    navigation<ImageSubmitBaseRoute>(startDestination = ImageCaptureRoute::class) {
+        composable<ImageCaptureRoute> {
+        }
+        composable<ImageSubmitRoute> {
+        }
     }
     composable<OxQuizSubmitRoute> {
         OxQuizSubmitScreen(onBackButtonClick = popBackStack)
