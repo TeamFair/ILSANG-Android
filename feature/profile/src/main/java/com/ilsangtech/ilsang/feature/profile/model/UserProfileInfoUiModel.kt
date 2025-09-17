@@ -14,7 +14,7 @@ internal fun UserInfo.toUserProfileInfoUiModel(point: Int): UserProfileInfoUiMod
     return UserProfileInfoUiModel(
         nickname = nickname,
         profileImageId = profileImageId,
-        title = title,
+        title = userTitle?.title,
         point = point
     )
 }
