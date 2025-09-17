@@ -141,9 +141,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             if (checked) {
                 userRepository.updateShouldShowSeasonOpenDialog(false)
-            } else {
-                _shouldShowSeasonOpenDialog.update { false }
             }
+            _shouldShowSeasonOpenDialog.update { false }
         }
     }
 }

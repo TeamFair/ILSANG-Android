@@ -1,10 +1,9 @@
 package com.ilsangtech.ilsang.core.data.user.mapper
 
-import com.ilsangtech.ilsang.core.data.title.mapper.toUserTitle
 import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.model.UserInfo
 
-fun UserInfoResponse.toMyInfo(
+fun UserInfo.toMyInfo(
     totalPoint: Int,
     myZoneCommercialAreaCode: String,
     showIsZoneDialogAgain: Boolean,
@@ -21,7 +20,7 @@ fun UserInfoResponse.toMyInfo(
         profileImageId = profileImageId,
         status = status,
         statusUpdatedAt = statusUpdatedAt,
-        title = title?.toUserTitle(),
+        title = userTitle,
         showIsZoneDialogAgain = showIsZoneDialogAgain,
         shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog
     )

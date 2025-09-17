@@ -35,7 +35,7 @@ class MainActivityViewModel @Inject constructor(
     val isLoggedIn = loginTrigger.flatMapLatest {
         userRepository.getMyInfo()
             .onEach { myInfo ->
-                if (myInfo.isCommercialAreaCode == null && myInfo.showIsZoneDialogAgain) {
+                if (myInfo.showIsZoneDialogAgain) {
                     _shouldShowIsZoneDialog.update { true }
                 }
                 _unreadTitleList.update { titleRepository.getUnreadTitleList() }

@@ -31,20 +31,20 @@ class UserRepositoryImpl @Inject constructor(
             userDataStore.userMyZone,
             userDataStore.showIsZoneDialogAgain,
             userDataStore.shouldShowSeasonOpenDialog,
-            getUserPoint()
-        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, shouldShowSeasonOpenDialog, userPoint ->
-            val userInfoResponse = userDataSource.getUserInfo(userId = null)
+            getUserPoint(),
+            getUserInfo(null)
+        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, shouldShowSeasonOpenDialog, userPoint, userInfo ->
             val totalPoint =
                 userPoint.metroAreaPoint + userPoint.commercialAreaPoint + userPoint.contributionPoint
-            userInfoResponse.toMyInfo(
+            userInfo.toMyInfo(
                 totalPoint = totalPoint,
                 myZoneCommercialAreaCode = myZoneCommercialAreaCode,
-                showIsZoneDialogAgain = showIsZoneDialogAgain,
+                showIsZoneDialogAgain = userInfo.commercialAreaCode == null && showIsZoneDialogAgain,
                 shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog
             )
         }
 
-    override fun getUserInfo(userId: String): Flow<UserInfo> = flow {
+    override fun getUserInfo(userId: String?): Flow<UserInfo> = flow {
         emit(
             userDataSource.getUserInfo(userId = userId).toUserInfo()
         )

@@ -13,7 +13,7 @@ interface UserRepository {
 
     fun getMyInfo(): Flow<MyInfo>
 
-    fun getUserInfo(userId: String): Flow<UserInfo>
+    fun getUserInfo(userId: String? = null): Flow<UserInfo>
 
     fun getUserPoint(userId: String? = null, seasonId: Int? = null): Flow<UserPoint>
 
