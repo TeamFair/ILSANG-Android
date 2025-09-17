@@ -35,6 +35,12 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+
+    implementation(libs.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.compose)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
