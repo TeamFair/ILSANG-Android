@@ -63,7 +63,8 @@ fun RankingTabScreen(
     rankingViewModel: RankingTabViewModel = hiltViewModel(),
     navigateToRankingDetail: (RankingDetailRoute) -> Unit,
     navigateToUserProfile: (String) -> Unit,
-    navigateToQuestTab: () -> Unit
+    navigateToQuestTab: () -> Unit,
+    navigateToSeasonReward: () -> Unit
 ) {
     val seasonList by rankingViewModel.seasonList.collectAsStateWithLifecycle()
     val currentSeason by rankingViewModel.currentSeason.collectAsStateWithLifecycle()
@@ -94,6 +95,7 @@ fun RankingTabScreen(
             navigateToUserProfile(userRankUiModel.userId)
         },
         onQuestButtonClick = navigateToQuestTab,
+        onSeasonRewardButtonClick = navigateToSeasonReward,
         onSeasonFinished = rankingViewModel::refreshSeason
     )
 }
@@ -109,6 +111,7 @@ private fun RankingTabScreen(
     onAreaClick: (AreaRankUiModel, Boolean) -> Unit,
     onUserRankClick: (UserRankUiModel) -> Unit,
     onQuestButtonClick: () -> Unit,
+    onSeasonRewardButtonClick: () -> Unit,
     onSeasonFinished: () -> Unit
 ) {
     var selectedReward by remember { mutableStateOf(RewardUiModel.Metro) }
@@ -164,7 +167,7 @@ private fun RankingTabScreen(
                             .padding(bottom = 24.dp),
                         season = currentSeason,
                         onQuestButtonClick = onQuestButtonClick,
-                        onSeasonRewardButtonClick = {}
+                        onSeasonRewardButtonClick = onSeasonRewardButtonClick
                     )
                 }
                 RewardTabRow(
@@ -355,9 +358,8 @@ private fun RankingTabScreenPreview() {
                 rank = 1,
                 point = 1500,
                 titleName = "명예시민",
-                titleGrade = TitleGrade.Standard,
-
-                ),
+                titleGrade = TitleGrade.Standard
+            ),
             UserRankUiModel(
                 nickname = "김철수",
                 userId = "",
@@ -378,6 +380,7 @@ private fun RankingTabScreenPreview() {
         onAreaClick = { _, _ -> },
         onUserRankClick = {},
         onQuestButtonClick = {},
+        onSeasonRewardButtonClick = {},
         onSeasonFinished = {}
     )
 }

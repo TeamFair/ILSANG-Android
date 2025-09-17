@@ -61,6 +61,7 @@ import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.navigateToChallenge
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
+import com.ilsangtech.ilsang.feature.ranking.navigation.SeasonRewardRoute
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
 import com.ilsangtech.ilsang.feature.submit.navigation.navigateToSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
@@ -224,6 +225,9 @@ fun IlsangNavHost(
                 },
                 navigateToQuestTab = {
                     navController.navigateToTopLevelDestination(BottomTab.Quest)
+                },
+                navigateToSeasonReward = {
+                    navController.navigate(SeasonRewardRoute)
                 },
                 onBackButtonClick = navController::popBackStack
             )
