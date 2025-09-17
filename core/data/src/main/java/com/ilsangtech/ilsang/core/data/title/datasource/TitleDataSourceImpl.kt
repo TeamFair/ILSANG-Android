@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.ilsangtech.ilsang.core.data.title.LegendTitleRankPagingSource
 import com.ilsangtech.ilsang.core.network.api.TitleApiService
 import com.ilsangtech.ilsang.core.network.model.title.LegendTitleRankNetworkModel
+import com.ilsangtech.ilsang.core.network.model.title.SeasonRewardTitleNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.TitleDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 import kotlinx.coroutines.flow.Flow
@@ -37,5 +38,9 @@ class TitleDataSourceImpl(private val titleApiService: TitleApiService) : TitleD
                 )
             }
         ).flow
+    }
+
+    override suspend fun getSeasonRewardTitleList(type: String): List<SeasonRewardTitleNetworkModel> {
+        return titleApiService.getSeasonRewardTitleList(type)
     }
 }

@@ -5,6 +5,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.ranking.RankingDetailScreen
 import com.ilsangtech.ilsang.feature.ranking.RankingTabScreen
+import com.ilsangtech.ilsang.feature.ranking.SeasonRewardScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,10 +25,14 @@ data class RankingDetailRoute(
     val images: List<String>
 )
 
+@Serializable
+data object SeasonRewardRoute
+
 fun NavGraphBuilder.rankingNavigation(
     navigateToRankingDetail: (RankingDetailRoute) -> Unit,
     navigateToUserProfile: (String) -> Unit,
     navigateToQuestTab: () -> Unit,
+    navigateToSeasonReward: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     navigation<RankingBaseRoute>(startDestination = RankingRoute) {
@@ -35,7 +40,8 @@ fun NavGraphBuilder.rankingNavigation(
             RankingTabScreen(
                 navigateToRankingDetail = navigateToRankingDetail,
                 navigateToUserProfile = navigateToUserProfile,
-                navigateToQuestTab = navigateToQuestTab
+                navigateToQuestTab = navigateToQuestTab,
+                navigateToSeasonReward = navigateToSeasonReward
             )
         }
 
@@ -44,6 +50,10 @@ fun NavGraphBuilder.rankingNavigation(
                 onBackButtonClick = onBackButtonClick,
                 navigateToUserProfile = navigateToUserProfile
             )
+        }
+
+        composable<SeasonRewardRoute> {
+            SeasonRewardScreen(onBackButtonClick = onBackButtonClick)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.title.LegendTitleRankListResponse
+import com.ilsangtech.ilsang.core.network.model.title.SeasonRewardTitleNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.TitleDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 import retrofit2.http.GET
@@ -27,4 +28,9 @@ interface TitleApiService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): LegendTitleRankListResponse
+
+    @GET("api/v1/title/season/title/{type}")
+    suspend fun getSeasonRewardTitleList(
+        @Path("type") type: String
+    ): List<SeasonRewardTitleNetworkModel>
 }
