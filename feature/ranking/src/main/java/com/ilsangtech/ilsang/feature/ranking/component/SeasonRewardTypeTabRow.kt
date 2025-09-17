@@ -28,7 +28,7 @@ import com.ilsangtech.ilsang.feature.ranking.model.RewardUiModel
 internal fun SeasonRewardTypeTabRow(
     modifier: Modifier = Modifier,
     selectedRewardType: RewardUiModel,
-    onSelectRewardType: (RewardUiModel) -> Unit
+    onRewardTypeSelected: (RewardUiModel) -> Unit
 ) {
     TabRow(
         modifier = modifier,
@@ -53,7 +53,7 @@ internal fun SeasonRewardTypeTabRow(
                     selected = selectedRewardType == rewardType,
                     selectedContentColor = gray500,
                     unselectedContentColor = gray300,
-                    onClick = { onSelectRewardType(rewardType) }
+                    onClick = { onRewardTypeSelected(rewardType) }
                 ) {
                     Text(
                         modifier = Modifier.padding(
@@ -86,7 +86,7 @@ internal fun SeasonRewardTypeTabRow(
 private fun SeasonRewardTypeTabRowPreview() {
     SeasonRewardTypeTabRow(
         selectedRewardType = RewardUiModel.Metro,
-        onSelectRewardType = {}
+        onRewardTypeSelected = {}
     )
 }
 
