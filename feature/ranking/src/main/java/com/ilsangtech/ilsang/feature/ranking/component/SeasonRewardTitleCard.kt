@@ -111,6 +111,7 @@ internal fun SeasonRewardTitleCard(
 private fun SeasonRewardTitleCardTopRewardPreview() {
     SeasonRewardTitleCard(
         seasonRewardTitle = SeasonRewardTitleUiModel.TopRewardTitle(
+            id = "1",
             rank = 1,
             title = Title(
                 name = "최고의 일상러",
@@ -126,6 +127,7 @@ private fun SeasonRewardTitleCardTopRewardPreview() {
 private fun SeasonRewardTitleCardOtherRewardPreview() {
     SeasonRewardTitleCard(
         seasonRewardTitle = SeasonRewardTitleUiModel.OtherRewardTitle(
+            id = "2",
             rankRange = 4..10,
             title = Title(
                 name = "일상 탐험가",
