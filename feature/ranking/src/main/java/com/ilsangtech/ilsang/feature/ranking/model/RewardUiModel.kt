@@ -6,12 +6,12 @@ enum class RewardUiModel {
             return "일상지역"
         }
     },
-    Commerical {
+    Commercial {
         override fun toString(): String {
             return "일상존"
         }
     },
-    Contribute {
+    Contribution {
         override fun toString(): String {
             return "기여도"
         }

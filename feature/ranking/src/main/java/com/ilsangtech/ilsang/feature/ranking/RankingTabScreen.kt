@@ -210,7 +210,7 @@ private fun RankingTabScreen(
                                     }
                                 }
 
-                                RewardUiModel.Commerical -> {
+                                RewardUiModel.Commercial -> {
                                     items(commercialRankAreas) { commercialRankArea ->
                                         AreaRankItem(
                                             areaName = commercialRankArea.areaName,
@@ -221,7 +221,7 @@ private fun RankingTabScreen(
                                     }
                                 }
 
-                                RewardUiModel.Contribute -> {
+                                RewardUiModel.Contribution -> {
                                     items(contributionRankUsers) { contributionRankUser ->
                                         UserRankItem(
                                             nickname = contributionRankUser.nickname,
