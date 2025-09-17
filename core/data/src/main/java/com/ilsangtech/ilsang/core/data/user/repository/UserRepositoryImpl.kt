@@ -44,7 +44,7 @@ class UserRepositoryImpl @Inject constructor(
             )
         }
 
-    override fun getUserInfo(userId: String): Flow<UserInfo> = flow {
+    override fun getUserInfo(userId: String?): Flow<UserInfo> = flow {
         emit(
             userDataSource.getUserInfo(userId = userId).toUserInfo()
         )
