@@ -101,7 +101,7 @@ private fun MyZoneScreen(
                         onClick = onSelectButtonClick
                     ) {
                         Text(
-                            text = "내 지역 선택하기",
+                            text = "지역 선택하기",
                             style = TextStyle(
                                 fontFamily = pretendardFontFamily,
                                 fontWeight = FontWeight.SemiBold,
