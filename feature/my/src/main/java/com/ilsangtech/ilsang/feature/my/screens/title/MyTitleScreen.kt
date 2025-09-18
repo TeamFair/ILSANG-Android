@@ -42,6 +42,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.R
 import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleHeader
 import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateDialog
+import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateConfirmDialog
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TitleTypeChipRow
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TypeTitleListHeader
 import com.ilsangtech.ilsang.feature.my.screens.title.component.typeTitleList
@@ -74,7 +75,7 @@ internal fun MyTitleScreen(
     )
 
     if (showUpdateDialog) {
-        MyTitleUpdateDialog(
+        MyTitleUpdateConfirmDialog(
             onUpdateButtonClick = myTitleViewModel::updateUserTitle,
             onDismissRequest = { showUpdateDialog = false }
         )

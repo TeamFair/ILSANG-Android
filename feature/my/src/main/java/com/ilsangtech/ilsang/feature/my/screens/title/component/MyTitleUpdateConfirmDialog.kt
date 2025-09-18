@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.ilsangtech.ilsang.designsystem.component.ILSANGDialog
 
 @Composable
-internal fun MyTitleUpdateDialog(
+internal fun MyTitleUpdateConfirmDialog(
     onUpdateButtonClick: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
