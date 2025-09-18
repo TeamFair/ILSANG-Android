@@ -13,17 +13,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,11 +43,12 @@ import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 import com.ilsangtech.ilsang.feature.my.R
 import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleHeader
-import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateDialog
 import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateConfirmDialog
+import com.ilsangtech.ilsang.feature.my.screens.title.component.MyTitleUpdateSuccessDialog
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TitleTypeChipRow
 import com.ilsangtech.ilsang.feature.my.screens.title.component.TypeTitleListHeader
 import com.ilsangtech.ilsang.feature.my.screens.title.component.typeTitleList
@@ -56,22 +62,32 @@ internal fun MyTitleScreen(
     onBackButtonClick: () -> Unit
 ) {
     val uiState by myTitleViewModel.myTitleUiState.collectAsStateWithLifecycle()
+    val currentTitle by myTitleViewModel.currentTitle.collectAsStateWithLifecycle()
     val selectedTitle by myTitleViewModel.selectedTitle.collectAsStateWithLifecycle()
     val isTitleUpdated by myTitleViewModel.isTitleUpdated.collectAsStateWithLifecycle()
     val unreadTitleList by myTitleViewModel.unreadTitleList.collectAsStateWithLifecycle()
     val selectedType by myTitleViewModel.selectedTitleGrade.collectAsStateWithLifecycle()
+    val showUpdateButton by myTitleViewModel.showUpdateButton.collectAsStateWithLifecycle()
 
     var showUpdateDialog by remember { mutableStateOf(false) }
+    var requestPopBackStack by remember { mutableStateOf(false) }
 
-    LaunchedEffect(isTitleUpdated) {
-        if (isTitleUpdated) {
+    if (isTitleUpdated) {
+        if (requestPopBackStack) {
             onBackButtonClick()
+        } else {
+            MyTitleUpdateSuccessDialog {
+                myTitleViewModel.clearTitleUpdateStatus()
+            }
         }
     }
 
     BackHandler(
-        enabled = myTitleViewModel.originTitleHistoryId != selectedTitle?.titleHistoryId,
-        onBack = { showUpdateDialog = true }
+        enabled = currentTitle != selectedTitle,
+        onBack = {
+            requestPopBackStack = true
+            showUpdateDialog = true
+        }
     )
 
     if (showUpdateDialog) {
@@ -90,17 +106,20 @@ internal fun MyTitleScreen(
 
     MyTitleScreen(
         uiState = uiState,
+        showUpdateButton = showUpdateButton,
         selectedTitleGrade = selectedType,
         selectedTitle = selectedTitle,
         onTypeChipClick = myTitleViewModel::updateTitleGrade,
         onBackButtonClick = {
-            if (myTitleViewModel.originTitleHistoryId == null) {
+            if (currentTitle == selectedTitle) {
                 onBackButtonClick()
             } else {
+                requestPopBackStack = true
                 showUpdateDialog = true
             }
         },
         onTitleSelect = myTitleViewModel::selectTitle,
+        onTitleUpdateButtonClick = myTitleViewModel::updateUserTitle,
         onLegendTitleClick = onLegendTitleClick
     )
 }
@@ -108,11 +127,13 @@ internal fun MyTitleScreen(
 @Composable
 private fun MyTitleScreen(
     uiState: MyTitleScreenUiState,
+    showUpdateButton: Boolean,
     selectedTitleGrade: TitleGrade,
     selectedTitle: MyTitleUiModel?,
     onBackButtonClick: () -> Unit,
     onTypeChipClick: (TitleGrade) -> Unit,
     onTitleSelect: (MyTitleUiModel) -> Unit,
+    onTitleUpdateButtonClick: () -> Unit,
     onLegendTitleClick: (String, String) -> Unit
 ) {
     Surface(
@@ -121,35 +142,65 @@ private fun MyTitleScreen(
     ) {
         Column {
             MyTitleTopBar(onBackButtonClick = onBackButtonClick)
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                contentPadding = PaddingValues(bottom = 72.dp)
-            ) {
-                item { MyTitleHeader(modifier = Modifier.padding(top = 24.dp)) }
-                item { Spacer(Modifier.height(36.dp)) }
-                item {
-                    TitleTypeChipRow(
-                        selectedType = selectedTitleGrade,
-                        onChipClick = onTypeChipClick
-                    )
-                }
-                item {
-                    TypeTitleListHeader(
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        selectedGrade = selectedTitleGrade
-                    )
-                }
-                if (uiState is MyTitleScreenUiState.Success) {
-                    typeTitleList(
-                        titleList = uiState.titleList.filter {
-                            it.title.grade == selectedTitleGrade
-                        },
-                        onLegendTitleItemClick = { legendTitle ->
-                            onLegendTitleClick(legendTitle.title.name, legendTitle.titleId)
-                        },
-                        selectedTitle = selectedTitle,
-                        onTitleSelect = onTitleSelect
-                    )
+            Scaffold(
+                containerColor = Color.Transparent,
+                floatingActionButton = {
+                    if (showUpdateButton) {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(primary),
+                            contentPadding = PaddingValues(vertical = 16.dp),
+                            onClick = onTitleUpdateButtonClick
+                        ) {
+                            Text(
+                                text = "칭호 적용하기",
+                                style = TextStyle(
+                                    fontFamily = pretendardFontFamily,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 16.dp.toSp(),
+                                    lineHeight = 18.dp.toSp()
+                                )
+                            )
+                        }
+                    }
+                },
+                floatingActionButtonPosition = FabPosition.Center
+            ) { paddingValues ->
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(bottom = 72.dp)
+                ) {
+                    item { MyTitleHeader(modifier = Modifier.padding(top = 24.dp)) }
+                    item { Spacer(Modifier.height(36.dp)) }
+                    item {
+                        TitleTypeChipRow(
+                            selectedType = selectedTitleGrade,
+                            onChipClick = onTypeChipClick
+                        )
+                    }
+                    item {
+                        TypeTitleListHeader(
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            selectedGrade = selectedTitleGrade
+                        )
+                    }
+                    if (uiState is MyTitleScreenUiState.Success) {
+                        typeTitleList(
+                            titleList = uiState.titleList.filter {
+                                it.title.grade == selectedTitleGrade
+                            },
+                            onLegendTitleItemClick = { legendTitle ->
+                                onLegendTitleClick(legendTitle.title.name, legendTitle.titleId)
+                            },
+                            selectedTitle = selectedTitle,
+                            onTitleSelect = onTitleSelect
+                        )
+                    }
                 }
             }
         }
@@ -224,11 +275,13 @@ private fun MyTitleScreenPreview() {
     )
     MyTitleScreen(
         uiState = MyTitleScreenUiState.Success(titleList = sampleTitles),
+        showUpdateButton = true,
         selectedTitleGrade = TitleGrade.Standard,
         selectedTitle = sampleTitles.first(),
         onBackButtonClick = {},
         onTypeChipClick = {},
         onTitleSelect = {},
+        onTitleUpdateButtonClick = {},
         onLegendTitleClick = { _, _ -> }
     )
 }

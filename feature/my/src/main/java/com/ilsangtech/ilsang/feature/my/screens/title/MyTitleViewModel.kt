@@ -31,6 +31,8 @@ class MyTitleViewModel @Inject constructor(
 ) : ViewModel() {
     val originTitleHistoryId = savedStateHandle.toRoute<MyTitleRoute>().titleHistoryId
 
+    private val _currentTitle = MutableStateFlow<MyTitleUiModel?>(null)
+    val currentTitle = _currentTitle.asStateFlow()
     private val _selectedTitleGrade = MutableStateFlow<TitleGrade>(TitleGrade.Standard)
     val selectedTitleGrade = _selectedTitleGrade.asStateFlow()
 
@@ -42,6 +44,17 @@ class MyTitleViewModel @Inject constructor(
 
     private val _unreadTitleList = MutableStateFlow<List<UserTitle>>(emptyList())
     val unreadTitleList = _unreadTitleList.asStateFlow()
+
+    val showUpdateButton = combine(
+        selectedTitle,
+        currentTitle
+    ) { selectedTitle, currentTitle ->
+        selectedTitle != currentTitle
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false
+    )
 
     val myTitleUiState = combine(
         flow { emit(titleRepository.getTitleList()) },
@@ -60,7 +73,10 @@ class MyTitleViewModel @Inject constructor(
     }.onEach { state ->
         originTitleHistoryId?.let {
             state.titleList.find { it.titleHistoryId == originTitleHistoryId }
-                ?.let { title -> _selectedTitle.update { title } }
+                ?.let { title ->
+                    _selectedTitle.update { title }
+                    _currentTitle.update { title }
+                }
         }
     }.stateIn(
         scope = viewModelScope,
@@ -91,6 +107,7 @@ class MyTitleViewModel @Inject constructor(
             } catch (_: Exception) {
             } finally {
                 _isTitleUpdated.update { true }
+                _currentTitle.update { selectedTitle.value }
             }
         }
     }
@@ -104,5 +121,9 @@ class MyTitleViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun clearTitleUpdateStatus() {
+        _isTitleUpdated.update { false }
     }
 }
