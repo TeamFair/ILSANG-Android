@@ -15,8 +15,7 @@ internal fun IsZoneSuccessDialog(
         title = "일상존이 설정되었습니다.",
         content = "퀘스트를 수행하러 가 볼까요?",
         buttonText = "확인",
-        onDismissRequest = onDismissRequest,
-        onClickButton = onDismissRequest
+        onDismissRequest = onDismissRequest
     )
 
 }

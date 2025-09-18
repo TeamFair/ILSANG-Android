@@ -39,7 +39,6 @@ fun ILSANGDialog(
     title: String,
     content: String,
     buttonText: String,
-    onClickButton: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
     Dialog(
@@ -83,7 +82,7 @@ fun ILSANGDialog(
                 ILSANGButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = buttonText,
-                    onClick = onClickButton,
+                    onClick = onDismissRequest,
                     colors = ButtonDefaults.buttonColors(containerColor = primary)
                 )
             }
@@ -263,7 +262,6 @@ fun ILSANGDialogPreview() {
         title = "알럿 타이틀을 입력하세요",
         content = "내용을 입력하세요내용을 입력하세요내용을 입력하세요내용을 입력하세요",
         buttonText = "확인",
-        onClickButton = {},
         onDismissRequest = {}
     )
 }
