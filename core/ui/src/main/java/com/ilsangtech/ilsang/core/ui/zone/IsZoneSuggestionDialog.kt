@@ -78,7 +78,7 @@ fun IsZoneSuggestionDialog(
                     onClick = { checked = !checked }
                 )
                 Text(
-                    text = "다시보지 않기",
+                    text = "오늘 그만보기",
                     style = tapRegularTextStyle,
                     color = gray500
                 )
