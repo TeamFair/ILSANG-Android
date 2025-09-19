@@ -1,13 +1,15 @@
 package com.ilsangtech.ilsang.feature.ranking
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -101,6 +103,7 @@ fun RankingTabScreen(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RankingTabScreen(
     seasonList: List<SeasonUiModel>,
@@ -160,20 +163,6 @@ private fun RankingTabScreen(
                 onExpandedChange = { expanded = it }
             )
             Column(modifier = Modifier.weight(1f)) {
-                currentSeason?.let {
-                    RankingTabBanner(
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp)
-                            .padding(bottom = 24.dp),
-                        season = currentSeason,
-                        onQuestButtonClick = onQuestButtonClick,
-                        onSeasonRewardButtonClick = onSeasonRewardButtonClick
-                    )
-                }
-                RewardTabRow(
-                    selectedReward = selectedReward,
-                    onRewardSelect = { selectedReward = it }
-                )
                 BoxWithOverlay(
                     modifier = Modifier.fillMaxSize(),
                     overlay = {
@@ -194,17 +183,46 @@ private fun RankingTabScreen(
                             .fillMaxSize()
                             .background(background),
                         contentPadding = PaddingValues(
-                            top = 16.dp, bottom = paddingValues.calculateBottomPadding() + 20.dp,
-                            start = 20.dp, end = 20.dp
+                            bottom = paddingValues.calculateBottomPadding() + 20.dp
                         ),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        item {
+                            currentSeason?.let {
+                                RankingTabBanner(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.White)
+                                        .padding(horizontal = 20.dp)
+                                        .padding(bottom = 24.dp),
+                                    season = currentSeason,
+                                    onQuestButtonClick = onQuestButtonClick,
+                                    onSeasonRewardButtonClick = onSeasonRewardButtonClick
+                                )
+                            }
+                        }
+                        stickyHeader {
+                            RewardTabRow(
+                                selectedReward = selectedReward,
+                                onRewardSelect = { selectedReward = it }
+                            )
+                        }
+                        item { Spacer(Modifier.height(16.dp)) }
                         if (rankingTabUiState is RankingTabUiState.Success) {
                             val (metroRankAreas, commercialRankAreas, contributionRankUsers) = rankingTabUiState
                             when (selectedReward) {
                                 RewardUiModel.Metro -> {
                                     items(metroRankAreas) { metroRankArea ->
                                         AreaRankItem(
+                                            modifier = Modifier
+                                                .padding(horizontal = 20.dp)
+                                                .padding(
+                                                    bottom =
+                                                        if (metroRankArea != metroRankAreas.lastOrNull()) {
+                                                            12.dp
+                                                        } else {
+                                                            0.dp
+                                                        }
+                                                ),
                                             areaName = metroRankArea.areaName,
                                             rank = metroRankArea.rank,
                                             point = metroRankArea.point,
@@ -216,6 +234,16 @@ private fun RankingTabScreen(
                                 RewardUiModel.Commercial -> {
                                     items(commercialRankAreas) { commercialRankArea ->
                                         AreaRankItem(
+                                            modifier = Modifier
+                                                .padding(horizontal = 20.dp)
+                                                .padding(
+                                                    bottom =
+                                                        if (commercialRankArea != commercialRankAreas.lastOrNull()) {
+                                                            12.dp
+                                                        } else {
+                                                            0.dp
+                                                        }
+                                                ),
                                             areaName = commercialRankArea.areaName,
                                             rank = commercialRankArea.rank,
                                             point = commercialRankArea.point,
@@ -227,6 +255,15 @@ private fun RankingTabScreen(
                                 RewardUiModel.Contribution -> {
                                     items(contributionRankUsers) { contributionRankUser ->
                                         UserRankItem(
+                                            modifier = Modifier
+                                                .padding(horizontal = 20.dp)
+                                                .padding(
+                                                    bottom = if (contributionRankUser != contributionRankUsers.lastOrNull()) {
+                                                        12.dp
+                                                    } else {
+                                                        0.dp
+                                                    }
+                                                ),
                                             nickname = contributionRankUser.nickname,
                                             imageId = contributionRankUser.profileImageId,
                                             rank = contributionRankUser.rank,
