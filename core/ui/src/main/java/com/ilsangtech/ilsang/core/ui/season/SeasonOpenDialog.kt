@@ -109,7 +109,7 @@ fun SeasonOpenDialog(
                             onClick = { onDismissRequest(checked) }
                         ),
                     painter = painterResource(R.drawable.icon_close),
-                    tint = Color.Unspecified,
+                    tint = Color.White,
                     contentDescription = "닫기 버튼"
                 )
                 Column(
