@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.ui.zone
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -78,6 +79,11 @@ fun IsZoneSuggestionDialog(
                     onClick = { checked = !checked }
                 )
                 Text(
+                    modifier = Modifier.clickable(
+                        onClick = { checked = !checked },
+                        interactionSource = null,
+                        indication = null
+                    ),
                     text = "오늘 그만보기",
                     style = tapRegularTextStyle,
                     color = gray500
