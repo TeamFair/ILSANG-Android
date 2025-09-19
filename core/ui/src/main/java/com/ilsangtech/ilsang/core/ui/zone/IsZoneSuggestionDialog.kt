@@ -35,7 +35,7 @@ fun IsZoneSuggestionDialog(
 
     ILSANGDialog(
         positiveButtonText = "일상존 선택하기",
-        negativeButtonText = "취소",
+        negativeButtonText = "나중에 선택하기",
         onDismissRequest = { onDismissRequest(checked) },
         onPositiveButtonClick = onConfirm,
         onNegativeButtonClick = { onDismissRequest(checked) }
