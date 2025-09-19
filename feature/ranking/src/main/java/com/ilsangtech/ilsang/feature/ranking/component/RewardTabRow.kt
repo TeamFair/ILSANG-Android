@@ -29,7 +29,7 @@ internal fun RewardTabRow(
 ) {
     TabRow(
         selectedTabIndex = selectedReward.ordinal,
-        containerColor = Color.Transparent,
+        containerColor = Color.White,
         indicator = { tabPositions ->
             if (selectedReward.ordinal < tabPositions.size) {
                 TabRowDefaults.PrimaryIndicator(
