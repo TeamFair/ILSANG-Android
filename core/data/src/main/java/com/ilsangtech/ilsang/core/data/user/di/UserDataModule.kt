@@ -1,9 +1,9 @@
 package com.ilsangtech.ilsang.core.data.user.di
 
-import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSource
-import com.ilsangtech.ilsang.core.data.user.datasource.UserDataSourceImpl
+import com.ilsangtech.ilsang.core.data.user.datasource.UserRemoteDataSource
+import com.ilsangtech.ilsang.core.data.user.datasource.UserRemoteDataSourceImpl
 import com.ilsangtech.ilsang.core.data.user.repository.UserRepositoryImpl
-import com.ilsangtech.ilsang.core.datastore.UserDataStore
+import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import dagger.Module
@@ -17,19 +17,19 @@ import javax.inject.Singleton
 object UserDataModule {
     @Provides
     @Singleton
-    fun provideUserDataSource(userApiService: UserApiService): UserDataSource {
-        return UserDataSourceImpl(userApiService)
+    fun provideUserRemoteDataSource(userApiService: UserApiService): UserRemoteDataSource {
+        return UserRemoteDataSourceImpl(userApiService)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(
-        userDataSource: UserDataSource,
-        userDataStore: UserDataStore
+        userLocalDataSource: UserLocalDataSource,
+        userRemoteDataSource: UserRemoteDataSource
     ): UserRepository {
         return UserRepositoryImpl(
-            userDataSource = userDataSource,
-            userDataStore = userDataStore
+            userLocalDataSource = userLocalDataSource,
+            userRemoteDataSource = userRemoteDataSource
         )
     }
 }

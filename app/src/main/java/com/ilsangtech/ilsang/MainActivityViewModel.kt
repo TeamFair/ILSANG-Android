@@ -86,7 +86,7 @@ class MainActivityViewModel @Inject constructor(
     fun shownIsZoneDialog(showAgain: Boolean) {
         viewModelScope.launch {
             if (!showAgain) {
-                userRepository.updateShowIsZoneDialogAgain(false)
+                userRepository.updateIsZoneDialogRejectDate()
             }
             _shouldShowIsZoneDialog.update { false }
         }

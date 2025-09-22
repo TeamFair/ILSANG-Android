@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginRequest
 import com.ilsangtech.ilsang.core.network.model.auth.OAuthLoginResponse
 
-class AuthDataSourceImpl(private val authApiService: AuthApiService) : AuthDataSource {
+class AuthRemoteDataSourceImpl(private val authApiService: AuthApiService) : AuthRemoteDataSource {
     override suspend fun login(idToken: String): OAuthLoginResponse {
         return authApiService.oAuthLogin(OAuthLoginRequest(idToken = idToken))
     }

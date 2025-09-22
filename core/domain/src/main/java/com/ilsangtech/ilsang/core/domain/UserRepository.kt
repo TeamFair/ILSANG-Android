@@ -37,7 +37,7 @@ interface UserRepository {
 
     suspend fun updateUserIsZone(commericalAreaCode: String): Result<Unit>
 
-    suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean)
+    suspend fun updateIsZoneDialogRejectDate()
 
-    suspend fun updateShouldShowSeasonOpenDialog(shouldShow: Boolean)
+    suspend fun updateSeasonOpenDialogRejected(isRejected: Boolean)
 }

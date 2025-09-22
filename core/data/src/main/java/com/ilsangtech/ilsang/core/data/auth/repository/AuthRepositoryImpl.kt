@@ -1,28 +1,25 @@
 package com.ilsangtech.ilsang.core.data.auth.repository
 
-import com.ilsangtech.ilsang.core.data.auth.datasource.AuthDataSource
-import com.ilsangtech.ilsang.core.datastore.UserDataStore
+import com.ilsangtech.ilsang.core.data.auth.datasource.AuthRemoteDataSource
+import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSource
 import com.ilsangtech.ilsang.core.domain.AuthRepository
 
 class AuthRepositoryImpl(
-    private val authDataSource: AuthDataSource,
-    private val userDataStore: UserDataStore
+    private val authLocalDataSource: AuthLocalDataSource,
+    private val authRemoteDataSource: AuthRemoteDataSource
 ) : AuthRepository {
     override suspend fun login(idToken: String): Result<Unit> {
         return runCatching {
-            val (accessToken, refreshToken) = authDataSource.login(idToken)
-            with(userDataStore) {
-                setAccessToken(accessToken)
-                refreshToken?.let { setRefreshToken(refreshToken) }
-            }
+            val (accessToken, refreshToken) = authRemoteDataSource.login(idToken)
+            authLocalDataSource.saveAuthTokens(accessToken, refreshToken)
         }
     }
 
     override suspend fun logout(): Result<Unit> {
-        return runCatching { authDataSource.logout() }
+        return runCatching { authRemoteDataSource.logout() }
     }
 
     override suspend fun withdraw(): Result<Unit> {
-        return runCatching { authDataSource.withdraw() }
+        return runCatching { authRemoteDataSource.withdraw() }
     }
 }

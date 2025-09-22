@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.protobuf)
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
@@ -37,10 +38,12 @@ android {
 
 dependencies {
     implementation(project(":core:datastore"))
+    implementation(project(":core:datastore-proto"))
+    implementation(project(":core:util"))
     implementation(project(":core:network"))
     implementation(project(":core:model"))
     implementation(project(":core:domain"))
-
+    implementation(libs.protobuf.kotlin.lite)
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
     implementation(libs.hilt.android)

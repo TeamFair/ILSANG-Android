@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.ilsangtech.ilsang.core.datastore";
+option java_multiple_files = true;
+
+message UserPreferences {
+    bool is_on_boarding_completed = 1;
+    bool is_season_open_dialog_rejected = 2;
+    string is_zone_dialog_reject_date = 3;
+    string user_my_zone = 4;
+}

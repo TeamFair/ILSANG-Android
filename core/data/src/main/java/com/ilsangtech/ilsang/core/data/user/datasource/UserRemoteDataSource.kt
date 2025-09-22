@@ -10,7 +10,7 @@ import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 
-interface UserDataSource {
+interface UserRemoteDataSource {
     suspend fun getUserInfo(userId: String?): UserInfoResponse
 
     suspend fun getUserPoint(userId: String?, seasonId: Int?): UserPointResponse

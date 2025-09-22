@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.core.ui.zone
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,7 @@ fun IsZoneSuggestionDialog(
 
     ILSANGDialog(
         positiveButtonText = "일상존 선택하기",
-        negativeButtonText = "취소",
+        negativeButtonText = "나중에 선택하기",
         onDismissRequest = { onDismissRequest(checked) },
         onPositiveButtonClick = onConfirm,
         onNegativeButtonClick = { onDismissRequest(checked) }
@@ -78,7 +79,12 @@ fun IsZoneSuggestionDialog(
                     onClick = { checked = !checked }
                 )
                 Text(
-                    text = "다시보지 않기",
+                    modifier = Modifier.clickable(
+                        onClick = { checked = !checked },
+                        interactionSource = null,
+                        indication = null
+                    ),
+                    text = "오늘 그만보기",
                     style = tapRegularTextStyle,
                     color = gray500
                 )

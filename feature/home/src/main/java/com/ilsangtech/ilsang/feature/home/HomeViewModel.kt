@@ -140,7 +140,7 @@ class HomeViewModel @Inject constructor(
     fun seasonOpenDialogShown(checked: Boolean) {
         viewModelScope.launch {
             if (checked) {
-                userRepository.updateShouldShowSeasonOpenDialog(false)
+                userRepository.updateSeasonOpenDialogRejected(true)
             }
             _shouldShowSeasonOpenDialog.update { false }
         }

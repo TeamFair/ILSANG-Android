@@ -2,12 +2,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.protobuf)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.ilsangtech.ilsang.core.datastore"
+    namespace = "com.ilsangtech.ilsang.core.datastore_proto"
     compileSdk = 35
 
     defaultConfig {
@@ -35,14 +33,28 @@ android {
     }
 }
 
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
-    implementation(project(":core:datastore-proto"))
-    implementation(libs.protobuf.protoc)
     implementation(libs.protobuf.kotlin.lite)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.datastore.preferences)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
