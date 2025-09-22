@@ -7,7 +7,6 @@ import androidx.datastore.dataStoreFile
 import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSource
 import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSourceImpl
 import com.ilsangtech.ilsang.core.datastore.auth.AuthTokensSerializer
-import com.ilsangtech.ilsang.core.datastore.user.UserDataStore
 import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSourceImpl
 import com.ilsangtech.ilsang.core.datastore.user.UserPreferencesSerializer
@@ -21,12 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-    @Provides
-    @Singleton
-    fun provideUserDataStore(@ApplicationContext context: Context): UserDataStore {
-        return UserDataStore(context)
-    }
-
     @Provides
     @Singleton
     fun provideUserPreferencesDataStore(
