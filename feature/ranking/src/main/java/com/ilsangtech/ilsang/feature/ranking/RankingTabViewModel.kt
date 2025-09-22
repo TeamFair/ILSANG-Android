@@ -49,7 +49,8 @@ class RankingTabViewModel @Inject constructor(
         )
 
     val currentSeason = refreshTrigger.map {
-        seasonRepository.getCurrentSeason().toSeasonUiModel()
+        seasonRepository.getCurrentSeason()
+            .toSeasonUiModel(datePattern = "yyyy-MM-dd'T'HH:mm:ss")
     }
         .catch { }
         .stateIn(

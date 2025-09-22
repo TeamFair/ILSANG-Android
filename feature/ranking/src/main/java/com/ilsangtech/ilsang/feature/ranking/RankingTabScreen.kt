@@ -121,7 +121,7 @@ private fun RankingTabScreen(
     var expanded by remember { mutableStateOf(false) }
     val endDate = remember(currentSeason) {
         currentSeason?.let {
-            SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
                 .parse(currentSeason.endDate)
         }
     }

@@ -22,11 +22,17 @@ sealed interface SeasonUiModel {
     }
 }
 
-internal fun Season.toSeasonUiModel(): SeasonUiModel.Season {
+internal fun Season.toSeasonUiModel(datePattern: String? = null): SeasonUiModel.Season {
     return SeasonUiModel.Season(
         seasonId = id,
         seasonNumber = seasonNumber,
-        startDate = DateConverter.formatDate(startDate),
-        endDate = DateConverter.formatDate(endDate)
+        startDate = DateConverter.formatDate(
+            input = startDate,
+            outputPattern = datePattern ?: "yyyy.MM.dd"
+        ),
+        endDate = DateConverter.formatDate(
+            input = endDate,
+            outputPattern = datePattern ?: "yyyy.MM.dd"
+        )
     )
 }

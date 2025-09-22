@@ -85,7 +85,7 @@ private fun RankingDetailScreen(
     onSeasonFinished: () -> Unit
 ) {
     val endDate = remember(currentSeason) {
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             .parse(currentSeason.endDate)
     }
 
