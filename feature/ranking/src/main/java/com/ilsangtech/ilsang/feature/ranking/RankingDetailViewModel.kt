@@ -65,11 +65,11 @@ class RankingDetailViewModel @Inject constructor(
                     seasonNumber = currentSeason.seasonNumber,
                     startDate = DateConverter.formatDate(
                         input = currentSeason.startDate,
-                        outputPattern = "yyyy-MM-dd"
+                        outputPattern = "yyyy-MM-dd'T'HH:mm:ss"
                     ),
                     endDate = DateConverter.formatDate(
                         input = currentSeason.endDate,
-                        outputPattern = "yyyy-MM-dd"
+                        outputPattern = "yyyy-MM-dd'T'HH:mm:ss"
                     )
                 ),
                 areaRankUiModel = areaRankUiModel,
