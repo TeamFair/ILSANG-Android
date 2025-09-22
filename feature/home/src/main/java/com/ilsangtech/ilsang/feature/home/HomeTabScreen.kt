@@ -1,11 +1,13 @@
 package com.ilsangtech.ilsang.feature.home
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -16,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +39,7 @@ import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.ui.season.SeasonOpenDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSelectDisabledDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.feature.home.component.BannerContent
 import com.ilsangtech.ilsang.feature.home.component.HomeTabHeader
 import com.ilsangtech.ilsang.feature.home.component.LargeRewardQuestContent
@@ -150,76 +154,89 @@ private fun HomeTabScreen(
             .navigationBarsPadding(),
         color = background
     ) {
-        if (homeTabUiState is HomeTabUiState.Success) {
-            val (userInfo, season, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
+        when (homeTabUiState) {
+            is HomeTabUiState.Success -> {
+                val (userInfo, season, banners, popularQuests, recommendedQuests, largeRewardQuests, topRankUsers) = homeTabUiState.data
 
-            if (shouldShowSeasonOpenDialog == true) {
-                SeasonOpenDialog(
-                    seasonNumber = season.seasonNumber,
-                    startDate = season.startDate,
-                    endDate = season.endDate,
-                    onRankingButtonClick = navigateToRankingTab,
-                    onDismissRequest = onDismissSeasonOpenDialog
-                )
-            }
+                if (shouldShowSeasonOpenDialog == true) {
+                    SeasonOpenDialog(
+                        seasonNumber = season.seasonNumber,
+                        startDate = season.startDate,
+                        endDate = season.endDate,
+                        onRankingButtonClick = navigateToRankingTab,
+                        onDismissRequest = onDismissSeasonOpenDialog
+                    )
+                }
 
-            LazyColumn {
-                item {
-                    HomeTabHeader(
-                        profileImageId = userInfo.profileImageId,
-                        myCommercialAreaName = userInfo.myCommercialAreaName,
-                        isCommercialAreaName = userInfo.isCommericalAreaName,
-                        onProfileClick = navigateToMyTab,
-                        onMyZoneClick = onMyZoneClick,
-                        onIsZoneClick = {
-                            if (userInfo.isCommericalAreaName != null) {
-                                showZoneSelectDisabledDialog = true
-                            } else {
-                                onIsZoneClick()
+                LazyColumn {
+                    item {
+                        HomeTabHeader(
+                            profileImageId = userInfo.profileImageId,
+                            myCommercialAreaName = userInfo.myCommercialAreaName,
+                            isCommercialAreaName = userInfo.isCommericalAreaName,
+                            onProfileClick = navigateToMyTab,
+                            onMyZoneClick = onMyZoneClick,
+                            onIsZoneClick = {
+                                if (userInfo.isCommericalAreaName != null) {
+                                    showZoneSelectDisabledDialog = true
+                                } else {
+                                    onIsZoneClick()
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
+                    item {
+                        BannerContent(
+                            banners = banners,
+                            onClick = onBannerClick
+                        )
+                    }
+                    item { Spacer(Modifier.height(36.dp)) }
+                    item {
+                        PopularQuestsContent(
+                            popularQuests = popularQuests,
+                            onPopularQuestClick = onSelectQuest,
+                        )
+                    }
+                    item { Spacer(Modifier.height(36.dp)) }
+                    item {
+                        RecommendedQuestsContent(
+                            userNickname = userInfo.nickname,
+                            recommendedQuests = recommendedQuests,
+                            onRecommendedQuestClick = onSelectQuest,
+                        )
+                    }
+                    item { Spacer(Modifier.height(36.dp)) }
+                    item {
+                        LargeRewardQuestContent(
+                            modifier = Modifier.padding(horizontal = 20.dp),
+                            largeRewardQuests = largeRewardQuests,
+                            onQuestClick = onSelectQuest,
+                            onMoreButtonClick = navigateToQuestTab
+                        )
+                    }
+                    item { Spacer(Modifier.height(36.dp)) }
+                    item {
+                        UserRankContent(
+                            rankList = topRankUsers,
+                            navigateToRankingTab = navigateToRankingTab,
+                            navigateToProfile = navigateToProfile
+                        )
+                    }
+                    item { Spacer(Modifier.height(84.dp)) }
                 }
-                item {
-                    BannerContent(
-                        banners = banners,
-                        onClick = onBannerClick
-                    )
-                }
-                item { Spacer(Modifier.height(36.dp)) }
-                item {
-                    PopularQuestsContent(
-                        popularQuests = popularQuests,
-                        onPopularQuestClick = onSelectQuest,
-                    )
-                }
-                item { Spacer(Modifier.height(36.dp)) }
-                item {
-                    RecommendedQuestsContent(
-                        userNickname = userInfo.nickname,
-                        recommendedQuests = recommendedQuests,
-                        onRecommendedQuestClick = onSelectQuest,
-                    )
-                }
-                item { Spacer(Modifier.height(36.dp)) }
-                item {
-                    LargeRewardQuestContent(
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                        largeRewardQuests = largeRewardQuests,
-                        onQuestClick = onSelectQuest,
-                        onMoreButtonClick = navigateToQuestTab
-                    )
-                }
-                item { Spacer(Modifier.height(36.dp)) }
-                item {
-                    UserRankContent(
-                        rankList = topRankUsers,
-                        navigateToRankingTab = navigateToRankingTab,
-                        navigateToProfile = navigateToProfile
-                    )
-                }
-                item { Spacer(Modifier.height(84.dp)) }
             }
+
+            is HomeTabUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = gray200)
+                }
+            }
+
+            is HomeTabUiState.Error -> {}
         }
     }
 }
