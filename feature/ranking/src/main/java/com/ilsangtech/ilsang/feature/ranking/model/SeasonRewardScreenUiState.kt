@@ -10,4 +10,6 @@ sealed interface SeasonRewardTitleUiState {
     data class Success(
         val seasonRewardTitleList: List<SeasonRewardTitleUiModel>
     ) : SeasonRewardTitleUiState
+
+    data object Error : SeasonRewardTitleUiState
 }

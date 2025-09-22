@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -25,39 +26,45 @@ class SeasonRewardViewModel @Inject constructor(
 ) : ViewModel() {
     private val _selectedTitleType = MutableStateFlow(RewardUiModel.Metro)
 
-    private val metroFlow = flow {
+    private val metroFlow = flow<SeasonRewardTitleUiState> {
         emit(
             SeasonRewardTitleUiState.Success(
                 titleRepository.getSeasonRewardTitleList(TitleType.Metro)
                     .map { it.toUiModel() }
             )
         )
+    }.catch {
+        emit(SeasonRewardTitleUiState.Error)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = SeasonRewardTitleUiState.Loading
     )
 
-    private val commercialFlow = flow {
+    private val commercialFlow = flow<SeasonRewardTitleUiState> {
         emit(
             SeasonRewardTitleUiState.Success(
                 titleRepository.getSeasonRewardTitleList(TitleType.Commercial)
                     .map { it.toUiModel() }
             )
         )
+    }.catch {
+        emit(SeasonRewardTitleUiState.Error)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = SeasonRewardTitleUiState.Loading
     )
 
-    private val contributionFlow = flow {
+    private val contributionFlow = flow<SeasonRewardTitleUiState> {
         emit(
             SeasonRewardTitleUiState.Success(
                 titleRepository.getSeasonRewardTitleList(TitleType.Contribution)
                     .map { it.toUiModel() }
             )
         )
+    }.catch {
+        emit(SeasonRewardTitleUiState.Error)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
