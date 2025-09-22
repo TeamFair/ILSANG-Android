@@ -4,7 +4,7 @@ import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
-import com.ilsangtech.ilsang.core.datastore.UserDataStore
+import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSource
 import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AreaApiService
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
@@ -27,7 +27,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Authenticator
@@ -57,21 +56,15 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthenticator(
-        userDataStore: UserDataStore,
-        @BaseOkHttpClient okHttpClient: OkHttpClient
+        @BaseOkHttpClient okHttpClient: OkHttpClient,
+        authLocalDataStore: AuthLocalDataSource
     ): Authenticator {
         return object : Authenticator {
             override fun authenticate(route: Route?, response: Response): Request? {
                 if (getResponseCount(response) >= 2) return null
                 return runBlocking {
                     try {
-                        val accessToken =
-                            userDataStore.accessToken.first()
-                                ?: throw Exception("access token is null")
-                        val refreshToken =
-                            userDataStore.refreshToken.first()
-                                ?: throw Exception("refresh token is null")
-
+                        val (accessToken, refreshToken) = authLocalDataStore.getAuthTokens()
                         val refreshRequestString =
                             Json.encodeToString(OAuthRefreshRequest(accessToken, refreshToken))
 
@@ -87,10 +80,10 @@ object NetworkModule {
                             ).execute().body!!.string()
                         )
 
-                        userDataStore.setAccessToken(refreshResponse.accessToken)
-                        refreshResponse.refreshToken?.let { token ->
-                            userDataStore.setRefreshToken(token)
-                        }
+                        authLocalDataStore.saveAuthTokens(
+                            refreshResponse.accessToken,
+                            refreshResponse.refreshToken
+                        )
 
                         response.request.newBuilder()
                             .header("Authorization", "Bearer ${refreshResponse.accessToken}")
@@ -116,13 +109,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(userDataStore: UserDataStore): Interceptor {
+    fun provideAuthInterceptor(
+        authLocalDataSource: AuthLocalDataSource,
+    ): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
-            val token = runBlocking {
-                userDataStore.accessToken.first()
-            } ?: return@Interceptor chain.proceed(original)
-
+            val token = runBlocking { authLocalDataSource.getAuthTokens().first }
             val newRequest = original.newBuilder()
                 .header("Authorization", "Bearer $token")
                 .build()
