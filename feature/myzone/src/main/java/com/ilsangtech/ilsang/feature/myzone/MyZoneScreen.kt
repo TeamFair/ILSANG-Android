@@ -77,7 +77,7 @@ private fun MyZoneScreen(
                 ZoneListContent(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 20.dp),
+                        .padding(end = 20.dp),
                     areaList = areaList,
                     selectedMetroArea = selectedMetroArea,
                     selectedCommercialArea = selectedCommercialArea,

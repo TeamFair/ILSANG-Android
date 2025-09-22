@@ -44,7 +44,7 @@ internal fun MyZoneHeader(
         )
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "지역 선택하기",
+            text = "지역 선택",
             style = TextStyle(
                 fontFamily = pretendardFontFamily,
                 fontWeight = FontWeight.Bold,
