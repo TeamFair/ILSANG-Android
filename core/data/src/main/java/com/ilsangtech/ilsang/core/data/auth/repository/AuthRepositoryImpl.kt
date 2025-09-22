@@ -5,15 +5,13 @@ import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSource
 import com.ilsangtech.ilsang.core.domain.AuthRepository
 
 class AuthRepositoryImpl(
-    private val userDataStore: UserDataStore,
+    private val authLocalDataSource: AuthLocalDataSource,
     private val authRemoteDataSource: AuthRemoteDataSource
 ) : AuthRepository {
     override suspend fun login(idToken: String): Result<Unit> {
         return runCatching {
-            with(userDataStore) {
-                setAccessToken(accessToken)
-                refreshToken?.let { setRefreshToken(refreshToken) }
-            }
+            val (accessToken, refreshToken) = authRemoteDataSource.login(idToken)
+            authLocalDataSource.saveAuthTokens(accessToken, refreshToken)
         }
     }
 

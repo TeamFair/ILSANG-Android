@@ -3,7 +3,7 @@ package com.ilsangtech.ilsang.core.data.auth.di
 import com.ilsangtech.ilsang.core.data.auth.datasource.AuthRemoteDataSource
 import com.ilsangtech.ilsang.core.data.auth.datasource.AuthRemoteDataSourceImpl
 import com.ilsangtech.ilsang.core.data.auth.repository.AuthRepositoryImpl
-import com.ilsangtech.ilsang.core.datastore.UserDataStore
+import com.ilsangtech.ilsang.core.datastore.auth.AuthLocalDataSource
 import com.ilsangtech.ilsang.core.domain.AuthRepository
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import dagger.Module
@@ -24,12 +24,12 @@ object AuthDataModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        userDataStore: UserDataStore,
-        authLocalDataSource: AuthLocalDataSource
+        authLocalDataSource: AuthLocalDataSource,
+        authRemoteDataSource: AuthRemoteDataSource
     ): AuthRepository {
         return AuthRepositoryImpl(
-            userDataStore = userDataStore,
-            authLocalDataSource = authLocalDataSource
+            authLocalDataSource = authLocalDataSource,
+            authRemoteDataSource = authRemoteDataSource
         )
     }
 }
