@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
 import com.ilsangtech.ilsang.core.data.user.toUserXpStats
+import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
@@ -22,26 +23,30 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userDataStore: UserDataStore,
+    private val userLocalDataSource: UserLocalDataSource,
     private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
-    override val shouldShowOnBoarding: Flow<Boolean> = userDataStore.shouldShowOnBoarding
+    override val shouldShowOnBoarding: Flow<Boolean> =
+        userLocalDataSource.getUserPreferences().map { !it.isOnBoardingCompleted }
 
     override fun getMyInfo(): Flow<MyInfo> =
         combine(
-            userDataStore.userMyZone,
-            userDataStore.showIsZoneDialogAgain,
-            userDataStore.shouldShowSeasonOpenDialog,
+            userLocalDataSource.getUserPreferences(),
             getUserPoint(),
             getUserInfo(null)
-        ) { myZoneCommercialAreaCode, showIsZoneDialogAgain, shouldShowSeasonOpenDialog, userPoint, userInfo ->
+        ) { userPreferences, userPoint, userInfo ->
             val totalPoint =
                 userPoint.metroAreaPoint + userPoint.commercialAreaPoint + userPoint.contributionPoint
             userInfo.toMyInfo(
                 totalPoint = totalPoint,
-                myZoneCommercialAreaCode = myZoneCommercialAreaCode,
-                showIsZoneDialogAgain = userInfo.commercialAreaCode == null && showIsZoneDialogAgain,
-                shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog
+                myZoneCommercialAreaCode = if (userPreferences.userMyZone.isNullOrBlank()) {
+                    "R100"
+                } else {
+                    userPreferences.userMyZone
+                },
+                showIsZoneDialogAgain = userInfo.commercialAreaCode == null
+                        && DateConverter.isAfterDays(userPreferences.isZoneDialogRejectDate),
+                shouldShowSeasonOpenDialog = !userPreferences.isSeasonOpenDialogRejected
             )
         }
 
@@ -99,7 +104,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun completeOnBoarding() {
-        userDataStore.setShouldShowOnBoarding(false)
+        userLocalDataSource.updateOnBoardingCompleted(true)
     }
 
     override suspend fun updateUserTitle(titleHistoryId: Int?): Result<Unit> {
@@ -110,7 +115,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserMyZone(commericalAreaCode: String): Result<Unit> {
         return runCatching {
-            userDataStore.setUserMyZone(commericalAreaCode)
+            userLocalDataSource.updateUserMyZone(commericalAreaCode)
         }
     }
 
@@ -120,11 +125,11 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateShowIsZoneDialogAgain(showAgain: Boolean) {
-        return userDataStore.setShowIsZoneDialogAgain(showAgain)
+    override suspend fun updateIsZoneDialogRejectDate() {
+        return userLocalDataSource.updateIsZoneDialogRejectDate(DateConverter.nowString())
     }
 
-    override suspend fun updateShouldShowSeasonOpenDialog(shouldShow: Boolean) {
-        return userDataStore.setShouldShowSeasonOpenDialog(shouldShow)
+    override suspend fun updateSeasonOpenDialogRejected(isRejected: Boolean) {
+        return userLocalDataSource.updateSeasonOpenDialogRejected(isRejected)
     }
 }

@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.user.di
 import com.ilsangtech.ilsang.core.data.user.datasource.UserRemoteDataSource
 import com.ilsangtech.ilsang.core.data.user.datasource.UserRemoteDataSourceImpl
 import com.ilsangtech.ilsang.core.data.user.repository.UserRepositoryImpl
+import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.network.api.UserApiService
 import dagger.Module
@@ -23,11 +24,11 @@ object UserDataModule {
     @Provides
     @Singleton
     fun provideUserRepository(
-        userDataStore: UserDataStore,
+        userLocalDataSource: UserLocalDataSource,
         userRemoteDataSource: UserRemoteDataSource
     ): UserRepository {
         return UserRepositoryImpl(
-            userDataStore = userDataStore,
+            userLocalDataSource = userLocalDataSource,
             userRemoteDataSource = userRemoteDataSource
         )
     }
