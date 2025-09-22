@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.protobuf)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -35,6 +36,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:datastore-proto"))
+    implementation(libs.protobuf.protoc)
+    implementation(libs.protobuf.kotlin.lite)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.datastore)
