@@ -16,9 +16,9 @@ import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 import javax.inject.Inject
 
-class UserDataSourceImpl @Inject constructor(
+class UserRemoteDataSourceImpl @Inject constructor(
     private val userApiService: UserApiService
-) : UserDataSource {
+) : UserRemoteDataSource {
     override suspend fun getUserInfo(userId: String?): UserInfoResponse {
         return userApiService.getUserInfo(userId)
     }
