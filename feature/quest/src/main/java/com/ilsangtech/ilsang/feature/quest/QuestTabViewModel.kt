@@ -167,7 +167,6 @@ class QuestTabViewModel @Inject constructor(
                 QuestTabUiModel.NORMAL -> normalQuests
                 QuestTabUiModel.REPEAT -> repeatQuests
                 QuestTabUiModel.EVENT -> eventQuests
-                QuestTabUiModel.COMPLETED -> completedQuests
             }
         }.combine(favoriteQuestSet) { typedQuests, favoriteQuestSet ->
             typedQuests.map {

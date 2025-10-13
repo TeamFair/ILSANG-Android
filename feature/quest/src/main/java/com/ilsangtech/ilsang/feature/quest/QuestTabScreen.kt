@@ -33,7 +33,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
-import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
@@ -119,7 +118,7 @@ private fun QuestTabScreen(
     onMissionImageClick: (Int?) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    if (selectedQuest != null && selectedQuestTab != QuestTabUiModel.COMPLETED) {
+    if (selectedQuest != null) {
         QuestBottomSheet(
             quest = selectedQuest,
             bottomSheetState = bottomSheetState,
@@ -184,23 +183,16 @@ private fun QuestTabScreen(
                             items(typedQuests.itemCount) { index ->
                                 val quest = typedQuests[index]
                                 quest?.let {
-                                    if (selectedQuestTab == QuestTabUiModel.COMPLETED) {
-                                        CompletedQuestCard(
-                                            quest = quest,
-                                            onClick = { onQuestClick(quest.questId) }
-                                        )
-                                    } else {
-                                        QuestCardWithFavorite(
-                                            quest = quest,
-                                            onFavoriteClick = {
-                                                onFavoriteClick(
-                                                    quest.questId,
-                                                    quest.favoriteYn
-                                                )
-                                            },
-                                            onClick = { onQuestClick(quest.questId) }
-                                        )
-                                    }
+                                    QuestCardWithFavorite(
+                                        quest = quest,
+                                        onFavoriteClick = {
+                                            onFavoriteClick(
+                                                quest.questId,
+                                                quest.favoriteYn
+                                            )
+                                        },
+                                        onClick = { onQuestClick(quest.questId) }
+                                    )
                                 }
                             }
                             item { Spacer(Modifier.height(64.dp)) }
