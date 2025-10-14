@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -57,7 +59,7 @@ fun <T> DropDownMenu(
                     if (isBordered) {
                         Modifier.border(
                             width = 1.dp,
-                            color = gray200,
+                            color = gray100,
                             shape = RoundedCornerShape(8.dp)
                         )
                     } else {
@@ -121,7 +123,7 @@ fun <T> DropDownMenu(
                                 }
                             )
                     ) {
-                        unselectedList.forEach { item ->
+                        unselectedList.forEachIndexed { index, item ->
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -140,6 +142,12 @@ fun <T> DropDownMenu(
                                 Text(
                                     text = item.toString(),
                                     style = dropDownMenuTextStyle()
+                                )
+                            }
+                            if (index < unselectedList.size - 1) {
+                                HorizontalDivider(
+                                    color = gray100,
+                                    thickness = 1.dp
                                 )
                             }
                         }
