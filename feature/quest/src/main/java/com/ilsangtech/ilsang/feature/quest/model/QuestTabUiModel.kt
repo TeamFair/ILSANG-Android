@@ -9,8 +9,5 @@ enum class QuestTabUiModel {
     },
     EVENT {
         override fun toString() = "이벤트"
-    },
-    COMPLETED {
-        override fun toString() = "완료"
     }
 }

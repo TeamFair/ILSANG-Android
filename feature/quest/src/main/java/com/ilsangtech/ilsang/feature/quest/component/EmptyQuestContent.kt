@@ -34,14 +34,7 @@ fun EmptyQuestContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            val (headingText, subText) =
-                if (selectedQuestType != QuestTabUiModel.COMPLETED) {
-                    "퀘스트를 모두 완료하셨어요!" to "상상할 수 없는 퀘스트를 준비중이니\n" +
-                            "다음 업데이트를 기대해주세요!"
-                } else {
-                    "완료된 퀘스트가 없어요" to "퀘스트를 수행하러 가볼까요?"
-                }
-
+            val (headingText, subText) = "완료된 퀘스트가 없어요" to "퀘스트를 수행하러 가볼까요?"
             Text(
                 text = headingText,
                 textAlign = TextAlign.Center,
