@@ -34,6 +34,7 @@ fun QuestCardWithArrow(
         writer = quest.writerName,
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
+        isIsZoneQuest = quest.isIsZoneQuest,
         onClick = onClick
     )
 }
@@ -51,6 +52,7 @@ fun QuestCardWithArrow(
         questType = quest.questType,
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
+        isIsZoneQuest = quest.isIsZoneQuest,
         onClick = onClick
     )
 }
@@ -63,6 +65,7 @@ private fun QuestCardWithArrow(
     questType: QuestType? = null,
     rewardPoints: List<RewardPoint>,
     imageId: String?,
+    isIsZoneQuest: Boolean,
     onClick: () -> Unit
 ) {
     DefaultQuestCard(
@@ -95,7 +98,8 @@ private fun QuestCardWithArrow(
                             contentDescription = "퀘스트 타입 이미지"
                         )
                     }
-                }
+                },
+                isIsZoneQuest = isIsZoneQuest
             )
             Box(
                 modifier = Modifier

@@ -40,6 +40,7 @@ fun QuestCardWithFavorite(
                 title = quest.title,
                 writer = quest.writerName,
                 rewardPoints = quest.rewards,
+                isIsZoneQuest = quest.isIsZoneQuest,
                 questImage = {
                     QuestImageWithBadge(
                         imageId = quest.imageId,

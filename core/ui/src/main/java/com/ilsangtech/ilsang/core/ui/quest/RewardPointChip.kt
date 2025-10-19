@@ -14,17 +14,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
-private fun RewardPointChip(rewardPoint: RewardPoint) {
+private fun RewardPointChip(
+    rewardPoint: RewardPoint,
+    isIsZoneQuest: Boolean
+) {
     Box(
         modifier = Modifier
             .height(25.dp)
@@ -54,15 +60,37 @@ private fun RewardPointChip(rewardPoint: RewardPoint) {
                 style = rewardPointChipTextStyle(),
                 color = primary
             )
+            if (rewardPoint is RewardPoint.Contribute && isIsZoneQuest) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    text = "X2",
+                    style = badge02TextStyle.copy(
+                        fontSize = 10.dp.toSp(),
+                        lineHeight = 12.dp.toSp(),
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                Color(0xFFFF8415),
+                                Color(0xFFFFB622)
+                            )
+                        )
+                    )
+                )
+            }
         }
     }
 }
 
 @Composable
-internal fun RewardPointChips(rewardPointList: List<RewardPoint>) {
+internal fun RewardPointChips(
+    rewardPointList: List<RewardPoint>,
+    isIsZoneQuest: Boolean
+) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         rewardPointList.forEach { rewardPoint ->
-            RewardPointChip(rewardPoint)
+            RewardPointChip(
+                rewardPoint = rewardPoint,
+                isIsZoneQuest = isIsZoneQuest
+            )
         }
     }
 }
@@ -83,5 +111,8 @@ private fun RewardPointChipsPreview() {
         RewardPoint.Commercial(5),
         RewardPoint.Contribute(10)
     )
-    RewardPointChips(rewardPointList)
+    RewardPointChips(
+        rewardPointList = rewardPointList,
+        isIsZoneQuest = false
+    )
 }
