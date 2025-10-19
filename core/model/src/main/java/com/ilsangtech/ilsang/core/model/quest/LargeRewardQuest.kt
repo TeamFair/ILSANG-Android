@@ -9,5 +9,6 @@ data class LargeRewardQuest(
     val mainImageId: String?,
     val rewards: List<RewardPoint>,
     val title: String,
-    val writerName: String
+    val writerName: String,
+    val isIsZoneQuest: Boolean = false
 )
