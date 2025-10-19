@@ -60,6 +60,7 @@ internal fun OxQuizSubmitScreen(
         is SubmitResultUiState.Success -> {
             SubmitSuccessDialog(
                 rewardPoints = result.rewardPoints,
+                isIsZoneQuest = false,
                 onDismissRequest = {
                     viewModel.resetResultUiState()
                     onBackButtonClick()

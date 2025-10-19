@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
@@ -37,6 +38,7 @@ import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.quest.RewardPointIcon
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -47,6 +49,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 internal fun SubmitSuccessDialog(
     modifier: Modifier = Modifier,
     rewardPoints: List<RewardPoint>,
+    isIsZoneQuest: Boolean,
     onDismissRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -68,7 +71,8 @@ internal fun SubmitSuccessDialog(
                 Spacer(Modifier.height(12.dp))
                 SubmitRewardPointsRow(
                     modifier = Modifier.width(228.dp),
-                    rewardPoints = rewardPoints
+                    rewardPoints = rewardPoints,
+                    isIsZoneQuest = isIsZoneQuest
                 )
                 Spacer(Modifier.height(12.dp))
                 Button(
@@ -91,7 +95,8 @@ internal fun SubmitSuccessDialog(
 @Composable
 private fun SubmitRewardPointsRow(
     modifier: Modifier = Modifier,
-    rewardPoints: List<RewardPoint>
+    rewardPoints: List<RewardPoint>,
+    isIsZoneQuest: Boolean
 ) {
     Box(
         modifier = modifier
@@ -107,14 +112,20 @@ private fun SubmitRewardPointsRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             rewardPoints.forEach { rewardPoint ->
-                SubmitRewardPointItem(rewardPoint)
+                SubmitRewardPointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SubmitRewardPointItem(rewardPoint: RewardPoint) {
+private fun SubmitRewardPointItem(
+    rewardPoint: RewardPoint,
+    isIsZoneQuest: Boolean
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -132,6 +143,22 @@ private fun SubmitRewardPointItem(rewardPoint: RewardPoint) {
             tint = Color.Unspecified,
             contentDescription = null
         )
+        if (rewardPoint is RewardPoint.Contribute && isIsZoneQuest) {
+            Text(
+                modifier = Modifier.padding(horizontal = 4.dp),
+                text = "X2",
+                style = badge02TextStyle.copy(
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color(0xFFFF8415),
+                            Color(0xFFFFB622)
+                        )
+                    ),
+                    fontSize = 10.dp.toSp(),
+                    lineHeight = 12.dp.toSp()
+                )
+            )
+        }
     }
 }
 
@@ -224,6 +251,7 @@ private fun SubmitSuccessDialogPreviewWithRewardPoints() {
     )
     SubmitSuccessDialog(
         rewardPoints = rewardPoints,
+        isIsZoneQuest = true,
         onDismissRequest = {}
     )
 }
