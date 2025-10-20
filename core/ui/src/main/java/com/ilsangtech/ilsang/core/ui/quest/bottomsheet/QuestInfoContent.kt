@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
@@ -120,13 +121,13 @@ internal fun QuestDetailInfoContentPreview() {
                 id = 101,
                 exampleImageIds = listOf("example1.jpg", "example2.jpg"),
                 title = "Complete task A",
-                type = "TASK"
+                type = MissionType.Photo
             ),
             Mission(
                 id = 102,
                 exampleImageIds = listOf("example3.jpg"),
                 title = "Review document B",
-                type = "REVIEW"
+                type = MissionType.Photo
             )
         ),
         questType = QuestType.Event,
