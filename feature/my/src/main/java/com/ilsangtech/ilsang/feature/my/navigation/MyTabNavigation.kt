@@ -7,6 +7,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
+import com.ilsangtech.ilsang.core.ui.mission.model.userMissionHistoryNavType
 import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
@@ -20,6 +22,7 @@ import com.ilsangtech.ilsang.feature.my.screens.terms.TermsScreen
 import com.ilsangtech.ilsang.feature.my.screens.title.MyTitleScreen
 import com.ilsangtech.ilsang.feature.my.screens.withdrawal.WithdrawalScreen
 import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
 @Serializable
 data object MyBaseRoute
@@ -49,13 +52,7 @@ data class MyProfileEditRoute(
 data object MyChallengeRoute
 
 @Serializable
-data class MyChallengeDetailRoute(
-    val missionHistoryId: Int,
-    val submitImageId: String,
-    val questImageId: String?,
-    val title: String,
-    val likeCount: Int
-)
+data class MyChallengeDetailRoute(val userMissionHistory: UserMissionHistoryUiModel)
 
 @Serializable
 data object TermsRoute
@@ -78,21 +75,8 @@ fun NavHostController.navigateToMyProfileEdit(
 ) = navigate(MyProfileEditRoute(nickname, profileImageId))
 
 
-fun NavHostController.navigateToMyChallengeDetail(
-    missionHistoryId: Int,
-    receiptImageId: String,
-    questImageId: String?,
-    title: String,
-    likeCount: Int
-) = navigate(
-    MyChallengeDetailRoute(
-        missionHistoryId = missionHistoryId,
-        submitImageId = receiptImageId,
-        questImageId = questImageId,
-        title = title,
-        likeCount = likeCount
-    )
-)
+fun NavHostController.navigateToMyChallengeDetail(userMissionHistory: UserMissionHistoryUiModel) =
+    navigate(MyChallengeDetailRoute(userMissionHistory))
 
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
@@ -113,7 +97,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToMyTabMain: () -> Unit,
     navigateToMyProfileEdit: (String, String?) -> Unit,
     navigateToMyChallenge: () -> Unit,
-    navigateToMyChallengeDetail: (Int, String, String?, String, Int) -> Unit,
+    navigateToMyChallengeDetail: (UserMissionHistoryUiModel) -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
@@ -159,21 +143,17 @@ fun NavGraphBuilder.myTabNavigation(
 
         composable<MyChallengeRoute> {
             MyChallengeScreen(
-                onMissionHistoryClick = { missionHistory ->
-                    navigateToMyChallengeDetail(
-                        missionHistory.missionHistoryId,
-                        missionHistory.submitImageId,
-                        missionHistory.questImageId,
-                        missionHistory.title,
-                        missionHistory.likeCount
-                    )
-                },
+                onMissionHistoryClick = navigateToMyChallengeDetail,
                 onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
             )
         }
 
-        composable<MyChallengeDetailRoute> {
+        composable<MyChallengeDetailRoute>(
+            typeMap = mapOf(
+                typeOf<UserMissionHistoryUiModel>() to userMissionHistoryNavType
+            )
+        ) {
             MyChallengeDetailScreen(
                 navigateToMyTabMain = navigateToMyTabMain
             )
