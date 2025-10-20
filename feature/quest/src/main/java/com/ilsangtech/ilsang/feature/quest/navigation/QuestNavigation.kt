@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.quest.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.feature.quest.QuestTabScreen
 import kotlinx.serialization.Serializable
 
@@ -13,7 +14,7 @@ data object QuestBaseRoute
 data object QuestRoute
 
 fun NavGraphBuilder.questNavigation(
-    onNavigateToSubmit: (Int, Int, String) -> Unit,
+    onNavigateToSubmit: (Int, Int, MissionType) -> Unit,
     onNavigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {

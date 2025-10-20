@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.feature.submit.ImageCaptureScreen
 import com.ilsangtech.ilsang.feature.submit.ImageSubmitScreen
 import com.ilsangtech.ilsang.feature.submit.OxQuizSubmitScreen
@@ -41,12 +42,12 @@ data class WordsQuizSubmitRoute(
 fun NavHostController.navigateToSubmit(
     questId: Int,
     missionId: Int,
-    type: String
+    type: MissionType
 ) {
     when (type) {
-        "PHOTO" -> navigate(ImageCaptureRoute(questId, missionId))
-        "OX" -> navigate(OxQuizSubmitRoute(questId, missionId))
-        "WORDS" -> navigate(WordsQuizSubmitRoute(questId, missionId))
+        MissionType.Photo -> navigate(ImageCaptureRoute(questId, missionId))
+        MissionType.Ox -> navigate(OxQuizSubmitRoute(questId, missionId))
+        MissionType.Words -> navigate(WordsQuizSubmitRoute(questId, missionId))
     }
 }
 
