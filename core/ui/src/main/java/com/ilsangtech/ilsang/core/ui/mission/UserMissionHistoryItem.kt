@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.ui.mission
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,8 +19,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.BuildConfig
 import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
+import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.theme.caption01
 import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.title01
@@ -56,6 +61,17 @@ fun UserMissionHistoryItem(
                     style = title01,
                     color = Color.White
                 )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    if (userMissionHistory.questType is QuestType.Repeat) {
+                        RepeatQuestTypeBadge(repeatType = userMissionHistory.questType)
+                    } else if (userMissionHistory.questType is QuestType.Event) {
+                        EventQuestTypeBadge()
+                    }
+                    MissionTypeBadge(missionType = userMissionHistory.missionType)
+                }
                 Text(
                     text = userMissionHistory.createdAt,
                     style = caption01,
