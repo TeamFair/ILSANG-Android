@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.BuildConfig
 import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
@@ -92,7 +93,8 @@ private fun UserMissionHistoryItemPreview() {
         createdAt = "2025.10.27",
         likeCount = 10,
         viewCount = 100,
-        questImageId = null
+        questImageId = null,
+        missionType = MissionType.Photo
     )
     UserMissionHistoryItem(userMissionHistory = userMissionHistory, onClick = {})
 }

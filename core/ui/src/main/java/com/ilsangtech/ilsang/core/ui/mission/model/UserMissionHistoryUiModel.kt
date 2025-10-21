@@ -21,9 +21,9 @@ data class UserMissionHistoryUiModel(
     val viewCount: Int,
     val likeCount: Int,
     val createdAt: String,
-    //TODO QuestType, MissionType을 도메인 모델에서 받을 수 있도록 적용 필요
+    //TODO QuestType을 도메인 모델에서 받을 수 있도록 적용 필요
     val questType: QuestType = QuestType.Repeat.Daily,
-    val missionType: MissionType = MissionType.Photo
+    val missionType: MissionType
 )
 
 fun UserMissionHistory.toUiModel(): UserMissionHistoryUiModel {
@@ -34,7 +34,8 @@ fun UserMissionHistory.toUiModel(): UserMissionHistoryUiModel {
         submitImageId = submitImageId,
         viewCount = viewCount,
         likeCount = likeCount,
-        createdAt = DateConverter.formatDate(input = createdAt)
+        createdAt = DateConverter.formatDate(input = createdAt),
+        missionType = missionType
     )
 }
 
