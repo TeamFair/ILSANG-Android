@@ -7,6 +7,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetwor
 
 class UserMissionHistoryPagingSource(
     private val userId: String?,
+    private val missionType: String,
     private val missionApiService: MissionApiService
 ) : PagingSource<Int, UserMissionHistoryNetworkModel>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserMissionHistoryNetworkModel> {
@@ -14,6 +15,7 @@ class UserMissionHistoryPagingSource(
             val pageNumber = params.key ?: 0
             val response = missionApiService.getUserMissionHistory(
                 userId = userId,
+                missionType = missionType,
                 page = pageNumber,
                 size = params.loadSize
             )
