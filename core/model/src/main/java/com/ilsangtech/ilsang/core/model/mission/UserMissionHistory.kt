@@ -7,5 +7,7 @@ data class UserMissionHistory(
     val questImageId: String?,
     val viewCount: Int,
     val likeCount: Int,
-    val createdAt: String
+    val createdAt: String,
+    val missionType: MissionType,
+    val commercialAreaCode: String
 )
