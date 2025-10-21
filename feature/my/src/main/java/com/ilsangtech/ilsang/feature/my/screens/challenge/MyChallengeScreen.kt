@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -47,7 +48,7 @@ internal fun MyChallengeScreen(
     onBackButtonClick: () -> Unit
 ) {
     val myMissionHistoryItems = viewModel.myMissionHistories.collectAsLazyPagingItems()
-    var selectedMissionType by remember { mutableStateOf(MissionTypes.IMAGE) }
+    val selectedMissionType by viewModel.missionType.collectAsStateWithLifecycle()
     var selectedSortType by remember { mutableStateOf(MissionSortTypes.Latest) }
 
     LaunchedEffect(Unit) {
@@ -57,7 +58,7 @@ internal fun MyChallengeScreen(
     MyChallengeScreen(
         selectedMissionType = selectedMissionType,
         selectedSortType = selectedSortType,
-        onMissionTypeSelected = { selectedMissionType = it },
+        onMissionTypeSelected = viewModel::updateMissionType,
         onSortTypeSelected = { selectedSortType = it },
         myMissionHistoryItems = myMissionHistoryItems,
         onMissionHistoryClick = onMissionHistoryClick,
