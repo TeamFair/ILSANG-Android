@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.core.data.mission.mapper
 import com.ilsangtech.ilsang.core.data.title.mapper.toTitle
 import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
@@ -48,7 +49,14 @@ internal fun UserMissionHistoryNetworkModel.toUserMissionHistory(): UserMissionH
         questImageId = questImageId,
         viewCount = viewCount,
         likeCount = likeCount,
-        createdAt = createdAt
+        createdAt = createdAt,
+        commercialAreaCode = commercialAreaCode,
+        missionType = when (missionType) {
+            "PHOTO" -> MissionType.Photo
+            "OX" -> MissionType.Ox
+            "WORDS" -> MissionType.Words
+            else -> throw IllegalArgumentException("Unknown mission type: $missionType")
+        }
     )
 }
 
