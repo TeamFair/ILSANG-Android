@@ -17,7 +17,7 @@ data class UserMissionHistoryUiModel(
     val missionHistoryId: Int,
     val title: String,
     val questImageId: String?,
-    val submitImageId: String,
+    val submitImageId: String?,
     val viewCount: Int,
     val likeCount: Int,
     val createdAt: String,
