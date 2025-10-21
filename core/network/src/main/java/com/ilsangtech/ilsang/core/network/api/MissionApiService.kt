@@ -26,6 +26,7 @@ interface MissionApiService {
         @Query("userId") userId: String?,
         @Query("page") page: Int,
         @Query("size") size: Int,
+        @Query("missionType") missionType: String,
         @Query("sort") sort: List<String> = emptyList()
     ): UserMissionHistoryResponse
 
