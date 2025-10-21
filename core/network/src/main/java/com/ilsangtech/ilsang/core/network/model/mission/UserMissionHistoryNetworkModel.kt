@@ -10,5 +10,7 @@ data class UserMissionHistoryNetworkModel(
     val questImageId: String?,
     val viewCount: Int,
     val likeCount: Int,
-    val createdAt: String
+    val createdAt: String,
+    val commercialAreaCode: String,
+    val missionType: String
 )
