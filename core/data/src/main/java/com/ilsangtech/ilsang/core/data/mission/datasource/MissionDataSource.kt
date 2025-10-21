@@ -12,7 +12,10 @@ interface MissionDataSource {
 
     fun exampleMissionHistory(missionId: Int): Flow<PagingData<ExampleMissionHistoryNetworkModel>>
 
-    fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistoryNetworkModel>>
+    fun getUserMissionHistory(
+        userId: String?,
+        missionType: String
+    ): Flow<PagingData<UserMissionHistoryNetworkModel>>
 
     suspend fun registerMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 
