@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.core.data.mission.mapper.toRandomMissionHistory
 import com.ilsangtech.ilsang.core.data.mission.mapper.toUserMissionHistory
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
@@ -30,8 +31,18 @@ class MissionRepositoryImpl(
         }
     }
 
-    override fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistory>> {
-        return missionDataSource.getUserMissionHistory(userId).map { pagingData ->
+    override fun getUserMissionHistory(
+        userId: String?,
+        missionType: MissionType
+    ): Flow<PagingData<UserMissionHistory>> {
+        return missionDataSource.getUserMissionHistory(
+            userId = userId,
+            missionType = when (missionType) {
+                MissionType.Photo -> "PHOTO"
+                MissionType.Ox -> "OX"
+                MissionType.Words -> "WORDS"
+            }
+        ).map { pagingData ->
             pagingData.map { it.toUserMissionHistory() }
         }
     }
