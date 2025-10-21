@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.SeasonRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.season.Season
 import com.ilsangtech.ilsang.core.ui.mission.model.toUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
@@ -44,7 +45,11 @@ class ProfileViewModel @Inject constructor(
     private val _selectedSeason = MutableStateFlow<SeasonUiModel>(SeasonUiModel.Total)
     val selectedSeason = _selectedSeason.asStateFlow()
 
-    val missionHistories = missionRepository.getUserMissionHistory(userId)
+    val missionHistories = missionRepository.getUserMissionHistory(
+        userId = userId,
+        //TODO 미션 타입 상태 추가 및 적용
+        missionType = MissionType.Photo
+    )
         .cachedIn(viewModelScope)
         .map { pagingData ->
             pagingData.map { it.toUiModel() }
