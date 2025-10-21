@@ -28,10 +28,32 @@ import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.theme.caption01
 import com.ilsangtech.ilsang.designsystem.theme.gray200
-import com.ilsangtech.ilsang.designsystem.theme.title01
+import com.ilsangtech.ilsang.designsystem.theme.gray400
+import com.ilsangtech.ilsang.designsystem.theme.heading02
 
 @Composable
 fun UserMissionHistoryItem(
+    modifier: Modifier = Modifier,
+    userMissionHistory: UserMissionHistoryUiModel,
+    onClick: () -> Unit
+) {
+    if (userMissionHistory.missionType == MissionType.Photo) {
+        UserMissionHistoryPhotoItem(
+            modifier = modifier,
+            userMissionHistory = userMissionHistory,
+            onClick = onClick
+        )
+    } else {
+        UserMissionHistoryQuizItem(
+            modifier = modifier,
+            userMissionHistory = userMissionHistory,
+            onClick = onClick
+        )
+    }
+}
+
+@Composable
+private fun UserMissionHistoryPhotoItem(
     modifier: Modifier = Modifier,
     userMissionHistory: UserMissionHistoryUiModel,
     onClick: () -> Unit
@@ -59,7 +81,7 @@ fun UserMissionHistoryItem(
             ) {
                 Text(
                     text = userMissionHistory.title,
-                    style = title01,
+                    style = heading02,
                     color = Color.White
                 )
                 Row(
@@ -83,18 +105,80 @@ fun UserMissionHistoryItem(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF6F6F6)
 @Composable
-private fun UserMissionHistoryItemPreview() {
-    val userMissionHistory = UserMissionHistoryUiModel(
-        missionHistoryId = 1,
-        title = "겨울 간식 먹기",
-        submitImageId = "sample_image_id",
-        createdAt = "2025.10.27",
-        likeCount = 10,
-        viewCount = 100,
-        questImageId = null,
-        missionType = MissionType.Photo
+private fun UserMissionHistoryQuizItem(
+    modifier: Modifier = Modifier,
+    userMissionHistory: UserMissionHistoryUiModel,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = Color.White,
+        shape = RoundedCornerShape(12.dp),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = userMissionHistory.title,
+                style = heading02
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                if (userMissionHistory.questType is QuestType.Repeat) {
+                    RepeatQuestTypeBadge(repeatType = userMissionHistory.questType)
+                } else if (userMissionHistory.questType is QuestType.Event) {
+                    EventQuestTypeBadge()
+                }
+                MissionTypeBadge(missionType = userMissionHistory.missionType)
+            }
+            Text(
+                text = userMissionHistory.createdAt,
+                style = caption01,
+                color = gray400
+            )
+        }
+    }
+}
+
+@Preview(name = "Photo Mission")
+@Composable
+private fun UserMissionHistoryItemPhotoPreview() {
+    UserMissionHistoryItem(
+        userMissionHistory = UserMissionHistoryUiModel(
+            missionHistoryId = 1,
+            title = "오늘의 하늘 사진 찍기",
+            questImageId = null,
+            submitImageId = "image_id.jpg",
+            viewCount = 100,
+            likeCount = 20,
+            createdAt = "2024.05.20",
+            questType = QuestType.Repeat.Daily,
+            missionType = MissionType.Photo
+        ),
+        onClick = {}
     )
-    UserMissionHistoryItem(userMissionHistory = userMissionHistory, onClick = {})
+}
+
+@Preview(name = "Quiz Mission")
+@Composable
+private fun UserMissionHistoryItemQuizPreview() {
+    UserMissionHistoryItem(
+        userMissionHistory = UserMissionHistoryUiModel(
+            missionHistoryId = 2,
+            title = "환경 상식 퀴즈",
+            questImageId = null,
+            submitImageId = null,
+            viewCount = 150,
+            likeCount = 30,
+            createdAt = "2024.05.19",
+            questType = QuestType.Event,
+            missionType = MissionType.Ox
+        ),
+        onClick = {}
+    )
 }
