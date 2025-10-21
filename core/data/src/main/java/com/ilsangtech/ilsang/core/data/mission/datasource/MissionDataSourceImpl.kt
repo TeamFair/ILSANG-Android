@@ -41,7 +41,10 @@ class MissionDataSourceImpl(
         missionType: String
     ): Flow<PagingData<UserMissionHistoryNetworkModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(
+                initialLoadSize = if (userId != null) 6 else 30,
+                pageSize = 10
+            ),
             pagingSourceFactory = {
                 UserMissionHistoryPagingSource(
                     userId = userId,
