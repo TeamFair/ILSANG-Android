@@ -36,11 +36,18 @@ class MissionDataSourceImpl(
         ).flow
     }
 
-    override fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistoryNetworkModel>> {
+    override fun getUserMissionHistory(
+        userId: String?,
+        missionType: String
+    ): Flow<PagingData<UserMissionHistoryNetworkModel>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
-                UserMissionHistoryPagingSource(userId, missionApiService)
+                UserMissionHistoryPagingSource(
+                    userId = userId,
+                    missionType = missionType,
+                    missionApiService = missionApiService
+                )
             }
         ).flow
     }
