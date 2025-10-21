@@ -47,8 +47,8 @@ val title02 = TextStyle(
 
 val heading01 = TextStyle(
     fontFamily = FontFamily(Font(R.font.pretendard_bold)),
-    fontSize = 19.sp,
-    lineHeight = 23.sp,
+    fontSize = 17.sp,
+    lineHeight = 20.sp,
     letterSpacing = (-0.4).sp
 )
 
