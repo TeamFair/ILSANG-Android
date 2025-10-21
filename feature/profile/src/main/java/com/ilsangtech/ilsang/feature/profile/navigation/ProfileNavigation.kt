@@ -17,14 +17,14 @@ data class ProfileRoute(val userId: String)
 
 @Serializable
 data class ChallengeRoute(
-    val receiptImageId: String,
+    val receiptImageId: String?,
     val questImageId: String?,
     val likeCount: Int,
     val title: String
 )
 
 fun NavHostController.navigateToChallenge(
-    submitImageId: String,
+    submitImageId: String?,
     questImageId: String?,
     likeCount: Int,
     title: String
@@ -38,7 +38,7 @@ fun NavHostController.navigateToChallenge(
 )
 
 fun NavGraphBuilder.profileRoute(
-    navigateToChallenge: (String, String?, Int, String) -> Unit,
+    navigateToChallenge: (String?, String?, Int, String) -> Unit,
     popBackStack: () -> Unit
 ) {
     navigation<ProfileBaseRoute>(
