@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.ilsangtech.ilsang.core.domain.QuestRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.feature.banner.navigation.BannerDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BannerDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    userRepository: UserRepository,
     private val questRepository: QuestRepository
 ) : ViewModel() {
     val bannerDetailInfo = savedStateHandle.toRoute<BannerDetailRoute>()
@@ -38,6 +40,8 @@ class BannerDetailViewModel @Inject constructor(
 
     private val selectedQuestId = MutableStateFlow<Int?>(null)
     private val questDetailRefresh = MutableSharedFlow<Unit>(replay = 1)
+
+    private val _myInfo = userRepository.getMyInfo()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = combine(
@@ -54,7 +58,9 @@ class BannerDetailViewModel @Inject constructor(
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val onGoingQuests = selectedSortType.flatMapLatest { sortType ->
+    val onGoingQuests = combine(_myInfo, selectedSortType) { myInfo, sortType ->
+        myInfo.isCommercialAreaCode to sortType
+    }.flatMapLatest { (isZoneCode, sortType) ->
         val orderExpiredDesc = if (sortType == BannerDetailSortType.ExpiredDate) true else null
         val orderRewardDesc = when (sortType) {
             BannerDetailSortType.PointDesc -> true
@@ -65,12 +71,15 @@ class BannerDetailViewModel @Inject constructor(
             bannerId = bannerDetailInfo.id,
             completedYn = false,
             orderExpiredDesc = orderExpiredDesc,
-            orderRewardDesc = orderRewardDesc
+            orderRewardDesc = orderRewardDesc,
+            isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val completedQuests = selectedSortType.flatMapLatest { sortType ->
+    val completedQuests = combine(_myInfo, selectedSortType) { myInfo, sortType ->
+        myInfo.isCommercialAreaCode to sortType
+    }.flatMapLatest { (isZoneCode, sortType) ->
         val orderExpiredDesc = if (sortType == BannerDetailSortType.ExpiredDate) true else null
         val orderRewardDesc = when (sortType) {
             BannerDetailSortType.PointDesc -> true
@@ -81,7 +90,8 @@ class BannerDetailViewModel @Inject constructor(
             bannerId = bannerDetailInfo.id,
             completedYn = true,
             orderExpiredDesc = orderExpiredDesc,
-            orderRewardDesc = orderRewardDesc
+            orderRewardDesc = orderRewardDesc,
+            isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
 
