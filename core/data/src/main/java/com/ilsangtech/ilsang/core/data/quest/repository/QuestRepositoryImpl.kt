@@ -106,9 +106,12 @@ class QuestRepositoryImpl(
         ).map { it.map(TypedQuestNetworkModel::toTypedQuest) }
     }
 
-    override fun getQuestDetail(questId: Int): Flow<QuestDetail> = flow {
+    override fun getQuestDetail(
+        questId: Int,
+        isIsZoneQuest: Boolean
+    ): Flow<QuestDetail> = flow {
         emit(
-            questDataSource.getQuestDetail(questId).toQuestDetail()
+            questDataSource.getQuestDetail(questId).toQuestDetail(isIsZoneQuest)
         )
     }
 

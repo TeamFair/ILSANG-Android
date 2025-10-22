@@ -37,7 +37,7 @@ interface QuestRepository {
         completedYn: Boolean = false
     ): Flow<PagingData<TypedQuest>>
 
-    fun getQuestDetail(questId: Int): Flow<QuestDetail>
+    fun getQuestDetail(questId: Int, isIsZoneQuest: Boolean = false): Flow<QuestDetail>
 
     suspend fun registerFavoriteQuest(questId: Int): Result<Unit>
 

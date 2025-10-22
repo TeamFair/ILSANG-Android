@@ -9,7 +9,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 
-internal fun QuestDetailResponse.toQuestDetail(): QuestDetail {
+internal fun QuestDetailResponse.toQuestDetail(isIsZoneQuest: Boolean): QuestDetail {
     return QuestDetail(
         id = id,
         expireDate = expireDate,
@@ -33,6 +33,7 @@ internal fun QuestDetailResponse.toQuestDetail(): QuestDetail {
         coupons = coupons.map(QuestDetailCouponNetworkModel::toQuestDetailCoupon),
         title = title,
         userRank = userRank,
-        writerName = writerName
+        writerName = writerName,
+        isIsZoneQuest = isIsZoneQuest
     )
 }
