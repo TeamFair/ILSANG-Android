@@ -38,18 +38,24 @@ class BannerDetailViewModel @Inject constructor(
     private val _selectedSortType = MutableStateFlow(BannerDetailSortType.ExpiredDate)
     val selectedSortType = _selectedSortType.asStateFlow()
 
-    private val selectedQuestId = MutableStateFlow<Int?>(null)
+    private val selectedQuestInfo = MutableStateFlow<Pair<Int, Boolean>?>(null)
+
     private val questDetailRefresh = MutableSharedFlow<Unit>(replay = 1)
 
     private val _myInfo = userRepository.getMyInfo()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = combine(
-        selectedQuestId,
+        selectedQuestInfo,
+        _myInfo,
         questDetailRefresh.onStart { emit(Unit) }
-    ) { questId, _ -> questId }.flatMapLatest { questId ->
-        questId?.let {
-            questRepository.getQuestDetail(questId)
+    ) { questInfo, myInfo, _ -> questInfo to myInfo }.flatMapLatest { (questInfo, myInfo) ->
+        questInfo?.let {
+            val (questId, isIsZoneQuest) = questInfo
+            questRepository.getQuestDetail(
+                questId = questId,
+                isIsZoneQuest = isIsZoneQuest
+            )
         } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
@@ -105,12 +111,12 @@ class BannerDetailViewModel @Inject constructor(
 
     fun selectQuest(quest: BannerQuest) {
         viewModelScope.launch {
-            selectedQuestId.update { quest.questId }
+            selectedQuestInfo.update { quest.questId to quest.isIsZoneQuest }
         }
     }
 
     fun unselectQuest() {
-        selectedQuestId.update { null }
+        selectedQuestInfo.update { null }
     }
 
     fun updateQuestFavoriteStatus() {
