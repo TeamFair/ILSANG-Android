@@ -30,6 +30,7 @@ interface QuestRepository {
 
     fun getTypedQuests(
         commercialAreaCode: String,
+        isZoneCode: String?,
         questType: QuestType? = null,
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,

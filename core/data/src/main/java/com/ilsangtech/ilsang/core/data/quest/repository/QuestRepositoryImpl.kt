@@ -19,7 +19,6 @@ import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
-import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -78,6 +77,7 @@ class QuestRepositoryImpl(
 
     override fun getTypedQuests(
         commercialAreaCode: String,
+        isZoneCode: String?,
         questType: QuestType?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
@@ -103,7 +103,11 @@ class QuestRepositoryImpl(
             orderRewardDesc = orderRewardDesc,
             favoriteYn = favoriteYn,
             completeYn = completedYn
-        ).map { it.map(TypedQuestNetworkModel::toTypedQuest) }
+        ).map {
+            it.map { quest ->
+                quest.toTypedQuest(commercialAreaCode == isZoneCode)
+            }
+        }
     }
 
     override fun getQuestDetail(
