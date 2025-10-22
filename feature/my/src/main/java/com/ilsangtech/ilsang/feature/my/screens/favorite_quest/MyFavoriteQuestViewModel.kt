@@ -46,6 +46,7 @@ class MyFavoriteQuestViewModel @Inject constructor(
     val favoriteQuestList = myInfo.flatMapLatest { myInfo ->
         questRepository.getTypedQuests(
             commercialAreaCode = myInfo.myCommericalAreaCode,
+            isZoneCode = myInfo.isCommercialAreaCode,
             favoriteYn = true
         )
     }.cachedIn(viewModelScope)
