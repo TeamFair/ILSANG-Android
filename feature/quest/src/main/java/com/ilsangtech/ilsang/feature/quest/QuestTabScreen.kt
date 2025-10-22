@@ -112,7 +112,7 @@ private fun QuestTabScreen(
     onSelectQuestTab: (QuestTabUiModel) -> Unit,
     onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
     onSelectSortType: (SortTypeUiModel) -> Unit,
-    onQuestClick: (Int) -> Unit,
+    onQuestClick: (TypedQuest) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
     onApproveButtonClick: (Int, Int, MissionType) -> Unit,
     onMyZoneClick: () -> Unit,
@@ -192,7 +192,7 @@ private fun QuestTabScreen(
                                                 quest.favoriteYn
                                             )
                                         },
-                                        onClick = { onQuestClick(quest.questId) }
+                                        onClick = { onQuestClick(quest) }
                                     )
                                 }
                             }
