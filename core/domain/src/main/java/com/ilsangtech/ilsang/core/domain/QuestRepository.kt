@@ -15,7 +15,10 @@ interface QuestRepository {
 
     fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
 
-    fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
+    fun getLargeRewardQuests(
+        commercialAreaCode: String,
+        isZoneCode: String?
+    ): Flow<List<LargeRewardQuest>>
 
     fun getBannerQuests(
         bannerId: Int,

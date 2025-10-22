@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 
-fun LargeRewardQuestNetworkModel.toLargeRewardQuest(): LargeRewardQuest {
+fun LargeRewardQuestNetworkModel.toLargeRewardQuest(isIsZoneQuest: Boolean): LargeRewardQuest {
     return LargeRewardQuest(
         questId = questId,
         expireDate = expireDate,
@@ -12,6 +12,7 @@ fun LargeRewardQuestNetworkModel.toLargeRewardQuest(): LargeRewardQuest {
         mainImageId = mainImageId,
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
         title = title,
-        writerName = writerName
+        writerName = writerName,
+        isIsZoneQuest = isIsZoneQuest
     )
 }

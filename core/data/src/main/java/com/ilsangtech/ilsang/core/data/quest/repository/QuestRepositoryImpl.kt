@@ -17,7 +17,6 @@ import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
-import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
@@ -45,13 +44,18 @@ class QuestRepositoryImpl(
             )
         }
 
-    override fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>> =
+    override fun getLargeRewardQuests(
+        commercialAreaCode: String,
+        isZoneCode: String?
+    ): Flow<List<LargeRewardQuest>> =
         flow {
             val largeRewardQuests =
                 questDataSource.getLargeRewardQuest(
                     commercialAreaCode = commercialAreaCode,
                     size = 3
-                ).content.map(LargeRewardQuestNetworkModel::toLargeRewardQuest)
+                ).content.map {
+                    it.toLargeRewardQuest(isIsZoneQuest = commercialAreaCode == isZoneCode)
+                }
             emit(largeRewardQuests)
         }
 
