@@ -17,7 +17,6 @@ import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
-import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.LargeRewardQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.PopularQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RecommendedQuestNetworkModel
@@ -60,14 +59,17 @@ class QuestRepositoryImpl(
         bannerId: Int,
         completedYn: Boolean,
         orderExpiredDesc: Boolean?,
-        orderRewardDesc: Boolean?
+        orderRewardDesc: Boolean?,
+        isZoneCode: String?
     ): Flow<PagingData<BannerQuest>> {
         return questDataSource.getBannerQuests(
             bannerId = bannerId,
             completedYn = completedYn,
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc
-        ).map { it.map(BannerQuestNetworkModel::toBannerQuest) }
+        ).map {
+            it.map { quest -> quest.toBannerQuest(isZoneCode) }
+        }
     }
 
     override fun getTypedQuests(

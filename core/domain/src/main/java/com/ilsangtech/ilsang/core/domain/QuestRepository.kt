@@ -21,7 +21,8 @@ interface QuestRepository {
         bannerId: Int,
         completedYn: Boolean,
         orderExpiredDesc: Boolean? = null,
-        orderRewardDesc: Boolean? = null
+        orderRewardDesc: Boolean? = null,
+        isZoneCode: String?
     ): Flow<PagingData<BannerQuest>>
 
     fun getTypedQuests(

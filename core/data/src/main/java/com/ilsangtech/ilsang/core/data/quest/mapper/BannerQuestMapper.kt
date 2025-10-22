@@ -5,7 +5,7 @@ import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 
-internal fun BannerQuestNetworkModel.toBannerQuest(): BannerQuest {
+internal fun BannerQuestNetworkModel.toBannerQuest(isZoneCode: String?): BannerQuest {
     return BannerQuest(
         questId = questId,
         questType = when (questType) {
@@ -25,6 +25,7 @@ internal fun BannerQuestNetworkModel.toBannerQuest(): BannerQuest {
         mainImageId = mainImageId,
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
         title = title,
-        writerName = writerName
+        writerName = writerName,
+        isIsZoneQuest = commercialAreaCode == isZoneCode
     )
 }
