@@ -84,10 +84,12 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val normalQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 questType = QuestType.Normal,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -100,6 +102,7 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val repeatQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         combine(
             selectedSortType, selectedRepeatType
         ) { sortType, repeatType ->
@@ -114,6 +117,7 @@ class QuestTabViewModel @Inject constructor(
             questRepository.getTypedQuests(
                 questType = questType,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (sortType) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -126,10 +130,12 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val eventQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 questType = QuestType.Event,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -142,9 +148,11 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val completedQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
