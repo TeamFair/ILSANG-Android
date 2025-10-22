@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -48,6 +49,10 @@ class HomeViewModel @Inject constructor(
     val shouldShowSeasonOpenDialog = _shouldShowSeasonOpenDialog.asStateFlow()
 
     private val _myInfo = userRepository.getMyInfo()
+
+    private val _isIsZoneQuest = _myInfo.map { myInfo ->
+        myInfo.myCommericalAreaCode == myInfo.isCommercialAreaCode
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
@@ -112,9 +117,17 @@ class HomeViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = combine(
         selectedQuestId,
+        _isIsZoneQuest,
         questDetailRefreshTrigger.onStart { emit(Unit) }
-    ) { questId, _ -> questId }.flatMapLatest { questId ->
-        questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
+    ) { questId, isIsZoneQuest, _ ->
+        questId to isIsZoneQuest
+    }.flatMapLatest { (questId, isIsZoneQuest) ->
+        questId?.let {
+            questRepository.getQuestDetail(
+                questId = questId,
+                isIsZoneQuest = isIsZoneQuest
+            )
+        } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
