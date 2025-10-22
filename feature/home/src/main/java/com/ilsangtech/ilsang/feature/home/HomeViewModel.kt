@@ -47,9 +47,11 @@ class HomeViewModel @Inject constructor(
     private val _shouldShowSeasonOpenDialog = MutableStateFlow<Boolean?>(null)
     val shouldShowSeasonOpenDialog = _shouldShowSeasonOpenDialog.asStateFlow()
 
+    private val _myInfo = userRepository.getMyInfo()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val homeTabUiState: StateFlow<HomeTabUiState> =
-        userRepository.getMyInfo().flatMapLatest<MyInfo, HomeTabUiState> { myInfo ->
+        _myInfo.flatMapLatest<MyInfo, HomeTabUiState> { myInfo ->
             if (shouldShowSeasonOpenDialog.value == null) {
                 _shouldShowSeasonOpenDialog.update { myInfo.shouldShowSeasonOpenDialog }
             }
@@ -68,7 +70,10 @@ class HomeViewModel @Inject constructor(
             val recommendedFlow =
                 questRepository.getRecommendedQuests(myAreaCode)
             val largeRewardFlow =
-                questRepository.getLargeRewardQuests(myAreaCode)
+                questRepository.getLargeRewardQuests(
+                    commercialAreaCode = myAreaCode,
+                    isZoneCode = isAreaCode
+                )
             val topRankUsersFlow =
                 rankRepository.getTotalTopRankUsers(myAreaCode)
 
