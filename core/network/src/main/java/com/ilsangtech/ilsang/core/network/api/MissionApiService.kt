@@ -6,6 +6,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegis
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
+import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -29,6 +30,11 @@ interface MissionApiService {
         @Query("missionType") missionType: String,
         @Query("sort") sort: List<String> = emptyList()
     ): UserMissionHistoryResponse
+
+    @GET("api/v1/mission/user/history/detail")
+    suspend fun getUserMissionHistoryDetail(
+        @Query("missionHistoryId") missionHistoryId: Int
+    ): UserMissionHistoryDetailNetworkModel
 
     @GET("api/v1/mission/user/history/random")
     suspend fun getRandomMissionHistory(
