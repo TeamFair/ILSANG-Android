@@ -49,13 +49,7 @@ data class MyProfileEditRoute(
 data object MyChallengeRoute
 
 @Serializable
-data class MyChallengeDetailRoute(
-    val missionHistoryId: Int,
-    val submitImageId: String,
-    val questImageId: String?,
-    val title: String,
-    val likeCount: Int
-)
+data class MyChallengeDetailRoute(val missionHistoryId: Int)
 
 @Serializable
 data object TermsRoute
@@ -78,21 +72,8 @@ fun NavHostController.navigateToMyProfileEdit(
 ) = navigate(MyProfileEditRoute(nickname, profileImageId))
 
 
-fun NavHostController.navigateToMyChallengeDetail(
-    missionHistoryId: Int,
-    receiptImageId: String,
-    questImageId: String?,
-    title: String,
-    likeCount: Int
-) = navigate(
-    MyChallengeDetailRoute(
-        missionHistoryId = missionHistoryId,
-        submitImageId = receiptImageId,
-        questImageId = questImageId,
-        title = title,
-        likeCount = likeCount
-    )
-)
+fun NavHostController.navigateToMyChallengeDetail(missionHistoryId: Int) =
+    navigate(MyChallengeDetailRoute(missionHistoryId = missionHistoryId))
 
 fun NavController.navigateToSetting() = navigate(SettingRoute)
 
@@ -113,7 +94,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigateToMyTabMain: () -> Unit,
     navigateToMyProfileEdit: (String, String?) -> Unit,
     navigateToMyChallenge: () -> Unit,
-    navigateToMyChallengeDetail: (Int, String, String?, String, Int) -> Unit,
+    navigateToMyChallengeDetail: (Int) -> Unit,
     navigateToSetting: () -> Unit,
     navigateToCustomerCenter: () -> Unit,
     navigateToFaq: () -> Unit,
@@ -160,13 +141,7 @@ fun NavGraphBuilder.myTabNavigation(
         composable<MyChallengeRoute> {
             MyChallengeScreen(
                 onMissionHistoryClick = { missionHistory ->
-                    navigateToMyChallengeDetail(
-                        missionHistory.missionHistoryId,
-                        missionHistory.submitImageId,
-                        missionHistory.questImageId,
-                        missionHistory.title,
-                        missionHistory.likeCount
-                    )
+                    navigateToMyChallengeDetail(missionHistory.missionHistoryId)
                 },
                 onQuestNavButtonClick = navigateToHome,
                 onBackButtonClick = navigateToMyTabMain
