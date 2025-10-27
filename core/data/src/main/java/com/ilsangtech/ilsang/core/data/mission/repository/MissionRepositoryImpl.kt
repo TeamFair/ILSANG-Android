@@ -6,11 +6,13 @@ import com.ilsangtech.ilsang.core.data.mission.datasource.MissionDataSource
 import com.ilsangtech.ilsang.core.data.mission.mapper.toExampleMissionHistory
 import com.ilsangtech.ilsang.core.data.mission.mapper.toRandomMissionHistory
 import com.ilsangtech.ilsang.core.data.mission.mapper.toUserMissionHistory
+import com.ilsangtech.ilsang.core.data.mission.mapper.toUserMissionHistoryDetail
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
+import com.ilsangtech.ilsang.core.model.mission.UserMissionHistoryDetail
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +47,11 @@ class MissionRepositoryImpl(
         ).map { pagingData ->
             pagingData.map { it.toUserMissionHistory() }
         }
+    }
+
+    override suspend fun getUserMissionHistoryDetail(missionHistoryId: Int): UserMissionHistoryDetail {
+        return missionDataSource.getUserMissionHistoryDetail(missionHistoryId)
+            .toUserMissionHistoryDetail()
     }
 
     override suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit> {

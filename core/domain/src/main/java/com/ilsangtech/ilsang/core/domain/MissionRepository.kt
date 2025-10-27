@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
+import com.ilsangtech.ilsang.core.model.mission.UserMissionHistoryDetail
 import kotlinx.coroutines.flow.Flow
 
 interface MissionRepository {
@@ -16,6 +17,8 @@ interface MissionRepository {
         userId: String? = null,
         missionType: MissionType
     ): Flow<PagingData<UserMissionHistory>>
+
+    suspend fun getUserMissionHistoryDetail(missionHistoryId: Int): UserMissionHistoryDetail
 
     suspend fun likeMissionHistory(missionHistoryId: Int): Result<Unit>
 
