@@ -1,5 +1,7 @@
 package com.ilsangtech.ilsang.core.model.mission
 
+import com.ilsangtech.ilsang.core.model.quest.QuestType
+
 data class UserMissionHistory(
     val missionHistoryId: Int,
     val title: String,
@@ -9,5 +11,6 @@ data class UserMissionHistory(
     val likeCount: Int,
     val createdAt: String,
     val missionType: MissionType,
-    val commercialAreaCode: String
+    val commercialAreaCode: String,
+    val questType: QuestType
 )
