@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegis
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
 import kotlinx.coroutines.flow.Flow
 
@@ -53,6 +54,10 @@ class MissionDataSourceImpl(
                 )
             }
         ).flow
+    }
+
+    override suspend fun getUserMissionHistoryDetail(missionHistoryId: Int): UserMissionHistoryDetailNetworkModel {
+        return missionApiService.getUserMissionHistoryDetail(missionHistoryId)
     }
 
     override suspend fun registerMissionHistoryEmoji(
