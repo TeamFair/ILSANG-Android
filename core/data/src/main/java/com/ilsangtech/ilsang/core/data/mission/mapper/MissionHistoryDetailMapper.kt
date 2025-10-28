@@ -25,8 +25,7 @@ internal fun UserMissionHistoryDetailNetworkModel.toUserMissionHistoryDetail(): 
         quiz = quizList.firstOrNull()?.toCompletedQuiz(),
         questType = QuestType.fromString(
             type = questType,
-            //TODO DTO에서 받은 repeatFrequency 값을 아규먼트로 설정
-            repeatFrequency = "DAILY"
+            repeatFrequency = repeatFrequency
         )
     )
 }

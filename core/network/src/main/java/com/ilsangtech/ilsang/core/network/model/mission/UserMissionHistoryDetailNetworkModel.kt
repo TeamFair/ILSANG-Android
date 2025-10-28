@@ -19,5 +19,6 @@ data class UserMissionHistoryDetailNetworkModel(
     val metroGainPoint: Int,
     val contributionGainPoint: Int,
     val quizList: List<CompletedQuizNetworkModel>,
-    val questType: String
+    val questType: String,
+    val repeatFrequency: String?
 )
