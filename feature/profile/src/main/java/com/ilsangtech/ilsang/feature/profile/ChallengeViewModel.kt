@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 @HiltViewModel
-class ChallengeViewModel(
+class ChallengeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val missionRepository: MissionRepository
 ) : ViewModel() {
