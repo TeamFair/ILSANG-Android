@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.feature.profile.model.ChallengeDetailUiState
+import com.ilsangtech.ilsang.feature.profile.model.toUiModel
 import com.ilsangtech.ilsang.feature.profile.navigation.ChallengeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +24,7 @@ class ChallengeViewModel @Inject constructor(
 
     val challengeDetailUiState = flow<ChallengeDetailUiState> {
         val data = missionRepository.getUserMissionHistoryDetail(missionHistoryId)
-        emit(ChallengeDetailUiState.Success(data))
+        emit(ChallengeDetailUiState.Success(data.toUiModel()))
     }.catch {
         emit(ChallengeDetailUiState.Error)
     }.stateIn(
