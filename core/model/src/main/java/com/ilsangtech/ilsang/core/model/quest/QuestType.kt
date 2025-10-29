@@ -9,4 +9,6 @@ sealed interface QuestType {
     }
 
     data object Event : QuestType
+
+    companion object
 }

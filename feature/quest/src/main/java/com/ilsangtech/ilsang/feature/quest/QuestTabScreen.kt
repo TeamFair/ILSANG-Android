@@ -30,6 +30,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
@@ -50,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, String) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType) -> Unit,
     navigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {
@@ -113,7 +114,7 @@ private fun QuestTabScreen(
     onSelectSortType: (SortTypeUiModel) -> Unit,
     onQuestClick: (Int) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
-    onApproveButtonClick: (Int, Int, String) -> Unit,
+    onApproveButtonClick: (Int, Int, MissionType) -> Unit,
     onMyZoneClick: () -> Unit,
     onMissionImageClick: (Int?) -> Unit,
     onDismissRequest: () -> Unit

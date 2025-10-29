@@ -12,6 +12,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegis
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
+import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryDetailNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetworkModel
 import kotlinx.coroutines.flow.Flow
 
@@ -36,13 +37,27 @@ class MissionDataSourceImpl(
         ).flow
     }
 
-    override fun getUserMissionHistory(userId: String?): Flow<PagingData<UserMissionHistoryNetworkModel>> {
+    override fun getUserMissionHistory(
+        userId: String?,
+        missionType: String
+    ): Flow<PagingData<UserMissionHistoryNetworkModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(
+                initialLoadSize = if (userId != null) 6 else 30,
+                pageSize = 10
+            ),
             pagingSourceFactory = {
-                UserMissionHistoryPagingSource(userId, missionApiService)
+                UserMissionHistoryPagingSource(
+                    userId = userId,
+                    missionType = missionType,
+                    missionApiService = missionApiService
+                )
             }
         ).flow
+    }
+
+    override suspend fun getUserMissionHistoryDetail(missionHistoryId: Int): UserMissionHistoryDetailNetworkModel {
+        return missionApiService.getUserMissionHistoryDetail(missionHistoryId)
     }
 
     override suspend fun registerMissionHistoryEmoji(

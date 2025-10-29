@@ -1,50 +1,50 @@
 package com.ilsangtech.ilsang.feature.my.screens.challenge_detail
 
-import android.content.Intent
-import android.graphics.Bitmap
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.feature.my.BuildConfig
+import com.ilsangtech.ilsang.core.model.mission.MissionType
+import com.ilsangtech.ilsang.core.ui.mission.MissionHistoryDetailDateItem
+import com.ilsangtech.ilsang.core.ui.mission.MissionHistoryDetailInfoItem
+import com.ilsangtech.ilsang.core.ui.mission.MissionHistoryDetailPhotoItem
+import com.ilsangtech.ilsang.core.ui.mission.MissionHistoryDetailPointItem
+import com.ilsangtech.ilsang.core.ui.mission.MissionHistoryDetailWriterItem
+import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.ChallengeDeleteDialog
+import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MissionHistoryDetailQuizItem
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailHeader
-import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.component.MyChallengeDetailInfoCard
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model.MyChallengeDetailUiState
-import kotlinx.coroutines.launch
-import java.io.File
 
 @Composable
 fun MyChallengeDetailScreen(
-    myChallengeViewModel: MyChallengeDetailViewModel = hiltViewModel(),
+    viewModel: MyChallengeDetailViewModel = hiltViewModel(),
     navigateToMyTabMain: () -> Unit
 ) {
-    val challengeUiState = myChallengeViewModel.challengeUiState
-    val isChallengeDeleteSuccess by myChallengeViewModel.isChallengeDeleteSuccess.collectAsStateWithLifecycle()
+    val challengeUiState by viewModel.challengeUiState.collectAsStateWithLifecycle()
+    val isChallengeDeleteSuccess by viewModel.isChallengeDeleteSuccess.collectAsStateWithLifecycle()
 
     LaunchedEffect(isChallengeDeleteSuccess) {
         if (isChallengeDeleteSuccess == true) {
@@ -53,22 +53,18 @@ fun MyChallengeDetailScreen(
     }
 
     MyChallengeDetailScreen(
-        challenge = challengeUiState,
-        onDeleteButtonClick = myChallengeViewModel::deleteChallenge,
+        uiState = challengeUiState,
+        onDeleteButtonClick = viewModel::deleteChallenge,
         navigateToMyTabMain = navigateToMyTabMain
     )
 }
 
 @Composable
 fun MyChallengeDetailScreen(
-    challenge: MyChallengeDetailUiState,
+    uiState: MyChallengeDetailUiState,
     onDeleteButtonClick: () -> Unit,
     navigateToMyTabMain: () -> Unit
 ) {
-    val context = LocalContext.current
-    val graphicsLayer = rememberGraphicsLayer()
-    val coroutineScope = rememberCoroutineScope()
-
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -88,77 +84,73 @@ fun MyChallengeDetailScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             MyChallengeDetailHeader(
                 onBackButtonClick = navigateToMyTabMain,
-                onShareButtonClick = {
-                    coroutineScope.launch {
-                        val imageBitmap = graphicsLayer.toImageBitmap()
-                        val fileName = "user_profile_image.png"
-                        val file = File(context.cacheDir, fileName).apply {
-                            deleteOnExit()
-                        }
-                        val outputStream = file.outputStream()
-
-                        imageBitmap.asAndroidBitmap()
-                            .compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                        outputStream.close()
-
-                        val uri = FileProvider.getUriForFile(
-                            context,
-                            "${context.packageName}.fileprovider",
-                            file
-                        )
-                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            setType("image/png")
-                            putExtra(Intent.EXTRA_STREAM, uri)
-                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            setDataAndType(uri, "image/png")
-                        }
-                        context.startActivity(Intent.createChooser(sendIntent, "공유하기"))
-                    }
-                },
+                onShareButtonClick = {},
                 onDeleteButtonClick = { showDeleteDialog = true }
             )
-
-            Box(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .drawWithContent {
-                        graphicsLayer.record {
-                            this@drawWithContent.drawContent()
-                        }
-                        drawLayer(graphicsLayer = graphicsLayer)
-                    }
+                    .background(background),
+                contentPadding = PaddingValues(bottom = 72.dp)
             ) {
-                AsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    model = BuildConfig.IMAGE_URL + challenge.submitImageId,
-                    contentScale = ContentScale.FillWidth,
-                    contentDescription = null
-                )
-                MyChallengeDetailInfoCard(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 16.dp)
-                        .padding(horizontal = 20.dp),
-                    challenge = challenge
-                )
+                when (uiState) {
+                    MyChallengeDetailUiState.Loading -> {
+                        item(key = "로딩", contentType = "Loading") {
+                            Box(
+                                modifier = Modifier.fillParentMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(color = gray200)
+                            }
+                        }
+                    }
+
+                    MyChallengeDetailUiState.Error -> {}
+                    is MyChallengeDetailUiState.Success -> {
+                        val uiModel = uiState.data
+                        if (uiModel.missionType is MissionType.Photo) {
+                            item(key = "퀘스트 수행 이미지", contentType = "Image") {
+                                MissionHistoryDetailPhotoItem(imageId = uiModel.submitImageId)
+                            }
+                        }
+                        item(key = "퀘스트 정보", contentType = "Info") {
+                            MissionHistoryDetailInfoItem(
+                                title = uiModel.title,
+                                questType = uiModel.questType,
+                                missionType = uiModel.missionType,
+                                likeCount = uiModel.likeCount,
+                                createdAt = uiModel.createdAt
+                            )
+                        }
+                        item(key = "퀘스트 정보 여백", contentType = "Spacer") {
+                            Spacer(Modifier.height(24.dp))
+                        }
+                        item(key = "퀘스트 상세 정보", contentType = "DetailInfo") {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                if (uiModel.missionType != MissionType.Photo) {
+                                    uiModel.quiz?.let { quiz ->
+                                        MissionHistoryDetailQuizItem(
+                                            missionType = uiModel.missionType,
+                                            completedQuiz = quiz
+                                        )
+                                    }
+                                }
+                                MissionHistoryDetailPointItem(
+                                    metroGainPoint = uiModel.metroGainPoint,
+                                    commercialGainPoint = uiModel.commercialGainPoint,
+                                    contributionGainPoint = uiModel.contributionGainPoint
+                                )
+                                MissionHistoryDetailWriterItem(writerName = uiModel.writerName)
+                                MissionHistoryDetailDateItem(createdAt = uiModel.createdAt)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun MyChallengeDetailScreenPreview() {
-    MyChallengeDetailScreen(
-        challenge = MyChallengeDetailUiState(
-            missionHistoryId = 0,
-            likeCount = 13,
-            title = "겨울 간식 먹기",
-            questImageId = "",
-            submitImageId = ""
-        ),
-        onDeleteButtonClick = {},
-        navigateToMyTabMain = {}
-    )
 }

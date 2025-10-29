@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.feature.profile.ChallengeScreen
 import com.ilsangtech.ilsang.feature.profile.ProfileScreen
 import kotlinx.serialization.Serializable
@@ -16,29 +15,13 @@ data object ProfileBaseRoute
 data class ProfileRoute(val userId: String)
 
 @Serializable
-data class ChallengeRoute(
-    val receiptImageId: String,
-    val questImageId: String?,
-    val likeCount: Int,
-    val title: String
-)
+data class ChallengeRoute(val missionHistoryId: Int)
 
-fun NavHostController.navigateToChallenge(
-    submitImageId: String,
-    questImageId: String?,
-    likeCount: Int,
-    title: String
-) = navigate(
-    ChallengeRoute(
-        receiptImageId = submitImageId,
-        questImageId = questImageId,
-        likeCount = likeCount,
-        title = title
-    )
-)
+fun NavHostController.navigateToChallenge(missionHistoryId: Int) =
+    navigate(ChallengeRoute(missionHistoryId))
 
 fun NavGraphBuilder.profileRoute(
-    navigateToChallenge: (String, String?, Int, String) -> Unit,
+    navigateToChallenge: (Int) -> Unit,
     popBackStack: () -> Unit
 ) {
     navigation<ProfileBaseRoute>(
@@ -46,31 +29,12 @@ fun NavGraphBuilder.profileRoute(
     ) {
         composable<ProfileRoute> {
             ProfileScreen(
-                navigateToChallenge = {
-                    navigateToChallenge(
-                        it.submitImageId,
-                        it.questImageId,
-                        it.likeCount,
-                        it.title
-                    )
-                },
+                navigateToChallenge = { navigateToChallenge(it.missionHistoryId) },
                 onPopBackStack = popBackStack
             )
         }
-
         composable<ChallengeRoute> {
-            val receiptImageId = it.toRoute<ChallengeRoute>().receiptImageId
-            val questImageId = it.toRoute<ChallengeRoute>().questImageId
-            val likeCount = it.toRoute<ChallengeRoute>().likeCount
-            val title = it.toRoute<ChallengeRoute>().title
-
-            ChallengeScreen(
-                receiptImageId = receiptImageId,
-                questImageId = questImageId,
-                likeCount = likeCount,
-                title = title,
-                popBackStack = popBackStack
-            )
+            ChallengeScreen(popBackStack = popBackStack)
         }
     }
 }

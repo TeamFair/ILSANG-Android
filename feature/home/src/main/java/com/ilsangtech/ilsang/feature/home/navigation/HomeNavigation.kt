@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.banner.Banner
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.feature.home.HomeTabScreen
 import kotlinx.serialization.Serializable
 
@@ -18,7 +19,7 @@ fun NavGraphBuilder.homeNavigation(
     navigateToRankingTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToSubmit: (Int, Int, String) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
@@ -137,7 +138,7 @@ private fun QuestBottomSheetContent(
     ) {
         QuestInfoContent(quest = quest)
         Row(modifier = Modifier.fillMaxWidth()) {
-            if (quest.missions.firstOrNull()?.type == "PHOTO") {
+            if (quest.missions.firstOrNull()?.type == MissionType.Photo) {
                 val imageIds = if (quest.questType is QuestType.Repeat) {
                     listOf(quest.missions.first().exampleImageIds.firstOrNull())
                 } else {
@@ -237,7 +238,7 @@ fun QuestBottomSheetPreviewQuestDetail() {
                 id = 1,
                 exampleImageIds = listOf("imageId1", "imageId2"),
                 title = "사진 인증 미션",
-                type = "PHOTO"
+                type = MissionType.Photo
             )
         ),
         coupons = listOf(

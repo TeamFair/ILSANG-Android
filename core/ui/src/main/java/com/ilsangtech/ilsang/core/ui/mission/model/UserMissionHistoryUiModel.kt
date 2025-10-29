@@ -1,16 +1,20 @@
 package com.ilsangtech.ilsang.core.ui.mission.model
 
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistory
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.util.DateConverter
 
 data class UserMissionHistoryUiModel(
     val missionHistoryId: Int,
     val title: String,
     val questImageId: String?,
-    val submitImageId: String,
+    val submitImageId: String?,
     val viewCount: Int,
     val likeCount: Int,
-    val createdAt: String
+    val createdAt: String,
+    val questType: QuestType,
+    val missionType: MissionType
 )
 
 fun UserMissionHistory.toUiModel(): UserMissionHistoryUiModel {
@@ -21,6 +25,8 @@ fun UserMissionHistory.toUiModel(): UserMissionHistoryUiModel {
         submitImageId = submitImageId,
         viewCount = viewCount,
         likeCount = likeCount,
-        createdAt = DateConverter.formatDate(input = createdAt)
+        createdAt = DateConverter.formatDate(input = createdAt),
+        missionType = missionType,
+        questType = questType
     )
 }

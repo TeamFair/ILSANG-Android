@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.feature.my.screens.challenge_detail.model
+package com.ilsangtech.ilsang.feature.profile.model
 
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.mission.UserMissionHistoryDetail
@@ -6,13 +6,13 @@ import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quiz.CompletedQuiz
 import com.ilsangtech.ilsang.core.util.DateConverter
 
-sealed interface MyChallengeDetailUiState {
-    data class Success(val data: MyChallengeDetailUiModel) : MyChallengeDetailUiState
-    data object Error : MyChallengeDetailUiState
-    object Loading : MyChallengeDetailUiState
+sealed interface ChallengeDetailUiState {
+    data object Loading : ChallengeDetailUiState
+    data class Success(val data: ChallengeDetailUiModel) : ChallengeDetailUiState
+    data object Error : ChallengeDetailUiState
 }
 
-data class MyChallengeDetailUiModel(
+data class ChallengeDetailUiModel(
     val missionHistoryId: Int,
     val title: String,
     val submitImageId: String?,
@@ -29,8 +29,8 @@ data class MyChallengeDetailUiModel(
     val questType: QuestType
 )
 
-internal fun UserMissionHistoryDetail.toUiModel(): MyChallengeDetailUiModel {
-    return MyChallengeDetailUiModel(
+internal fun UserMissionHistoryDetail.toUiModel(): ChallengeDetailUiModel {
+    return ChallengeDetailUiModel(
         missionHistoryId = missionHistoryId,
         title = title,
         submitImageId = submitImageId,

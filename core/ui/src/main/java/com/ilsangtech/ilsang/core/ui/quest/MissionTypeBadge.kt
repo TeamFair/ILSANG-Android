@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.toSp
@@ -19,7 +20,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 @Composable
 fun MissionTypeBadge(
     modifier: Modifier = Modifier,
-    missionType: String
+    missionType: MissionType
 ) {
     Box(
         modifier = modifier
@@ -30,9 +31,9 @@ fun MissionTypeBadge(
     ) {
         Text(
             text = when (missionType) {
-                "PHOTO" -> "사진인증"
-                "OX" -> "OX"
-                else -> "서술형"
+                MissionType.Photo -> "사진인증"
+                MissionType.Ox -> "OX"
+                MissionType.Words -> "서술형"
             },
             style = badge02TextStyle.copy(
                 fontSize = 10.dp.toSp(),
@@ -46,17 +47,17 @@ fun MissionTypeBadge(
 @Preview
 @Composable
 private fun MissionTypeBadgePhotoPreview() {
-    MissionTypeBadge(missionType = "PHOTO")
+    MissionTypeBadge(missionType = MissionType.Photo)
 }
 
 @Preview
 @Composable
 private fun MissionTypeBadgeOXPreview() {
-    MissionTypeBadge(missionType = "OX")
+    MissionTypeBadge(missionType = MissionType.Ox)
 }
 
 @Preview
 @Composable
-private fun MissionTypeBadgeElsePreview() {
-    MissionTypeBadge(missionType = "WORDS")
+private fun MissionTypeBadgeWordsPreview() {
+    MissionTypeBadge(missionType = MissionType.Words)
 }

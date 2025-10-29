@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ilsangtech.ilsang.core.ui.mission.model.MissionTypes
 import com.ilsangtech.ilsang.core.ui.mission.model.UserMissionHistoryUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.designsystem.R
@@ -44,14 +45,17 @@ fun ProfileScreen(
     onPopBackStack: () -> Unit
 ) {
     val uiState by profileViewModel.profileUiState.collectAsStateWithLifecycle()
+    val missionType by profileViewModel.missionType.collectAsStateWithLifecycle()
     val selectedSeason by profileViewModel.selectedSeason.collectAsStateWithLifecycle()
     val userMissionHistories = profileViewModel.missionHistories.collectAsLazyPagingItems()
 
     ProfileScreen(
         uiState = uiState,
         selectedSeason = selectedSeason,
+        missionType = missionType,
         userMissionHistories = userMissionHistories,
         onSeasonChanged = profileViewModel::updateSeason,
+        onMissionTypeSelected = profileViewModel::updateMissionType,
         onMissionHistoryClick = navigateToChallenge,
         onBackButtonClick = onPopBackStack
     )
@@ -61,8 +65,10 @@ fun ProfileScreen(
 private fun ProfileScreen(
     uiState: ProfileUiState,
     selectedSeason: SeasonUiModel,
+    missionType: MissionTypes,
     userMissionHistories: LazyPagingItems<UserMissionHistoryUiModel>,
     onSeasonChanged: (SeasonUiModel) -> Unit,
+    onMissionTypeSelected: (MissionTypes) -> Unit,
     onMissionHistoryClick: (UserMissionHistoryUiModel) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
@@ -114,8 +120,11 @@ private fun ProfileScreen(
                         }
                         item { Spacer(Modifier.height(48.dp)) }
                         userMissionHistoryContent(
+                            nickname = uiState.userProfileInfo.nickname,
+                            missionType = missionType,
                             userMissionHistoryItems = userMissionHistories,
-                            onClick = onMissionHistoryClick
+                            onMissionTypeSelected = onMissionTypeSelected,
+                            onItemClick = onMissionHistoryClick
                         )
                     }
 

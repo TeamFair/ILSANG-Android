@@ -10,7 +10,9 @@ import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.SeasonRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.season.Season
+import com.ilsangtech.ilsang.core.ui.mission.model.MissionTypes
 import com.ilsangtech.ilsang.core.ui.mission.model.toUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.core.ui.season.model.toUiModel
@@ -44,7 +46,20 @@ class ProfileViewModel @Inject constructor(
     private val _selectedSeason = MutableStateFlow<SeasonUiModel>(SeasonUiModel.Total)
     val selectedSeason = _selectedSeason.asStateFlow()
 
-    val missionHistories = missionRepository.getUserMissionHistory(userId)
+    private val _missionType = MutableStateFlow(MissionTypes.IMAGE)
+    val missionType = _missionType.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val missionHistories = _missionType.flatMapLatest { missionType ->
+        missionRepository.getUserMissionHistory(
+            userId = userId,
+            missionType = when (missionType) {
+                MissionTypes.IMAGE -> MissionType.Photo
+                MissionTypes.OX -> MissionType.Ox
+                MissionTypes.WORDS -> MissionType.Words
+            }
+        )
+    }
         .cachedIn(viewModelScope)
         .map { pagingData ->
             pagingData.map { it.toUiModel() }
@@ -98,5 +113,9 @@ class ProfileViewModel @Inject constructor(
 
     fun updateSeason(season: SeasonUiModel) {
         _selectedSeason.update { season }
+    }
+
+    fun updateMissionType(missionType: MissionTypes) {
+        _missionType.update { missionType }
     }
 }

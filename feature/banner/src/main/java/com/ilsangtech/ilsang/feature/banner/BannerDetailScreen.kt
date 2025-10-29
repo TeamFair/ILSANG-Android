@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun BannerDetailScreen(
     bannerDetailViewModel: BannerDetailViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, String) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType) -> Unit,
     navigateToMissionExample: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
@@ -84,7 +85,7 @@ private fun BannerDetailScreen(
     onUnselectQuest: () -> Unit,
     onFavoriteClick: () -> Unit,
     onMissionImageClick: (Int) -> Unit,
-    onSubmitButtonClick: (Int, Int, String) -> Unit,
+    onSubmitButtonClick: (Int, Int, MissionType) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
