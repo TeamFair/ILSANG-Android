@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.ilsangtech.ilsang.feature.profile.ChallengeScreen
 import com.ilsangtech.ilsang.feature.profile.ProfileScreen
 import kotlinx.serialization.Serializable
 
@@ -32,6 +33,8 @@ fun NavGraphBuilder.profileRoute(
                 onPopBackStack = popBackStack
             )
         }
-        //TODO 변경된 ChallengeScreen 라우트 구성
+        composable<ChallengeRoute> {
+            ChallengeScreen(popBackStack = popBackStack)
+        }
     }
 }
