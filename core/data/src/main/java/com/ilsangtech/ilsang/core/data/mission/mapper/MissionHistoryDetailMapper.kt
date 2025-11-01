@@ -26,6 +26,7 @@ internal fun UserMissionHistoryDetailNetworkModel.toUserMissionHistoryDetail(): 
         questType = QuestType.fromString(
             type = questType,
             repeatFrequency = repeatFrequency
-        )
+        ),
+        isContributionDouble = contributionDoublePointYn
     )
 }

@@ -18,5 +18,6 @@ data class UserMissionHistoryDetail(
     val metroGainPoint: Int,
     val contributionGainPoint: Int,
     val quiz: CompletedQuiz?,
-    val questType: QuestType
+    val questType: QuestType,
+    val isContributionDouble: Boolean
 )
