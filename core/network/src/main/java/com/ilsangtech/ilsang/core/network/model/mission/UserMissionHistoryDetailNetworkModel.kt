@@ -20,5 +20,6 @@ data class UserMissionHistoryDetailNetworkModel(
     val contributionGainPoint: Int,
     val quizList: List<CompletedQuizNetworkModel>,
     val questType: String,
-    val repeatFrequency: String?
+    val repeatFrequency: String?,
+    val contributionDoublePointYn: Boolean
 )
