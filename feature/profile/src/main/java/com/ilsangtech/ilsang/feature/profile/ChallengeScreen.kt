@@ -130,7 +130,8 @@ private fun ChallengeScreen(
                                 MissionHistoryDetailPointItem(
                                     metroGainPoint = uiModel.metroGainPoint,
                                     commercialGainPoint = uiModel.commercialGainPoint,
-                                    contributionGainPoint = uiModel.contributionGainPoint
+                                    contributionGainPoint = uiModel.contributionGainPoint,
+                                    isContributionDouble = uiModel.isContributionDouble
                                 )
                                 MissionHistoryDetailWriterItem(writerName = uiModel.writerName)
                                 MissionHistoryDetailDateItem(createdAt = uiModel.createdAt)
@@ -272,7 +273,8 @@ private fun ChallengeScreenSuccessPreview() {
         metroGainPoint = 10,
         contributionGainPoint = 5,
         quiz = null,
-        questType = QuestType.Normal
+        questType = QuestType.Normal,
+        isContributionDouble = true
     )
     ChallengeScreen(
         uiState = ChallengeDetailUiState.Success(uiModel),
