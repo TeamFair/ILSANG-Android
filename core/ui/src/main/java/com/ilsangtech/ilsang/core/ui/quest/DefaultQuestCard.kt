@@ -12,12 +12,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DefaultQuestCard(
     modifier: Modifier = Modifier,
+    containerColor: Color = Color.White,
     onClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor),
         shape = RoundedCornerShape(12.dp),
         onClick = onClick,
         content = content

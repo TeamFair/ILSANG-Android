@@ -20,6 +20,7 @@ import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 
 @Composable
@@ -53,6 +54,7 @@ fun QuestCardWithArrow(
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
         isIsZoneQuest = quest.isIsZoneQuest,
+        lastCompleteDate = quest.lastCompleteDate,
         onClick = onClick
     )
 }
@@ -66,10 +68,12 @@ private fun QuestCardWithArrow(
     rewardPoints: List<RewardPoint>,
     imageId: String?,
     isIsZoneQuest: Boolean,
+    lastCompleteDate: String? = null,
     onClick: () -> Unit
 ) {
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
+        containerColor = if (lastCompleteDate != null) gray200 else Color.White,
         onClick = onClick
     ) {
         Box(
