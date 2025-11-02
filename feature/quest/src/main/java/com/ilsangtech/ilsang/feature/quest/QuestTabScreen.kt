@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {
@@ -93,7 +93,12 @@ fun QuestTabScreen(
             coroutineScope.launch {
                 bottomSheetState.hide()
                 questTabViewModel.unselectQuest()
-                navigateToSubmit(questId, missionId, missionType)
+                navigateToSubmit(
+                    questId,
+                    missionId,
+                    missionType,
+                    selectedQuest?.isIsZoneQuest ?: false
+                )
             }
         }
     )
