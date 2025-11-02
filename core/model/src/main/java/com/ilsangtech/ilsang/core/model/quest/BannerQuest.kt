@@ -11,5 +11,6 @@ data class BannerQuest(
     val rewards: List<RewardPoint>,
     val title: String,
     val writerName: String,
-    val isIsZoneQuest: Boolean = false
+    val isIsZoneQuest: Boolean = false,
+    val lastCompleteDate: String? = null
 )

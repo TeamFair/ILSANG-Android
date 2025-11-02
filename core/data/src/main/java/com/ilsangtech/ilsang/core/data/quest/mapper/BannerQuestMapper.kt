@@ -26,6 +26,7 @@ internal fun BannerQuestNetworkModel.toBannerQuest(isZoneCode: String?): BannerQ
         rewards = rewards.map(RewardPointNetworkModel::toRewardPoint),
         title = title,
         writerName = writerName,
-        isIsZoneQuest = commercialAreaCode == isZoneCode
+        isIsZoneQuest = commercialAreaCode == isZoneCode,
+        lastCompleteDate = lastCompleteDate
     )
 }
