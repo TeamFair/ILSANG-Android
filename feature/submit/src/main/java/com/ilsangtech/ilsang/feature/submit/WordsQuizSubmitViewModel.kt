@@ -31,6 +31,7 @@ class WordsQuizSubmitViewModel @Inject constructor(
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<WordsQuizSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<WordsQuizSubmitRoute>().missionId
+    val isIsZoneQuest = savedStateHandle.toRoute<WordsQuizSubmitRoute>().isIsZoneQuest
 
     private val _submitResultUiState =
         MutableStateFlow<SubmitResultUiState>(SubmitResultUiState.NotSubmitted)
