@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun BannerDetailScreen(
     bannerDetailViewModel: BannerDetailViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToMissionExample: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
@@ -85,7 +85,7 @@ private fun BannerDetailScreen(
     onUnselectQuest: () -> Unit,
     onFavoriteClick: () -> Unit,
     onMissionImageClick: (Int) -> Unit,
-    onSubmitButtonClick: (Int, Int, MissionType) -> Unit,
+    onSubmitButtonClick: (Int, Int, MissionType, Boolean) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -112,7 +112,12 @@ private fun BannerDetailScreen(
                     bottomSheetState.hide()
                     onUnselectQuest()
                     mission?.let { missionId ->
-                        onSubmitButtonClick(selectedQuest.id, mission.id, mission.type)
+                        onSubmitButtonClick(
+                            selectedQuest.id,
+                            mission.id,
+                            mission.type,
+                            selectedQuest.isIsZoneQuest
+                        )
                     }
                 }
             },
@@ -223,7 +228,7 @@ private fun BannerDetailScreenPreview() {
         onQuestClick = {},
         onQuestTypeChanged = {},
         onSortTypeChanged = {},
-        onSubmitButtonClick = { _, _, _ -> },
+        onSubmitButtonClick = { _, _, _, _ -> },
         onBackButtonClick = {},
         onUnselectQuest = {},
         onFavoriteClick = {},
