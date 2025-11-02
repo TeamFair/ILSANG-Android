@@ -70,7 +70,6 @@ internal fun SubmitSuccessDialog(
                 )
                 Spacer(Modifier.height(12.dp))
                 SubmitRewardPointsRow(
-                    modifier = Modifier.width(228.dp),
                     rewardPoints = rewardPoints,
                     isIsZoneQuest = isIsZoneQuest
                 )
