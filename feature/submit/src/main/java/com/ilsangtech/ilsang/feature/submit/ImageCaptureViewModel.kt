@@ -31,8 +31,7 @@ import javax.inject.Inject
 class ImageCaptureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val questId = savedStateHandle.toRoute<ImageCaptureRoute>().questId
-    val missionId = savedStateHandle.toRoute<ImageCaptureRoute>().missionId
+    val navData = savedStateHandle.toRoute<ImageCaptureRoute>()
 
     private val _surfaceRequest = MutableStateFlow<SurfaceRequest?>(null)
     val surfaceRequest = _surfaceRequest.asStateFlow()
