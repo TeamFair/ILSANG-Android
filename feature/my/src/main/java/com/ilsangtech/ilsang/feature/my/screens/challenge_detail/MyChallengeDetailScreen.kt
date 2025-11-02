@@ -142,7 +142,8 @@ fun MyChallengeDetailScreen(
                                 MissionHistoryDetailPointItem(
                                     metroGainPoint = uiModel.metroGainPoint,
                                     commercialGainPoint = uiModel.commercialGainPoint,
-                                    contributionGainPoint = uiModel.contributionGainPoint
+                                    contributionGainPoint = uiModel.contributionGainPoint,
+                                    isContributionDouble = uiModel.isContributionDouble
                                 )
                                 MissionHistoryDetailWriterItem(writerName = uiModel.writerName)
                                 MissionHistoryDetailDateItem(createdAt = uiModel.createdAt)

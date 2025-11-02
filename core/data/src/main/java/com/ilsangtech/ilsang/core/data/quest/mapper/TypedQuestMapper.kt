@@ -5,7 +5,7 @@ import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.TypedQuestNetworkModel
 
-internal fun TypedQuestNetworkModel.toTypedQuest(): TypedQuest {
+internal fun TypedQuestNetworkModel.toTypedQuest(isIsZoneQuest: Boolean): TypedQuest {
     return TypedQuest(
         questId = questId,
         expireDate = expireDate,
@@ -26,6 +26,7 @@ internal fun TypedQuestNetworkModel.toTypedQuest(): TypedQuest {
 
             "EVENT" -> QuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
-        }
+        },
+        isIsZoneQuest = isIsZoneQuest
     )
 }

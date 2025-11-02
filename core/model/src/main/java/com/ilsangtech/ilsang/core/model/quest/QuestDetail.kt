@@ -16,5 +16,6 @@ data class QuestDetail(
     val coupons: List<QuestDetailCoupon>,
     val title: String,
     val userRank: Int?,
-    val writerName: String
+    val writerName: String,
+    val isIsZoneQuest: Boolean = false
 )

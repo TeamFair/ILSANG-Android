@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToMyZone: () -> Unit,
     onMissionImageClick: (Int) -> Unit
 ) {
@@ -93,7 +93,12 @@ fun QuestTabScreen(
             coroutineScope.launch {
                 bottomSheetState.hide()
                 questTabViewModel.unselectQuest()
-                navigateToSubmit(questId, missionId, missionType)
+                navigateToSubmit(
+                    questId,
+                    missionId,
+                    missionType,
+                    selectedQuest?.isIsZoneQuest ?: false
+                )
             }
         }
     )
@@ -112,7 +117,7 @@ private fun QuestTabScreen(
     onSelectQuestTab: (QuestTabUiModel) -> Unit,
     onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
     onSelectSortType: (SortTypeUiModel) -> Unit,
-    onQuestClick: (Int) -> Unit,
+    onQuestClick: (TypedQuest) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
     onApproveButtonClick: (Int, Int, MissionType) -> Unit,
     onMyZoneClick: () -> Unit,
@@ -192,7 +197,7 @@ private fun QuestTabScreen(
                                                 quest.favoriteYn
                                             )
                                         },
-                                        onClick = { onQuestClick(quest.questId) }
+                                        onClick = { onQuestClick(quest) }
                                     )
                                 }
                             }

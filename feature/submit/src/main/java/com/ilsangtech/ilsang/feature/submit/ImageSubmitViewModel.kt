@@ -31,6 +31,7 @@ class ImageSubmitViewModel @Inject constructor(
     private val questId = savedStateHandle.toRoute<ImageSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
     val imageUri = savedStateHandle.toRoute<ImageSubmitRoute>().imageUri.toUri()
+    val isIsZoneQuest = savedStateHandle.toRoute<ImageSubmitRoute>().isIsZoneQuest
 
     private val _submitUiState =
         MutableStateFlow<SubmitResultUiState>(SubmitResultUiState.NotSubmitted)

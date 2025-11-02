@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -29,6 +32,7 @@ import com.ilsangtech.ilsang.core.ui.R
 import com.ilsangtech.ilsang.core.ui.quest.RewardPointIcon
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_bold
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -37,7 +41,8 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 @Composable
 internal fun ObtainablePointContent(
     modifier: Modifier = Modifier,
-    rewardPoints: List<RewardPoint>
+    rewardPoints: List<RewardPoint>,
+    isIsZoneQuest: Boolean
 ) {
     Column(
         modifier = modifier
@@ -51,14 +56,20 @@ internal fun ObtainablePointContent(
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             rewardPoints.forEach { rewardPoint ->
-                ObtainablePointItem(rewardPoint)
+                ObtainablePointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ObtainablePointItem(rewardPoint: RewardPoint) {
+private fun ObtainablePointItem(
+    rewardPoint: RewardPoint,
+    isIsZoneQuest: Boolean
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -107,6 +118,31 @@ private fun ObtainablePointItem(rewardPoint: RewardPoint) {
                 tint = Color.Unspecified,
                 contentDescription = null
             )
+            if (rewardPoint is RewardPoint.Contribute && isIsZoneQuest) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFFFF7D13),
+                                    Color(0xFFFFC525)
+                                )
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "X2",
+                        style = badge02TextStyle.copy(
+                            fontSize = 10.dp.toSp(),
+                            lineHeight = 12.dp.toSp(),
+                            color = Color.White
+                        )
+                    )
+                }
+            }
         }
     }
 }
@@ -126,7 +162,10 @@ private fun ObtainablePointContentPreview() {
         RewardPoint.Commercial(point = 20),
         RewardPoint.Contribute(point = 30)
     )
-    ObtainablePointContent(rewardPoints = rewardPoints)
+    ObtainablePointContent(
+        rewardPoints = rewardPoints,
+        isIsZoneQuest = true
+    )
 }
 
 

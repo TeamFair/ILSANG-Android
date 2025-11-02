@@ -15,17 +15,22 @@ interface QuestRepository {
 
     fun getRecommendedQuests(commercialAreaCode: String): Flow<List<RecommendedQuest>>
 
-    fun getLargeRewardQuests(commercialAreaCode: String): Flow<List<LargeRewardQuest>>
+    fun getLargeRewardQuests(
+        commercialAreaCode: String,
+        isZoneCode: String?
+    ): Flow<List<LargeRewardQuest>>
 
     fun getBannerQuests(
         bannerId: Int,
         completedYn: Boolean,
         orderExpiredDesc: Boolean? = null,
-        orderRewardDesc: Boolean? = null
+        orderRewardDesc: Boolean? = null,
+        isZoneCode: String?
     ): Flow<PagingData<BannerQuest>>
 
     fun getTypedQuests(
         commercialAreaCode: String,
+        isZoneCode: String?,
         questType: QuestType? = null,
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
@@ -33,7 +38,7 @@ interface QuestRepository {
         completedYn: Boolean = false
     ): Flow<PagingData<TypedQuest>>
 
-    fun getQuestDetail(questId: Int): Flow<QuestDetail>
+    fun getQuestDetail(questId: Int, isIsZoneQuest: Boolean = false): Flow<QuestDetail>
 
     suspend fun registerFavoriteQuest(questId: Int): Result<Unit>
 

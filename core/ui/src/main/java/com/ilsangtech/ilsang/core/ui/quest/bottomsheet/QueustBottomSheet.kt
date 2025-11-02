@@ -159,7 +159,10 @@ private fun QuestBottomSheetContent(
                 )
             }
         }
-        ObtainablePointContent(rewardPoints = quest.rewards)
+        ObtainablePointContent(
+            rewardPoints = quest.rewards,
+            isIsZoneQuest = quest.isIsZoneQuest
+        )
         if (quest.coupons.isNotEmpty()) {
             QuestRewardCouponCard(
                 modifier = Modifier.padding(top = 24.dp),

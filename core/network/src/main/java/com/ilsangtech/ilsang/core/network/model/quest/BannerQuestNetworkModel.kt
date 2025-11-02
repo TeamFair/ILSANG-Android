@@ -12,5 +12,6 @@ data class BannerQuestNetworkModel(
     val mainImageId: String?,
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
-    val writerName: String
+    val writerName: String,
+    val commercialAreaCode: String
 )

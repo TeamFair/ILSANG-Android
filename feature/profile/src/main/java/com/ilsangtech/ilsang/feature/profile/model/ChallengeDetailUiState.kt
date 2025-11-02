@@ -26,7 +26,8 @@ data class ChallengeDetailUiModel(
     val metroGainPoint: Int,
     val contributionGainPoint: Int,
     val quiz: CompletedQuiz?,
-    val questType: QuestType
+    val questType: QuestType,
+    val isContributionDouble: Boolean
 )
 
 internal fun UserMissionHistoryDetail.toUiModel(): ChallengeDetailUiModel {
@@ -44,6 +45,7 @@ internal fun UserMissionHistoryDetail.toUiModel(): ChallengeDetailUiModel {
         metroGainPoint = metroGainPoint,
         contributionGainPoint = contributionGainPoint,
         quiz = quiz,
-        questType = questType
+        questType = questType,
+        isContributionDouble = isContributionDouble
     )
 }

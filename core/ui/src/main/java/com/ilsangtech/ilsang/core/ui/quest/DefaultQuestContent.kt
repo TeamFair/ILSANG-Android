@@ -25,6 +25,7 @@ fun DefaultQuestContent(
     title: String,
     writer: String,
     rewardPoints: List<RewardPoint>,
+    isIsZoneQuest: Boolean,
     questImage: @Composable () -> Unit
 ) {
     Row(
@@ -47,7 +48,10 @@ fun DefaultQuestContent(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.height(4.dp))
-            RewardPointChips(rewardPoints)
+            RewardPointChips(
+                rewardPointList = rewardPoints,
+                isIsZoneQuest = isIsZoneQuest
+            )
         }
     }
 }
@@ -87,6 +91,7 @@ fun DefaultQuestContentPreview2() {
                 imageId = "sample_image_id",
                 contentDescription = title
             )
-        }
+        },
+        isIsZoneQuest = true
     )
 }

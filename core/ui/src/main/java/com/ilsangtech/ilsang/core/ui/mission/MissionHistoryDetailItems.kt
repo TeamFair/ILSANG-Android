@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -30,6 +31,7 @@ import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.badge02TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.heading02
@@ -112,7 +114,8 @@ fun MissionHistoryDetailPointItem(
     modifier: Modifier = Modifier,
     metroGainPoint: Int,
     commercialGainPoint: Int,
-    contributionGainPoint: Int
+    contributionGainPoint: Int,
+    isContributionDouble: Boolean
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -161,10 +164,26 @@ fun MissionHistoryDetailPointItem(
                     text = "기여도",
                     style = subTitle02.copy(color = gray500)
                 )
-                Text(
-                    text = "+${contributionGainPoint}P",
-                    style = title02.copy(primary)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (isContributionDouble) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            text = "X2",
+                            style = badge02TextStyle.copy(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(
+                                        Color(0xFFFF8415),
+                                        Color(0xFFFFB622)
+                                    )
+                                )
+                            ),
+                        )
+                    }
+                    Text(
+                        text = "+${contributionGainPoint}P",
+                        style = title02.copy(primary)
+                    )
+                }
             }
         }
     }
@@ -246,7 +265,8 @@ private fun MissionHistoryDetailPointItemPreview() {
         modifier = Modifier,
         metroGainPoint = 100,
         commercialGainPoint = 200,
-        contributionGainPoint = 300
+        contributionGainPoint = 300,
+        isContributionDouble = true
     )
 }
 

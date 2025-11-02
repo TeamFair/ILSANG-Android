@@ -61,6 +61,7 @@ internal fun WordsQuizSubmitScreen(
         is SubmitResultUiState.Success -> {
             SubmitSuccessDialog(
                 rewardPoints = result.rewardPoints,
+                isIsZoneQuest = viewModel.isIsZoneQuest,
                 onDismissRequest = {
                     viewModel.resetResultUiState()
                     onBackButtonClick()

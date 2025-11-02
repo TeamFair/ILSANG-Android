@@ -10,5 +10,6 @@ data class BannerQuest(
     val mainImageId: String?,
     val rewards: List<RewardPoint>,
     val title: String,
-    val writerName: String
+    val writerName: String,
+    val isIsZoneQuest: Boolean = false
 )

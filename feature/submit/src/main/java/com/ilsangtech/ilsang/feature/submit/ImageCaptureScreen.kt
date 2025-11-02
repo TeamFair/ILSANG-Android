@@ -53,7 +53,7 @@ import com.ilsangtech.ilsang.designsystem.theme.background
 @Composable
 internal fun ImageCaptureScreen(
     viewModel: ImageCaptureViewModel = viewModel(),
-    navigateToImageSubmit: (String, Int, Int) -> Unit,
+    navigateToImageSubmit: (String, Int, Int, Boolean) -> Unit,
     popBackStack: () -> Unit
 ) {
     val appContext = LocalContext.current.applicationContext
@@ -93,10 +93,12 @@ internal fun ImageCaptureScreen(
     }
 
     if (selectedImageUri != null) {
+        val (questId, missionId, isIsZoneQuest) = viewModel.navData
         navigateToImageSubmit(
             selectedImageUri.toString(),
-            viewModel.questId,
-            viewModel.missionId
+            questId,
+            missionId,
+            isIsZoneQuest
         )
         viewModel.clearSelectedImage()
     }

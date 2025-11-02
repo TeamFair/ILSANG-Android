@@ -11,5 +11,6 @@ data class TypedQuest(
     val rewards: List<RewardPoint>,
     val title: String,
     val writerName: String,
-    val questType: QuestType
+    val questType: QuestType,
+    val isIsZoneQuest: Boolean = false
 )

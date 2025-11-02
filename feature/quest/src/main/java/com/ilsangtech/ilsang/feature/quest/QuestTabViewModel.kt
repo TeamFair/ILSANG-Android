@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.QuestType
+import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
@@ -46,7 +47,7 @@ class QuestTabViewModel @Inject constructor(
     private val _selectedSortType = MutableStateFlow(SortTypeUiModel.PointDesc)
     val selectedSortType = _selectedSortType.asStateFlow()
 
-    private val selectedQuestId = MutableStateFlow<Int?>(null)
+    private val selectedQuestInfo = MutableStateFlow<Pair<Int, Boolean>?>(null)
 
     private val myInfo = userRepository.getMyInfo().shareIn(
         scope = viewModelScope,
@@ -71,10 +72,16 @@ class QuestTabViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuest = combine(
-        selectedQuestId,
+        selectedQuestInfo,
         questDetailRefreshTrigger.onStart { emit(Unit) }
-    ) { questId, _ -> questId }.flatMapLatest { questId ->
-        questId?.let { questRepository.getQuestDetail(questId) } ?: flowOf(null)
+    ) { questInfo, _ -> questInfo }.flatMapLatest { questInfo ->
+        questInfo?.let {
+            val (questId, isIsZoneQuest) = questInfo
+            questRepository.getQuestDetail(
+                questId = questId,
+                isIsZoneQuest = isIsZoneQuest
+            )
+        } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -84,10 +91,12 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val normalQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 questType = QuestType.Normal,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -100,6 +109,7 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val repeatQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         combine(
             selectedSortType, selectedRepeatType
         ) { sortType, repeatType ->
@@ -114,6 +124,7 @@ class QuestTabViewModel @Inject constructor(
             questRepository.getTypedQuests(
                 questType = questType,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (sortType) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -126,10 +137,12 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val eventQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 questType = QuestType.Event,
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -142,9 +155,11 @@ class QuestTabViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val completedQuests = myInfo.flatMapLatest { myInfo ->
         val areaCode = myInfo.myCommericalAreaCode
+        val isZoneCode = myInfo.isCommercialAreaCode
         selectedSortType.flatMapLatest {
             questRepository.getTypedQuests(
                 commercialAreaCode = areaCode,
+                isZoneCode = isZoneCode,
                 orderRewardDesc = when (it) {
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
@@ -179,12 +194,12 @@ class QuestTabViewModel @Inject constructor(
         }
     }.cachedIn(viewModelScope)
 
-    fun selectQuest(questId: Int) {
-        selectedQuestId.update { questId }
+    fun selectQuest(quest: TypedQuest) {
+        selectedQuestInfo.update { quest.questId to quest.isIsZoneQuest }
     }
 
     fun unselectQuest() {
-        selectedQuestId.update { null }
+        selectedQuestInfo.update { null }
     }
 
     fun selectQuestType(questTab: QuestTabUiModel) {

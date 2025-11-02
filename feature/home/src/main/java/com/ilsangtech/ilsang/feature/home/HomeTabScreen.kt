@@ -59,7 +59,7 @@ internal fun HomeTabScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onMissionImageClick: (Int) -> Unit,
@@ -99,7 +99,7 @@ private fun HomeTabScreen(
     selectedQuest: QuestDetail?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onBannerClick: (Banner) -> Unit,
@@ -142,7 +142,12 @@ private fun HomeTabScreen(
                     bottomSheetState.hide()
                     onUnselectQuest()
                     mission?.let { missionId ->
-                        navigateToSubmit(selectedQuest.id, mission.id, mission.type)
+                        navigateToSubmit(
+                            selectedQuest.id,
+                            mission.id,
+                            mission.type,
+                            selectedQuest.isIsZoneQuest
+                        )
                     }
                 }
             }
@@ -411,7 +416,7 @@ private fun HomeTabScreenPreview() {
         selectedQuest = null,
         navigateToQuestTab = {},
         navigateToMyTab = {},
-        navigateToSubmit = { _, _, _ -> },
+        navigateToSubmit = { _, _, _, _ -> },
         navigateToRankingTab = {},
         navigateToProfile = {},
         onBannerClick = {},

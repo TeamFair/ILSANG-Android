@@ -31,6 +31,7 @@ class OxQuizSubmitViewModel @Inject constructor(
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<OxQuizSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<OxQuizSubmitRoute>().missionId
+    val isIsZoneQuest = savedStateHandle.toRoute<OxQuizSubmitRoute>().isIsZoneQuest
 
     private val _quizSubmitUiState =
         MutableStateFlow<OxQuizSubmitUiState>(OxQuizSubmitUiState.NotSelected)
