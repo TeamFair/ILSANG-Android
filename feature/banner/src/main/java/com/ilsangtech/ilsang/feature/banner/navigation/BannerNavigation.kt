@@ -33,7 +33,7 @@ fun NavHostController.navigateToBannerDetail(banner: Banner) {
 
 fun NavGraphBuilder.bannerNavigation(
     onBackButtonClick: () -> Unit,
-    navigateToSubmit: (Int, Int, MissionType) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToMissionExample: (Int) -> Unit
 ) {
     navigation<BannerBaseRoute>(startDestination = BannerDetailRoute::class) {
