@@ -49,7 +49,7 @@ interface QuestApiService {
         @Query("orderExpiredDesc") orderExpiredDesc: Boolean? = null,
         @Query("orderRewardDesc") orderRewardDesc: Boolean? = null,
         @Query("favoriteYn") favoriteYn: Boolean? = null,
-        @Query("completedYn") completedYn: Boolean = false,
+        @Query("completedYn") completedYn: Boolean?,
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: List<String> = emptyList()

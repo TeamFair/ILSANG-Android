@@ -35,7 +35,7 @@ interface QuestRepository {
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
-        completedYn: Boolean = false
+        completedYn: Boolean? = null
     ): Flow<PagingData<TypedQuest>>
 
     fun getQuestDetail(questId: Int, isIsZoneQuest: Boolean = false): Flow<QuestDetail>

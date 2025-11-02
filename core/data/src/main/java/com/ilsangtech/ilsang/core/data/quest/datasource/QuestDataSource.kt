@@ -53,7 +53,7 @@ interface QuestDataSource {
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
-        completeYn: Boolean = false
+        completeYn: Boolean?
     ): Flow<PagingData<TypedQuestNetworkModel>>
 
     suspend fun getQuestDetail(questId: Int): QuestDetailResponse
