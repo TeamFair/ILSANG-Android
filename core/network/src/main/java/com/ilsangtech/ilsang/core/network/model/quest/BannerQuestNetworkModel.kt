@@ -13,5 +13,6 @@ data class BannerQuestNetworkModel(
     val rewards: List<RewardPointNetworkModel>,
     val title: String,
     val writerName: String,
-    val commercialAreaCode: String
+    val commercialAreaCode: String,
+    val lastCompleteDate: String?
 )
