@@ -27,6 +27,7 @@ internal fun TypedQuestNetworkModel.toTypedQuest(isIsZoneQuest: Boolean): TypedQ
             "EVENT" -> QuestType.Event
             else -> throw IllegalArgumentException("Unknown quest type: $questType")
         },
-        isIsZoneQuest = isIsZoneQuest
+        isIsZoneQuest = isIsZoneQuest,
+        lastCompleteDate = lastCompleteDate
     )
 }
