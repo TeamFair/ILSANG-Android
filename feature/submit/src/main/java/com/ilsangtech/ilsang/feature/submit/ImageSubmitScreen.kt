@@ -61,7 +61,7 @@ internal fun ImageSubmitScreen(
             val rewardList = (submitUiState as SubmitResultUiState.Success).rewardPoints
             SubmitSuccessDialog(
                 rewardPoints = rewardList,
-                isIsZoneQuest = false,
+                isIsZoneQuest = imageSubmitViewModel.isIsZoneQuest,
                 onDismissRequest = {
                     imageSubmitViewModel.completeSubmit()
                     onSubmitSuccess()
