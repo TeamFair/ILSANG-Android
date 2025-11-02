@@ -8,7 +8,7 @@ import com.ilsangtech.ilsang.core.network.model.quest.BannerQuestNetworkModel
 class BannerQuestPagingSource(
     private val questApiService: QuestApiService,
     private val bannerId: Int,
-    private val completedYn: Boolean,
+    private val completedYn: Boolean?,
     private val orderExpiredDesc: Boolean?,
     private val orderRewardDesc: Boolean?
 ) : PagingSource<Int, BannerQuestNetworkModel>() {

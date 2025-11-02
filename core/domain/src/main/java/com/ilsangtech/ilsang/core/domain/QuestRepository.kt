@@ -22,7 +22,7 @@ interface QuestRepository {
 
     fun getBannerQuests(
         bannerId: Int,
-        completedYn: Boolean,
+        completedYn: Boolean? = null,
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         isZoneCode: String?

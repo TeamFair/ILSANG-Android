@@ -66,7 +66,7 @@ interface QuestApiService {
     @GET("api/v1/quest/user/search/banner/{bannerId}")
     suspend fun getBannerQuests(
         @Path("bannerId") bannerId: Int,
-        @Query("completedYn") completedYn: Boolean,
+        @Query("completedYn") completedYn: Boolean?,
         @Query("orderExpiredDesc") orderExpiredDesc: Boolean?,
         @Query("orderRewardDesc") orderRewardDesc: Boolean?,
         @Query("page") page: Int,

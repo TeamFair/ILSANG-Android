@@ -60,7 +60,7 @@ class QuestRepositoryImpl(
 
     override fun getBannerQuests(
         bannerId: Int,
-        completedYn: Boolean,
+        completedYn: Boolean?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         isZoneCode: String?
