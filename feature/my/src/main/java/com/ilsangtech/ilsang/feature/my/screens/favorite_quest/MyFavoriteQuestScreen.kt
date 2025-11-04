@@ -16,8 +16,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
+import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
 import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.my.screens.favorite_quest.component.MyFavoriteQuestEmptyContent
@@ -47,9 +47,9 @@ internal fun MyFavoriteQuestScreen(
 @Composable
 private fun MyFavoriteQuestScreen(
     commercialAreaName: String?,
-    favoriteQuestList: LazyPagingItems<TypedQuest>,
+    favoriteQuestList: LazyPagingItems<TypedQuestUiModel>,
     onMyZoneClick: () -> Unit,
-    onFavoriteClick: (TypedQuest) -> Unit,
+    onFavoriteClick: (TypedQuestUiModel) -> Unit,
     onQuestNavButtonClick: () -> Unit,
     onBackButtonClick: () -> Unit
 ) {

@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
+import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
+import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,11 +53,14 @@ class MyFavoriteQuestViewModel @Inject constructor(
             favoriteYn = true
         )
     }.cachedIn(viewModelScope)
+        .map { pagingData ->
+            pagingData.map(TypedQuest::toUiModel)
+        }
         .combine(favoriteQuestCache) { typedQuests, favoriteQuestCache ->
             typedQuests.filter { it.questId !in favoriteQuestCache }
         }
 
-    fun updateFavoriteStatus(typedQuest: TypedQuest) {
+    fun updateFavoriteStatus(typedQuest: TypedQuestUiModel) {
         viewModelScope.launch {
             val result = if (typedQuest.favoriteYn) {
                 questRepository.deleteFavoriteQuest(typedQuest.questId)
