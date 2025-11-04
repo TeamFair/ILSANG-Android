@@ -21,7 +21,10 @@ data class QuestDetailUiModel(
     val writerName: String,
     val isIsZoneQuest: Boolean = false,
     val remainHours: Int? = null
-)
+) {
+    val isAvailable: Boolean
+        get() = remainHours == null || remainHours <= 0
+}
 
 fun QuestDetail.toUiModel(remainHours: Int? = null): QuestDetailUiModel {
     return QuestDetailUiModel(
