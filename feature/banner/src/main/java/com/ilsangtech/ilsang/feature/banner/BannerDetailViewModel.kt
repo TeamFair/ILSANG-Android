@@ -5,9 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
+import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
+import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import com.ilsangtech.ilsang.feature.banner.navigation.BannerDetailRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -38,24 +43,25 @@ class BannerDetailViewModel @Inject constructor(
     private val _selectedSortType = MutableStateFlow(BannerDetailSortType.ExpiredDate)
     val selectedSortType = _selectedSortType.asStateFlow()
 
-    private val selectedQuestInfo = MutableStateFlow<Pair<Int, Boolean>?>(null)
+    private val _selectedQuest = MutableStateFlow<BannerQuestUiModel?>(null)
 
     private val questDetailRefresh = MutableSharedFlow<Unit>(replay = 1)
 
     private val _myInfo = userRepository.getMyInfo()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedQuest = combine(
-        selectedQuestInfo,
+    val selectedQuestDetail = combine(
+        _selectedQuest,
         _myInfo,
         questDetailRefresh.onStart { emit(Unit) }
-    ) { questInfo, myInfo, _ -> questInfo to myInfo }.flatMapLatest { (questInfo, myInfo) ->
-        questInfo?.let {
-            val (questId, isIsZoneQuest) = questInfo
+    ) { quest, myInfo, _ -> quest to myInfo }.flatMapLatest { (quest, myInfo) ->
+        quest?.let {
             questRepository.getQuestDetail(
-                questId = questId,
-                isIsZoneQuest = isIsZoneQuest
-            )
+                questId = it.questId,
+                isIsZoneQuest = it.isIsZoneQuest
+            ).map { questDetail ->
+                questDetail.toUiModel(quest.remainHours)
+            }
         } ?: flowOf(null)
     }.stateIn(
         scope = viewModelScope,
@@ -75,12 +81,14 @@ class BannerDetailViewModel @Inject constructor(
         }
         questRepository.getBannerQuests(
             bannerId = bannerDetailInfo.id,
-            completedYn = false,
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
             isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
+        .map { pagingData ->
+            pagingData.map(BannerQuest::toUiModel)
+        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val completedQuests = combine(_myInfo, selectedSortType) { myInfo, sortType ->
@@ -100,6 +108,10 @@ class BannerDetailViewModel @Inject constructor(
             isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
+        .map { it.filter { quest -> quest.lastCompleteDate == null } }
+        .map { pagingData ->
+            pagingData.map(BannerQuest::toUiModel)
+        }
 
     fun onQuestTypeChanged(questType: BannerDetailQuestType) {
         _selectedQuestType.update { questType }
@@ -109,19 +121,19 @@ class BannerDetailViewModel @Inject constructor(
         _selectedSortType.update { sortType }
     }
 
-    fun selectQuest(quest: BannerQuest) {
+    fun selectQuest(quest: BannerQuestUiModel) {
         viewModelScope.launch {
-            selectedQuestInfo.update { quest.questId to quest.isIsZoneQuest }
+            _selectedQuest.update { quest }
         }
     }
 
     fun unselectQuest() {
-        selectedQuestInfo.update { null }
+        _selectedQuest.update { null }
     }
 
     fun updateQuestFavoriteStatus() {
         viewModelScope.launch {
-            selectedQuest.value?.let { quest ->
+            selectedQuestDetail.value?.let { quest ->
                 val result = if (quest.favoriteYn) {
                     questRepository.deleteFavoriteQuest(quest.id)
                 } else {
