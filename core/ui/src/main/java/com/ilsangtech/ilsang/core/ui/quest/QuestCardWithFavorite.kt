@@ -13,8 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.quest.QuestType
-import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray200
@@ -23,13 +23,13 @@ import com.ilsangtech.ilsang.designsystem.theme.primary300
 @Composable
 fun QuestCardWithFavorite(
     modifier: Modifier = Modifier,
-    quest: TypedQuest,
+    quest: TypedQuestUiModel,
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit
 ) {
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
-        containerColor = if (quest.lastCompleteDate != null) gray200 else Color.White,
+        containerColor = if (!quest.isAvailable) gray200 else Color.White,
         onClick = onClick
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -44,14 +44,13 @@ fun QuestCardWithFavorite(
                 writer = quest.writerName,
                 rewardPoints = quest.rewards,
                 isIsZoneQuest = quest.isIsZoneQuest,
+                remainHours = quest.remainHours,
                 questImage = {
                     QuestImageWithBadge(
                         imageId = quest.imageId,
                         badge = {
                             if (quest.questType is QuestType.Repeat) {
-                                RepeatQuestTypeBadge(
-                                    repeatType = quest.questType as QuestType.Repeat,
-                                )
+                                RepeatQuestTypeBadge(repeatType = quest.questType)
                             } else if (quest.questType is QuestType.Event) {
                                 EventQuestTypeBadge()
                             }
@@ -83,7 +82,7 @@ fun QuestCardWithFavorite(
 @Preview
 @Composable
 private fun QuestCardWithFavoritePreviewNew() {
-    val quest = TypedQuest(
+    val quest = TypedQuestUiModel(
         expireDate = "2023-12-31",
         favoriteYn = true,
         imageId = "sample_image_id",
