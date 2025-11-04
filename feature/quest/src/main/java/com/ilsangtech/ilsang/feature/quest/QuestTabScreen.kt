@@ -31,11 +31,11 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
-import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithFavorite
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
+import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
 import com.ilsangtech.ilsang.core.ui.zone.MyZoneSelector
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.quest.component.EmptyQuestContent
@@ -58,7 +58,7 @@ fun QuestTabScreen(
     val selectedQuestType by questTabViewModel.selectedQuestTab.collectAsStateWithLifecycle()
     val selectedRepeatType by questTabViewModel.selectedRepeatType.collectAsStateWithLifecycle()
     val selectedSortType by questTabViewModel.selectedSortType.collectAsStateWithLifecycle()
-    val selectedQuest by questTabViewModel.selectedQuest.collectAsStateWithLifecycle()
+    val selectedQuest by questTabViewModel.selectedQuestDetail.collectAsStateWithLifecycle()
     val typedQuests = questTabViewModel.typedQuests.collectAsLazyPagingItems()
     val areaName by questTabViewModel.areaName.collectAsStateWithLifecycle()
 
@@ -111,13 +111,13 @@ private fun QuestTabScreen(
     selectedQuestTab: QuestTabUiModel,
     selectedRepeatType: RepeatQuestTypeUiModel?,
     selectedSortType: SortTypeUiModel,
-    selectedQuest: QuestDetail?,
+    selectedQuest: QuestDetailUiModel?,
     areaName: String?,
-    typedQuests: LazyPagingItems<TypedQuest>,
+    typedQuests: LazyPagingItems<TypedQuestUiModel>,
     onSelectQuestTab: (QuestTabUiModel) -> Unit,
     onSelectRepeatType: (RepeatQuestTypeUiModel) -> Unit,
     onSelectSortType: (SortTypeUiModel) -> Unit,
-    onQuestClick: (TypedQuest) -> Unit,
+    onQuestClick: (TypedQuestUiModel) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit,
     onApproveButtonClick: (Int, Int, MissionType) -> Unit,
     onMyZoneClick: () -> Unit,
@@ -216,7 +216,7 @@ private fun QuestTabScreen(
 private fun QuestTabScreenPreview() {
     val bottomSheetState = rememberModalBottomSheetState()
     val typedQuestsData = List(10) { index ->
-        TypedQuest(
+        TypedQuestUiModel(
             questId = index,
             expireDate = "2023-12-31",
             favoriteYn = index % 2 == 0,
