@@ -114,7 +114,7 @@ private fun QuestCardWithArrow(
                     .size(26.dp)
                     .align(Alignment.CenterEnd)
                     .clip(CircleShape)
-                    .background(Color(0xFFF4F4F4)),
+                    .background(Color(0x1A929292)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
