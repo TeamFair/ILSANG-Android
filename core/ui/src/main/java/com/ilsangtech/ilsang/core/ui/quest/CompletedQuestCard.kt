@@ -21,10 +21,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestType
-import com.ilsangtech.ilsang.core.model.quest.TypedQuest
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
+import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.toSp
@@ -32,7 +32,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 @Composable
 fun CompletedQuestCard(
     modifier: Modifier = Modifier,
-    quest: BannerQuest,
+    quest: BannerQuestUiModel,
     onClick: () -> Unit = {}
 ) {
     CompletedQuestCard(
@@ -49,7 +49,7 @@ fun CompletedQuestCard(
 @Composable
 fun CompletedQuestCard(
     modifier: Modifier = Modifier,
-    quest: TypedQuest,
+    quest: TypedQuestUiModel,
     onClick: () -> Unit = {}
 ) {
     CompletedQuestCard(
@@ -141,7 +141,7 @@ private fun CompletedQuestCard(
 @Composable
 private fun CompletedQuestCardNewQuestPreview() {
     CompletedQuestCard(
-        quest = TypedQuest(
+        quest = TypedQuestUiModel(
             expireDate = "2023-12-31",
             favoriteYn = false,
             imageId = "sample_image_id_new",

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ fun DefaultQuestContent(
     writer: String,
     rewardPoints: List<RewardPoint>,
     isIsZoneQuest: Boolean,
+    remainHours: Int? = null,
     questImage: @Composable () -> Unit
 ) {
     Row(
@@ -47,11 +49,17 @@ fun DefaultQuestContent(
                 style = defaultQuestContentWriterStyle,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(8.dp))
             RewardPointChips(
                 rewardPointList = rewardPoints,
                 isIsZoneQuest = isIsZoneQuest
             )
+            if (remainHours != null && remainHours > 0) {
+                RemainHoursBadge(
+                    modifier = Modifier.padding(top = 8.dp),
+                    remainHours = remainHours
+                )
+            }
         }
     }
 }
@@ -73,7 +81,7 @@ private val defaultQuestContentWriterStyle = TextStyle(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultQuestContentPreview2() {
+private fun DefaultQuestContentPreview2() {
     val title = "퀘스트 타이틀 타이틀"
     val writer = "퀘스트 작성자 작성자"
     val rewardPoints = listOf(

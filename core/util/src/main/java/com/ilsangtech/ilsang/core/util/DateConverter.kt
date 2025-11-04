@@ -45,4 +45,32 @@ object DateConverter {
         }
         return sdf.format(Date())
     }
+
+    fun getRemainHours(
+        date: String,
+        day: Int? = null,
+        week: Int? = null,
+        month: Int? = null
+    ): Int {
+        val sdf = SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }
+        val endDate = Calendar.getInstance().apply {
+            time = sdf.parse(date) ?: return -1
+            add(Calendar.DAY_OF_MONTH, day ?: 0)
+            add(Calendar.WEEK_OF_MONTH, week ?: 0)
+            add(Calendar.MONTH, month ?: 0)
+        }.time
+
+        val now = Calendar.getInstance(Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }.time
+
+        val remainTime = endDate.time - now.time
+        if (remainTime <= 0) return 0
+        val remainHour =
+            remainTime / (60 * 60 * 1000) + if (remainTime % (60 * 60 * 1000) != 0L) 1 else 0
+
+        return remainHour.toInt()
+    }
 }

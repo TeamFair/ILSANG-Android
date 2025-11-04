@@ -49,7 +49,7 @@ interface QuestApiService {
         @Query("orderExpiredDesc") orderExpiredDesc: Boolean? = null,
         @Query("orderRewardDesc") orderRewardDesc: Boolean? = null,
         @Query("favoriteYn") favoriteYn: Boolean? = null,
-        @Query("completedYn") completedYn: Boolean = false,
+        @Query("completedYn") completedYn: Boolean?,
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: List<String> = emptyList()
@@ -66,7 +66,7 @@ interface QuestApiService {
     @GET("api/v1/quest/user/search/banner/{bannerId}")
     suspend fun getBannerQuests(
         @Path("bannerId") bannerId: Int,
-        @Query("completedYn") completedYn: Boolean,
+        @Query("completedYn") completedYn: Boolean?,
         @Query("orderExpiredDesc") orderExpiredDesc: Boolean?,
         @Query("orderRewardDesc") orderRewardDesc: Boolean?,
         @Query("page") page: Int,

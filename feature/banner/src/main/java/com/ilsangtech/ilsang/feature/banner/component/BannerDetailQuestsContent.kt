@@ -29,10 +29,10 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.CompletedQuestCard
 import com.ilsangtech.ilsang.core.ui.quest.QuestCardWithArrow
+import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
 import com.ilsangtech.ilsang.designsystem.component.DropDownMenu
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray300
@@ -47,11 +47,11 @@ import com.ilsangtech.ilsang.feature.banner.BannerDetailSortType
 import kotlinx.coroutines.flow.flowOf
 
 internal fun LazyListScope.bannerDetailQuestsContent(
-    onGoingQuests: LazyPagingItems<BannerQuest>,
-    completedQuests: LazyPagingItems<BannerQuest>,
+    onGoingQuests: LazyPagingItems<BannerQuestUiModel>,
+    completedQuests: LazyPagingItems<BannerQuestUiModel>,
     selectedQuestType: BannerDetailQuestType,
     selectedSortType: BannerDetailSortType,
-    onQuestClick: (BannerQuest) -> Unit,
+    onQuestClick: (BannerQuestUiModel) -> Unit,
     onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
     onSortTypeChanged: (BannerDetailSortType) -> Unit
 ) {
@@ -204,7 +204,7 @@ private fun BannerDetailQuestsContentPreview() {
     val onGoingQuests = flowOf(
         PagingData.from(
             listOf(
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 1,
                     questType = QuestType.Normal,
                     expireDate = "2023-12-31",
@@ -214,7 +214,7 @@ private fun BannerDetailQuestsContentPreview() {
                     title = "OnGoing Quest 1",
                     writerName = "Writer 1"
                 ),
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 2,
                     questType = QuestType.Event,
                     expireDate = "2024-01-15",
@@ -231,7 +231,7 @@ private fun BannerDetailQuestsContentPreview() {
     val completedQuests = flowOf(
         PagingData.from(
             listOf(
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 3,
                     questType = QuestType.Repeat.Daily,
                     expireDate = "2023-11-30",

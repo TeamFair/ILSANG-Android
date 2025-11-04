@@ -12,5 +12,6 @@ data class TypedQuest(
     val title: String,
     val writerName: String,
     val questType: QuestType,
-    val isIsZoneQuest: Boolean = false
+    val isIsZoneQuest: Boolean = false,
+    val lastCompleteDate: String? = null
 )

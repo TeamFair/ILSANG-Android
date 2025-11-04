@@ -20,11 +20,11 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.BannerQuest
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.banner.component.BannerDetailHeader
 import com.ilsangtech.ilsang.feature.banner.component.bannerDetailInfoContent
@@ -43,7 +43,7 @@ internal fun BannerDetailScreen(
 
     val selectedQuestType by bannerDetailViewModel.selectedQuestType.collectAsStateWithLifecycle()
     val selectedSortType by bannerDetailViewModel.selectedSortType.collectAsStateWithLifecycle()
-    val selectedQuest by bannerDetailViewModel.selectedQuest.collectAsStateWithLifecycle()
+    val selectedQuest by bannerDetailViewModel.selectedQuestDetail.collectAsStateWithLifecycle()
 
     val onGoingQuests = bannerDetailViewModel.onGoingQuests.collectAsLazyPagingItems()
     val completedQuests = bannerDetailViewModel.completedQuests.collectAsLazyPagingItems()
@@ -74,14 +74,14 @@ private fun BannerDetailScreen(
     imageId: String,
     title: String,
     description: String,
-    selectedQuest: QuestDetail?,
+    selectedQuest: QuestDetailUiModel?,
     selectedQuestType: BannerDetailQuestType,
     selectedSortType: BannerDetailSortType,
-    onGoingQuests: LazyPagingItems<BannerQuest>,
-    completedQuests: LazyPagingItems<BannerQuest>,
+    onGoingQuests: LazyPagingItems<BannerQuestUiModel>,
+    completedQuests: LazyPagingItems<BannerQuestUiModel>,
     onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
     onSortTypeChanged: (BannerDetailSortType) -> Unit,
-    onQuestClick: (BannerQuest) -> Unit,
+    onQuestClick: (BannerQuestUiModel) -> Unit,
     onUnselectQuest: () -> Unit,
     onFavoriteClick: () -> Unit,
     onMissionImageClick: (Int) -> Unit,
@@ -163,7 +163,7 @@ private fun BannerDetailScreenPreview() {
     val onGoingQuests = flowOf(
         PagingData.from(
             listOf(
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 1,
                     questType = QuestType.Event,
                     expireDate = "2023-12-31",
@@ -177,7 +177,7 @@ private fun BannerDetailScreenPreview() {
                     title = "Sample OnGoing Quest 1",
                     writerName = "Writer A"
                 ),
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 2,
                     questType = QuestType.Normal,
                     expireDate = "2024-01-15",
@@ -198,7 +198,7 @@ private fun BannerDetailScreenPreview() {
     val completedQuests = flowOf(
         PagingData.from(
             listOf(
-                BannerQuest(
+                BannerQuestUiModel(
                     questId = 3,
                     questType = QuestType.Event,
                     expireDate = "2023-11-30",

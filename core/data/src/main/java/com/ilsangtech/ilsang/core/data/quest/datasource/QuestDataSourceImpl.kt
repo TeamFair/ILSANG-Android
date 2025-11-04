@@ -78,7 +78,7 @@ class QuestDataSourceImpl @Inject constructor(
 
     override fun getBannerQuests(
         bannerId: Int,
-        completedYn: Boolean,
+        completedYn: Boolean?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?
     ): Flow<PagingData<BannerQuestNetworkModel>> {
@@ -103,7 +103,7 @@ class QuestDataSourceImpl @Inject constructor(
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
-        completeYn: Boolean
+        completeYn: Boolean?
     ): Flow<PagingData<TypedQuestNetworkModel>> {
         return Pager(
             config = PagingConfig(pageSize = 10),

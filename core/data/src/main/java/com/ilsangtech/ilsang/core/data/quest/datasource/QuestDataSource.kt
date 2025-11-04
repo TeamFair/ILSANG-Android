@@ -41,7 +41,7 @@ interface QuestDataSource {
 
     fun getBannerQuests(
         bannerId: Int,
-        completedYn: Boolean,
+        completedYn: Boolean?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?
     ): Flow<PagingData<BannerQuestNetworkModel>>
@@ -53,7 +53,7 @@ interface QuestDataSource {
         orderExpiredDesc: Boolean? = null,
         orderRewardDesc: Boolean? = null,
         favoriteYn: Boolean? = null,
-        completeYn: Boolean = false
+        completeYn: Boolean?
     ): Flow<PagingData<TypedQuestNetworkModel>>
 
     suspend fun getQuestDetail(questId: Int): QuestDetailResponse

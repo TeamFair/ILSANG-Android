@@ -60,7 +60,7 @@ class QuestRepositoryImpl(
 
     override fun getBannerQuests(
         bannerId: Int,
-        completedYn: Boolean,
+        completedYn: Boolean?,
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         isZoneCode: String?
@@ -82,7 +82,7 @@ class QuestRepositoryImpl(
         orderExpiredDesc: Boolean?,
         orderRewardDesc: Boolean?,
         favoriteYn: Boolean?,
-        completedYn: Boolean
+        completedYn: Boolean?
     ): Flow<PagingData<TypedQuest>> {
         val (type, repeatFrequency) = when (questType) {
             is QuestType.Normal -> "NORMAL" to null

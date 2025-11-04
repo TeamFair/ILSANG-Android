@@ -38,14 +38,15 @@ import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.coupon.QuestRewardCouponDialog
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
 import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -54,7 +55,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary300
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestBottomSheet(
-    quest: QuestDetail,
+    quest: QuestDetailUiModel,
     bottomSheetState: SheetState,
     onFavoriteClick: () -> Unit,
     onMissionImageClick: () -> Unit,
@@ -84,7 +85,10 @@ fun QuestBottomSheet(
             onRewardButtonClick = { showQuestRewardCouponDialog = true }
         )
         Spacer(Modifier.height(16.dp))
-        QuestBottomSheetFooter(onClick = onApproveButtonClick)
+        QuestBottomSheetFooter(
+            enabled = quest.isAvailable,
+            onClick = onApproveButtonClick
+        )
     }
 }
 
@@ -125,7 +129,7 @@ private fun QuestBottomSheetHeader(
 @Composable
 private fun QuestBottomSheetContent(
     modifier: Modifier = Modifier,
-    quest: QuestDetail,
+    quest: QuestDetailUiModel,
     onImageClick: () -> Unit,
     onRewardButtonClick: () -> Unit
 ) {
@@ -173,7 +177,10 @@ private fun QuestBottomSheetContent(
 }
 
 @Composable
-private fun QuestBottomSheetFooter(onClick: () -> Unit) {
+private fun QuestBottomSheetFooter(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,12 +196,15 @@ private fun QuestBottomSheetFooter(onClick: () -> Unit) {
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
+            enabled = enabled,
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = primary
+                disabledContainerColor = gray300,
+                containerColor = primary,
+                disabledContentColor = Color.White
             ),
-            contentPadding = PaddingValues(vertical = 16.dp)
+            contentPadding = PaddingValues(vertical = 16.dp),
+            onClick = onClick
         ) {
             Text(
                 text = "퀘스트 인증하기",
@@ -230,7 +240,7 @@ private val questBottomSheetApproveButtonTextStyle = TextStyle(
 @Preview
 @Composable
 fun QuestBottomSheetPreviewQuestDetail() {
-    val quest = QuestDetail(
+    val quest = QuestDetailUiModel(
         id = 1,
         expireDate = "2023-12-31",
         favoriteYn = true,
