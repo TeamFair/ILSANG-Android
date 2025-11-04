@@ -28,7 +28,6 @@ import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.RecommendedQuest
 import com.ilsangtech.ilsang.core.model.rank.UserRank
@@ -37,6 +36,7 @@ import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.core.ui.season.SeasonOpenDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSelectDisabledDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
@@ -96,7 +96,7 @@ internal fun HomeTabScreen(
 private fun HomeTabScreen(
     homeTabUiState: HomeTabUiState,
     shouldShowSeasonOpenDialog: Boolean?,
-    selectedQuest: QuestDetail?,
+    selectedQuest: QuestDetailUiModel?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
