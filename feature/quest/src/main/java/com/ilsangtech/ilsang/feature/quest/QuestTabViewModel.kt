@@ -165,34 +165,12 @@ class QuestTabViewModel @Inject constructor(
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val completedQuests = myInfo.flatMapLatest { myInfo ->
-        val areaCode = myInfo.myCommericalAreaCode
-        val isZoneCode = myInfo.isCommercialAreaCode
-        selectedSortType.flatMapLatest {
-            questRepository.getTypedQuests(
-                commercialAreaCode = areaCode,
-                isZoneCode = isZoneCode,
-                orderRewardDesc = when (it) {
-                    SortTypeUiModel.PointDesc -> true
-                    SortTypeUiModel.PointAsc -> false
-                    else -> null
-                },
-                completedYn = true
-            )
-        }
-    }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(TypedQuest::toUiModel)
-        }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     val typedQuests = selectedQuestTab.flatMapLatest { selectedQuestTab ->
         combine(
             normalQuests,
             repeatQuests,
-            eventQuests,
-            completedQuests
-        ) { normalQuests, repeatQuests, eventQuests, completedQuests ->
+            eventQuests
+        ) { normalQuests, repeatQuests, eventQuests ->
             when (selectedQuestTab) {
                 QuestTabUiModel.NORMAL -> normalQuests
                 QuestTabUiModel.REPEAT -> repeatQuests
