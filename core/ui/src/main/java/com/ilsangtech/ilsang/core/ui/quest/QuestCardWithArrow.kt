@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ilsangtech.ilsang.core.model.quest.BannerQuest
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -43,7 +43,7 @@ fun QuestCardWithArrow(
 @Composable
 fun QuestCardWithArrow(
     modifier: Modifier = Modifier,
-    quest: BannerQuest,
+    quest: BannerQuestUiModel,
     onClick: () -> Unit
 ) {
     QuestCardWithArrow(
@@ -54,7 +54,8 @@ fun QuestCardWithArrow(
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
         isIsZoneQuest = quest.isIsZoneQuest,
-        lastCompleteDate = quest.lastCompleteDate,
+        isAvailable = quest.isAvailable,
+        remainHours = quest.remainHours,
         onClick = onClick
     )
 }
@@ -68,12 +69,14 @@ private fun QuestCardWithArrow(
     rewardPoints: List<RewardPoint>,
     imageId: String?,
     isIsZoneQuest: Boolean,
-    lastCompleteDate: String? = null,
+    isAvailable: Boolean = true,
+    remainHours: Int? = null,
     onClick: () -> Unit
 ) {
+
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
-        containerColor = if (lastCompleteDate != null) gray200 else Color.White,
+        containerColor = if (!isAvailable) gray200 else Color.White,
         onClick = onClick
     ) {
         Box(
@@ -89,6 +92,7 @@ private fun QuestCardWithArrow(
                 title = title,
                 writer = writer,
                 rewardPoints = rewardPoints,
+                remainHours = remainHours,
                 questImage = {
                     if (questType == null) {
                         DefaultQuestImage(
