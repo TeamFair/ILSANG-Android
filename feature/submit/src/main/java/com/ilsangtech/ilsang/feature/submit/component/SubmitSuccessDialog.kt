@@ -110,7 +110,19 @@ private fun SubmitRewardPointsRow(
             ),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            rewardPoints.forEach { rewardPoint ->
+            rewardPoints.find { it is RewardPoint.Metro }?.let { rewardPoint ->
+                SubmitRewardPointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
+            }
+            rewardPoints.find { it is RewardPoint.Commercial }?.let { rewardPoint ->
+                SubmitRewardPointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
+            }
+            rewardPoints.find { it is RewardPoint.Contribute }?.let { rewardPoint ->
                 SubmitRewardPointItem(
                     rewardPoint = rewardPoint,
                     isIsZoneQuest = isIsZoneQuest
