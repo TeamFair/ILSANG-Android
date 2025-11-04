@@ -38,10 +38,10 @@ import androidx.compose.ui.unit.sp
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.coupon.QuestRewardCouponDialog
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
@@ -54,7 +54,7 @@ import com.ilsangtech.ilsang.designsystem.theme.primary300
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestBottomSheet(
-    quest: QuestDetail,
+    quest: QuestDetailUiModel,
     bottomSheetState: SheetState,
     onFavoriteClick: () -> Unit,
     onMissionImageClick: () -> Unit,
@@ -125,7 +125,7 @@ private fun QuestBottomSheetHeader(
 @Composable
 private fun QuestBottomSheetContent(
     modifier: Modifier = Modifier,
-    quest: QuestDetail,
+    quest: QuestDetailUiModel,
     onImageClick: () -> Unit,
     onRewardButtonClick: () -> Unit
 ) {
@@ -230,7 +230,7 @@ private val questBottomSheetApproveButtonTextStyle = TextStyle(
 @Preview
 @Composable
 fun QuestBottomSheetPreviewQuestDetail() {
-    val quest = QuestDetail(
+    val quest = QuestDetailUiModel(
         id = 1,
         expireDate = "2023-12-31",
         favoriteYn = true,

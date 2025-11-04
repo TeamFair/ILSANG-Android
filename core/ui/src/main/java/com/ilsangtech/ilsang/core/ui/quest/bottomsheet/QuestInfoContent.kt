@@ -25,13 +25,14 @@ import coil3.compose.AsyncImage
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.ui.BuildConfig
 import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.RemainHoursBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -43,7 +44,7 @@ import com.ilsangtech.ilsang.designsystem.theme.title02
 @Composable
 internal fun QuestInfoContent(
     modifier: Modifier = Modifier,
-    quest: QuestDetail
+    quest: QuestDetailUiModel
 ) {
     Row(
         modifier = modifier.padding(16.dp),
@@ -60,11 +61,11 @@ internal fun QuestInfoContent(
         Spacer(Modifier.width(8.dp))
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 if (quest.questType is QuestType.Repeat) {
-                    RepeatQuestTypeBadge(repeatType = quest.questType as QuestType.Repeat)
+                    RepeatQuestTypeBadge(repeatType = quest.questType)
                 } else if (quest.questType is QuestType.Event) {
                     EventQuestTypeBadge()
                 }
@@ -79,15 +80,19 @@ internal fun QuestInfoContent(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            quest.expireDate?.let { expireDate ->
-                Text(
-                    text = DateConverter.formatDate(
-                        input = expireDate,
-                        outputPattern = "yyyy.MM.dd"
-                    ) + "까지",
-                    style = caption02,
-                    color = gray400
-                )
+            if (quest.remainHours != null) {
+                RemainHoursBadge(remainHours = quest.remainHours)
+            } else {
+                quest.expireDate?.let { expireDate ->
+                    Text(
+                        text = DateConverter.formatDate(
+                            input = expireDate,
+                            outputPattern = "yyyy.MM.dd"
+                        ) + "까지",
+                        style = caption02,
+                        color = gray400
+                    )
+                }
             }
         }
         Box(
@@ -110,7 +115,7 @@ internal fun QuestInfoContent(
 @Preview(showBackground = true)
 @Composable
 internal fun QuestDetailInfoContentPreview() {
-    val questDetail = QuestDetail(
+    val questDetail = QuestDetailUiModel(
         id = 1,
         expireDate = "2023-12-31",
         favoriteYn = true,
