@@ -46,6 +46,7 @@ import com.ilsangtech.ilsang.designsystem.R.font.pretendard_regular
 import com.ilsangtech.ilsang.designsystem.R.font.pretendard_semibold
 import com.ilsangtech.ilsang.designsystem.component.IlsangBottomSheet
 import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 import com.ilsangtech.ilsang.designsystem.theme.primary
@@ -84,7 +85,10 @@ fun QuestBottomSheet(
             onRewardButtonClick = { showQuestRewardCouponDialog = true }
         )
         Spacer(Modifier.height(16.dp))
-        QuestBottomSheetFooter(onClick = onApproveButtonClick)
+        QuestBottomSheetFooter(
+            enabled = quest.isAvailable,
+            onClick = onApproveButtonClick
+        )
     }
 }
 
@@ -173,7 +177,10 @@ private fun QuestBottomSheetContent(
 }
 
 @Composable
-private fun QuestBottomSheetFooter(onClick: () -> Unit) {
+private fun QuestBottomSheetFooter(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,12 +196,15 @@ private fun QuestBottomSheetFooter(onClick: () -> Unit) {
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onClick,
+            enabled = enabled,
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = primary
+                disabledContainerColor = gray300,
+                containerColor = primary,
+                disabledContentColor = Color.White
             ),
-            contentPadding = PaddingValues(vertical = 16.dp)
+            contentPadding = PaddingValues(vertical = 16.dp),
+            onClick = onClick
         ) {
             Text(
                 text = "퀘스트 인증하기",
