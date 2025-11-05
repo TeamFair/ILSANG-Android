@@ -86,7 +86,19 @@ internal fun RewardPointChips(
     isIsZoneQuest: Boolean
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        rewardPointList.forEach { rewardPoint ->
+        rewardPointList.find { it is RewardPoint.Metro }?.let { rewardPoint ->
+            RewardPointChip(
+                rewardPoint = rewardPoint,
+                isIsZoneQuest = isIsZoneQuest
+            )
+        }
+        rewardPointList.find { it is RewardPoint.Commercial }?.let { rewardPoint ->
+            RewardPointChip(
+                rewardPoint = rewardPoint,
+                isIsZoneQuest = isIsZoneQuest
+            )
+        }
+        rewardPointList.find { it is RewardPoint.Contribute }?.let { rewardPoint ->
             RewardPointChip(
                 rewardPoint = rewardPoint,
                 isIsZoneQuest = isIsZoneQuest

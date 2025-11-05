@@ -55,7 +55,19 @@ internal fun ObtainablePointContent(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            rewardPoints.forEach { rewardPoint ->
+            rewardPoints.find { it is RewardPoint.Metro }?.let { rewardPoint ->
+                ObtainablePointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
+            }
+            rewardPoints.find { it is RewardPoint.Commercial }?.let { rewardPoint ->
+                ObtainablePointItem(
+                    rewardPoint = rewardPoint,
+                    isIsZoneQuest = isIsZoneQuest
+                )
+            }
+            rewardPoints.find { it is RewardPoint.Contribute }?.let { rewardPoint ->
                 ObtainablePointItem(
                     rewardPoint = rewardPoint,
                     isIsZoneQuest = isIsZoneQuest
