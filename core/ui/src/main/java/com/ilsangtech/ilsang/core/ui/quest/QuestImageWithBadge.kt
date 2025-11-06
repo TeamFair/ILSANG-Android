@@ -26,7 +26,7 @@ fun QuestImageWithBadge(
                     .zIndex(2f)
                     .offset(
                         x = if (isSmallSize) 2.dp else 10.dp,
-                        y = if (isSmallSize) (-8).dp else (-10).dp
+                        y = if (isSmallSize) (-2).dp else (-10).dp
                     ),
                 isSmallSize = isSmallSize,
                 repeatType = questType
@@ -38,7 +38,7 @@ fun QuestImageWithBadge(
                     .zIndex(2f)
                     .offset(
                         x = if (isSmallSize) 8.dp else 17.dp,
-                        y = if (isSmallSize) (-8).dp else (-10).dp
+                        y = if (isSmallSize) (-2).dp else (-10).dp
                     ),
                 isSmallSize = isSmallSize
             )
