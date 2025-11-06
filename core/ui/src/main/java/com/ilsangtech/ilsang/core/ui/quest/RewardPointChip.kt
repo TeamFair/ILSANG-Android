@@ -28,6 +28,7 @@ import com.ilsangtech.ilsang.designsystem.theme.toSp
 
 @Composable
 private fun RewardPointChip(
+    isSmallSize: Boolean = false,
     rewardPoint: RewardPoint,
     isIsZoneQuest: Boolean
 ) {
@@ -42,7 +43,10 @@ private fun RewardPointChip(
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.padding(
+                horizontal =
+                    if (isSmallSize) 6.dp else 8.dp
+            ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             RewardPointIcon(
@@ -82,24 +86,32 @@ private fun RewardPointChip(
 
 @Composable
 internal fun RewardPointChips(
+    isSmallSize: Boolean = false,
     rewardPointList: List<RewardPoint>,
     isIsZoneQuest: Boolean
 ) {
-    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(
+            if (isSmallSize) 3.dp else 4.dp
+        )
+    ) {
         rewardPointList.find { it is RewardPoint.Metro }?.let { rewardPoint ->
             RewardPointChip(
+                isSmallSize = isSmallSize,
                 rewardPoint = rewardPoint,
                 isIsZoneQuest = isIsZoneQuest
             )
         }
         rewardPointList.find { it is RewardPoint.Commercial }?.let { rewardPoint ->
             RewardPointChip(
+                isSmallSize = isSmallSize,
                 rewardPoint = rewardPoint,
                 isIsZoneQuest = isIsZoneQuest
             )
         }
         rewardPointList.find { it is RewardPoint.Contribute }?.let { rewardPoint ->
             RewardPointChip(
+                isSmallSize = isSmallSize,
                 rewardPoint = rewardPoint,
                 isIsZoneQuest = isIsZoneQuest
             )
