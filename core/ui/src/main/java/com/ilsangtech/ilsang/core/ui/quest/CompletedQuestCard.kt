@@ -39,6 +39,7 @@ fun CompletedQuestCard(
         writer = quest.writerName,
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
+        questType = quest.questType,
         isIsZoneQuest = quest.isIsZoneQuest,
         onClick = onClick
     )
@@ -56,6 +57,7 @@ fun CompletedQuestCard(
         writer = quest.writerName,
         rewardPoints = quest.rewards,
         imageId = quest.imageId,
+        questType = quest.questType,
         isIsZoneQuest = quest.isIsZoneQuest,
         onClick = onClick
     )
@@ -68,6 +70,7 @@ private fun CompletedQuestCard(
     writer: String,
     rewardPoints: List<RewardPoint>,
     imageId: String?,
+    questType: QuestType,
     isIsZoneQuest: Boolean,
     onClick: () -> Unit
 ) {
@@ -112,6 +115,7 @@ private fun CompletedQuestCard(
                 questImage = {
                     QuestImageWithBadge(
                         imageId = imageId,
+                        questType = questType,
                         contentDescription = "퀘스트 이미지"
                     )
                 }

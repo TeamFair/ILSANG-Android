@@ -69,28 +69,3 @@ private fun QuestImageWithBadgeEventPreview() {
         contentDescription = "Quest Image"
     )
 }
-
-@Composable
-fun QuestImageWithBadge(
-    modifier: Modifier = Modifier,
-    imageId: String?,
-    badge: @Composable (() -> Unit)? = null,
-    contentDescription: String
-) {
-    Box(modifier = modifier) {
-        badge?.let {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .zIndex(2f)
-                    .offset(x = 10.dp, y = (-10).dp)
-            ) {
-                badge.invoke()
-            }
-        }
-        DefaultQuestImage(
-            imageId = imageId,
-            contentDescription = contentDescription
-        )
-    }
-}
