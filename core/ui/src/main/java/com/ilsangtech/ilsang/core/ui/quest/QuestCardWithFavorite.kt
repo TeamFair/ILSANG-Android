@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +29,13 @@ fun QuestCardWithFavorite(
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val isSmallSize = remember { screenWidth < 400 }
+
+    val contentHorizontalPadding = if (isSmallSize) 18.dp else 23.dp
+    val contentVerticalPadding = if (isSmallSize) 16.dp else 20.dp
+
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
         containerColor = if (!quest.isAvailable) gray200 else Color.White,
@@ -37,9 +46,10 @@ fun QuestCardWithFavorite(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 23.dp,
-                        vertical = 20.dp
+                        horizontal = contentHorizontalPadding,
+                        vertical = contentVerticalPadding
                     ),
+                isSmallSize = isSmallSize,
                 title = quest.title,
                 writer = quest.writerName,
                 rewardPoints = quest.rewards,
@@ -47,14 +57,9 @@ fun QuestCardWithFavorite(
                 remainHours = quest.remainHours,
                 questImage = {
                     QuestImageWithBadge(
+                        isSmallSize = isSmallSize,
                         imageId = quest.imageId,
-                        badge = {
-                            if (quest.questType is QuestType.Repeat) {
-                                RepeatQuestTypeBadge(repeatType = quest.questType)
-                            } else if (quest.questType is QuestType.Event) {
-                                EventQuestTypeBadge()
-                            }
-                        },
+                        questType = quest.questType,
                         contentDescription = "퀘스트 이미지"
                     )
                 }
@@ -63,8 +68,8 @@ fun QuestCardWithFavorite(
                 modifier = modifier
                     .align(Alignment.TopEnd)
                     .padding(
-                        top = 16.dp,
-                        end = 16.dp
+                        top = if (isSmallSize) 12.dp else 16.dp,
+                        end = if (isSmallSize) 12.dp else 16.dp
                     )
                     .clickable(
                         onClick = onFavoriteClick,
