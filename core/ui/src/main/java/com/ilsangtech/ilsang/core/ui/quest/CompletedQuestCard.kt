@@ -1,21 +1,19 @@
 package com.ilsangtech.ilsang.core.ui.quest
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +71,23 @@ private fun CompletedQuestCard(
     isIsZoneQuest: Boolean,
     onClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val isSmallSize = remember { screenWidth < 400 }
+
+    val contentHorizontalPadding = if (isSmallSize) 18.dp else 23.dp
+    val contentVerticalPadding = if (isSmallSize) 16.dp else 20.dp
+
+    val completeTextStyle = TextStyle(
+        fontFamily = pretendardFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        color = Color(0xFF3FCC6F)
+    ).copy(
+        fontSize = if (isSmallSize) 9.6.dp.toSp() else 12.dp.toSp(),
+        lineHeight = if (isSmallSize) 12.8.dp.toSp() else 16.dp.toSp(),
+        letterSpacing = if (isSmallSize) -0.24.dp.toSp() else -0.3.dp.toSp()
+    )
+
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick
@@ -81,13 +96,15 @@ private fun CompletedQuestCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = 13.5.dp,
-                    vertical = 20.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
+                    horizontal = contentHorizontalPadding,
+                    vertical = contentVerticalPadding
+                )
         ) {
             DefaultQuestContent(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
+                isSmallSize = isSmallSize,
                 title = title,
                 writer = writer,
                 rewardPoints = rewardPoints,
@@ -100,37 +117,19 @@ private fun CompletedQuestCard(
                 }
             )
             Column(
+                modifier = Modifier.align(if (isSmallSize) Alignment.Top else Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(26.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFECFAF1))
-                ) {
-                    Icon(
-                        modifier = Modifier.padding(
-                            top = 9.dp,
-                            bottom = 6.64.dp,
-                            start = 6.dp,
-                            end = 6.37.dp
-                        ),
-                        painter = painterResource(R.drawable.icon_completed_quest_checkmark),
-                        contentDescription = "퀘스트 완료 체크",
-                        tint = Color.Unspecified
-                    )
-                }
+                Icon(
+                    modifier = Modifier.size(if (isSmallSize) 20.dp else 26.dp),
+                    painter = painterResource(R.drawable.icon_checkmark_circle),
+                    contentDescription = "퀘스트 완료 체크",
+                    tint = Color.Unspecified
+                )
                 Text(
                     text = "적립완료",
-                    style = TextStyle(
-                        fontFamily = pretendardFontFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.dp.toSp(),
-                        lineHeight = 16.dp.toSp(),
-                        letterSpacing = -0.3.dp.toSp(),
-                        color = Color(0xFF3FCC6F)
-                    )
+                    style = completeTextStyle
                 )
             }
         }
