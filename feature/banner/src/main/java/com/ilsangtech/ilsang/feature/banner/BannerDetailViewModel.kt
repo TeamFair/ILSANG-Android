@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import androidx.paging.filter
 import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
@@ -108,7 +107,6 @@ class BannerDetailViewModel @Inject constructor(
             isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
-        .map { it.filter { quest -> quest.lastCompleteDate == null } }
         .map { pagingData ->
             pagingData.map(BannerQuest::toUiModel)
         }
