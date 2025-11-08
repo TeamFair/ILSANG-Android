@@ -2,16 +2,19 @@ package com.ilsangtech.ilsang.core.ui.quest
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,22 +76,29 @@ private fun QuestCardWithArrow(
     remainHours: Int? = null,
     onClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val isSmallSize = remember { screenWidth < 400 }
+
+    val rowHorizontalPadding = if (isSmallSize) 18.dp else 23.dp
+    val rowVerticalPadding = if (isSmallSize) 16.dp else 20.dp
 
     DefaultQuestCard(
         modifier = modifier.fillMaxWidth(),
         containerColor = if (!isAvailable) gray200 else Color.White,
         onClick = onClick
     ) {
-        Box(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = 23.dp,
-                    vertical = 20.dp
+                    horizontal = rowHorizontalPadding,
+                    vertical = rowVerticalPadding
                 )
         ) {
             DefaultQuestContent(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.weight(1f),
+                isSmallSize = isSmallSize,
                 title = title,
                 writer = writer,
                 rewardPoints = rewardPoints,
@@ -101,6 +111,7 @@ private fun QuestCardWithArrow(
                         )
                     } else {
                         QuestImageWithBadge(
+                            isSmallSize = isSmallSize,
                             imageId = imageId,
                             questType = questType,
                             contentDescription = "퀘스트 타입 이미지"
@@ -109,20 +120,22 @@ private fun QuestCardWithArrow(
                 },
                 isIsZoneQuest = isIsZoneQuest
             )
-            Box(
-                modifier = Modifier
-                    .size(26.dp)
-                    .align(Alignment.CenterEnd)
-                    .clip(CircleShape)
-                    .background(Color(0x1A929292)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.padding(5.dp),
-                    painter = painterResource(R.drawable.icon_card_arrow_right),
-                    tint = gray500,
-                    contentDescription = null
-                )
+            if (!isSmallSize) {
+                Box(
+                    modifier = Modifier
+                        .size(26.dp)
+                        .align(Alignment.CenterVertically)
+                        .clip(CircleShape)
+                        .background(Color(0x1A929292)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(5.dp),
+                        painter = painterResource(R.drawable.icon_card_arrow_right),
+                        tint = gray500,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }

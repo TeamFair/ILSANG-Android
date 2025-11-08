@@ -23,6 +23,7 @@ import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
 @Composable
 fun DefaultQuestContent(
     modifier: Modifier = Modifier,
+    isSmallSize: Boolean = false,
     title: String,
     writer: String,
     rewardPoints: List<RewardPoint>,
@@ -35,7 +36,7 @@ fun DefaultQuestContent(
         verticalAlignment = Alignment.CenterVertically
     ) {
         questImage()
-        Spacer(Modifier.width(20.dp))
+        Spacer(Modifier.width(if (isSmallSize) 12.dp else 20.dp))
         Column {
             Text(
                 text = title,
@@ -51,6 +52,7 @@ fun DefaultQuestContent(
             )
             Spacer(Modifier.height(8.dp))
             RewardPointChips(
+                isSmallSize = isSmallSize,
                 rewardPointList = rewardPoints,
                 isIsZoneQuest = isIsZoneQuest
             )

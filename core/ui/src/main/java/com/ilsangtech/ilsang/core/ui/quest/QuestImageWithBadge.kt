@@ -13,6 +13,7 @@ import com.ilsangtech.ilsang.core.model.quest.QuestType
 @Composable
 fun QuestImageWithBadge(
     modifier: Modifier = Modifier,
+    isSmallSize: Boolean = false,
     imageId: String?,
     questType: QuestType,
     contentDescription: String
@@ -23,7 +24,11 @@ fun QuestImageWithBadge(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .zIndex(2f)
-                    .offset(x = 10.dp, y = (-10).dp),
+                    .offset(
+                        x = if (isSmallSize) 2.dp else 10.dp,
+                        y = if (isSmallSize) (-2).dp else (-10).dp
+                    ),
+                isSmallSize = isSmallSize,
                 repeatType = questType
             )
         } else if (questType is QuestType.Event) {
@@ -31,7 +36,11 @@ fun QuestImageWithBadge(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .zIndex(2f)
-                    .offset(x = 10.dp, y = (-10).dp)
+                    .offset(
+                        x = if (isSmallSize) 8.dp else 17.dp,
+                        y = if (isSmallSize) (-2).dp else (-10).dp
+                    ),
+                isSmallSize = isSmallSize
             )
         }
         DefaultQuestImage(
@@ -59,29 +68,4 @@ private fun QuestImageWithBadgeEventPreview() {
         questType = QuestType.Event,
         contentDescription = "Quest Image"
     )
-}
-
-@Composable
-fun QuestImageWithBadge(
-    modifier: Modifier = Modifier,
-    imageId: String?,
-    badge: @Composable (() -> Unit)? = null,
-    contentDescription: String
-) {
-    Box(modifier = modifier) {
-        badge?.let {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .zIndex(2f)
-                    .offset(x = 10.dp, y = (-10).dp)
-            ) {
-                badge.invoke()
-            }
-        }
-        DefaultQuestImage(
-            imageId = imageId,
-            contentDescription = contentDescription
-        )
-    }
 }
