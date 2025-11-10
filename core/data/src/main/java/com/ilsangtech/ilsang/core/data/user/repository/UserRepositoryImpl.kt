@@ -8,9 +8,9 @@ import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
 import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.user.MyInfo
 import com.ilsangtech.ilsang.core.model.user.UserCommercialPoint
+import com.ilsangtech.ilsang.core.model.user.UserInfo
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import com.ilsangtech.ilsang.core.util.DateConverter

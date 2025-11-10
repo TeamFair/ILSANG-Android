@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.user.mapper
 
 import com.ilsangtech.ilsang.core.data.title.mapper.toUserTitle
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.user.UserInfo
 import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 
 internal fun UserInfoResponse.toUserInfo(): UserInfo {

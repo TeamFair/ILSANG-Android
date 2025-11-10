@@ -1,7 +1,7 @@
 package com.ilsangtech.ilsang.core.data.user.mapper
 
-import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.UserInfo
+import com.ilsangtech.ilsang.core.model.user.MyInfo
+import com.ilsangtech.ilsang.core.model.user.UserInfo
 
 fun UserInfo.toMyInfo(
     totalPoint: Int,

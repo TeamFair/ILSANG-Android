@@ -8,8 +8,8 @@ import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.SeasonRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
-import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
+import com.ilsangtech.ilsang.core.model.user.MyInfo
 import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import com.ilsangtech.ilsang.feature.home.model.HomeTabSuccessData
 import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
