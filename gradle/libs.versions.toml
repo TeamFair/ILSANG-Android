@@ -11,6 +11,7 @@ hiltAndroidCompiler = "2.53.1"
 hiltNavigationComposeVersion = "1.2.0"
 kotlinxSerializationJson = "1.8.1"
 loggingInterceptor = "4.12.0"
+mockk = "1.14.6"
 navigationCompose = "2.8.9"
 okhttp = "4.12.0"
 pagingRuntime = "3.3.6"
@@ -46,6 +47,7 @@ camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" 
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 plugin-kotlin-serializationPlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
