@@ -6,12 +6,10 @@ import com.ilsangtech.ilsang.core.data.user.mapper.toUserCommercialPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserInfo
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPoint
 import com.ilsangtech.ilsang.core.data.user.mapper.toUserPointSummary
-import com.ilsangtech.ilsang.core.data.user.toUserXpStats
 import com.ilsangtech.ilsang.core.datastore.user.UserLocalDataSource
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.MyInfo
 import com.ilsangtech.ilsang.core.model.UserInfo
-import com.ilsangtech.ilsang.core.model.UserXpStats
 import com.ilsangtech.ilsang.core.model.user.UserCommercialPoint
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
@@ -79,12 +77,6 @@ class UserRepositoryImpl @Inject constructor(
                 userId = userId
             ).toUserCommercialPoint()
         )
-    }
-
-    override suspend fun getUserXpStats(customerId: String?): UserXpStats {
-        return userRemoteDataSource.getUserXpStats(
-            customerId = customerId
-        ).userXpStatsNetworkModel.toUserXpStats()
     }
 
     override suspend fun updateUserNickname(nickname: String) {
