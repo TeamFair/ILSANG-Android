@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.model
+package com.ilsangtech.ilsang.core.model.user
 
 import com.ilsangtech.ilsang.core.model.title.UserTitle
 

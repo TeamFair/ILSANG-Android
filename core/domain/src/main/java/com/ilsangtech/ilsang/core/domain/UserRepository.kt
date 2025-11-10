@@ -1,9 +1,8 @@
 package com.ilsangtech.ilsang.core.domain
 
-import com.ilsangtech.ilsang.core.model.MyInfo
-import com.ilsangtech.ilsang.core.model.UserInfo
-import com.ilsangtech.ilsang.core.model.UserXpStats
+import com.ilsangtech.ilsang.core.model.user.MyInfo
 import com.ilsangtech.ilsang.core.model.user.UserCommercialPoint
+import com.ilsangtech.ilsang.core.model.user.UserInfo
 import com.ilsangtech.ilsang.core.model.user.UserPoint
 import com.ilsangtech.ilsang.core.model.user.UserPointSummary
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +19,6 @@ interface UserRepository {
     fun getUserPointSummary(seasonId: Int): Flow<UserPointSummary>
 
     fun getUserCommercialPoint(userId: String? = null): Flow<UserCommercialPoint>
-
-    suspend fun getUserXpStats(customerId: String? = null): UserXpStats
 
     suspend fun updateUserNickname(nickname: String)
 
