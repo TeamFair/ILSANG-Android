@@ -9,6 +9,7 @@ graphicsShapes = "1.0.1"
 hiltAndroid = "2.53.1"
 hiltAndroidCompiler = "2.53.1"
 hiltNavigationComposeVersion = "1.2.0"
+kotlinxCoroutinesTest = "1.10.2"
 kotlinxSerializationJson = "1.8.1"
 loggingInterceptor = "4.12.0"
 mockk = "1.14.6"
@@ -36,6 +37,7 @@ accompanist = "0.37.3"
 ksp = "2.0.21-1.0.27"
 protobuf = "4.32.1"
 protobufPlugin = "0.9.5"
+turbine = "1.2.1"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -47,6 +49,7 @@ camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" 
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 plugin-kotlin-serializationPlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 
@@ -94,6 +97,7 @@ retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 ilsang-android-feature = { id = "ilsang.android.feature" }
