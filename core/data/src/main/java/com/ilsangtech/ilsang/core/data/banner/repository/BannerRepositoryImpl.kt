@@ -12,7 +12,7 @@ import javax.inject.Inject
 class BannerRepositoryImpl @Inject constructor(
     private val bannerDataSource: BannerDataSource,
 ) : BannerRepository {
-    override suspend fun getBanners(): Flow<List<Banner>> = flow {
+    override fun getBanners(): Flow<List<Banner>> = flow {
         emit(
             bannerDataSource.getBanners()
                 .map(BannerNetworkModel::toBanner)
