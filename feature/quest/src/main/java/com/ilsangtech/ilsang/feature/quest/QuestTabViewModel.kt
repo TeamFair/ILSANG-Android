@@ -3,8 +3,10 @@ package com.ilsangtech.ilsang.feature.quest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.QuestType
@@ -28,6 +30,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +39,8 @@ import javax.inject.Inject
 class QuestTabViewModel @Inject constructor(
     userRepository: UserRepository,
     areaRepository: AreaRepository,
-    private val questRepository: QuestRepository
+    private val questRepository: QuestRepository,
+    questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
 
@@ -72,6 +76,8 @@ class QuestTabViewModel @Inject constructor(
     private val favoriteQuestSet = MutableStateFlow(setOf<Int>())
     private val unfavoriteQuests = MutableStateFlow(setOf<Int>())
 
+    private val questCompleteDateMapFlow = questCompleteDateRepository.questCompleteDateMapFlow
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuestDetail = combine(
         _selectedQuest,
@@ -104,12 +110,19 @@ class QuestTabViewModel @Inject constructor(
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
                     else -> null
-                }
+                },
+                completedYn = false
             )
         }
     }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(TypedQuest::toUiModel)
+        .transformLatest { pagingData ->
+            questCompleteDateMapFlow.collect { dateMap ->
+                emit(
+                    pagingData.filter { quest ->
+                        quest.questId !in dateMap
+                    }.map(TypedQuest::toUiModel)
+                )
+            }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -139,8 +152,16 @@ class QuestTabViewModel @Inject constructor(
             )
         }
     }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(TypedQuest::toUiModel)
+        .transformLatest { pagingData ->
+            questCompleteDateMapFlow.collect { dateMap ->
+                emit(
+                    pagingData.map { quest ->
+                        if (quest.questId in dateMap) quest.copy(
+                            lastCompleteDate = dateMap[quest.questId]
+                        ) else quest
+                    }.map(TypedQuest::toUiModel)
+                )
+            }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -156,12 +177,19 @@ class QuestTabViewModel @Inject constructor(
                     SortTypeUiModel.PointDesc -> true
                     SortTypeUiModel.PointAsc -> false
                     else -> null
-                }
+                },
+                completedYn = false
             )
         }
     }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(TypedQuest::toUiModel)
+        .transformLatest { pagingData ->
+            questCompleteDateMapFlow.collect { dateMap ->
+                emit(
+                    pagingData.filter { quest ->
+                        quest.questId !in dateMap
+                    }.map(TypedQuest::toUiModel)
+                )
+            }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -185,7 +213,7 @@ class QuestTabViewModel @Inject constructor(
                 if (it.questId in unfavoriteQuests) it.copy(favoriteYn = false) else it
             }
         }
-    }.cachedIn(viewModelScope)
+    }
 
     fun selectQuest(quest: TypedQuestUiModel) {
         _selectedQuest.update { quest }
