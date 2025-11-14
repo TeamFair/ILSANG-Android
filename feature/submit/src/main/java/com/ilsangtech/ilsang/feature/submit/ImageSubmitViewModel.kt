@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
@@ -26,7 +27,8 @@ class ImageSubmitViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageRepository: ImageRepository,
     private val missionRepository: MissionRepository,
-    private val questRepository: QuestRepository
+    private val questRepository: QuestRepository,
+    private val questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<ImageSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<ImageSubmitRoute>().missionId
@@ -50,6 +52,7 @@ class ImageSubmitViewModel @Inject constructor(
                     questRepository.getQuestDetail(questId).collect { quest ->
                         _submitUiState.update { SubmitResultUiState.Success(quest.rewards) }
                     }
+                    questCompleteDateRepository.updateQuestCompleteDate(questId)
                 }.onFailure {
                     _submitUiState.update { SubmitResultUiState.Error }
                 }
