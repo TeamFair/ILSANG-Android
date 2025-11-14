@@ -125,10 +125,9 @@ class BannerDetailViewModel @Inject constructor(
             orderRewardDesc = orderRewardDesc,
             isZoneCode = isZoneCode
         )
-    }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(BannerQuest::toUiModel)
-        }
+    }.map { pagingData ->
+        pagingData.map(BannerQuest::toUiModel)
+    }
 
     fun onQuestTypeChanged(questType: BannerDetailQuestType) {
         _selectedQuestType.update { questType }
