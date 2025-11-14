@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
 import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
@@ -27,7 +28,8 @@ class WordsQuizSubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     questRepository: QuestRepository,
     quizRepository: QuizRepository,
-    private val missionRepository: MissionRepository
+    private val missionRepository: MissionRepository,
+    private val questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<WordsQuizSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<WordsQuizSubmitRoute>().missionId
@@ -79,6 +81,7 @@ class WordsQuizSubmitViewModel @Inject constructor(
                             val rewardPoints = wordsQuizUiState.submitQuestUiState.rewards
                             SubmitResultUiState.Success(rewardPoints)
                         }
+                        questCompleteDateRepository.updateQuestCompleteDate(questId)
                     } else {
                         _submitResultUiState.update { SubmitResultUiState.WrongAnswer }
                     }
