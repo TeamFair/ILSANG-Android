@@ -14,7 +14,7 @@ class QuestCompleteDateRepositoryImpl : QuestCompleteDateRepository {
 
     override fun updateQuestCompleteDate(questId: Int) {
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA)
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         val date = sdf.format(Date())
         questCompleteDateMap[questId] = date
         _questCompleteDateMapFlow.value = questCompleteDateMap
