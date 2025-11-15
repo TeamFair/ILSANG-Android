@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.BannerQuest
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
 import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import com.ilsangtech.ilsang.feature.banner.navigation.BannerDetailRoute
@@ -24,6 +27,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +36,8 @@ import javax.inject.Inject
 class BannerDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     userRepository: UserRepository,
-    private val questRepository: QuestRepository
+    private val questRepository: QuestRepository,
+    questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     val bannerDetailInfo = savedStateHandle.toRoute<BannerDetailRoute>()
 
@@ -47,6 +52,8 @@ class BannerDetailViewModel @Inject constructor(
     private val questDetailRefresh = MutableSharedFlow<Unit>(replay = 1)
 
     private val _myInfo = userRepository.getMyInfo()
+
+    private val questCompleteDateMapFlow = questCompleteDateRepository.questCompleteDateMapFlow
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedQuestDetail = combine(
@@ -80,13 +87,25 @@ class BannerDetailViewModel @Inject constructor(
         }
         questRepository.getBannerQuests(
             bannerId = bannerDetailInfo.id,
+            completedYn = false,
             orderExpiredDesc = orderExpiredDesc,
             orderRewardDesc = orderRewardDesc,
             isZoneCode = isZoneCode
         )
     }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(BannerQuest::toUiModel)
+        .transformLatest { pagingData ->
+            questCompleteDateMapFlow.collect { dateMap ->
+                emit(
+                    pagingData.filter { quest ->
+                        (quest.lastCompleteDate == null && quest.questId !in dateMap)
+                                || quest.questType is QuestType.Repeat
+                    }.map { quest ->
+                        if (quest.questId in dateMap) quest.copy(
+                            lastCompleteDate = dateMap[quest.questId]
+                        ) else quest
+                    }.map(BannerQuest::toUiModel)
+                )
+            }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -106,10 +125,9 @@ class BannerDetailViewModel @Inject constructor(
             orderRewardDesc = orderRewardDesc,
             isZoneCode = isZoneCode
         )
-    }.cachedIn(viewModelScope)
-        .map { pagingData ->
-            pagingData.map(BannerQuest::toUiModel)
-        }
+    }.map { pagingData ->
+        pagingData.map(BannerQuest::toUiModel)
+    }
 
     fun onQuestTypeChanged(questType: BannerDetailQuestType) {
         _selectedQuestType.update { questType }

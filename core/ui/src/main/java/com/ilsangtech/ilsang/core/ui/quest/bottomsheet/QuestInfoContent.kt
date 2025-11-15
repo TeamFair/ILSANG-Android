@@ -80,7 +80,7 @@ internal fun QuestInfoContent(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            if (quest.remainHours != null) {
+            if (quest.remainHours != null && quest.remainHours > 0) {
                 RemainHoursBadge(remainHours = quest.remainHours)
             } else {
                 quest.expireDate?.let { expireDate ->

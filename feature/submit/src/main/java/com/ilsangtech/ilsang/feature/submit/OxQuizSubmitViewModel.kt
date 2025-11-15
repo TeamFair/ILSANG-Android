@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
 import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
@@ -26,8 +27,9 @@ import javax.inject.Inject
 class OxQuizSubmitViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     quizRepository: QuizRepository,
-    questRepository: QuestRepository,
-    private val missionRepository: MissionRepository
+    private val questRepository: QuestRepository,
+    private val missionRepository: MissionRepository,
+    private val questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     private val questId = savedStateHandle.toRoute<OxQuizSubmitRoute>().questId
     private val missionId = savedStateHandle.toRoute<OxQuizSubmitRoute>().missionId
@@ -109,6 +111,7 @@ class OxQuizSubmitViewModel @Inject constructor(
                         _submitResultUiState.update {
                             SubmitResultUiState.Success(submitQuestUiState.rewards)
                         }
+                        questCompleteDateRepository.updateQuestCompleteDate(questId)
                     } else {
                         _submitResultUiState.update { SubmitResultUiState.WrongAnswer }
                     }
