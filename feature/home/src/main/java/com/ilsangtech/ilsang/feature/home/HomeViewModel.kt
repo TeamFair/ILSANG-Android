@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.BannerRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.SeasonRepository
@@ -40,7 +41,8 @@ class HomeViewModel @Inject constructor(
     private val areaRepository: AreaRepository,
     private val bannerRepository: BannerRepository,
     private val questRepository: QuestRepository,
-    private val rankRepository: RankRepository
+    private val rankRepository: RankRepository,
+    private val questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
     private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
 
@@ -84,29 +86,31 @@ class HomeViewModel @Inject constructor(
             val topRankUsersFlow =
                 rankRepository.getTotalTopRankUsers(myAreaCode)
 
-            combine(
-                bannersFlow,
-                popularFlow,
-                recommendedFlow,
-                largeRewardFlow,
-                topRankUsersFlow
-            ) { banners, popular, recommended, largeReward, topRank ->
-                HomeTabUiState.Success(
-                    HomeTabSuccessData(
-                        myInfo = MyInfoUiModel(
-                            nickname = myInfo.nickname,
-                            profileImageId = myInfo.profileImageId,
-                            myCommercialAreaName = myCommercialAreaName,
-                            isCommericalAreaName = isCommercialAreaName
-                        ),
-                        season = seasonRepository.getCurrentSeason().toOpenSeasonUiModel(),
-                        banners = banners,
-                        popularQuests = popular,
-                        recommendedQuests = recommended,
-                        largeRewardQuests = largeReward,
-                        topRankUsers = topRank
+            questCompleteDateRepository.questCompleteDateMapFlow.flatMapLatest {
+                combine(
+                    bannersFlow,
+                    popularFlow,
+                    recommendedFlow,
+                    largeRewardFlow,
+                    topRankUsersFlow
+                ) { banners, popular, recommended, largeReward, topRank ->
+                    HomeTabUiState.Success(
+                        HomeTabSuccessData(
+                            myInfo = MyInfoUiModel(
+                                nickname = myInfo.nickname,
+                                profileImageId = myInfo.profileImageId,
+                                myCommercialAreaName = myCommercialAreaName,
+                                isCommericalAreaName = isCommercialAreaName
+                            ),
+                            season = seasonRepository.getCurrentSeason().toOpenSeasonUiModel(),
+                            banners = banners,
+                            popularQuests = popular,
+                            recommendedQuests = recommended,
+                            largeRewardQuests = largeReward,
+                            topRankUsers = topRank
+                        )
                     )
-                )
+                }
             }
         }
             .catch { e -> emit(HomeTabUiState.Error(e)) }
