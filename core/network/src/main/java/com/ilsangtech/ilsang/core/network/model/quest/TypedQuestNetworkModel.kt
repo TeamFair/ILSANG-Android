@@ -14,5 +14,5 @@ data class TypedQuestNetworkModel(
     val writerName: String,
     val questType: String,
     val repeatFrequency: String?,
-    val lastCompleteDate: String?
+    val lastCompleteDate: String? = null
 )
