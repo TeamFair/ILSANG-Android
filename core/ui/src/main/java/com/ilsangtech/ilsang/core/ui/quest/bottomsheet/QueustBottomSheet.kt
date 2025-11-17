@@ -85,7 +85,7 @@ fun QuestBottomSheet(
             onRewardButtonClick = { showQuestRewardCouponDialog = true }
         )
         Spacer(Modifier.height(16.dp))
-        QuestBottomSheetFooter(
+        QuestBottomSheetButton(
             enabled = quest.isAvailable,
             onClick = onApproveButtonClick
         )
@@ -173,44 +173,39 @@ private fun QuestBottomSheetContent(
                 onRewardButtonClick = onRewardButtonClick
             )
         }
-    }
-}
-
-@Composable
-private fun QuestBottomSheetFooter(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
         Text(
+            modifier = Modifier.padding(top = 8.dp),
             text = "퀘스트를 수행하셨나요?\n" +
                     "인증 후 포인트를 적립받으세요",
             textAlign = TextAlign.Center,
             style = questBottomSheetDescriptionTextStyle
         )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = gray300,
-                containerColor = primary,
-                disabledContentColor = Color.White
-            ),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            onClick = onClick
-        ) {
-            Text(
-                text = "퀘스트 인증하기",
-                style = questBottomSheetApproveButtonTextStyle
-            )
-        }
+    }
+}
+
+@Composable
+private fun QuestBottomSheetButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        enabled = enabled,
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            disabledContainerColor = gray300,
+            containerColor = primary,
+            disabledContentColor = Color.White
+        ),
+        contentPadding = PaddingValues(vertical = 16.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text = "퀘스트 인증하기",
+            style = questBottomSheetApproveButtonTextStyle
+        )
     }
 }
 
