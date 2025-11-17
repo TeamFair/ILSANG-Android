@@ -14,5 +14,5 @@ data class BannerQuestNetworkModel(
     val title: String,
     val writerName: String,
     val commercialAreaCode: String,
-    val lastCompleteDate: String?
+    val lastCompleteDate: String? = null
 )
