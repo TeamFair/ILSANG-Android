@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -80,12 +82,15 @@ fun QuestBottomSheet(
             onFavoriteClick = onFavoriteClick
         )
         QuestBottomSheetContent(
+            modifier = Modifier
+                .weight(weight = 1f, fill = false)
+                .verticalScroll(rememberScrollState()),
             quest = quest,
             onImageClick = onMissionImageClick,
             onRewardButtonClick = { showQuestRewardCouponDialog = true }
         )
         Spacer(Modifier.height(16.dp))
-        QuestBottomSheetFooter(
+        QuestBottomSheetButton(
             enabled = quest.isAvailable,
             onClick = onApproveButtonClick
         )
@@ -141,6 +146,11 @@ private fun QuestBottomSheetContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         QuestInfoContent(quest = quest)
+        if (quest.missions.firstOrNull() != null
+            && quest.missions.first().type == MissionType.Photo
+        ) {
+            MissionDescriptionCard(missionTitle = quest.missions.first().title)
+        }
         Row(modifier = Modifier.fillMaxWidth()) {
             if (quest.missions.firstOrNull()?.type == MissionType.Photo) {
                 val imageIds = if (quest.questType is QuestType.Repeat) {
@@ -173,44 +183,39 @@ private fun QuestBottomSheetContent(
                 onRewardButtonClick = onRewardButtonClick
             )
         }
-    }
-}
-
-@Composable
-private fun QuestBottomSheetFooter(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
         Text(
+            modifier = Modifier.padding(top = 8.dp),
             text = "퀘스트를 수행하셨나요?\n" +
                     "인증 후 포인트를 적립받으세요",
             textAlign = TextAlign.Center,
             style = questBottomSheetDescriptionTextStyle
         )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = gray300,
-                containerColor = primary,
-                disabledContentColor = Color.White
-            ),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            onClick = onClick
-        ) {
-            Text(
-                text = "퀘스트 인증하기",
-                style = questBottomSheetApproveButtonTextStyle
-            )
-        }
+    }
+}
+
+@Composable
+private fun QuestBottomSheetButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        enabled = enabled,
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            disabledContainerColor = gray300,
+            containerColor = primary,
+            disabledContentColor = Color.White
+        ),
+        contentPadding = PaddingValues(vertical = 16.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text = "퀘스트 인증하기",
+            style = questBottomSheetApproveButtonTextStyle
+        )
     }
 }
 
