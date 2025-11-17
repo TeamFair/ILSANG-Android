@@ -1,6 +1,5 @@
 package com.ilsangtech.ilsang.core.ui.quest.bottomsheet
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.caption01
 import com.ilsangtech.ilsang.designsystem.theme.gray500
-import com.ilsangtech.ilsang.designsystem.theme.heading02
+import com.ilsangtech.ilsang.designsystem.theme.heading03
 
 @Composable
 internal fun MissionDescriptionCard(
@@ -27,13 +26,11 @@ internal fun MissionDescriptionCard(
         colors = CardDefaults.cardColors(containerColor = background),
         shape = RoundedCornerShape(12.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
+                modifier = Modifier.padding(vertical = 3.dp),
                 text = "퀘스트 요약",
-                style = heading02,
+                style = heading03,
                 color = gray500
             )
             Text(
