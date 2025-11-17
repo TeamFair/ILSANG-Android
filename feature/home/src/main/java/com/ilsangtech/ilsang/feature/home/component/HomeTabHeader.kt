@@ -24,13 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.caption02
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.primary
 import com.ilsangtech.ilsang.designsystem.theme.tapBoldTextStyle
 import com.ilsangtech.ilsang.feature.home.BuildConfig
-import com.ilsangtech.ilsang.feature.home.R
 
 @Composable
 internal fun HomeTabHeader(
@@ -75,7 +75,7 @@ private fun LogoAndProfileImage(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.home_ilsang_logo),
+            painter = painterResource(id = R.drawable.icon_ilsang_logo),
             tint = Color.Unspecified,
             contentDescription = "일상 로고"
         )
@@ -126,7 +126,7 @@ private fun MyZoneSelectionRow(
                         start = 7.dp,
                         end = 6.81.dp
                     ),
-                painter = painterResource(com.ilsangtech.ilsang.designsystem.R.drawable.icon_metro),
+                painter = painterResource(R.drawable.icon_metro),
                 tint = Color.Unspecified,
                 contentDescription = "광역 지역"
             )
@@ -136,7 +136,7 @@ private fun MyZoneSelectionRow(
                 color = gray500
             )
             Icon(
-                painter = painterResource(com.ilsangtech.ilsang.designsystem.R.drawable.icon_under),
+                painter = painterResource(R.drawable.icon_under),
                 tint = Color.Unspecified,
                 contentDescription = null
             )
@@ -173,9 +173,7 @@ private fun MyZoneSelectionRow(
                     if (isCommercialAreaName == null) {
                         Icon(
                             modifier = Modifier.size(16.dp),
-                            painter = painterResource(
-                                com.ilsangtech.ilsang.designsystem.R.drawable.icon_right
-                            ),
+                            painter = painterResource(R.drawable.icon_right),
                             tint = Color.White,
                             contentDescription = null
                         )
