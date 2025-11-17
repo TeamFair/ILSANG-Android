@@ -141,6 +141,11 @@ private fun QuestBottomSheetContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         QuestInfoContent(quest = quest)
+        if (quest.missions.firstOrNull() != null
+            && quest.missions.first().type == MissionType.Photo
+        ) {
+            MissionDescriptionCard(missionTitle = quest.missions.first().title)
+        }
         Row(modifier = Modifier.fillMaxWidth()) {
             if (quest.missions.firstOrNull()?.type == MissionType.Photo) {
                 val imageIds = if (quest.questType is QuestType.Repeat) {
