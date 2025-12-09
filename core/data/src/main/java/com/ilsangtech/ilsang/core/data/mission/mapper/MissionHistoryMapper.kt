@@ -45,7 +45,9 @@ internal fun ExampleMissionHistoryNetworkModel.toExampleMissionHistory(): Exampl
         submitImageId = submitImageId,
         title = title,
         user = user.toMissionHistoryUser(),
-        viewCount = viewCount
+        viewCount = viewCount,
+        commentCount = commentCount,
+        shareCount = shareCount
     )
 }
 

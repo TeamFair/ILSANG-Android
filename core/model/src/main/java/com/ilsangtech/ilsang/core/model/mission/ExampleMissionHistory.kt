@@ -10,5 +10,7 @@ data class ExampleMissionHistory(
     val submitImageId: String,
     val title: String,
     val user: MissionHistoryUser,
-    val viewCount: Int
+    val viewCount: Int,
+    val commentCount: Int,
+    val shareCount: Int
 )
