@@ -107,10 +107,7 @@ internal fun ApprovalItem(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ApprovalItemUserInfo(
-                userProfileImage = missionHistory.user.profileImageId,
-                userNickname = missionHistory.user.nickname,
-                titleGrade = missionHistory.user.title?.grade,
-                titleName = missionHistory.user.title?.name,
+                user = missionHistory.user,
                 onProfileClick = onProfileClick,
                 onShareButtonClick = { isSharing = true },
                 onReportButtonClick = { showReportDialog = true }
