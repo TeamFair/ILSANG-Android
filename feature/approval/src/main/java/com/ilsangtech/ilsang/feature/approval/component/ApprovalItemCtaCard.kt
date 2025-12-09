@@ -20,7 +20,7 @@ internal fun ApprovalItemCtaCard(
     questTitle: String,
     writerName: String,
     questType: QuestType,
-    missionType: MissionType,
+    missionType: MissionType = MissionType.Photo,
     onClick: () -> Unit
 ) {
     OutlinedCard(
