@@ -8,7 +8,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
-import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
+import com.ilsangtech.ilsang.feature.approval.model.ExampleMissionHistoryUiModel
 import com.ilsangtech.ilsang.feature.approval.model.toUiModel
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ class ApprovalExampleViewModel @Inject constructor(
             }
         }
 
-    fun likeMissionHistory(missionHistory: MissionHistoryUiModel) {
+    fun likeMissionHistory(missionHistory: ExampleMissionHistoryUiModel) {
         viewModelScope.launch {
             val missionHistoryId = missionHistory.missionHistoryId
             val emojiTypes = missionHistory.currentUserEmojis
@@ -56,18 +56,11 @@ class ApprovalExampleViewModel @Inject constructor(
         }
     }
 
-    fun hateMissionHistory(missionHistory: MissionHistoryUiModel) {
+    fun reportMissionHistory(missionHistory: ExampleMissionHistoryUiModel) {
         viewModelScope.launch {
-            val missionHistoryId = missionHistory.missionHistoryId
-            val emojiTypes = missionHistory.currentUserEmojis
-
-            val result = if (!emojiTypes.contains("HATE")) {
-                missionRepository.hateMissionHistory(missionHistoryId)
-            } else {
-                missionRepository.unhateMissionHistory(missionHistoryId)
-            }
-
-            result.onSuccess {
+            runCatching {
+                missionRepository.reportMissionHistory(missionHistory.missionHistoryId)
+            }.onSuccess {
                 _missionHistoryRefreshTrigger.emit(Unit)
             }
         }

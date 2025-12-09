@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -36,7 +37,6 @@ internal fun ApprovalItem(
     missionHistory: MissionHistoryUiModel,
     onProfileClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -117,14 +117,19 @@ internal fun ApprovalItem(
                 createdAt = missionHistory.createdAt,
                 areaName = missionHistory.commercialAreaName
             )
-            if (!isSharing) {
-                ApprovalFeedbackButtonRow(
-                    isLiked = missionHistory.currentUserEmojis.contains("LIKE"),
-                    isHated = missionHistory.currentUserEmojis.contains("HATE"),
-                    onLikeButtonClick = onLikeButtonClick,
-                    onHateButtonClick = onHateButtonClick
-                )
-            }
+            ApprovalItemCtaCard(
+                questTitle = missionHistory.title,
+                questType = missionHistory.questType,
+                writerName = missionHistory.writerName,
+                onClick = {},
+            )
+            ApprovalItemStatsRow(
+                likeCount = missionHistory.likeCount,
+                shareCount = missionHistory.shareCount,
+                commentCount = missionHistory.commentCount,
+                isLike = missionHistory.currentUserEmojis.contains("LIKE"),
+                onLikeButtonClick = onLikeButtonClick
+            )
         }
     }
 }
@@ -151,13 +156,18 @@ private fun ApprovalItemPreview() {
                 type = TitleType.Commercial
             )
         ),
-        viewCount = 1000
+        viewCount = 1000,
+        shareCount = 20,
+        commentCount = 20,
+        writerName = "야미돈까스 정자동점",
+        questType = QuestType.Repeat.Weekly,
+        lastCompleteDate = "",
+        expireDate = ""
     )
     ApprovalItem(
         missionHistory = missionHistory,
         onProfileClick = {},
         onLikeButtonClick = {},
-        onHateButtonClick = {},
         onReportButtonClick = {}
     )
 }
