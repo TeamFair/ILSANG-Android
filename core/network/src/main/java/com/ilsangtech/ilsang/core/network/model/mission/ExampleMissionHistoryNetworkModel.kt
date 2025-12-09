@@ -13,5 +13,7 @@ data class ExampleMissionHistoryNetworkModel(
     val submitImageId: String,
     val title: String,
     val user: MissionHistoryUserNetworkModel,
-    val viewCount: Int
+    val viewCount: Int,
+    val commentCount: Int,
+    val shareCount: Int
 )
