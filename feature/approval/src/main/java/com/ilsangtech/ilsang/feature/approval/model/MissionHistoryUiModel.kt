@@ -1,8 +1,8 @@
 package com.ilsangtech.ilsang.feature.approval.model
 
-import com.ilsangtech.ilsang.core.model.mission.ExampleMissionHistory
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.util.DateConverter
 
 data class MissionHistoryUiModel(
@@ -14,8 +14,14 @@ data class MissionHistoryUiModel(
     val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
+    val writerName: String,
     val user: MissionHistoryUser,
-    val viewCount: Int
+    val viewCount: Int,
+    val questType: QuestType,
+    val commentCount: Int,
+    val shareCount: Int,
+    val lastCompleteDate: String?,
+    val expireDate: String
 )
 
 internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiModel {
@@ -31,8 +37,14 @@ internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiM
         missionHistoryId = missionHistoryId,
         submitImageId = submitImageId,
         title = title,
+        writerName = writerName,
         user = user,
-        viewCount = viewCount
+        viewCount = viewCount,
+        questType = questType,
+        commentCount = commentCount,
+        shareCount = shareCount,
+        lastCompleteDate = lastCompleteDate,
+        expireDate = expireDate
     )
 }
 
