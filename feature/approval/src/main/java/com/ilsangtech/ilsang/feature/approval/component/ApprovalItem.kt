@@ -113,12 +113,9 @@ internal fun ApprovalItem(
                 onReportButtonClick = { showReportDialog = true }
             )
             ApprovalItemContent(
-                title = missionHistory.title,
                 challengeImage = missionHistory.submitImageId,
                 createdAt = missionHistory.createdAt,
-                areaName = missionHistory.commercialAreaName,
-                likeCount = missionHistory.likeCount,
-                hateCount = missionHistory.hateCount
+                areaName = missionHistory.commercialAreaName
             )
             if (!isSharing) {
                 ApprovalFeedbackButtonRow(
