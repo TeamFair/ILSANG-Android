@@ -16,6 +16,9 @@ data object ApprovalRoute
 @Serializable
 data class ApprovalExampleRoute(val missionId: Int)
 
+@Serializable
+data class ApprovalReportRoute(val missionHistoryId: Int)
+
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
     navigateToProfile: (String) -> Unit
