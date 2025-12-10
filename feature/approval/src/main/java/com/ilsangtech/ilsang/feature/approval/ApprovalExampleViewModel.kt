@@ -11,6 +11,7 @@ import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.feature.approval.model.ExampleMissionHistoryUiModel
 import com.ilsangtech.ilsang.feature.approval.model.toUiModel
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
+import com.ilsangtech.ilsang.feature.approval.navigation.questTypeMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,7 +25,11 @@ class ApprovalExampleViewModel @Inject constructor(
     areaRepository: AreaRepository,
     private val missionRepository: MissionRepository
 ) : ViewModel() {
-    private val missionId = savedStateHandle.toRoute<ApprovalExampleRoute>().missionId
+    private val missionInfo = savedStateHandle.toRoute<ApprovalExampleRoute>(questTypeMap)
+    private val missionId = missionInfo.missionId
+    val questTitle = missionInfo.title
+    val questWriterName = missionInfo.writerName
+    val questType = missionInfo.questType
 
     private val _missionHistoryRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
     val missionHistoryRefreshTrigger = _missionHistoryRefreshTrigger.asSharedFlow()
