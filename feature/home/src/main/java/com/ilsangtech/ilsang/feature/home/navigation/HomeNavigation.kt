@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeNavigation(
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,
-    onMissionImageClick: (Int, String, String, QuestType) -> Unit
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
