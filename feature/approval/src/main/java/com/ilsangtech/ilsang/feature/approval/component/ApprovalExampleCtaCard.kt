@@ -1,7 +1,9 @@
 package com.ilsangtech.ilsang.feature.approval.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -22,23 +24,28 @@ internal fun ApprovalExampleCtaCard(
     missionType: MissionType = MissionType.Photo,
     onClick: () -> Unit
 ) {
-    Surface(
-        modifier = modifier.drawBehind {
-            drawLine(
-                color = gray100,
-                start = Offset(0f, 0f),
-                end = Offset(size.width, 0f),
-                strokeWidth = 1.dp.toPx()
-            )
-            drawLine(
-                color = gray100,
-                start = Offset(0f, size.height),
-                end = Offset(size.width, size.height),
-                strokeWidth = 1.dp.toPx()
-            )
-        },
-        color = Color.White,
-        onClick = onClick
+    Box(
+        modifier = modifier
+            .background(Color.White)
+            .drawBehind {
+                drawLine(
+                    color = gray100,
+                    start = Offset(0f, 1.dp.toPx()),
+                    end = Offset(size.width, 1.dp.toPx()),
+                    strokeWidth = 1.dp.toPx()
+                )
+                drawLine(
+                    color = gray100,
+                    start = Offset(0f, size.height - 1.dp.toPx()),
+                    end = Offset(size.width, size.height - 1.dp.toPx()),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+            .clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = onClick
+            ),
     ) {
         ApprovalQuestContent(
             modifier = Modifier.padding(
