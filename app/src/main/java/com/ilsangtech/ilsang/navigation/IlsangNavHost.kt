@@ -286,13 +286,15 @@ fun IlsangNavHost(
             bannerNavigation(
                 onBackButtonClick = navController::popBackStack,
                 navigateToSubmit = navController::navigateToSubmit,
-                navigateToMissionExample = { missionId, questTitle, writerName, questType ->
+                navigateToMissionExample = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
                     navController.navigate(
                         ApprovalExampleRoute(
                             missionId,
+                            questId,
                             questTitle,
                             writerName,
-                            questType
+                            questType,
+                            isIsZoneQuest
                         )
                     )
                 }
