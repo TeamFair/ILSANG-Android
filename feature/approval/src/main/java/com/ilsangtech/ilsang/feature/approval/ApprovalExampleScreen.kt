@@ -28,11 +28,17 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun ApprovalExampleScreen(
     viewModel: ApprovalExampleViewModel = hiltViewModel(),
+    navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val missionHistories = viewModel.exampleMissionHistories.collectAsLazyPagingItems()
+
+    val missionId = viewModel.missionId
+    val questId = viewModel.questId
+    val isIsZoneQuest = viewModel.isIsZoneQuest
+
     val questTitle = viewModel.questTitle
     val questWriterName = viewModel.questWriterName
     val questType = viewModel.questType
@@ -50,6 +56,7 @@ internal fun ApprovalExampleScreen(
         missionHistories = missionHistories,
         onLikeButtonClick = viewModel::likeMissionHistory,
         onReportButtonClick = navigateToReport,
+        onApproveButtonClick = { navigateToImageCapture(missionId, questId, isIsZoneQuest) },
         navigateToProfile = navigateToProfile
     )
 }
@@ -62,6 +69,7 @@ private fun ApprovalExampleScreen(
     questType: QuestType,
     missionHistories: LazyPagingItems<ExampleMissionHistoryUiModel>,
     onLikeButtonClick: (ExampleMissionHistoryUiModel) -> Unit,
+    onApproveButtonClick: () -> Unit,
     onReportButtonClick: (Int) -> Unit,
     navigateToProfile: (String) -> Unit,
     onBackButtonClick: () -> Unit
@@ -82,7 +90,7 @@ private fun ApprovalExampleScreen(
                         questTitle = questTitle,
                         writerName = questWriterName,
                         questType = questType,
-                        onClick = {}
+                        onClick = onApproveButtonClick
                     )
                 }
                 items(missionHistories.itemCount) {
@@ -136,6 +144,7 @@ private fun ApprovalExampleScreenPreview() {
         missionHistories = missionHistories,
         onLikeButtonClick = {},
         onReportButtonClick = {},
+        onApproveButtonClick = {},
         navigateToProfile = {},
         onBackButtonClick = {}
     )

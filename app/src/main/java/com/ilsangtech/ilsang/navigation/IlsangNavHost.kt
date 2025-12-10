@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
@@ -260,6 +261,14 @@ fun IlsangNavHost(
 
             approvalNavigation(
                 popBackStack = navController::popBackStack,
+                navigateToImageCapture = { missionId, questId, isIsZoneQuest ->
+                    navController.navigateToSubmit(
+                        questId = questId,
+                        missionId = missionId,
+                        type = MissionType.Photo,
+                        isIsZoneQuest = isIsZoneQuest
+                    )
+                },
                 navigateToProfile = { id ->
                     navController.navigate(ProfileRoute(id))
                 },
