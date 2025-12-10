@@ -22,9 +22,11 @@ data object ApprovalRoute
 @Serializable
 data class ApprovalExampleRoute(
     val missionId: Int,
+    val questId: Int,
     val title: String,
     val writerName: String,
-    val questType: QuestType
+    val questType: QuestType,
+    val isIsZoneQuest: Boolean
 )
 
 @Serializable

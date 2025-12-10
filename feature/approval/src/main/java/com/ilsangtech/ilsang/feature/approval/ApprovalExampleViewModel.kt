@@ -26,7 +26,10 @@ class ApprovalExampleViewModel @Inject constructor(
     private val missionRepository: MissionRepository
 ) : ViewModel() {
     private val missionInfo = savedStateHandle.toRoute<ApprovalExampleRoute>(questTypeMap)
-    private val missionId = missionInfo.missionId
+    val missionId = missionInfo.missionId
+    val questId = missionInfo.questId
+    val isIsZoneQuest = missionInfo.isIsZoneQuest
+
     val questTitle = missionInfo.title
     val questWriterName = missionInfo.writerName
     val questType = missionInfo.questType
