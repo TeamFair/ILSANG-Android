@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.approval.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.approval.ReportScreen
@@ -15,7 +16,12 @@ data object ApprovalBaseRoute
 data object ApprovalRoute
 
 @Serializable
-data class ApprovalExampleRoute(val missionId: Int)
+data class ApprovalExampleRoute(
+    val missionId: Int,
+    val title: String,
+    val writerName: String,
+    val questType: QuestType
+)
 
 @Serializable
 data class ReportRoute(
