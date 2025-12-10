@@ -17,7 +17,7 @@ data object QuestRoute
 fun NavGraphBuilder.questNavigation(
     onNavigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     onNavigateToMyZone: () -> Unit,
-    onMissionImageClick: (Int, String, String, QuestType) -> Unit
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit
 ) {
     navigation<QuestBaseRoute>(startDestination = QuestRoute) {
         composable<QuestRoute> {

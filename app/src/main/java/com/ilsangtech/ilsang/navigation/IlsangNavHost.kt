@@ -173,13 +173,15 @@ fun IlsangNavHost(
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
                 },
-                onMissionImageClick = { missionId, questTitle, writerName, questType ->
+                onMissionImageClick = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
                     navController.navigate(
                         ApprovalExampleRoute(
                             missionId,
+                            questId,
                             questTitle,
                             writerName,
-                            questType
+                            questType,
+                            isIsZoneQuest
                         )
                     )
                 }
