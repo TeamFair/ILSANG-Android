@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.mission.MissionType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.quest.QuestTabScreen
 import kotlinx.serialization.Serializable
 
@@ -16,7 +17,7 @@ data object QuestRoute
 fun NavGraphBuilder.questNavigation(
     onNavigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     onNavigateToMyZone: () -> Unit,
-    onMissionImageClick: (Int) -> Unit
+    onMissionImageClick: (Int, String, String, QuestType) -> Unit
 ) {
     navigation<QuestBaseRoute>(startDestination = QuestRoute) {
         composable<QuestRoute> {
