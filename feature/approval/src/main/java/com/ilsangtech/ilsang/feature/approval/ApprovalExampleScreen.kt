@@ -17,7 +17,9 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleCtaCard
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleHeader
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleItem
 import com.ilsangtech.ilsang.feature.approval.model.ExampleMissionHistoryUiModel
@@ -31,6 +33,9 @@ internal fun ApprovalExampleScreen(
     onBackButtonClick: () -> Unit
 ) {
     val missionHistories = viewModel.exampleMissionHistories.collectAsLazyPagingItems()
+    val questTitle = viewModel.questTitle
+    val questWriterName = viewModel.questWriterName
+    val questType = viewModel.questType
 
     LaunchedEffect(Unit) {
         viewModel.missionHistoryRefreshTrigger.collect {
@@ -38,6 +43,9 @@ internal fun ApprovalExampleScreen(
         }
     }
     ApprovalExampleScreen(
+        questTitle = questTitle,
+        questWriterName = questWriterName,
+        questType = questType,
         onBackButtonClick = onBackButtonClick,
         missionHistories = missionHistories,
         onLikeButtonClick = viewModel::likeMissionHistory,
@@ -49,6 +57,9 @@ internal fun ApprovalExampleScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ApprovalExampleScreen(
+    questTitle: String,
+    questWriterName: String,
+    questType: QuestType,
     missionHistories: LazyPagingItems<ExampleMissionHistoryUiModel>,
     onLikeButtonClick: (ExampleMissionHistoryUiModel) -> Unit,
     onReportButtonClick: (Int) -> Unit,
@@ -66,6 +77,14 @@ private fun ApprovalExampleScreen(
                 contentPadding = PaddingValues(bottom = 48.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                stickyHeader {
+                    ApprovalExampleCtaCard(
+                        questTitle = questTitle,
+                        writerName = questWriterName,
+                        questType = questType,
+                        onClick = {}
+                    )
+                }
                 items(missionHistories.itemCount) {
                     missionHistories[it]?.let { missionHistory ->
                         ApprovalExampleItem(
@@ -111,6 +130,9 @@ private fun ApprovalExampleScreenPreview() {
     ).collectAsLazyPagingItems()
 
     ApprovalExampleScreen(
+        questTitle = "정자동 최고의 돈까스 가게 가기",
+        questWriterName = "야미돈까스 정자동점",
+        questType = QuestType.Repeat.Weekly,
         missionHistories = missionHistories,
         onLikeButtonClick = {},
         onReportButtonClick = {},
