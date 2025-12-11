@@ -24,7 +24,7 @@ interface MissionDataSource {
 
     suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 
-    suspend fun reportMissionHistory(missionHistoryId: Int)
+    suspend fun reportMissionHistory(missionHistoryId: Int, reason: String)
 
     suspend fun submitMission(
         missionId: Int,
