@@ -37,7 +37,11 @@ fun NavGraphBuilder.approvalNavigation(
         }
     }
     composable<ApprovalExampleRoute> {
-        ApprovalExampleScreen(onBackButtonClick = popBackStack)
+        ApprovalExampleScreen(
+            navigateToProfile = navigateToProfile,
+            navigateToReport = navigateToMissionReport,
+            onBackButtonClick = popBackStack
+        )
     }
     composable<ReportRoute> {
         ReportScreen(popBackStack = popBackStack)
