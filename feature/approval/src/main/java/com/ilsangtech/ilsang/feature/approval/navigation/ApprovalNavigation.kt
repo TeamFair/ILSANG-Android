@@ -18,7 +18,7 @@ data object ApprovalRoute
 data class ApprovalExampleRoute(val missionId: Int)
 
 @Serializable
-data class ApprovalReportRoute(val missionHistoryId: Int)
+data class ReportRoute(val missionHistoryId: Int)
 
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
@@ -32,7 +32,7 @@ fun NavGraphBuilder.approvalNavigation(
     composable<ApprovalExampleRoute> {
         ApprovalExampleScreen(onBackButtonClick = popBackStack)
     }
-    composable<ApprovalReportRoute> {
+    composable<ReportRoute> {
         ReportScreen()
     }
 }
