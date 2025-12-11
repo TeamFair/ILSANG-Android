@@ -36,6 +36,6 @@ fun NavGraphBuilder.approvalNavigation(
         ApprovalExampleScreen(onBackButtonClick = popBackStack)
     }
     composable<ReportRoute> {
-        ReportScreen()
+        ReportScreen(popBackStack = popBackStack)
     }
 }

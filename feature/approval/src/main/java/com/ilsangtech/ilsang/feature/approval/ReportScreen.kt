@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -29,13 +31,24 @@ import com.ilsangtech.ilsang.feature.approval.component.ReportCheckBoxItem
 import com.ilsangtech.ilsang.feature.approval.model.ReportTypeUiModel
 
 @Composable
-internal fun ReportScreen() {
+internal fun ReportScreen(
+    viewModel: ReportViewModel = hiltViewModel(),
+    popBackStack: () -> Unit
+) {
+    val selectedReportTypes = viewModel.selectedReportTypes.collectAsStateWithLifecycle()
+    ReportScreen(
+        selectedReportTypes = selectedReportTypes.value,
+        onReportTypeSelected = viewModel::updateSelectedReportTypes,
+        onBackButtonClick = popBackStack,
+        onReportButtonClick = viewModel::report
+    )
 }
 
 @Composable
 private fun ReportScreen(
     selectedReportTypes: List<ReportTypeUiModel>,
     onReportTypeSelected: (ReportTypeUiModel) -> Unit,
+    onBackButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
     Surface(
@@ -43,7 +56,7 @@ private fun ReportScreen(
         color = Color.White
     ) {
         Column {
-            ApprovalReportHeader(onBackButtonClick = {})
+            ApprovalReportHeader(onBackButtonClick = onBackButtonClick)
             Column(
                 modifier = Modifier
                     .padding(top = 36.dp, bottom = 8.dp)
@@ -99,6 +112,7 @@ private fun ReportScreenPreview() {
     ReportScreen(
         selectedReportTypes = listOf(ReportTypeUiModel.ABUSE),
         onReportTypeSelected = {},
+        onBackButtonClick = {},
         onReportButtonClick = {}
     )
 }
