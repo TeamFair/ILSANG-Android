@@ -4,8 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
-import com.ilsangtech.ilsang.feature.approval.ApprovalReportScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalScreen
+import com.ilsangtech.ilsang.feature.approval.ReportScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -33,6 +33,6 @@ fun NavGraphBuilder.approvalNavigation(
         ApprovalExampleScreen(onBackButtonClick = popBackStack)
     }
     composable<ApprovalReportRoute> {
-        ApprovalReportScreen()
+        ReportScreen()
     }
 }
