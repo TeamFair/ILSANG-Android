@@ -14,6 +14,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +29,8 @@ import com.ilsangtech.ilsang.designsystem.theme.subTitle02
 import com.ilsangtech.ilsang.designsystem.theme.title01
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalReportHeader
 import com.ilsangtech.ilsang.feature.approval.component.ReportCheckBoxItem
+import com.ilsangtech.ilsang.feature.approval.component.ReportResultDialog
+import com.ilsangtech.ilsang.feature.approval.model.ReportResultUiState
 import com.ilsangtech.ilsang.feature.approval.model.ReportTypeUiModel
 
 @Composable
@@ -35,9 +38,12 @@ internal fun ReportScreen(
     viewModel: ReportViewModel = hiltViewModel(),
     popBackStack: () -> Unit
 ) {
-    val selectedReportTypes = viewModel.selectedReportTypes.collectAsStateWithLifecycle()
+    val selectedReportTypes by viewModel.selectedReportTypes.collectAsStateWithLifecycle()
+    val reportResultUiState by viewModel.reportResultUiState.collectAsStateWithLifecycle()
+
     ReportScreen(
-        selectedReportTypes = selectedReportTypes.value,
+        selectedReportTypes = selectedReportTypes,
+        reportResultUiState = reportResultUiState,
         onReportTypeSelected = viewModel::updateSelectedReportTypes,
         onBackButtonClick = popBackStack,
         onReportButtonClick = viewModel::report
@@ -47,10 +53,20 @@ internal fun ReportScreen(
 @Composable
 private fun ReportScreen(
     selectedReportTypes: List<ReportTypeUiModel>,
+    reportResultUiState: ReportResultUiState,
     onReportTypeSelected: (ReportTypeUiModel) -> Unit,
     onBackButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
+    if (reportResultUiState is ReportResultUiState.Success ||
+        reportResultUiState is ReportResultUiState.Reported
+    ) {
+        ReportResultDialog(
+            reportResult = reportResultUiState,
+            onDismissRequest = onBackButtonClick
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
@@ -111,6 +127,7 @@ private fun ReportScreen(
 private fun ReportScreenPreview() {
     ReportScreen(
         selectedReportTypes = listOf(ReportTypeUiModel.ABUSE),
+        reportResultUiState = ReportResultUiState.UnReported,
         onReportTypeSelected = {},
         onBackButtonClick = {},
         onReportButtonClick = {}

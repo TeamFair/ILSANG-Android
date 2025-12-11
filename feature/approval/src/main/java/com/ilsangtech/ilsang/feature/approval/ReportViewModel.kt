@@ -48,7 +48,15 @@ class ReportViewModel @Inject constructor(
                 missionRepository.reportMissionHistory(
                     missionHistoryId = missionHistoryId,
                     reason = reason
-                )
+                ).onSuccess { isSuccess ->
+                    if (isSuccess) {
+                        _reportResultUiState.update { ReportResultUiState.Success }
+                    } else {
+                        _reportResultUiState.update { ReportResultUiState.Reported }
+                    }
+                }.onFailure {
+                    _reportResultUiState.update { ReportResultUiState.Failure }
+                }
             }
         }
     }
