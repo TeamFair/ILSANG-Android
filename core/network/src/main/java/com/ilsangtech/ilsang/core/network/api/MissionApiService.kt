@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryRes
 import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionReportRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionReportResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryResponse
@@ -70,7 +71,7 @@ interface MissionApiService {
     suspend fun reportMissionHistory(
         @Path("missionHistoryId") missionHistoryId: Int,
         @Body request: MissionReportRequest
-    )
+    ): MissionReportResponse
 
     @DELETE("api/v1/mission/user/history/{missionHistoryId}")
     suspend fun deleteMissionHistory(
