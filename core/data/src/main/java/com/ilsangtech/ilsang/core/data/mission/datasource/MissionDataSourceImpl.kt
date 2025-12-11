@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.network.api.MissionApiService
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionReportRequest
+import com.ilsangtech.ilsang.core.network.model.mission.MissionReportResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
@@ -75,7 +76,10 @@ class MissionDataSourceImpl(
         return missionApiService.deleteMissionHistoryEmoji(missionHistoryId, emojiType)
     }
 
-    override suspend fun reportMissionHistory(missionHistoryId: Int, reason: String) {
+    override suspend fun reportMissionHistory(
+        missionHistoryId: Int,
+        reason: String
+    ): MissionReportResponse {
         return missionApiService.reportMissionHistory(
             missionHistoryId = missionHistoryId,
             request = MissionReportRequest(reason)
