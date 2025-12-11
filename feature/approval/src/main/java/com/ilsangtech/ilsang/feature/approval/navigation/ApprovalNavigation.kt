@@ -25,11 +25,15 @@ data class ReportRoute(
 
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
-    navigateToProfile: (String) -> Unit
+    navigateToProfile: (String) -> Unit,
+    navigateToMissionReport: (Int) -> Unit
 ) {
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
         composable<ApprovalRoute> {
-            ApprovalScreen(navigateToProfile = navigateToProfile)
+            ApprovalScreen(
+                navigateToProfile = navigateToProfile,
+                navigateToReport = navigateToMissionReport
+            )
         }
     }
     composable<ApprovalExampleRoute> {
