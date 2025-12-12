@@ -3,6 +3,8 @@ package com.ilsangtech.ilsang.core.data.comment.datasource
 import com.ilsangtech.ilsang.core.network.api.CommentApiService
 import com.ilsangtech.ilsang.core.network.model.comment.CommentCreationRequest
 import com.ilsangtech.ilsang.core.network.model.comment.CommentNetworkModel
+import com.ilsangtech.ilsang.core.network.model.comment.CommentReportRequest
+import com.ilsangtech.ilsang.core.network.model.comment.CommentReportResponse
 
 class CommentDataSourceImpl(
     private val commentApiService: CommentApiService
@@ -27,5 +29,15 @@ class CommentDataSourceImpl(
 
     override suspend fun getComments(missionHistoryId: Int): List<CommentNetworkModel> {
         return commentApiService.getComments(missionHistoryId)
+    }
+
+    override suspend fun reportComment(
+        commentId: Int,
+        reason: String
+    ): CommentReportResponse {
+        return commentApiService.reportComment(
+            commentId = commentId,
+            request = CommentReportRequest(reason)
+        )
     }
 }
