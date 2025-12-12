@@ -6,4 +6,17 @@ import com.ilsangtech.ilsang.core.domain.CommentRepository
 class CommentRepositoryImpl(
     private val commentDataSource: CommentDataSource
 ) : CommentRepository {
+    override suspend fun createComment(
+        missionHistoryId: Int,
+        parentId: Int?,
+        comment: String
+    ): Result<Unit> {
+        return runCatching {
+            commentDataSource.createComment(
+                missionHistoryId = missionHistoryId,
+                parentId = parentId,
+                comment = comment
+            )
+        }
+    }
 }
