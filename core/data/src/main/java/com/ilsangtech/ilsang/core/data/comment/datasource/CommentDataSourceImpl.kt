@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.data.comment.datasource
 
 import com.ilsangtech.ilsang.core.network.api.CommentApiService
 import com.ilsangtech.ilsang.core.network.model.comment.CommentCreationRequest
+import com.ilsangtech.ilsang.core.network.model.comment.CommentNetworkModel
 
 class CommentDataSourceImpl(
     private val commentApiService: CommentApiService
@@ -22,5 +23,9 @@ class CommentDataSourceImpl(
 
     override suspend fun deleteComment(commentId: Int) {
         return commentApiService.deleteComment(commentId)
+    }
+
+    override suspend fun getComments(missionHistoryId: Int): List<CommentNetworkModel> {
+        return commentApiService.getComments(missionHistoryId)
     }
 }
