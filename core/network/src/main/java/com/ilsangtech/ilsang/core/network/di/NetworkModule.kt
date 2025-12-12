@@ -9,6 +9,7 @@ import com.ilsangtech.ilsang.core.network.BuildConfig
 import com.ilsangtech.ilsang.core.network.api.AreaApiService
 import com.ilsangtech.ilsang.core.network.api.AuthApiService
 import com.ilsangtech.ilsang.core.network.api.BannerApiService
+import com.ilsangtech.ilsang.core.network.api.CommentApiService
 import com.ilsangtech.ilsang.core.network.api.CouponApiService
 import com.ilsangtech.ilsang.core.network.api.ImageApiService
 import com.ilsangtech.ilsang.core.network.api.MissionApiService
@@ -256,5 +257,11 @@ object NetworkModule {
     @Singleton
     fun provieCouponApiService(retrofit: Retrofit): CouponApiService {
         return retrofit.create(CouponApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentApiService(retrofit: Retrofit): CommentApiService {
+        return retrofit.create(CommentApiService::class.java)
     }
 }
