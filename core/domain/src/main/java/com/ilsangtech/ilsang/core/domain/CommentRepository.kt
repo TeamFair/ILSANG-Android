@@ -6,4 +6,6 @@ interface CommentRepository {
         parentId: Int?,
         comment: String
     ): Result<Unit>
+
+    suspend fun deleteComment(commentId: Int): Result<Unit>
 }

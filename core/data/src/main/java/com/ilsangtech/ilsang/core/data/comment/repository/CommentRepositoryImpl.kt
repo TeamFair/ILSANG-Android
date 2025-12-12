@@ -19,4 +19,8 @@ class CommentRepositoryImpl(
             )
         }
     }
+
+    override suspend fun deleteComment(commentId: Int): Result<Unit> {
+        return runCatching { commentDataSource.deleteComment(commentId) }
+    }
 }
