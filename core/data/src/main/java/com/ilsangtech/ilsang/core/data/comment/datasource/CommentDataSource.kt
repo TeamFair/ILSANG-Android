@@ -6,4 +6,6 @@ interface CommentDataSource {
         parentId: Int?,
         comment: String
     )
+
+    suspend fun deleteComment(commentId: Int)
 }

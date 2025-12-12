@@ -19,4 +19,8 @@ class CommentDataSourceImpl(
             )
         )
     }
+
+    override suspend fun deleteComment(commentId: Int) {
+        return commentApiService.deleteComment(commentId)
+    }
 }
