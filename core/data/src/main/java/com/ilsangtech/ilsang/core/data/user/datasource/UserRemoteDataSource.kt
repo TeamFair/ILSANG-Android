@@ -4,14 +4,14 @@ import com.ilsangtech.ilsang.core.network.model.user.NicknameUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
-import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
 
 interface UserRemoteDataSource {
-    suspend fun getUserInfo(userId: String?): UserInfoResponse
+    suspend fun getUser(userId: String?): UserResponse
 
     suspend fun getUserPoint(userId: String?, seasonId: Int?): UserPointResponse
 
@@ -29,5 +29,5 @@ interface UserRemoteDataSource {
 
     suspend fun updateUserTitle(titleHistoryId: Int?): UserTitleUpdateResponse
 
-    suspend fun updateUserIsZone(commericalAreaCode: String): UserInfoResponse
+    suspend fun updateUserIsZone(commericalAreaCode: String): UserResponse
 }

@@ -2,9 +2,9 @@ package com.ilsangtech.ilsang.core.data.user.mapper
 
 import com.ilsangtech.ilsang.core.data.title.mapper.toUserTitle
 import com.ilsangtech.ilsang.core.model.user.UserInfo
-import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserResponse
 
-internal fun UserInfoResponse.toUserInfo(): UserInfo {
+internal fun UserResponse.toUserInfo(): UserInfo {
     return UserInfo(
         id = id,
         channel = channel,

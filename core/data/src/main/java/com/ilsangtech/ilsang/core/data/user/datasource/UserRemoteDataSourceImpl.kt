@@ -7,10 +7,10 @@ import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
-import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
@@ -19,8 +19,8 @@ import javax.inject.Inject
 class UserRemoteDataSourceImpl @Inject constructor(
     private val userApiService: UserApiService
 ) : UserRemoteDataSource {
-    override suspend fun getUserInfo(userId: String?): UserInfoResponse {
-        return userApiService.getUserInfo(userId)
+    override suspend fun getUser(userId: String?): UserResponse {
+        return userApiService.getUser(userId)
     }
 
     override suspend fun getUserPoint(userId: String?, seasonId: Int?): UserPointResponse {
@@ -58,7 +58,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
         return userApiService.updateUserTitle(UserTitleUpdateRequest(titleHistoryId))
     }
 
-    override suspend fun updateUserIsZone(commericalAreaCode: String): UserInfoResponse {
+    override suspend fun updateUserIsZone(commericalAreaCode: String): UserResponse {
         return userApiService.updateUserIsZone(UserIsZoneUpdateRequest(commericalAreaCode))
     }
 }

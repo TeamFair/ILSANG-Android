@@ -6,10 +6,10 @@ import com.ilsangtech.ilsang.core.network.model.user.UserCommercialPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageDeleteResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserImageUpdateResponse
-import com.ilsangtech.ilsang.core.network.model.user.UserInfoResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserIsZoneUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserPointResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserPointSummaryResponse
+import com.ilsangtech.ilsang.core.network.model.user.UserResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateRequest
 import com.ilsangtech.ilsang.core.network.model.user.UserTitleUpdateResponse
 import com.ilsangtech.ilsang.core.network.model.user.UserXpStatsResponse
@@ -21,9 +21,9 @@ import retrofit2.http.Query
 
 interface UserApiService {
     @GET("api/v1/user")
-    suspend fun getUserInfo(
+    suspend fun getUser(
         @Query("id") id: String?
-    ): UserInfoResponse
+    ): UserResponse
 
     @GET("api/v1/user/point")
     suspend fun getUserPoint(
@@ -67,5 +67,5 @@ interface UserApiService {
     @PUT("api/v1/user/profile/area-zone")
     suspend fun updateUserIsZone(
         @Body userIsZoneUpdateRequest: UserIsZoneUpdateRequest
-    ): UserInfoResponse
+    ): UserResponse
 }

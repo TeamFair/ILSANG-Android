@@ -50,7 +50,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getUserInfo(userId: String?): Flow<UserInfo> = flow {
         emit(
-            userRemoteDataSource.getUserInfo(userId = userId).toUserInfo()
+            userRemoteDataSource.getUser(userId = userId).toUserInfo()
         )
     }
 

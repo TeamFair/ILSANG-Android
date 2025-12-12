@@ -4,7 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.title.UserTitleNetworkModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserInfoResponse(
+data class UserResponse(
     val id: String,
     val channel: String,
     val commercialAreaCode: String?,
