@@ -31,4 +31,20 @@ class CommentRepositoryImpl(
         return commentDataSource.getComments(missionHistoryId)
             .map(CommentNetworkModel::toComment)
     }
+
+    override suspend fun reportComment(
+        commentId: Int,
+        reason: String
+    ): Result<Boolean> {
+        return runCatching {
+            commentDataSource.reportComment(
+                commentId = commentId,
+                reason = reason
+            ).resultCode == COMMENT_REPORT_SUCCESS_CODE
+        }
+    }
+
+    private companion object {
+        const val COMMENT_REPORT_SUCCESS_CODE = "S1000"
+    }
 }
