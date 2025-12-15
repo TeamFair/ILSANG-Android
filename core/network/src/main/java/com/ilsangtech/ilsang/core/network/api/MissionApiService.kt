@@ -1,7 +1,6 @@
 package com.ilsangtech.ilsang.core.network.api
 
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryResponse
-import com.ilsangtech.ilsang.core.network.model.mission.MissionDetailResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionHistoryEmojiRegistrationRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitRequest
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
@@ -17,11 +16,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MissionApiService {
-    @GET("api/v1/mission/{id}")
-    suspend fun getMissionById(
-        @Path("id") id: Int
-    ): MissionDetailResponse
-
     @GET("api/v1/mission/user/history")
     suspend fun getUserMissionHistory(
         @Query("userId") userId: String?,
