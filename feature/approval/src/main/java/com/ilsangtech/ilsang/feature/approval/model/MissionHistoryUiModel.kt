@@ -21,7 +21,7 @@ data class MissionHistoryUiModel(
     val commentCount: Int,
     val shareCount: Int,
     val lastCompleteDate: String?,
-    val expireDate: String
+    val expireDate: String?
 )
 
 internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiModel {

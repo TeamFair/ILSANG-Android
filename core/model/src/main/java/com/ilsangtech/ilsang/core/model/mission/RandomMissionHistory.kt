@@ -18,5 +18,5 @@ data class RandomMissionHistory(
     val shareCount: Int,
     val commentCount: Int,
     val lastCompleteDate: String?,
-    val expireDate: String
+    val expireDate: String?
 )

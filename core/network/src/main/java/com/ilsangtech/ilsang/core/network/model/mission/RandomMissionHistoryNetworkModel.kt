@@ -17,7 +17,7 @@ data class RandomMissionHistoryNetworkModel(
     val viewCount: Int,
     val questType: String,
     val repeatFrequency: String?,
-    val expireDate: String,
+    val expireDate: String?,
     val lastCompleteDate: String?,
     val shareCount: Int,
     val commentCount: Int
