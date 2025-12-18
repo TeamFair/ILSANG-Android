@@ -265,6 +265,9 @@ fun IlsangNavHost(
 
             approvalNavigation(
                 popBackStack = navController::popBackStack,
+                navigateToQuestTab = { questId ->
+                    navController.navigateToTopLevelDestination(BottomTab.Quest)
+                },
                 navigateToImageCapture = { missionId, questId, isIsZoneQuest ->
                     navController.navigateToSubmit(
                         questId = questId,

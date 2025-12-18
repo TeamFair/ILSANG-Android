@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
+    navigateToQuestTab: (Int) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit
 ) {
@@ -58,6 +59,7 @@ internal fun ApprovalScreen(
 
     ApprovalScreen(
         missionHistoryItems = randomMissionHistoryItems,
+        onCtaCardClick = navigateToQuestTab,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onReportButtonClick = navigateToReport,
         navigateToProfile = navigateToProfile
@@ -67,6 +69,7 @@ internal fun ApprovalScreen(
 @Composable
 private fun ApprovalScreen(
     missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
+    onCtaCardClick: (Int) -> Unit,
     onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
     onReportButtonClick: (Int) -> Unit,
     navigateToProfile: (String) -> Unit
@@ -120,6 +123,7 @@ private fun ApprovalScreen(
                     ApprovalItem(
                         missionHistory = randomMissionHistory,
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
+                        onCtaCardClick = { /*TODO 실제 퀘스트 id 적용 필요*/ onCtaCardClick(0) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
                         onReportButtonClick = { onReportButtonClick(randomMissionHistory.missionHistoryId) }
                     )
@@ -194,6 +198,7 @@ private fun ApprovalScreenPreview() {
 
     ApprovalScreen(
         missionHistoryItems = lazyPagingItems,
+        onCtaCardClick = {},
         onLikeButtonClick = {},
         onReportButtonClick = {},
         navigateToProfile = {}

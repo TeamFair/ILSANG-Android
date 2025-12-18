@@ -37,6 +37,7 @@ data class ReportRoute(
 
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
+    navigateToQuestTab: (Int) -> Unit,
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToMissionReport: (Int) -> Unit
@@ -44,6 +45,7 @@ fun NavGraphBuilder.approvalNavigation(
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
         composable<ApprovalRoute> {
             ApprovalScreen(
+                navigateToQuestTab = navigateToQuestTab,
                 navigateToProfile = navigateToProfile,
                 navigateToReport = navigateToMissionReport
             )

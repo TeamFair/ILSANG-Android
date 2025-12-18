@@ -36,6 +36,7 @@ import java.io.File
 internal fun ApprovalItem(
     missionHistory: MissionHistoryUiModel,
     onProfileClick: () -> Unit,
+    onCtaCardClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
@@ -121,7 +122,7 @@ internal fun ApprovalItem(
                 questTitle = missionHistory.title,
                 questType = missionHistory.questType,
                 writerName = missionHistory.writerName,
-                onClick = {},
+                onClick = onCtaCardClick,
             )
             ApprovalItemStatsRow(
                 likeCount = missionHistory.likeCount,
@@ -167,6 +168,7 @@ private fun ApprovalItemPreview() {
     ApprovalItem(
         missionHistory = missionHistory,
         onProfileClick = {},
+        onCtaCardClick = {},
         onLikeButtonClick = {},
         onReportButtonClick = {}
     )
