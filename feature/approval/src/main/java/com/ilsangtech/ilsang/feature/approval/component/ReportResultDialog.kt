@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.approval.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -60,6 +61,11 @@ internal fun ReportResultDialog(
                         style = heading02
                     )
                     Icon(
+                        modifier = Modifier.clickable(
+                            onClick = onDismissRequest,
+                            indication = null,
+                            interactionSource = null
+                        ),
                         painter = painterResource(R.drawable.icon_close),
                         tint = gray500,
                         contentDescription = null
@@ -97,7 +103,7 @@ internal fun ReportResultDialog(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = primary),
                     contentPadding = PaddingValues(vertical = 16.dp),
-                    onClick = {}
+                    onClick = onDismissRequest
                 ) {
                     Text(
                         text = "확인",
