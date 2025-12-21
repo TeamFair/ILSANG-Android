@@ -53,7 +53,7 @@ fun QuestTabScreen(
     questTabViewModel: QuestTabViewModel = hiltViewModel(),
     navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToMyZone: () -> Unit,
-    onMissionImageClick: (Int) -> Unit
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit
 ) {
     val selectedQuestType by questTabViewModel.selectedQuestTab.collectAsStateWithLifecycle()
     val selectedRepeatType by questTabViewModel.selectedRepeatType.collectAsStateWithLifecycle()
@@ -80,13 +80,18 @@ fun QuestTabScreen(
         onFavoriteClick = questTabViewModel::updateQuestFavoriteStatus,
         onDismissRequest = questTabViewModel::unselectQuest,
         onMyZoneClick = navigateToMyZone,
-        onMissionImageClick = { missionId ->
-            missionId?.let {
-                coroutineScope.launch {
-                    bottomSheetState.hide()
-                    questTabViewModel.unselectQuest()
-                    onMissionImageClick(it)
-                }
+        onMissionImageClick = { missionId, questId, missionTitle, writerName, questType, isIsZoneQuest ->
+            coroutineScope.launch {
+                bottomSheetState.hide()
+                questTabViewModel.unselectQuest()
+                onMissionImageClick(
+                    missionId,
+                    questId,
+                    missionTitle,
+                    writerName,
+                    questType,
+                    isIsZoneQuest
+                )
             }
         },
         onApproveButtonClick = { questId, missionId, missionType ->
@@ -121,7 +126,7 @@ private fun QuestTabScreen(
     onFavoriteClick: (Int, Boolean) -> Unit,
     onApproveButtonClick: (Int, Int, MissionType) -> Unit,
     onMyZoneClick: () -> Unit,
-    onMissionImageClick: (Int?) -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     if (selectedQuest != null) {
@@ -131,8 +136,17 @@ private fun QuestTabScreen(
             onDismiss = onDismissRequest,
             onMissionImageClick = {
                 val mission = selectedQuest.missions.firstOrNull()
-                if (mission?.exampleImageIds?.isNotEmpty() == true) {
-                    onMissionImageClick(selectedQuest.missions.firstOrNull()?.id)
+                mission?.let {
+                    if (mission.exampleImageIds.isNotEmpty()) {
+                        onMissionImageClick(
+                            mission.id,
+                            selectedQuest.id,
+                            selectedQuest.title,
+                            selectedQuest.writerName,
+                            selectedQuest.questType,
+                            selectedQuest.isIsZoneQuest
+                        )
+                    }
                 }
             },
             onFavoriteClick = { onFavoriteClick(selectedQuest.id, selectedQuest.favoriteYn) },
@@ -245,7 +259,7 @@ private fun QuestTabScreenPreview() {
         onFavoriteClick = { _, _ -> },
         onApproveButtonClick = { _, _, _ -> },
         onMyZoneClick = {},
-        onMissionImageClick = {},
+        onMissionImageClick = { _, _, _, _, _, _ -> },
         onDismissRequest = {}
     )
 }

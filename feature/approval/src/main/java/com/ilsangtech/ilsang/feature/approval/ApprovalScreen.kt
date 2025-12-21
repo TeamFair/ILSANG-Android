@@ -27,6 +27,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -43,6 +44,7 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
+    navigateToQuestTab: (Int) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit
 ) {
@@ -57,8 +59,8 @@ internal fun ApprovalScreen(
 
     ApprovalScreen(
         missionHistoryItems = randomMissionHistoryItems,
+        onCtaCardClick = navigateToQuestTab,
         onLikeButtonClick = approvalViewModel::likeChallenge,
-        onHateButtonClick = approvalViewModel::hateChallenge,
         onReportButtonClick = navigateToReport,
         navigateToProfile = navigateToProfile
     )
@@ -67,8 +69,8 @@ internal fun ApprovalScreen(
 @Composable
 private fun ApprovalScreen(
     missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
+    onCtaCardClick: (Int) -> Unit,
     onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
-    onHateButtonClick: (MissionHistoryUiModel) -> Unit,
     onReportButtonClick: (Int) -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
@@ -121,8 +123,8 @@ private fun ApprovalScreen(
                     ApprovalItem(
                         missionHistory = randomMissionHistory,
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
+                        onCtaCardClick = { /*TODO 실제 퀘스트 id 적용 필요*/ onCtaCardClick(0) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
-                        onHateButtonClick = { onHateButtonClick(randomMissionHistory) },
                         onReportButtonClick = { onReportButtonClick(randomMissionHistory.missionHistoryId) }
                     )
                 }
@@ -144,6 +146,7 @@ private fun ApprovalScreenPreview() {
             missionHistoryId = 1,
             submitImageId = "sample_image_1",
             title = "강남역 10번 출구에서 사진 찍기",
+            writerName = "홍길동",
             user = MissionHistoryUser(
                 userId = "user1",
                 nickname = "개발자",
@@ -154,7 +157,12 @@ private fun ApprovalScreenPreview() {
                     type = TitleType.Contribution
                 )
             ),
-            viewCount = 100
+            viewCount = 100,
+            questType = QuestType.Normal,
+            commentCount = 20,
+            shareCount = 20,
+            lastCompleteDate = null,
+            expireDate = "",
         ),
         MissionHistoryUiModel(
             commercialAreaName = "홍대",
@@ -165,6 +173,7 @@ private fun ApprovalScreenPreview() {
             missionHistoryId = 2,
             submitImageId = "sample_image_2",
             title = "홍대에서 버스킹 구경하기",
+            writerName = "김철수",
             user = MissionHistoryUser(
                 userId = "user2",
                 nickname = "디자이너",
@@ -175,7 +184,12 @@ private fun ApprovalScreenPreview() {
                     type = TitleType.Commercial
                 )
             ),
-            viewCount = 50
+            viewCount = 50,
+            questType = QuestType.Repeat.Weekly,
+            commentCount = 20,
+            shareCount = 20,
+            lastCompleteDate = null,
+            expireDate = "",
         )
     )
     val lazyPagingItems =
@@ -184,8 +198,8 @@ private fun ApprovalScreenPreview() {
 
     ApprovalScreen(
         missionHistoryItems = lazyPagingItems,
+        onCtaCardClick = {},
         onLikeButtonClick = {},
-        onHateButtonClick = {},
         onReportButtonClick = {},
         navigateToProfile = {}
     )

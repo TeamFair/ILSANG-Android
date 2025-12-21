@@ -23,8 +23,14 @@ internal fun RandomMissionHistoryNetworkModel.toRandomMissionHistory(): RandomMi
         missionHistoryId = missionHistoryId,
         submitImageId = submitImageId,
         title = title,
+        writerName = writerName,
         user = user.toMissionHistoryUser(),
-        viewCount = viewCount
+        viewCount = viewCount,
+        questType = QuestType.fromString(type = questType, repeatFrequency = repeatFrequency),
+        shareCount = shareCount,
+        commentCount = commentCount,
+        lastCompleteDate = lastCompleteDate,
+        expireDate = expireDate
     )
 }
 
@@ -39,7 +45,9 @@ internal fun ExampleMissionHistoryNetworkModel.toExampleMissionHistory(): Exampl
         submitImageId = submitImageId,
         title = title,
         user = user.toMissionHistoryUser(),
-        viewCount = viewCount
+        viewCount = viewCount,
+        commentCount = commentCount,
+        shareCount = shareCount
     )
 }
 

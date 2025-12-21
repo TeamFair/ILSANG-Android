@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.mission.MissionType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.banner.BannerDetailScreen
 import kotlinx.serialization.Serializable
 
@@ -34,7 +35,7 @@ fun NavHostController.navigateToBannerDetail(banner: Banner) {
 fun NavGraphBuilder.bannerNavigation(
     onBackButtonClick: () -> Unit,
     navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
-    navigateToMissionExample: (Int) -> Unit
+    navigateToMissionExample: (Int, Int, String, String, QuestType, Boolean) -> Unit
 ) {
     navigation<BannerBaseRoute>(startDestination = BannerDetailRoute::class) {
         composable<BannerDetailRoute> {

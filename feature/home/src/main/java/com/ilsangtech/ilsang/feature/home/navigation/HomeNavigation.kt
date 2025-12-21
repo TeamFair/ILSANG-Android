@@ -5,6 +5,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.banner.Banner
 import com.ilsangtech.ilsang.core.model.mission.MissionType
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.home.HomeTabScreen
 import kotlinx.serialization.Serializable
 
@@ -23,7 +24,7 @@ fun NavGraphBuilder.homeNavigation(
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,
-    onMissionImageClick: (Int) -> Unit
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {

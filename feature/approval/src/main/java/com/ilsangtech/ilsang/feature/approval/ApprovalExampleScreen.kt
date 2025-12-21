@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.approval
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,20 +17,31 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.background
+import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleCtaCard
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleHeader
-import com.ilsangtech.ilsang.feature.approval.component.ApprovalItem
-import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
+import com.ilsangtech.ilsang.feature.approval.component.ApprovalExampleItem
+import com.ilsangtech.ilsang.feature.approval.model.ExampleMissionHistoryUiModel
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun ApprovalExampleScreen(
     viewModel: ApprovalExampleViewModel = hiltViewModel(),
+    navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val missionHistories = viewModel.exampleMissionHistories.collectAsLazyPagingItems()
+
+    val missionId = viewModel.missionId
+    val questId = viewModel.questId
+    val isIsZoneQuest = viewModel.isIsZoneQuest
+
+    val questTitle = viewModel.questTitle
+    val questWriterName = viewModel.questWriterName
+    val questType = viewModel.questType
 
     LaunchedEffect(Unit) {
         viewModel.missionHistoryRefreshTrigger.collect {
@@ -37,20 +49,27 @@ internal fun ApprovalExampleScreen(
         }
     }
     ApprovalExampleScreen(
+        questTitle = questTitle,
+        questWriterName = questWriterName,
+        questType = questType,
         onBackButtonClick = onBackButtonClick,
         missionHistories = missionHistories,
         onLikeButtonClick = viewModel::likeMissionHistory,
-        onHateButtonClick = viewModel::hateMissionHistory,
         onReportButtonClick = navigateToReport,
+        onApproveButtonClick = { navigateToImageCapture(missionId, questId, isIsZoneQuest) },
         navigateToProfile = navigateToProfile
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ApprovalExampleScreen(
-    missionHistories: LazyPagingItems<MissionHistoryUiModel>,
-    onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
-    onHateButtonClick: (MissionHistoryUiModel) -> Unit,
+    questTitle: String,
+    questWriterName: String,
+    questType: QuestType,
+    missionHistories: LazyPagingItems<ExampleMissionHistoryUiModel>,
+    onLikeButtonClick: (ExampleMissionHistoryUiModel) -> Unit,
+    onApproveButtonClick: () -> Unit,
     onReportButtonClick: (Int) -> Unit,
     navigateToProfile: (String) -> Unit,
     onBackButtonClick: () -> Unit
@@ -66,13 +85,20 @@ private fun ApprovalExampleScreen(
                 contentPadding = PaddingValues(bottom = 48.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                stickyHeader {
+                    ApprovalExampleCtaCard(
+                        questTitle = questTitle,
+                        writerName = questWriterName,
+                        questType = questType,
+                        onClick = onApproveButtonClick
+                    )
+                }
                 items(missionHistories.itemCount) {
                     missionHistories[it]?.let { missionHistory ->
-                        ApprovalItem(
-                            missionHistory = missionHistory,
+                        ApprovalExampleItem(
+                            uiModel = missionHistory,
                             onProfileClick = { navigateToProfile(missionHistory.user.userId) },
                             onLikeButtonClick = { onLikeButtonClick(missionHistory) },
-                            onHateButtonClick = { onHateButtonClick(missionHistory) },
                             onReportButtonClick = { onReportButtonClick(missionHistory.missionHistoryId) }
                         )
                     }
@@ -88,7 +114,7 @@ private fun ApprovalExampleScreenPreview() {
     val missionHistories = flowOf(
         PagingData.from(
             listOf(
-                MissionHistoryUiModel(
+                ExampleMissionHistoryUiModel(
                     commercialAreaName = "강남",
                     createdAt = "2023.10.26 10:00",
                     currentUserEmojis = listOf(""),
@@ -103,17 +129,22 @@ private fun ApprovalExampleScreenPreview() {
                         profileImageId = null,
                         title = null
                     ),
-                    viewCount = 0
+                    viewCount = 0,
+                    shareCount = 0,
+                    commentCount = 0
                 )
             )
         )
     ).collectAsLazyPagingItems()
 
     ApprovalExampleScreen(
+        questTitle = "정자동 최고의 돈까스 가게 가기",
+        questWriterName = "야미돈까스 정자동점",
+        questType = QuestType.Repeat.Weekly,
         missionHistories = missionHistories,
         onLikeButtonClick = {},
-        onHateButtonClick = {},
         onReportButtonClick = {},
+        onApproveButtonClick = {},
         navigateToProfile = {},
         onBackButtonClick = {}
     )

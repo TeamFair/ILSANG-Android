@@ -34,21 +34,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
+import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.core.ui.title.TitleGradeIcon
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.badge01TextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
+import com.ilsangtech.ilsang.feature.approval.BuildConfig
 
 @Composable
 internal fun ApprovalItemUserInfo(
     modifier: Modifier = Modifier,
-    userProfileImage: String?,
-    userNickname: String,
-    titleGrade: TitleGrade?,
-    titleName: String?,
+    user: MissionHistoryUser,
     onProfileClick: () -> Unit,
     onShareButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
@@ -67,7 +68,7 @@ internal fun ApprovalItemUserInfo(
                     indication = null,
                     interactionSource = null
                 ),
-            model = userProfileImage,
+            model = BuildConfig.IMAGE_URL + user.profileImageId,
             contentDescription = null,
             error = painterResource(R.drawable.default_user_profile),
             placeholder = painterResource(R.drawable.default_user_profile)
@@ -82,20 +83,20 @@ internal fun ApprovalItemUserInfo(
                     indication = null,
                     interactionSource = null
                 ),
-                text = userNickname,
+                text = user.nickname,
                 style = approvalItemNicknameTextStyle
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                if (titleGrade != null && titleName != null) {
+                user.title?.let { title ->
                     TitleGradeIcon(
                         modifier = Modifier.size(20.dp),
-                        titleGrade = titleGrade
+                        titleGrade = title.grade
                     )
                     Text(
-                        text = titleName,
+                        text = title.name,
                         style = badge01TextStyle,
                         color = gray500
                     )
@@ -236,10 +237,16 @@ private val approvalItemNicknameTextStyle = TextStyle(
 @Composable
 private fun ApprovalItemUserInfoPreview() {
     ApprovalItemUserInfo(
-        userProfileImage = null,
-        userNickname = " 일상123",
-        titleGrade = TitleGrade.Standard,
-        titleName = "세상을 움직이는 자",
+        user = MissionHistoryUser(
+            userId = "",
+            profileImageId = null,
+            nickname = "일상123",
+            title = Title(
+                name = "세상을 움직이는 자",
+                grade = TitleGrade.Standard,
+                type = TitleType.Metro
+            )
+        ),
         onProfileClick = {},
         onShareButtonClick = {},
         onReportButtonClick = {}

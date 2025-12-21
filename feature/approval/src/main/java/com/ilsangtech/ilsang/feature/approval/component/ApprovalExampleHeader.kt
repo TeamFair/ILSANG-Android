@@ -1,5 +1,6 @@
 package com.ilsangtech.ilsang.feature.approval.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,7 @@ internal fun ApprovalExampleHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .background(Color.White)
             .statusBarsPadding()
             .padding(top = 12.dp, bottom = 11.dp)
             .padding(start = 15.dp)

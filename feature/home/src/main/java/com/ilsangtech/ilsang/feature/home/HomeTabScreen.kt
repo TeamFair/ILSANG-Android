@@ -62,7 +62,7 @@ internal fun HomeTabScreen(
     navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    onMissionImageClick: (Int) -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
@@ -105,7 +105,7 @@ private fun HomeTabScreen(
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,
-    onMissionImageClick: (Int) -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
     onSelectQuest: (Int) -> Unit,
     onUnselectQuest: () -> Unit,
     onFavoriteClick: () -> Unit,
@@ -131,7 +131,14 @@ private fun HomeTabScreen(
                         coroutineScope.launch {
                             bottomSheetState.hide()
                             onUnselectQuest()
-                            onMissionImageClick(mission.id)
+                            onMissionImageClick(
+                                mission.id,
+                                selectedQuest.id,
+                                selectedQuest.title,
+                                selectedQuest.writerName,
+                                selectedQuest.questType,
+                                selectedQuest.isIsZoneQuest
+                            )
                         }
                     }
                 }
@@ -422,7 +429,7 @@ private fun HomeTabScreenPreview() {
         onBannerClick = {},
         onMyZoneClick = {},
         onIsZoneClick = {},
-        onMissionImageClick = {},
+        onMissionImageClick = { _, _, _, _, _, _ -> },
         onSelectQuest = {},
         onUnselectQuest = {},
         onFavoriteClick = {},

@@ -110,21 +110,4 @@ class ApprovalViewModel @Inject constructor(
             }
         }
     }
-
-    fun hateChallenge(missionHistory: MissionHistoryUiModel) {
-        viewModelScope.launch {
-            val missionHistoryId = missionHistory.missionHistoryId
-            val emojiTypes = missionHistory.currentUserEmojis
-
-            if (!emojiTypes.contains("HATE")) {
-                missionRepository.hateMissionHistory(missionHistoryId).onSuccess {
-                    hateMissionHistorySet.update { it + missionHistoryId }
-                }
-            } else {
-                missionRepository.unhateMissionHistory(missionHistoryId).onSuccess {
-                    hateMissionHistorySet.update { it - missionHistoryId }
-                }
-            }
-        }
-    }
 }

@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.title.UserTitle
 import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
@@ -153,8 +154,17 @@ fun IlsangNavHost(
                 onIsZoneClick = {
                     navController.navigate(IsZoneBaseRoute)
                 },
-                onMissionImageClick = { missionId ->
-                    navController.navigate(ApprovalExampleRoute(missionId))
+                onMissionImageClick = { missionId, questId, title, writerName, questType, isIsZoneQuest ->
+                    navController.navigate(
+                        ApprovalExampleRoute(
+                            missionId = missionId,
+                            questId = questId,
+                            title = title,
+                            writerName = writerName,
+                            questType = questType,
+                            isIsZoneQuest = isIsZoneQuest
+                        )
+                    )
                 }
             )
 
@@ -163,8 +173,17 @@ fun IlsangNavHost(
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
                 },
-                onMissionImageClick = { missionId ->
-                    navController.navigate(ApprovalExampleRoute(missionId))
+                onMissionImageClick = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
+                    navController.navigate(
+                        ApprovalExampleRoute(
+                            missionId,
+                            questId,
+                            questTitle,
+                            writerName,
+                            questType,
+                            isIsZoneQuest
+                        )
+                    )
                 }
             )
 
@@ -246,6 +265,17 @@ fun IlsangNavHost(
 
             approvalNavigation(
                 popBackStack = navController::popBackStack,
+                navigateToQuestTab = { questId ->
+                    navController.navigateToTopLevelDestination(BottomTab.Quest)
+                },
+                navigateToImageCapture = { missionId, questId, isIsZoneQuest ->
+                    navController.navigateToSubmit(
+                        questId = questId,
+                        missionId = missionId,
+                        type = MissionType.Photo,
+                        isIsZoneQuest = isIsZoneQuest
+                    )
+                },
                 navigateToProfile = { id ->
                     navController.navigate(ProfileRoute(id))
                 },
@@ -261,8 +291,17 @@ fun IlsangNavHost(
             bannerNavigation(
                 onBackButtonClick = navController::popBackStack,
                 navigateToSubmit = navController::navigateToSubmit,
-                navigateToMissionExample = { missionId ->
-                    navController.navigate(ApprovalExampleRoute(missionId))
+                navigateToMissionExample = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
+                    navController.navigate(
+                        ApprovalExampleRoute(
+                            missionId,
+                            questId,
+                            questTitle,
+                            writerName,
+                            questType,
+                            isIsZoneQuest
+                        )
+                    )
                 }
             )
 

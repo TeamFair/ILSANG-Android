@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -35,8 +36,8 @@ import java.io.File
 internal fun ApprovalItem(
     missionHistory: MissionHistoryUiModel,
     onProfileClick: () -> Unit,
+    onCtaCardClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
-    onHateButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -107,30 +108,29 @@ internal fun ApprovalItem(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ApprovalItemUserInfo(
-                userProfileImage = missionHistory.user.profileImageId,
-                userNickname = missionHistory.user.nickname,
-                titleGrade = missionHistory.user.title?.grade,
-                titleName = missionHistory.user.title?.name,
+                user = missionHistory.user,
                 onProfileClick = onProfileClick,
                 onShareButtonClick = { isSharing = true },
                 onReportButtonClick = { showReportDialog = true }
             )
             ApprovalItemContent(
-                title = missionHistory.title,
                 challengeImage = missionHistory.submitImageId,
                 createdAt = missionHistory.createdAt,
-                areaName = missionHistory.commercialAreaName,
-                likeCount = missionHistory.likeCount,
-                hateCount = missionHistory.hateCount
+                areaName = missionHistory.commercialAreaName
             )
-            if (!isSharing) {
-                ApprovalFeedbackButtonRow(
-                    isLiked = missionHistory.currentUserEmojis.contains("LIKE"),
-                    isHated = missionHistory.currentUserEmojis.contains("HATE"),
-                    onLikeButtonClick = onLikeButtonClick,
-                    onHateButtonClick = onHateButtonClick
-                )
-            }
+            ApprovalItemCtaCard(
+                questTitle = missionHistory.title,
+                questType = missionHistory.questType,
+                writerName = missionHistory.writerName,
+                onClick = onCtaCardClick,
+            )
+            ApprovalItemStatsRow(
+                likeCount = missionHistory.likeCount,
+                shareCount = missionHistory.shareCount,
+                commentCount = missionHistory.commentCount,
+                isLike = missionHistory.currentUserEmojis.contains("LIKE"),
+                onLikeButtonClick = onLikeButtonClick
+            )
         }
     }
 }
@@ -157,13 +157,19 @@ private fun ApprovalItemPreview() {
                 type = TitleType.Commercial
             )
         ),
-        viewCount = 1000
+        viewCount = 1000,
+        shareCount = 20,
+        commentCount = 20,
+        writerName = "야미돈까스 정자동점",
+        questType = QuestType.Repeat.Weekly,
+        lastCompleteDate = "",
+        expireDate = ""
     )
     ApprovalItem(
         missionHistory = missionHistory,
         onProfileClick = {},
+        onCtaCardClick = {},
         onLikeButtonClick = {},
-        onHateButtonClick = {},
         onReportButtonClick = {}
     )
 }
