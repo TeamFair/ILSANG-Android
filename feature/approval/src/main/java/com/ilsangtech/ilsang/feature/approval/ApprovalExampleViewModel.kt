@@ -72,14 +72,4 @@ class ApprovalExampleViewModel @Inject constructor(
             }
         }
     }
-
-    fun reportMissionHistory(missionHistory: MissionHistoryUiModel) {
-        viewModelScope.launch {
-            runCatching {
-                missionRepository.reportMissionHistory(missionHistory.missionHistoryId)
-            }.onSuccess {
-                _missionHistoryRefreshTrigger.emit(Unit)
-            }
-        }
-    }
 }

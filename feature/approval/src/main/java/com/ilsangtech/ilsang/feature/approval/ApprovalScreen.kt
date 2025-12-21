@@ -43,7 +43,8 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
-    navigateToProfile: (String) -> Unit
+    navigateToProfile: (String) -> Unit,
+    navigateToReport: (Int) -> Unit
 ) {
     val randomMissionHistoryItems =
         approvalViewModel.randomMissionHistories.collectAsLazyPagingItems()
@@ -58,7 +59,7 @@ internal fun ApprovalScreen(
         missionHistoryItems = randomMissionHistoryItems,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onHateButtonClick = approvalViewModel::hateChallenge,
-        onReportButtonClick = approvalViewModel::reportMissionHistory,
+        onReportButtonClick = navigateToReport,
         navigateToProfile = navigateToProfile
     )
 }
@@ -68,7 +69,7 @@ private fun ApprovalScreen(
     missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
     onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
     onHateButtonClick: (MissionHistoryUiModel) -> Unit,
-    onReportButtonClick: (MissionHistoryUiModel) -> Unit,
+    onReportButtonClick: (Int) -> Unit,
     navigateToProfile: (String) -> Unit
 ) {
     Surface(
@@ -122,7 +123,7 @@ private fun ApprovalScreen(
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
                         onHateButtonClick = { onHateButtonClick(randomMissionHistory) },
-                        onReportButtonClick = { onReportButtonClick(randomMissionHistory) }
+                        onReportButtonClick = { onReportButtonClick(randomMissionHistory.missionHistoryId) }
                     )
                 }
             }

@@ -90,9 +90,16 @@ class MissionRepositoryImpl(
         }
     }
 
-    override suspend fun reportMissionHistory(missionHistoryId: Int): Result<Unit> {
+    override suspend fun reportMissionHistory(
+        missionHistoryId: Int,
+        reason: String
+    ): Result<Boolean> {
         return runCatching {
-            missionDataSource.reportMissionHistory(missionHistoryId)
+            val response = missionDataSource.reportMissionHistory(
+                missionHistoryId = missionHistoryId,
+                reason = reason
+            )
+            response.resultCode == MISSION_REPORT_SUCCESS_CODE
         }
     }
 
@@ -128,5 +135,6 @@ class MissionRepositoryImpl(
 
     private companion object {
         const val SUBMIT_SUCCESS_CODE = "S1000"
+        const val MISSION_REPORT_SUCCESS_CODE = "S1000"
     }
 }

@@ -2,6 +2,7 @@ package com.ilsangtech.ilsang.core.data.mission.datasource
 
 import androidx.paging.PagingData
 import com.ilsangtech.ilsang.core.network.model.mission.ExampleMissionHistoryNetworkModel
+import com.ilsangtech.ilsang.core.network.model.mission.MissionReportResponse
 import com.ilsangtech.ilsang.core.network.model.mission.MissionSubmitResponse
 import com.ilsangtech.ilsang.core.network.model.mission.RandomMissionHistoryNetworkModel
 import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryDetailNetworkModel
@@ -24,7 +25,7 @@ interface MissionDataSource {
 
     suspend fun deleteMissionHistoryEmoji(missionHistoryId: Int, emojiType: String)
 
-    suspend fun reportMissionHistory(missionHistoryId: Int)
+    suspend fun reportMissionHistory(missionHistoryId: Int, reason: String): MissionReportResponse
 
     suspend fun submitMission(
         missionId: Int,

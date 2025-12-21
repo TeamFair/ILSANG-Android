@@ -28,7 +28,7 @@ interface MissionRepository {
 
     suspend fun unhateMissionHistory(missionHistoryId: Int): Result<Unit>
 
-    suspend fun reportMissionHistory(missionHistoryId: Int): Result<Unit>
+    suspend fun reportMissionHistory(missionHistoryId: Int, reason: String): Result<Boolean>
 
     suspend fun submitImageMission(missionId: Int, imageId: String): Result<Unit>
 

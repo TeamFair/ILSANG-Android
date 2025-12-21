@@ -33,6 +33,7 @@ import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
+import com.ilsangtech.ilsang.feature.approval.navigation.ReportRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.bannerNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.navigateToBannerDetail
@@ -247,6 +248,9 @@ fun IlsangNavHost(
                 popBackStack = navController::popBackStack,
                 navigateToProfile = { id ->
                     navController.navigate(ProfileRoute(id))
+                },
+                navigateToMissionReport = { missionHistoryId ->
+                    navController.navigate(ReportRoute(missionHistoryId = missionHistoryId))
                 }
             )
 
