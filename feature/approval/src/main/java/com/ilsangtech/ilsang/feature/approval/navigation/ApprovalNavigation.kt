@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.quest.QuestType
+import com.ilsangtech.ilsang.feature.approval.ApprovalDetailScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.approval.ReportScreen
@@ -35,6 +36,16 @@ data class ReportRoute(
     val commentId: Int? = null
 )
 
+@Serializable
+data class ApprovalDetailRoute(
+    val missionId: Int,
+    val questId: Int,
+    val title: String,
+    val writerName: String,
+    val questType: QuestType,
+    val isIsZoneQuest: Boolean
+)
+
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
     navigateToQuestTab: (Int) -> Unit,
@@ -61,6 +72,9 @@ fun NavGraphBuilder.approvalNavigation(
     }
     composable<ReportRoute> {
         ReportScreen(popBackStack = popBackStack)
+    }
+    composable<ApprovalDetailRoute>(questTypeMap) {
+        ApprovalDetailScreen()
     }
 }
 
