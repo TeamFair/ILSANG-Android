@@ -36,6 +36,7 @@ import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
 import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.ReportRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
+import com.ilsangtech.ilsang.feature.approval.navigation.navigateToApprovalDetail
 import com.ilsangtech.ilsang.feature.banner.navigation.bannerNavigation
 import com.ilsangtech.ilsang.feature.banner.navigation.navigateToBannerDetail
 import com.ilsangtech.ilsang.feature.coupon.navigation.CouponBaseRoute
@@ -265,6 +266,7 @@ fun IlsangNavHost(
 
             approvalNavigation(
                 popBackStack = navController::popBackStack,
+                navigateToApprovalDetail = navController::navigateToApprovalDetail,
                 navigateToQuestTab = { questId ->
                     navController.navigateToTopLevelDestination(BottomTab.Quest)
                 },

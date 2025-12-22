@@ -1,6 +1,8 @@
 package com.ilsangtech.ilsang.feature.approval.navigation
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -40,8 +42,14 @@ data class ReportRoute(
 @Serializable
 data class ApprovalDetailRoute(val missionHistory: MissionHistoryUiModel)
 
+
+fun NavController.navigateToApprovalDetail(missionHistory: MissionHistoryUiModel) {
+    navigate(ApprovalDetailRoute(missionHistory))
+}
+
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
+    navigateToApprovalDetail: (MissionHistoryUiModel) -> Unit,
     navigateToQuestTab: (Int) -> Unit,
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
@@ -50,6 +58,7 @@ fun NavGraphBuilder.approvalNavigation(
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
         composable<ApprovalRoute> {
             ApprovalScreen(
+                navigateToApprovalDetail = navigateToApprovalDetail,
                 navigateToQuestTab = navigateToQuestTab,
                 navigateToProfile = navigateToProfile,
                 navigateToReport = navigateToMissionReport
