@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.feature.approval.ApprovalDetailScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalScreen
 import com.ilsangtech.ilsang.feature.approval.ReportScreen
+import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.reflect.typeOf
@@ -37,14 +38,7 @@ data class ReportRoute(
 )
 
 @Serializable
-data class ApprovalDetailRoute(
-    val missionId: Int,
-    val questId: Int,
-    val title: String,
-    val writerName: String,
-    val questType: QuestType,
-    val isIsZoneQuest: Boolean
-)
+data class ApprovalDetailRoute(val missionHistory: MissionHistoryUiModel)
 
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
