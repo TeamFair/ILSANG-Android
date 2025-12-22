@@ -4,7 +4,9 @@ import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.util.DateConverter
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MissionHistoryUiModel(
     val missionHistoryId: Int,
     val questId: Int,
