@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import coil3.compose.AsyncImage
-import com.ilsangtech.ilsang.core.model.comment.CommentWriter
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
@@ -133,7 +132,7 @@ internal fun CommentItem(
 @Composable
 private fun CommentItemHeader(
     modifier: Modifier = Modifier,
-    commentWriter: CommentWriter,
+    commentWriter: CommentUiModel.CommentWriterUiModel,
     isMyComment: Boolean
 ) {
     var showPopup by remember { mutableStateOf(false) }
@@ -290,7 +289,7 @@ private fun CommentItemPreview() {
             id = 2,
             parentId = null,
             comment = commentContent,
-            commentWriter = CommentWriter(
+            commentWriter = CommentUiModel.CommentWriterUiModel(
                 userId = "",
                 nickname = "일상123",
                 profileImageId = null,
@@ -298,7 +297,8 @@ private fun CommentItemPreview() {
                     name = "세상을 움직이는 자",
                     grade = TitleGrade.Standard,
                     type = TitleType.Contribution
-                )
+                ),
+                isMissionHistoryUser = false
             ),
             createdAt = "2025.04.12 12:00",
             isMyComment = false,
