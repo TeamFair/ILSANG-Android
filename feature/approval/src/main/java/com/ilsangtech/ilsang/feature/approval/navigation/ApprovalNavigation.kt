@@ -67,7 +67,7 @@ fun NavGraphBuilder.approvalNavigation(
     composable<ReportRoute> {
         ReportScreen(popBackStack = popBackStack)
     }
-    composable<ApprovalDetailRoute>(questTypeMap) {
+    composable<ApprovalDetailRoute>(missionHistoryUiModelTypeMap) {
         ApprovalDetailScreen()
     }
 }
@@ -98,4 +98,26 @@ private val questTypeNavType =
         }
     }
 
+private val missionHistoryUiModelNavType =
+    object : NavType<MissionHistoryUiModel>(isNullableAllowed = false) {
+        override fun get(bundle: Bundle, key: String): MissionHistoryUiModel? {
+            return bundle.getString(key)?.let {
+                Json.decodeFromString(Uri.decode(it))
+            }
+        }
+
+        override fun parseValue(value: String): MissionHistoryUiModel {
+            return Json.decodeFromString(Uri.decode(value))
+        }
+
+        override fun put(bundle: Bundle, key: String, value: MissionHistoryUiModel) {
+            bundle.putString(key, Uri.encode(Json.encodeToString(value)))
+        }
+
+        override fun serializeAsValue(value: MissionHistoryUiModel): String {
+            return Uri.encode(Json.encodeToString(value))
+        }
+    }
 internal val questTypeMap = mapOf(typeOf<QuestType>() to questTypeNavType)
+internal val missionHistoryUiModelTypeMap =
+    mapOf(typeOf<MissionHistoryUiModel>() to missionHistoryUiModelNavType)
