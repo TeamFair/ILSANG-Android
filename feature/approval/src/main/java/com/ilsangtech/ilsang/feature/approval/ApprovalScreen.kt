@@ -163,6 +163,8 @@ private fun ApprovalScreenPreview() {
             shareCount = 20,
             lastCompleteDate = null,
             expireDate = "",
+            isIsZoneQuest = false,
+            questId = 0
         ),
         MissionHistoryUiModel(
             commercialAreaName = "홍대",
@@ -190,6 +192,8 @@ private fun ApprovalScreenPreview() {
             shareCount = 20,
             lastCompleteDate = null,
             expireDate = "",
+            isIsZoneQuest = false,
+            questId = 0
         )
     )
     val lazyPagingItems =

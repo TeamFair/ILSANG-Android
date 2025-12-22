@@ -163,7 +163,9 @@ private fun ApprovalItemPreview() {
         writerName = "야미돈까스 정자동점",
         questType = QuestType.Repeat.Weekly,
         lastCompleteDate = "",
-        expireDate = ""
+        expireDate = "",
+        isIsZoneQuest = false,
+        questId = 0
     )
     ApprovalItem(
         missionHistory = missionHistory,
