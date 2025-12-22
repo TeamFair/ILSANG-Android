@@ -7,5 +7,6 @@ data class Comment(
     val writer: CommentWriter,
     val createdAt: String,
     val hasReported: Boolean,
-    val isDeleted: Boolean
+    val isDeleted: Boolean,
+    val children: List<Comment>
 )
