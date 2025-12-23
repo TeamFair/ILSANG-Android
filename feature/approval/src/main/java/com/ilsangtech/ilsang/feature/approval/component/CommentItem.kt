@@ -316,6 +316,23 @@ private fun DeletedCommentBox() {
     }
 }
 
+@Composable
+internal fun EmptyCommentBox() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(144.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "댓글이 아직 없어요",
+            style = subTitle02,
+            color = gray500,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CommentItemPreview() {
