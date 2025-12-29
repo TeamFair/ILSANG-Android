@@ -66,7 +66,10 @@ import com.ilsangtech.ilsang.feature.approval.model.CommentUiModel
 internal fun CommentItem(
     modifier: Modifier = Modifier,
     comment: CommentUiModel,
-    onCommentButtonClick: () -> Unit
+    onProfileClick: () -> Unit,
+    onCommentButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -99,7 +102,10 @@ internal fun CommentItem(
                 ) {
                     CommentItemHeader(
                         commentWriter = comment.commentWriter,
-                        isMyComment = comment.isMyComment
+                        isMyComment = comment.isMyComment,
+                        onProfileClick = onProfileClick,
+                        onDeleteButtonClick = onDeleteButtonClick,
+                        onReportButtonClick = onReportButtonClick
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
@@ -122,7 +128,10 @@ internal fun CommentItem(
 private fun CommentItemHeader(
     modifier: Modifier = Modifier,
     commentWriter: CommentUiModel.CommentWriterUiModel,
-    isMyComment: Boolean
+    isMyComment: Boolean,
+    onProfileClick: () -> Unit,
+    onDeleteButtonClick: () -> Unit,
+    onReportButtonClick: () -> Unit
 ) {
     var showPopup by remember { mutableStateOf(false) }
 
@@ -134,7 +143,12 @@ private fun CommentItemHeader(
         AsyncImage(
             modifier = Modifier
                 .size(35.dp)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .clickable(
+                    onClick = onProfileClick,
+                    indication = null,
+                    interactionSource = null
+                ),
             model = BuildConfig.IMAGE_URL + commentWriter.profileImageId,
             placeholder = painterResource(R.drawable.default_user_profile),
             error = painterResource(R.drawable.default_user_profile),
@@ -218,6 +232,14 @@ private fun CommentItemHeader(
                         .width(150.dp)
                         .padding(horizontal = 12.dp)
                         .padding(vertical = 2.dp)
+                        .clickable {
+                            if (isMyComment) {
+                                onDeleteButtonClick()
+                            } else {
+                                onReportButtonClick()
+                            }
+                            showPopup = false
+                        }
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.CenterStart),
@@ -369,6 +391,9 @@ private fun CommentItemPreview() {
             isReported = false,
             isDeleted = false
         ),
-        onCommentButtonClick = {}
+        onProfileClick = {},
+        onCommentButtonClick = {},
+        onReportButtonClick = {},
+        onDeleteButtonClick = {}
     )
 }
