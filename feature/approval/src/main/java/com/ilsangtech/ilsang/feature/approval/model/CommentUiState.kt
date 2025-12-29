@@ -4,7 +4,8 @@ sealed interface CommentUiState {
     data object Loading : CommentUiState
     data class Success(
         val comments: List<CommentUiModel>,
-        val validCommentsSize: Int
+        val validCommentsSize: Int,
+        val alertUiState: CommentAlertUiState?
     ) : CommentUiState
 
     data object Error : CommentUiState

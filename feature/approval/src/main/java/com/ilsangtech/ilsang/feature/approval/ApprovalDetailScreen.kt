@@ -46,6 +46,7 @@ import com.ilsangtech.ilsang.designsystem.theme.gray200
 import com.ilsangtech.ilsang.designsystem.theme.heading01
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalDetailHeader
 import com.ilsangtech.ilsang.feature.approval.component.ApprovalDetailItem
+import com.ilsangtech.ilsang.feature.approval.component.CommentAlertDialog
 import com.ilsangtech.ilsang.feature.approval.component.CommentItem
 import com.ilsangtech.ilsang.feature.approval.component.CommentTextField
 import com.ilsangtech.ilsang.feature.approval.component.EmptyCommentBox
@@ -85,6 +86,8 @@ internal fun ApprovalDetailScreen(
         onSendButtonClick = viewModel::createComment,
         onCommentReportClick = {},
         onCommentDeleteClick = viewModel::deleteComment,
+        validateComment = viewModel::validateComment,
+        onShownCommentAlert = viewModel::shownCommentAlert,
         onListScrolled = viewModel::clearScrollPosition
     )
 }
@@ -106,10 +109,16 @@ private fun ApprovalDetailScreen(
     onSendButtonClick: () -> Unit,
     onCommentDeleteClick: (Int) -> Unit,
     onCommentReportClick: (Int) -> Unit,
+    validateComment: suspend () -> Unit,
+    onShownCommentAlert: () -> Unit,
     onListScrolled: () -> Unit
 ) {
     val focusRequest = remember { FocusRequester() }
     val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        validateComment.invoke()
+    }
 
     LaunchedEffect(listScrollPosition) {
         listScrollPosition?.let { position ->
@@ -117,6 +126,16 @@ private fun ApprovalDetailScreen(
             onListScrolled()
         }
     }
+
+    (commentUiState as? CommentUiState.Success)?.let { state ->
+        state.alertUiState?.let { alertUiState ->
+            CommentAlertDialog(
+                uiState = alertUiState,
+                onDismissRequest = onShownCommentAlert
+            )
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -301,7 +320,8 @@ private fun ApprovalDetailScreenPreview() {
                     isDeleted = false
                 )
             ),
-            validCommentsSize = 2
+            validCommentsSize = 2,
+            alertUiState = null
         ),
         selectedCommentWriter = null,
         listScrollPosition = null,
@@ -315,6 +335,8 @@ private fun ApprovalDetailScreenPreview() {
         onSendButtonClick = {},
         onCommentDeleteClick = {},
         onCommentReportClick = {},
+        validateComment = {},
+        onShownCommentAlert = {},
         onListScrolled = {}
     )
 }
