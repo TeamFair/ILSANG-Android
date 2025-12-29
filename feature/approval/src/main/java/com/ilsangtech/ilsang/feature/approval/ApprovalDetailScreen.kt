@@ -225,5 +225,96 @@ private fun ApprovalDetailScreen(
 @Preview
 @Composable
 private fun ApprovalDetailScreenPreview() {
-    ApprovalDetailScreen()
+    val missionHistoryUiModel = MissionHistoryUiModel(
+        missionHistoryId = 1,
+        questId = 1,
+        commercialAreaName = "서현역",
+        createdAt = "2025.04.12 12:00",
+        currentUserEmojis = emptyList(),
+        hateCount = 0,
+        likeCount = 10,
+        submitImageId = "",
+        title = "정자동 최고의 돈까스 가게 가기",
+        writerName = "야미돈까스 정자동점",
+        user = MissionHistoryUser(
+            userId = "123",
+            nickname = "일상123",
+            profileImageId = null,
+            title = Title(
+                name = "세상을 움직이는 자",
+                grade = TitleGrade.Standard,
+                type = TitleType.Commercial
+            )
+        ),
+        viewCount = 20,
+        questType = QuestType.Repeat.Weekly,
+        commentCount = 10,
+        shareCount = 2,
+        lastCompleteDate = "2025.04.12 12:00",
+        expireDate = "2025.04.12 12:00",
+        isIsZoneQuest = false
+    )
+
+    ApprovalDetailScreen(
+        missionHistory = missionHistoryUiModel,
+        commentTextFieldState = rememberTextFieldState(),
+        commentUiState = CommentUiState.Success(
+            comments = listOf(
+                CommentUiModel(
+                    id = 1,
+                    parentId = null,
+                    comment = "댓글댓글",
+                    commentWriter = CommentUiModel.CommentWriterUiModel(
+                        userId = "",
+                        nickname = "일상123",
+                        profileImageId = null,
+                        title = Title(
+                            name = "세상을 움직이는 자",
+                            grade = TitleGrade.Standard,
+                            type = TitleType.Commercial
+                        ),
+                        isMissionHistoryUser = false
+                    ),
+                    createdAt = "2025.04.12 12:00",
+                    isMyComment = false,
+                    isReported = false,
+                    isDeleted = false
+                ),
+                CommentUiModel(
+                    id = 2,
+                    parentId = null,
+                    comment = "댓글댓글",
+                    commentWriter = CommentUiModel.CommentWriterUiModel(
+                        userId = "",
+                        nickname = "일상123",
+                        profileImageId = null,
+                        title = Title(
+                            name = "세상을 움직이는 자",
+                            grade = TitleGrade.Standard,
+                            type = TitleType.Commercial
+                        ),
+                        isMissionHistoryUser = false
+                    ),
+                    createdAt = "2025.04.12 12:00",
+                    isMyComment = false,
+                    isReported = false,
+                    isDeleted = false
+                )
+            ),
+            validCommentsSize = 2
+        ),
+        selectedCommentWriter = null,
+        listScrollPosition = null,
+        onBackButtonClick = {},
+        onProfileClick = {},
+        onShareButtonClick = {},
+        onMissionHistoryReportClick = {},
+        onCtaButtonClick = {},
+        onCommentSelected = { },
+        onCommentUnselected = { },
+        onSendButtonClick = {},
+        onCommentDeleteClick = {},
+        onCommentReportClick = {},
+        onListScrolled = {}
+    )
 }
