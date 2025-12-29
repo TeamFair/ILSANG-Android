@@ -77,7 +77,11 @@ fun NavGraphBuilder.approvalNavigation(
         ReportScreen(popBackStack = popBackStack)
     }
     composable<ApprovalDetailRoute>(missionHistoryUiModelTypeMap) {
-        ApprovalDetailScreen()
+        ApprovalDetailScreen(
+            onBackButtonClick = popBackStack,
+            onProfileClick = navigateToProfile,
+            onMissionHistoryReportClick = navigateToMissionReport
+        )
     }
 }
 
