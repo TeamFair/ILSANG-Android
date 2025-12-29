@@ -12,22 +12,33 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.quest.QuestType
+import com.ilsangtech.ilsang.core.model.title.Title
+import com.ilsangtech.ilsang.core.model.title.TitleGrade
+import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -38,27 +49,74 @@ import com.ilsangtech.ilsang.feature.approval.component.ApprovalDetailItem
 import com.ilsangtech.ilsang.feature.approval.component.CommentItem
 import com.ilsangtech.ilsang.feature.approval.component.CommentTextField
 import com.ilsangtech.ilsang.feature.approval.component.EmptyCommentBox
+import com.ilsangtech.ilsang.feature.approval.component.RecommentProgressCard
+import com.ilsangtech.ilsang.feature.approval.model.CommentUiModel
 import com.ilsangtech.ilsang.feature.approval.model.CommentUiState
 import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 
 @Composable
 internal fun ApprovalDetailScreen(
-    viewModel: ApprovalDetailViewModel = hiltViewModel()
+    viewModel: ApprovalDetailViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit,
+    onProfileClick: (String) -> Unit,
+    onMissionHistoryReportClick: (Int) -> Unit
 ) {
     val missionHistory = viewModel.missionHistoryUiModel
+    val commentTextField = viewModel.commentTextField
     val commentUiState by viewModel.commentUiState.collectAsStateWithLifecycle()
+    val selectedCommentWriter by viewModel.selectedCommentWriter.collectAsStateWithLifecycle()
+    val listScrollPosition by viewModel.listScrollPosition.collectAsStateWithLifecycle()
 
     ApprovalDetailScreen(
         missionHistory = missionHistory,
-        commentUiState = commentUiState
+        commentTextFieldState = commentTextField,
+        commentUiState = commentUiState,
+        selectedCommentWriter = selectedCommentWriter,
+        listScrollPosition = listScrollPosition,
+        onBackButtonClick = onBackButtonClick,
+        onProfileClick = onProfileClick,
+        onShareButtonClick = {},
+        onMissionHistoryReportClick = {
+            onMissionHistoryReportClick(missionHistory.missionHistoryId)
+        },
+        onCtaButtonClick = {},
+        onCommentSelected = viewModel::selectComment,
+        onCommentUnselected = viewModel::unselectComment,
+        onSendButtonClick = viewModel::createComment,
+        onCommentReportClick = {},
+        onCommentDeleteClick = viewModel::deleteComment,
+        onListScrolled = viewModel::clearScrollPosition
     )
 }
 
 @Composable
 private fun ApprovalDetailScreen(
     missionHistory: MissionHistoryUiModel,
-    commentUiState: CommentUiState
+    commentTextFieldState: TextFieldState,
+    commentUiState: CommentUiState,
+    listScrollPosition: Int?,
+    selectedCommentWriter: String?,
+    onBackButtonClick: () -> Unit,
+    onProfileClick: (String) -> Unit,
+    onShareButtonClick: () -> Unit,
+    onMissionHistoryReportClick: () -> Unit,
+    onCtaButtonClick: () -> Unit,
+    onCommentSelected: (CommentUiModel) -> Unit,
+    onCommentUnselected: () -> Unit,
+    onSendButtonClick: () -> Unit,
+    onCommentDeleteClick: (Int) -> Unit,
+    onCommentReportClick: (Int) -> Unit,
+    onListScrolled: () -> Unit
 ) {
+    val focusRequest = remember { FocusRequester() }
+    val lazyListState = rememberLazyListState()
+
+    LaunchedEffect(listScrollPosition) {
+        listScrollPosition?.let { position ->
+            lazyListState.animateScrollToItem(position + 3)
+            onListScrolled()
+        }
+    }
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -68,21 +126,22 @@ private fun ApprovalDetailScreen(
         Column {
             ApprovalDetailHeader(
                 modifier = Modifier.background(background),
-                onBackButtonClick = {}
+                onBackButtonClick = onBackButtonClick
             )
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-                    .background(Color.White)
+                    .background(color = Color.White),
+                state = lazyListState,
             ) {
                 item {
                     ApprovalDetailItem(
                         missionHistory = missionHistory,
-                        onProfileClick = {},
-                        onShareButtonClick = {},
-                        onReportButtonClick = {},
-                        onCtaButtonClick = {}
+                        onProfileClick = { onProfileClick(missionHistory.user.userId) },
+                        onShareButtonClick = onShareButtonClick,
+                        onReportButtonClick = onMissionHistoryReportClick,
+                        onCtaButtonClick = onCtaButtonClick
                     )
                 }
                 val successUiState = commentUiState as? CommentUiState.Success
@@ -122,18 +181,42 @@ private fun ApprovalDetailScreen(
                     }
                 } else {
                     if (comments.isEmpty()) item { EmptyCommentBox() }
-                    items(comments) { comment ->
+                    items(
+                        items = comments,
+                        key = { it.id }
+                    ) { comment ->
                         CommentItem(
                             comment = comment,
-                            onCommentButtonClick = {}
+                            onProfileClick = {
+                                onProfileClick(comment.commentWriter.userId)
+                            },
+                            onCommentButtonClick = {
+                                onCommentSelected(comment)
+                                focusRequest.requestFocus()
+                            },
+                            onReportButtonClick = {
+                                onCommentReportClick(comment.id)
+                            },
+                            onDeleteButtonClick = {
+                                onCommentDeleteClick(comment.id)
+                            }
                         )
                     }
                 }
             }
-
+            selectedCommentWriter?.let { commentWriter ->
+                RecommentProgressCard(
+                    commentWriterName = commentWriter,
+                    onCancelButtonClick = {
+                        onCommentUnselected()
+                        focusRequest.freeFocus()
+                    }
+                )
+            }
             CommentTextField(
-                textFieldState = rememberTextFieldState(),
-                onButtonClick = {}
+                modifier = Modifier.focusRequester(focusRequest),
+                textFieldState = commentTextFieldState,
+                onButtonClick = onSendButtonClick
             )
         }
     }
