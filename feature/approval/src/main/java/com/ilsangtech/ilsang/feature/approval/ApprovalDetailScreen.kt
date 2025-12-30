@@ -141,13 +141,10 @@ private fun ApprovalDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .imePadding(),
-        color = Color.White
+        color = background
     ) {
         Column {
-            ApprovalDetailHeader(
-                modifier = Modifier.background(background),
-                onBackButtonClick = onBackButtonClick
-            )
+            ApprovalDetailHeader(onBackButtonClick = onBackButtonClick)
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
