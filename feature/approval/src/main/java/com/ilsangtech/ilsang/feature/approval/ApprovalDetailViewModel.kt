@@ -25,8 +25,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -57,44 +55,42 @@ class ApprovalDetailViewModel @Inject constructor(
     val commentTextField = TextFieldState()
 
     private val commentRetryFlow = MutableSharedFlow<Unit>()
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val commentUiState = commentRetryFlow
-        .onStart {
-            emit(Unit)
-        }.flatMapLatest {
-            combine(
-                userRepository.getMyInfo(),
-                flow { emit(commentRepository.getComments(missionHistoryId)) },
-                commentAlertUiState
-            ) { myInfo, comments, alertUiState ->
-                val commentUiModels = comments.flatMap { comment ->
-                    listOf(comment) + comment.children
-                }.map { comment ->
-                    comment.toUiModel(
-                        isMyComment = comment.writer.userId == myInfo.id,
-                        isMissionHistoryUser = comment.writer.userId == missionUserId
-                    )
-                }
-                val validCommentsSize = commentUiModels
-                    .filter { comment -> !comment.isDeleted && !comment.isReported }
-                    .size
-
-                CommentUiState.Success(
-                    comments = commentUiModels,
-                    validCommentsSize = validCommentsSize,
-                    alertUiState = alertUiState
-                ) as CommentUiState
-            }
-        }.catch { e ->
-            emit(CommentUiState.Error)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = CommentUiState.Loading
-        )
     private val _commentAlertUiState = MutableStateFlow<CommentAlertUiState?>(null)
     val commentAlertUiState: StateFlow<CommentAlertUiState?> = _commentAlertUiState
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val commentUiState = combine(
+        commentRetryFlow
+            .onStart { emit(Unit) }
+            .map { commentRepository.getComments(missionHistoryId) },
+        userRepository.getMyInfo(),
+        commentAlertUiState
+    ) { comments, myInfo, alertUiState ->
+        val commentUiModels = comments.flatMap { comment ->
+            listOf(comment) + comment.children
+        }.map { comment ->
+            comment.toUiModel(
+                isMyComment = comment.writer.userId == myInfo.id,
+                isMissionHistoryUser = comment.writer.userId == missionUserId
+            )
+        }
+        val validCommentsSize = commentUiModels
+            .filter { comment -> !comment.isDeleted && !comment.isReported }
+            .size
+
+        CommentUiState.Success(
+            comments = commentUiModels,
+            validCommentsSize = validCommentsSize,
+            alertUiState = alertUiState
+        ) as CommentUiState
+
+    }.catch { e ->
+        emit(CommentUiState.Error)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CommentUiState.Loading
+    )
 
     private val _listScrollRequestPosition = MutableStateFlow<Int?>(null)
     val listScrollPosition: StateFlow<Int?> = _listScrollRequestPosition
