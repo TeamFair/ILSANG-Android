@@ -8,7 +8,7 @@ interface CommentDataSource {
         missionHistoryId: Int,
         parentId: Int?,
         comment: String
-    )
+    ): Result<String?>
 
     suspend fun deleteComment(commentId: Int)
 
