@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.CommentRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
+import com.ilsangtech.ilsang.core.model.comment.CommentCreationResult
 import com.ilsangtech.ilsang.feature.approval.model.CommentAlertUiState
 import com.ilsangtech.ilsang.feature.approval.model.CommentUiModel
 import com.ilsangtech.ilsang.feature.approval.model.CommentUiState
@@ -111,20 +112,31 @@ class ApprovalDetailViewModel @Inject constructor(
                     CommentAlertUiState.Empty
                 }
 
-                else -> commentRepository.createComment(
-                    missionHistoryId = missionHistoryId,
-                    parentId = selectedComment.value?.id,
-                    comment = commentTextField.text.toString()
-                ).onSuccess {
-                    commentRetryFlow.emit(Unit)
-                    (commentUiState.value as? CommentUiState.Success)?.let { state ->
-                        _listScrollRequestPosition.update {
-                            if (selectedComment.value?.id == null) {
-                                state.comments.size - 1
-                            } else {
-                                state.comments.indexOfLast {
-                                    it.parentId == selectedComment.value?.id
+                else -> {
+                    val result = commentRepository.createComment(
+                        missionHistoryId = missionHistoryId,
+                        parentId = selectedComment.value?.id,
+                        comment = commentTextField.text.toString()
+                    )
+                    when (result) {
+                        is CommentCreationResult.Success -> {
+                            commentRetryFlow.emit(Unit)
+                            (commentUiState.value as? CommentUiState.Success)?.let { state ->
+                                _listScrollRequestPosition.update {
+                                    if (selectedComment.value?.id == null) {
+                                        state.comments.size - 1
+                                    } else {
+                                        state.comments.indexOfLast {
+                                            it.parentId == selectedComment.value?.id
+                                        }
+                                    }
                                 }
+                            }
+                        }
+
+                        is CommentCreationResult.Failure -> {
+                            if (result is CommentCreationResult.Failure.SpamPrevention) {
+                                _commentAlertUiState.update { CommentAlertUiState.SpamPrevention }
                             }
                         }
                     }
