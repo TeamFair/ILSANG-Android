@@ -53,7 +53,8 @@ fun NavGraphBuilder.approvalNavigation(
     navigateToQuestTab: (Int) -> Unit,
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToMissionReport: (Int) -> Unit
+    navigateToMissionReport: (Int) -> Unit,
+    navigateToCommentReport: (Int) -> Unit
 ) {
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
         composable<ApprovalRoute> {
@@ -80,7 +81,8 @@ fun NavGraphBuilder.approvalNavigation(
         ApprovalDetailScreen(
             onBackButtonClick = popBackStack,
             onProfileClick = navigateToProfile,
-            onMissionHistoryReportClick = navigateToMissionReport
+            onMissionHistoryReportClick = navigateToMissionReport,
+            onCommentReportClick = navigateToCommentReport
         )
     }
 }

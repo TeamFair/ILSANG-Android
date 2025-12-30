@@ -283,6 +283,9 @@ fun IlsangNavHost(
                 },
                 navigateToMissionReport = { missionHistoryId ->
                     navController.navigate(ReportRoute(missionHistoryId = missionHistoryId))
+                },
+                navigateToCommentReport = { commentId ->
+                    navController.navigate(ReportRoute(commentId = commentId))
                 }
             )
 

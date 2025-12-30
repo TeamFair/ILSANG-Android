@@ -60,7 +60,8 @@ internal fun ApprovalDetailScreen(
     viewModel: ApprovalDetailViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit,
     onProfileClick: (String) -> Unit,
-    onMissionHistoryReportClick: (Int) -> Unit
+    onMissionHistoryReportClick: (Int) -> Unit,
+    onCommentReportClick: (Int) -> Unit
 ) {
     val missionHistory = viewModel.missionHistoryUiModel
     val commentTextField = viewModel.commentTextField
@@ -84,7 +85,7 @@ internal fun ApprovalDetailScreen(
         onCommentSelected = viewModel::selectComment,
         onCommentUnselected = viewModel::unselectComment,
         onSendButtonClick = viewModel::createComment,
-        onCommentReportClick = {},
+        onCommentReportClick = onCommentReportClick,
         onCommentDeleteClick = viewModel::deleteComment,
         validateComment = viewModel::validateComment,
         onShownCommentAlert = viewModel::shownCommentAlert,
