@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.data.comment.datasource.CommentDataSource
 import com.ilsangtech.ilsang.core.data.comment.mapper.toComment
 import com.ilsangtech.ilsang.core.domain.CommentRepository
 import com.ilsangtech.ilsang.core.model.comment.Comment
+import com.ilsangtech.ilsang.core.model.comment.CommentCreationResult
 import com.ilsangtech.ilsang.core.network.model.comment.CommentNetworkModel
 
 class CommentRepositoryImpl(
@@ -13,14 +14,24 @@ class CommentRepositoryImpl(
         missionHistoryId: Int,
         parentId: Int?,
         comment: String
-    ): Result<Unit> {
-        return runCatching {
-            commentDataSource.createComment(
-                missionHistoryId = missionHistoryId,
-                parentId = parentId,
-                comment = comment
-            )
-        }
+    ): CommentCreationResult {
+        return commentDataSource.createComment(
+            missionHistoryId = missionHistoryId,
+            parentId = parentId,
+            comment = comment
+        ).fold(
+            onSuccess = { message ->
+                if (message == null) return@fold CommentCreationResult.Success
+                if (message.contains("1 minute")) {
+                    CommentCreationResult.Failure.SpamPrevention
+                } else {
+                    CommentCreationResult.Failure.UnknownError
+                }
+            },
+            onFailure = {
+                CommentCreationResult.Failure.UnknownError
+            }
+        )
     }
 
     override suspend fun deleteComment(commentId: Int): Result<Unit> {

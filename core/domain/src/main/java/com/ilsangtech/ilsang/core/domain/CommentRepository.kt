@@ -1,13 +1,14 @@
 package com.ilsangtech.ilsang.core.domain
 
 import com.ilsangtech.ilsang.core.model.comment.Comment
+import com.ilsangtech.ilsang.core.model.comment.CommentCreationResult
 
 interface CommentRepository {
     suspend fun createComment(
         missionHistoryId: Int,
         parentId: Int?,
         comment: String
-    ): Result<Unit>
+    ): CommentCreationResult
 
     suspend fun deleteComment(commentId: Int): Result<Unit>
 
