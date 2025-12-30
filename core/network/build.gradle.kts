@@ -61,7 +61,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     api(libs.okhttp)
     implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
+    api(libs.retrofit)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

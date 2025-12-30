@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
+import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.feature.approval.model.MissionHistoryUiModel
 import com.ilsangtech.ilsang.feature.approval.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ApprovalViewModel @Inject constructor(
     areaRepository: AreaRepository,
+    userRepository: UserRepository,
     private val missionRepository: MissionRepository
 ) : ViewModel() {
     private val _missionHistoryRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
@@ -29,7 +30,10 @@ class ApprovalViewModel @Inject constructor(
     private val likeMissionHistorySet = MutableStateFlow(setOf<Int>())
     private val hateMissionHistorySet = MutableStateFlow(setOf<Int>())
 
-    val randomMissionHistories = missionRepository.getRandomMissionHistory().map { pagingData ->
+    val randomMissionHistories = combine(
+        userRepository.getMyInfo(),
+        missionRepository.getRandomMissionHistory()
+    ) { myInfo, pagingData ->
         pagingData.map { randomMissionHistory ->
             if (randomMissionHistory.currentUserEmojis.contains("LIKE")) {
                 likeMissionHistorySet.update { it + randomMissionHistory.missionHistoryId }
@@ -40,7 +44,10 @@ class ApprovalViewModel @Inject constructor(
 
             val commercialArea =
                 areaRepository.getCommercialArea(randomMissionHistory.commercialAreaCode)
-            randomMissionHistory.toUiModel(commercialArea.areaName)
+            randomMissionHistory.toUiModel(
+                isIsZoneQuest = myInfo.isCommercialAreaCode == commercialArea.code,
+                areaName = commercialArea.areaName
+            )
         }
     }.cachedIn(viewModelScope)
         .combine(likeMissionHistorySet) { pagingData, likeMissionHistorySet ->

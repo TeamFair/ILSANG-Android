@@ -14,7 +14,8 @@ internal fun CommentNetworkModel.toComment(): Comment {
         writer = writer.toCommentWriter(),
         createdAt = createdAt,
         hasReported = hasReportedYn,
-        isDeleted = deleteYn
+        isDeleted = deleteYn,
+        children = children.map(CommentNetworkModel::toComment)
     )
 }
 

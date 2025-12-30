@@ -5,6 +5,8 @@ import com.ilsangtech.ilsang.core.network.model.comment.CommentCreationRequest
 import com.ilsangtech.ilsang.core.network.model.comment.CommentNetworkModel
 import com.ilsangtech.ilsang.core.network.model.comment.CommentReportRequest
 import com.ilsangtech.ilsang.core.network.model.comment.CommentReportResponse
+import com.ilsangtech.ilsang.core.network.model.common.ErrorResponse
+import kotlinx.serialization.json.Json
 
 class CommentDataSourceImpl(
     private val commentApiService: CommentApiService
@@ -13,14 +15,24 @@ class CommentDataSourceImpl(
         missionHistoryId: Int,
         parentId: Int?,
         comment: String
-    ) {
-        return commentApiService.createComment(
+    ): Result<String?> {
+        val response = commentApiService.createComment(
             missionHistoryId = missionHistoryId,
             request = CommentCreationRequest(
                 parentId = parentId,
                 comment = comment
             )
         )
+        return if (response.isSuccessful) {
+            Result.success(null)
+        } else {
+            val errorBody =
+                response.errorBody()?.string() ?: return Result.failure(Throwable("Unknown error"))
+            val errorMessage = Json.decodeFromString<ErrorResponse>(errorBody)
+            errorMessage.message?.let { message ->
+                Result.success(message)
+            } ?: Result.failure(Throwable("Unknown error"))
+        }
     }
 
     override suspend fun deleteComment(commentId: Int) {

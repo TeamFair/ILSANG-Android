@@ -35,6 +35,7 @@ import java.io.File
 @Composable
 internal fun ApprovalItem(
     missionHistory: MissionHistoryUiModel,
+    onItemClick: () -> Unit,
     onProfileClick: () -> Unit,
     onCtaCardClick: () -> Unit,
     onLikeButtonClick: () -> Unit,
@@ -96,7 +97,8 @@ internal fun ApprovalItem(
             }
         },
         color = Color.White,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        onClick = onItemClick
     ) {
         Column(
             modifier = Modifier
@@ -163,10 +165,13 @@ private fun ApprovalItemPreview() {
         writerName = "야미돈까스 정자동점",
         questType = QuestType.Repeat.Weekly,
         lastCompleteDate = "",
-        expireDate = ""
+        expireDate = "",
+        isIsZoneQuest = false,
+        questId = 0
     )
     ApprovalItem(
         missionHistory = missionHistory,
+        onItemClick = {},
         onProfileClick = {},
         onCtaCardClick = {},
         onLikeButtonClick = {},

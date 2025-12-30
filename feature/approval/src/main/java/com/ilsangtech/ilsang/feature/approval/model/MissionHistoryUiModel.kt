@@ -4,14 +4,17 @@ import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
 import com.ilsangtech.ilsang.core.model.mission.RandomMissionHistory
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.util.DateConverter
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MissionHistoryUiModel(
+    val missionHistoryId: Int,
+    val questId: Int,
     val commercialAreaName: String,
     val createdAt: String,
     val currentUserEmojis: List<String>,
     val hateCount: Int,
     val likeCount: Int,
-    val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
     val writerName: String,
@@ -21,11 +24,17 @@ data class MissionHistoryUiModel(
     val commentCount: Int,
     val shareCount: Int,
     val lastCompleteDate: String?,
-    val expireDate: String?
+    val expireDate: String?,
+    val isIsZoneQuest: Boolean
 )
 
-internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiModel {
+internal fun RandomMissionHistory.toUiModel(
+    areaName: String,
+    isIsZoneQuest: Boolean
+): MissionHistoryUiModel {
     return MissionHistoryUiModel(
+        missionHistoryId = missionHistoryId,
+        questId = 0, // TODO: 실제 quest id 적용 필요
         commercialAreaName = areaName,
         createdAt = DateConverter.formatDate(
             input = createdAt,
@@ -34,7 +43,6 @@ internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiM
         currentUserEmojis = currentUserEmojis,
         hateCount = hateCount,
         likeCount = likeCount,
-        missionHistoryId = missionHistoryId,
         submitImageId = submitImageId,
         title = title,
         writerName = writerName,
@@ -44,6 +52,7 @@ internal fun RandomMissionHistory.toUiModel(areaName: String): MissionHistoryUiM
         commentCount = commentCount,
         shareCount = shareCount,
         lastCompleteDate = lastCompleteDate,
-        expireDate = expireDate
+        expireDate = expireDate,
+        isIsZoneQuest = isIsZoneQuest
     )
 }

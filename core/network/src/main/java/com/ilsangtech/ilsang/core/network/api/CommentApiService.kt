@@ -4,6 +4,7 @@ import com.ilsangtech.ilsang.core.network.model.comment.CommentCreationRequest
 import com.ilsangtech.ilsang.core.network.model.comment.CommentNetworkModel
 import com.ilsangtech.ilsang.core.network.model.comment.CommentReportRequest
 import com.ilsangtech.ilsang.core.network.model.comment.CommentReportResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ interface CommentApiService {
     suspend fun createComment(
         @Path("missionHistoryId") missionHistoryId: Int,
         @Body request: CommentCreationRequest
-    )
+    ): Response<Unit>
 
     @DELETE("api/v1/mission/user/history/comment/{commentId}")
     suspend fun deleteComment(@Path("commentId") commentId: Int)

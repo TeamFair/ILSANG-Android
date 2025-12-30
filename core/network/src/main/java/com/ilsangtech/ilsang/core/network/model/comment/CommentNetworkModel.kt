@@ -11,5 +11,6 @@ data class CommentNetworkModel(
     val status: String,
     val createdAt: String,
     val hasReportedYn: Boolean,
-    val deleteYn: Boolean
+    val deleteYn: Boolean,
+    val children: List<CommentNetworkModel>
 )

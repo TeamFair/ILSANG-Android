@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
+    navigateToApprovalDetail: (MissionHistoryUiModel) -> Unit,
     navigateToQuestTab: (Int) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit
@@ -59,6 +60,7 @@ internal fun ApprovalScreen(
 
     ApprovalScreen(
         missionHistoryItems = randomMissionHistoryItems,
+        onApprovalItemClick = navigateToApprovalDetail,
         onCtaCardClick = navigateToQuestTab,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onReportButtonClick = navigateToReport,
@@ -69,6 +71,7 @@ internal fun ApprovalScreen(
 @Composable
 private fun ApprovalScreen(
     missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
+    onApprovalItemClick: (MissionHistoryUiModel) -> Unit,
     onCtaCardClick: (Int) -> Unit,
     onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
     onReportButtonClick: (Int) -> Unit,
@@ -122,6 +125,7 @@ private fun ApprovalScreen(
                 missionHistoryItems[it]?.let { randomMissionHistory ->
                     ApprovalItem(
                         missionHistory = randomMissionHistory,
+                        onItemClick = { onApprovalItemClick(randomMissionHistory) },
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
                         onCtaCardClick = { /*TODO 실제 퀘스트 id 적용 필요*/ onCtaCardClick(0) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
@@ -163,6 +167,8 @@ private fun ApprovalScreenPreview() {
             shareCount = 20,
             lastCompleteDate = null,
             expireDate = "",
+            isIsZoneQuest = false,
+            questId = 0
         ),
         MissionHistoryUiModel(
             commercialAreaName = "홍대",
@@ -190,6 +196,8 @@ private fun ApprovalScreenPreview() {
             shareCount = 20,
             lastCompleteDate = null,
             expireDate = "",
+            isIsZoneQuest = false,
+            questId = 0
         )
     )
     val lazyPagingItems =
@@ -198,6 +206,7 @@ private fun ApprovalScreenPreview() {
 
     ApprovalScreen(
         missionHistoryItems = lazyPagingItems,
+        onApprovalItemClick = {},
         onCtaCardClick = {},
         onLikeButtonClick = {},
         onReportButtonClick = {},
