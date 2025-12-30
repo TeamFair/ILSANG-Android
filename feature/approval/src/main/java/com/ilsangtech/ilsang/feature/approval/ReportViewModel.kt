@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.ilsangtech.ilsang.core.domain.CommentRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.feature.approval.model.ReportResultUiState
 import com.ilsangtech.ilsang.feature.approval.model.ReportTypeUiModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val missionRepository: MissionRepository
+    private val missionRepository: MissionRepository,
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
     private val missionHistoryId = savedStateHandle.toRoute<ReportRoute>().missionHistoryId
     private val commentId = savedStateHandle.toRoute<ReportRoute>().commentId
@@ -47,6 +49,20 @@ class ReportViewModel @Inject constructor(
             missionHistoryId?.let { missionHistoryId ->
                 missionRepository.reportMissionHistory(
                     missionHistoryId = missionHistoryId,
+                    reason = reason
+                ).onSuccess { isSuccess ->
+                    if (isSuccess) {
+                        _reportResultUiState.update { ReportResultUiState.Success }
+                    } else {
+                        _reportResultUiState.update { ReportResultUiState.Reported }
+                    }
+                }.onFailure {
+                    _reportResultUiState.update { ReportResultUiState.Failure }
+                }
+            }
+            commentId?.let { commentId ->
+                commentRepository.reportComment(
+                    commentId = commentId,
                     reason = reason
                 ).onSuccess { isSuccess ->
                     if (isSuccess) {
