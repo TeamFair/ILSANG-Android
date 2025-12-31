@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.R
@@ -131,6 +132,7 @@ private fun QuestRewardCouponDialogPreview() {
     val coupon = QuestDetailCoupon(
         id = 1,
         name = "아메리카노 1잔 무료",
+        type = CouponType.RealTime,
         imageId = null,
         validTo = "2025-12-31T23:59:59",
         storeName = "스타벅스",
