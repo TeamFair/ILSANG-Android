@@ -40,8 +40,9 @@ import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.title02
 
 @Composable
-internal fun QuestRewardCouponDialog(
+fun QuestRewardCouponDialog(
     coupon: QuestDetailCoupon,
+    isObtained: Boolean = false,
     onDismissRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -61,7 +62,7 @@ internal fun QuestRewardCouponDialog(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "이번 주 특별 보상",
+                        text = "특별 보상",
                         style = heading02
                     )
                     Icon(
@@ -112,7 +113,7 @@ internal fun QuestRewardCouponDialog(
                     onClick = onDismissRequest
                 ) {
                     Text(
-                        text = "확인",
+                        text = if (isObtained) "획득" else "확인",
                         style = TextStyle(
                             fontFamily = pretendardFontFamily,
                             fontWeight = FontWeight.SemiBold,
