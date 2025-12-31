@@ -178,7 +178,9 @@ private fun QuestBottomSheetContent(
             rewardPoints = quest.rewards,
             isIsZoneQuest = quest.isIsZoneQuest
         )
-        if (quest.coupons.isNotEmpty()) {
+        quest.coupons.firstOrNull { coupon ->
+            coupon.type is CouponType.RealTime
+        }?.let {
             QuestRewardCouponCard(
                 modifier = Modifier.padding(top = 24.dp),
                 onRewardButtonClick = onRewardButtonClick
