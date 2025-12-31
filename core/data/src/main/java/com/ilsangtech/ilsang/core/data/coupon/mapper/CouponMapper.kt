@@ -24,6 +24,7 @@ internal fun QuestDetailCouponNetworkModel.toQuestDetailCoupon(): QuestDetailCou
     return QuestDetailCoupon(
         id = id,
         name = name,
+        type = type.toCouponType(),
         imageId = imageId,
         storeName = storeName,
         validTo = validTo,
