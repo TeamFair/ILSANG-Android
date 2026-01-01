@@ -10,6 +10,7 @@ import com.ilsangtech.ilsang.core.domain.ImageRepository
 import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.util.FileManager
 import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitRoute
@@ -50,7 +51,12 @@ class ImageSubmitViewModel @Inject constructor(
                     imageId = imageId
                 ).onSuccess {
                     questRepository.getQuestDetail(questId).collect { quest ->
-                        _submitUiState.update { SubmitResultUiState.Success(quest.rewards) }
+                        _submitUiState.update {
+                            SubmitResultUiState.Success(
+                                rewardPoints = quest.rewards,
+                                coupon = quest.coupons.firstOrNull { it.type is CouponType.RealTime }
+                            )
+                        }
                     }
                     questCompleteDateRepository.updateQuestCompleteDate(questId)
                 }.onFailure {
