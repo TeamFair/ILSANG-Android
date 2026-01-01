@@ -15,6 +15,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.ui.coupon.QuestRewardCouponDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.pretendardFontFamily
@@ -58,14 +62,35 @@ internal fun OxQuizSubmitScreen(
         }
 
         is SubmitResultUiState.Success -> {
-            SubmitSuccessDialog(
-                rewardPoints = result.rewardPoints,
-                isIsZoneQuest = viewModel.isIsZoneQuest,
-                onDismissRequest = {
-                    viewModel.resetResultUiState()
-                    onBackButtonClick()
+            var showPointDialog by remember { mutableStateOf(true) }
+            var showCouponDialog by remember { mutableStateOf(false) }
+            if (showPointDialog) {
+                SubmitSuccessDialog(
+                    rewardPoints = result.rewardPoints,
+                    isIsZoneQuest = viewModel.isIsZoneQuest,
+                    onDismissRequest = {
+                        if (result.coupon == null) {
+                            viewModel.resetResultUiState()
+                            onBackButtonClick()
+                        } else {
+                            showCouponDialog = true
+                        }
+                        showPointDialog = false
+                    }
+                )
+            }
+            result.coupon?.let {
+                if (showCouponDialog) {
+                    QuestRewardCouponDialog(
+                        coupon = result.coupon,
+                        isObtained = true,
+                        onDismissRequest = {
+                            showCouponDialog = false
+                            viewModel.resetResultUiState()
+                        }
+                    )
                 }
-            )
+            }
         }
 
         is SubmitResultUiState.WrongAnswer -> {
@@ -187,7 +212,8 @@ private fun OxQuizSubmitScreenPreview() {
             RewardPoint.Metro(5),
             RewardPoint.Commercial(10),
             RewardPoint.Contribute(15)
-        )
+        ),
+        coupon = null
     )
     val quizSubmitUiState = OxQuizSubmitUiState.NotSelected
 
