@@ -107,7 +107,9 @@ private fun WordsQuizSubmitScreen(
     onBackButtonClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
         color = background
     ) {
         Column {
