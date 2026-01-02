@@ -9,6 +9,13 @@ import java.util.TimeZone
 object DateConverter {
     private const val DEFAULT_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 
+    fun parseDate(dateStr: String): Date {
+        val sdf = SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }
+        return sdf.parse(dateStr)!!
+    }
+
     fun formatDate(input: String, outputPattern: String = "yyyy.MM.dd"): String {
         return try {
             val inputFormat = SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault()).apply {
