@@ -67,7 +67,7 @@ internal fun SubmitErrorDialog(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.submit_error_icon),
+                        painter = painterResource(R.drawable.icon_error_x),
                         contentDescription = null,
                         tint = Color.Unspecified
                     )

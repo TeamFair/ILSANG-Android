@@ -59,9 +59,7 @@ private fun ReportScreen(
     onBackButtonClick: () -> Unit,
     onReportButtonClick: () -> Unit
 ) {
-    if (reportResultUiState is ReportResultUiState.Success ||
-        reportResultUiState is ReportResultUiState.Reported
-    ) {
+    if (reportResultUiState !is ReportResultUiState.UnReported) {
         ReportResultDialog(
             reportResult = reportResultUiState,
             onDismissRequest = onBackButtonClick
