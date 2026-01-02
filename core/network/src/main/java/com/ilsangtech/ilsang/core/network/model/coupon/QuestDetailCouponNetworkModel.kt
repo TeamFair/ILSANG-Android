@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class QuestDetailCouponNetworkModel(
     val id: Int,
     val name: String,
+    val type: String,
     val imageId: String?,
     val validTo: String,
     val storeName: String?,

@@ -21,6 +21,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +36,7 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.ui.coupon.QuestRewardCouponDialog
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.buttonTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray500
@@ -52,21 +56,43 @@ internal fun ImageSubmitScreen(
 ) {
     val submitUiState by imageSubmitViewModel.submitUiState.collectAsStateWithLifecycle()
 
-    when (submitUiState) {
+    when (val uiState = submitUiState) {
         is SubmitResultUiState.Loading -> {
             SubmitLoadingDialog()
         }
 
         is SubmitResultUiState.Success -> {
-            val rewardList = (submitUiState as SubmitResultUiState.Success).rewardPoints
-            SubmitSuccessDialog(
-                rewardPoints = rewardList,
-                isIsZoneQuest = imageSubmitViewModel.isIsZoneQuest,
-                onDismissRequest = {
-                    imageSubmitViewModel.completeSubmit()
-                    onSubmitSuccess()
+            val (rewardList, coupon) = uiState
+            var showPointDialog by remember { mutableStateOf(true) }
+            var showCouponDialog by remember { mutableStateOf(false) }
+            if (showPointDialog) {
+                SubmitSuccessDialog(
+                    rewardPoints = rewardList,
+                    isIsZoneQuest = imageSubmitViewModel.isIsZoneQuest,
+                    onDismissRequest = {
+                        showPointDialog = false
+                        if (coupon == null) {
+                            imageSubmitViewModel.completeSubmit()
+                            onSubmitSuccess()
+                        } else {
+                            showCouponDialog = true
+                        }
+                    }
+                )
+            }
+            coupon?.let {
+                if (showCouponDialog) {
+                    QuestRewardCouponDialog(
+                        coupon = coupon,
+                        isObtained = true,
+                        onDismissRequest = {
+                            showCouponDialog = false
+                            imageSubmitViewModel.completeSubmit()
+                            onSubmitSuccess()
+                        }
+                    )
                 }
-            )
+            }
         }
 
         is SubmitResultUiState.Error -> {

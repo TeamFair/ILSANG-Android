@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.mission.MissionType
@@ -177,7 +178,9 @@ private fun QuestBottomSheetContent(
             rewardPoints = quest.rewards,
             isIsZoneQuest = quest.isIsZoneQuest
         )
-        if (quest.coupons.isNotEmpty()) {
+        quest.coupons.firstOrNull { coupon ->
+            coupon.type is CouponType.RealTime
+        }?.let {
             QuestRewardCouponCard(
                 modifier = Modifier.padding(top = 24.dp),
                 onRewardButtonClick = onRewardButtonClick
@@ -263,6 +266,7 @@ fun QuestBottomSheetPreviewQuestDetail() {
             QuestDetailCoupon(
                 id = 1,
                 name = "쿠폰 이름",
+                type = CouponType.RealTime,
                 imageId = "couponImageId",
                 storeName = "쿠폰 가게 이름",
                 validTo = "2023-12-31",

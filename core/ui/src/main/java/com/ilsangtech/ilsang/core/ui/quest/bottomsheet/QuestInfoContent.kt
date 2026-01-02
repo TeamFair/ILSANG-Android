@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.mission.MissionType
@@ -145,6 +146,7 @@ internal fun QuestDetailInfoContentPreview() {
             QuestDetailCoupon(
                 id = 201,
                 name = "10% Off Coupon",
+                type = CouponType.RealTime,
                 imageId = "coupon_image_id",
                 validTo = "2024-12-31",
                 storeName = "Store A",

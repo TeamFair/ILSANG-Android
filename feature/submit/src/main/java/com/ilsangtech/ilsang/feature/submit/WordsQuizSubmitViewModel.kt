@@ -9,6 +9,7 @@ import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
 import com.ilsangtech.ilsang.feature.submit.model.SubmitResultUiState
 import com.ilsangtech.ilsang.feature.submit.model.WordsQuizUiState
@@ -54,7 +55,8 @@ class WordsQuizSubmitViewModel @Inject constructor(
                 title = quest.title,
                 writerName = quest.writerName,
                 questType = quest.questType,
-                rewards = quest.rewards
+                rewards = quest.rewards,
+                coupon = quest.coupons.firstOrNull { it.type is CouponType.RealTime }
             )
         )
     }.stateIn(
@@ -79,7 +81,11 @@ class WordsQuizSubmitViewModel @Inject constructor(
                     if (isCorrect) {
                         _submitResultUiState.update {
                             val rewardPoints = wordsQuizUiState.submitQuestUiState.rewards
-                            SubmitResultUiState.Success(rewardPoints)
+                            val coupon = wordsQuizUiState.submitQuestUiState.coupon
+                            SubmitResultUiState.Success(
+                                rewardPoints = rewardPoints,
+                                coupon = coupon
+                            )
                         }
                         questCompleteDateRepository.updateQuestCompleteDate(questId)
                     } else {

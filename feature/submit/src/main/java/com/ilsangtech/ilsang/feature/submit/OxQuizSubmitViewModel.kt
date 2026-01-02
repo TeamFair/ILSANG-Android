@@ -8,6 +8,7 @@ import com.ilsangtech.ilsang.core.domain.MissionRepository
 import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.QuizRepository
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.feature.submit.model.OxQuizSubmitUiState
 import com.ilsangtech.ilsang.feature.submit.model.OxQuizUiState
 import com.ilsangtech.ilsang.feature.submit.model.SubmitQuestUiState
@@ -53,7 +54,8 @@ class OxQuizSubmitViewModel @Inject constructor(
             title = quest.title,
             writerName = quest.writerName,
             questType = quest.questType,
-            rewards = quest.rewards
+            rewards = quest.rewards,
+            coupon = quest.coupons.firstOrNull { it.type is CouponType.RealTime }
         )
 
         OxQuizUiState.Success(
@@ -109,7 +111,10 @@ class OxQuizSubmitViewModel @Inject constructor(
                 ).onSuccess { isCorrect ->
                     if (isCorrect) {
                         _submitResultUiState.update {
-                            SubmitResultUiState.Success(submitQuestUiState.rewards)
+                            SubmitResultUiState.Success(
+                                rewardPoints = submitQuestUiState.rewards,
+                                coupon = submitQuestUiState.coupon
+                            )
                         }
                         questCompleteDateRepository.updateQuestCompleteDate(questId)
                     } else {

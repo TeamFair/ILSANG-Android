@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.ilsangtech.ilsang.core.model.coupon.CouponType
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.util.DateConverter
 import com.ilsangtech.ilsang.designsystem.R
@@ -39,8 +40,9 @@ import com.ilsangtech.ilsang.designsystem.theme.tapRegularTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.title02
 
 @Composable
-internal fun QuestRewardCouponDialog(
+fun QuestRewardCouponDialog(
     coupon: QuestDetailCoupon,
+    isObtained: Boolean = false,
     onDismissRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -60,7 +62,7 @@ internal fun QuestRewardCouponDialog(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "이번 주 특별 보상",
+                        text = "특별 보상",
                         style = heading02
                     )
                     Icon(
@@ -111,7 +113,7 @@ internal fun QuestRewardCouponDialog(
                     onClick = onDismissRequest
                 ) {
                     Text(
-                        text = "확인",
+                        text = if (isObtained) "획득" else "확인",
                         style = TextStyle(
                             fontFamily = pretendardFontFamily,
                             fontWeight = FontWeight.SemiBold,
@@ -131,6 +133,7 @@ private fun QuestRewardCouponDialogPreview() {
     val coupon = QuestDetailCoupon(
         id = 1,
         name = "아메리카노 1잔 무료",
+        type = CouponType.RealTime,
         imageId = null,
         validTo = "2025-12-31T23:59:59",
         storeName = "스타벅스",

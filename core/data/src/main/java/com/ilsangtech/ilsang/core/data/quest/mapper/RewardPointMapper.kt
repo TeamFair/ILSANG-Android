@@ -7,7 +7,6 @@ fun RewardPointNetworkModel.toRewardPoint(): RewardPoint {
     return when (pointType) {
         "METRO" -> RewardPoint.Metro(point)
         "COMMERCIAL" -> RewardPoint.Commercial(point)
-        "CONTRIBUTION" -> RewardPoint.Contribute(point)
-        else -> throw IllegalArgumentException("Unknown point type: $pointType")
+        else -> RewardPoint.Contribute(point)
     }
 }
