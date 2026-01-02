@@ -1,7 +1,9 @@
 package com.ilsangtech.ilsang.feature.approval.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,7 +11,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -77,16 +81,42 @@ internal fun ReportResultDialog(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.icon_syren),
-                        tint = Color.Unspecified,
-                        contentDescription = null
-                    )
+                    if (reportResult is ReportResultUiState.Failure.NetworkError) {
+                        Box(
+                            modifier = Modifier
+                                .size(64.dp)
+                                .background(
+                                    color = Color(0x1AFF7171),
+                                    shape = CircleShape
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.icon_error_x),
+                                contentDescription = null,
+                                tint = Color.Unspecified
+                            )
+                        }
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.icon_syren),
+                            tint = Color.Unspecified,
+                            contentDescription = null
+                        )
+                    }
                     Text(
-                        text = if (reportResult is ReportResultUiState.Success) {
-                            "신고가 접수되었습니다\n감사합니다"
-                        } else {
-                            "이미 신고하신 콘텐츠입니다.\n현재 검토 중에 있습니다."
+                        text = when (reportResult) {
+                            is ReportResultUiState.Success -> {
+                                "신고가 접수되었습니다\n감사합니다"
+                            }
+
+                            is ReportResultUiState.Failure.AlreadyReported -> {
+                                "이미 신고하신 콘텐츠입니다.\n현재 검토 중에 있습니다."
+                            }
+
+                            else -> {
+                                "네트워크 오류로 신고 접수가\n처리되지 않았습니다."
+                            }
                         },
                         style = TextStyle(
                             fontSize = 19.sp,
@@ -129,7 +159,16 @@ private fun ReportResultDialogSuccessPreview() {
 @Composable
 private fun ReportResultDialogReportedPreview() {
     ReportResultDialog(
-        reportResult = ReportResultUiState.Reported,
+        reportResult = ReportResultUiState.Failure.AlreadyReported,
+        onDismissRequest = {}
+    )
+}
+
+@Preview(name = "Report Network Error")
+@Composable
+private fun ReportResultDialogNetworkError() {
+    ReportResultDialog(
+        reportResult = ReportResultUiState.Failure.NetworkError,
         onDismissRequest = {}
     )
 }
