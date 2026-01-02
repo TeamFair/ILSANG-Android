@@ -54,10 +54,10 @@ class ReportViewModel @Inject constructor(
                     if (isSuccess) {
                         _reportResultUiState.update { ReportResultUiState.Success }
                     } else {
-                        _reportResultUiState.update { ReportResultUiState.Reported }
+                        _reportResultUiState.update { ReportResultUiState.Failure.AlreadyReported }
                     }
                 }.onFailure {
-                    _reportResultUiState.update { ReportResultUiState.Failure }
+                    _reportResultUiState.update { ReportResultUiState.Failure.NetworkError }
                 }
             }
             commentId?.let { commentId ->
@@ -68,10 +68,10 @@ class ReportViewModel @Inject constructor(
                     if (isSuccess) {
                         _reportResultUiState.update { ReportResultUiState.Success }
                     } else {
-                        _reportResultUiState.update { ReportResultUiState.Reported }
+                        _reportResultUiState.update { ReportResultUiState.Failure.AlreadyReported }
                     }
                 }.onFailure {
-                    _reportResultUiState.update { ReportResultUiState.Failure }
+                    _reportResultUiState.update { ReportResultUiState.Failure.NetworkError }
                 }
             }
         }
