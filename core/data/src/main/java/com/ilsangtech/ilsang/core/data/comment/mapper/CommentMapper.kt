@@ -24,6 +24,6 @@ internal fun CommentWriterNetworkModel.toCommentWriter(): CommentWriter {
         userId = userId,
         nickname = nickname,
         profileImageId = profileImageId,
-        title = title.toTitle()
+        title = title?.toTitle()
     )
 }

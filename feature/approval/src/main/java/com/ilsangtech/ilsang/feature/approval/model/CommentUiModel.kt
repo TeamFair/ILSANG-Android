@@ -19,9 +19,11 @@ data class CommentUiModel(
         val userId: String,
         val nickname: String,
         val profileImageId: String?,
-        val title: Title,
+        val title: Title?,
         val isMissionHistoryUser: Boolean
-    )
+    ) {
+        val isDeletedUser get() = nickname.contains("삭제")
+    }
 }
 
 internal fun Comment.toUiModel(
