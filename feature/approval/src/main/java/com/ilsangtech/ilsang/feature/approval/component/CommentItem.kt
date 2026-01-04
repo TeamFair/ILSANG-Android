@@ -189,19 +189,21 @@ private fun CommentItemHeader(
                     }
                 }
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                TitleGradeIcon(
-                    modifier = Modifier.size(20.dp),
-                    titleGrade = commentWriter.title.grade
-                )
-                Text(
-                    text = commentWriter.title.name,
-                    style = badge01TextStyle,
-                    color = gray500
-                )
+            commentWriter.title?.let {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    TitleGradeIcon(
+                        modifier = Modifier.size(20.dp),
+                        titleGrade = commentWriter.title.grade
+                    )
+                    Text(
+                        text = commentWriter.title.name,
+                        style = badge01TextStyle,
+                        color = gray500
+                    )
+                }
             }
         }
         Spacer(Modifier.weight(1f))
