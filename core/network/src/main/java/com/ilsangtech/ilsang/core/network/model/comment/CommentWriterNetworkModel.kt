@@ -8,5 +8,5 @@ data class CommentWriterNetworkModel(
     val userId: String,
     val nickname: String,
     val profileImageId: String?,
-    val title: TitleNetworkModel
+    val title: TitleNetworkModel?
 )
