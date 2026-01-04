@@ -145,7 +145,7 @@ private fun CommentItemHeader(
                 .size(35.dp)
                 .clip(CircleShape)
                 .clickable(
-                    onClick = onProfileClick,
+                    onClick = { if (!commentWriter.isDeletedUser) onProfileClick() },
                     indication = null,
                     interactionSource = null
                 ),
