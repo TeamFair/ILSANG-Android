@@ -6,5 +6,5 @@ data class CommentWriter(
     val userId: String,
     val nickname: String,
     val profileImageId: String?,
-    val title: Title
+    val title: Title?
 )
