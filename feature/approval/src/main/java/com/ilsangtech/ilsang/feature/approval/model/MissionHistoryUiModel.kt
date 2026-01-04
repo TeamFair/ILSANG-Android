@@ -64,7 +64,7 @@ internal fun RandomMissionHistory.toUiModel(
 
     return MissionHistoryUiModel(
         missionHistoryId = missionHistoryId,
-        questId = 0, // TODO: 실제 quest id 적용 필요
+        questId = questId,
         commercialAreaName = areaName,
         createdAt = DateConverter.formatDate(
             input = createdAt,

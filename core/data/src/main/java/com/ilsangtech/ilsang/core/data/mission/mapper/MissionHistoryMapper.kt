@@ -15,12 +15,13 @@ import com.ilsangtech.ilsang.core.network.model.mission.UserMissionHistoryNetwor
 
 internal fun RandomMissionHistoryNetworkModel.toRandomMissionHistory(): RandomMissionHistory {
     return RandomMissionHistory(
+        missionHistoryId = missionHistoryId,
+        questId = questId,
         commercialAreaCode = commercialAreaCode,
         createdAt = createdAt,
         currentUserEmojis = currentUserEmojis,
         hateCount = hateCount,
         likeCount = likeCount,
-        missionHistoryId = missionHistoryId,
         submitImageId = submitImageId,
         title = title,
         writerName = writerName,

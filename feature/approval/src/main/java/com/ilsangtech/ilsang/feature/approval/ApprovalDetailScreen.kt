@@ -17,9 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,10 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.bodyTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.gray100
@@ -61,19 +66,23 @@ internal fun ApprovalDetailScreen(
     onBackButtonClick: () -> Unit,
     onProfileClick: (String) -> Unit,
     onMissionHistoryReportClick: (Int) -> Unit,
-    onCommentReportClick: (Int) -> Unit
+    onCommentReportClick: (Int) -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    onApproveButtonClick: (Int, Int, MissionType, Boolean) -> Unit
 ) {
     val missionHistory = viewModel.missionHistoryUiModel
     val commentTextField = viewModel.commentTextField
     val commentUiState by viewModel.commentUiState.collectAsStateWithLifecycle()
     val selectedCommentWriter by viewModel.selectedCommentWriter.collectAsStateWithLifecycle()
     val listScrollPosition by viewModel.listScrollPosition.collectAsStateWithLifecycle()
+    val questDetail by viewModel.questDetail.collectAsStateWithLifecycle()
 
     ApprovalDetailScreen(
         missionHistory = missionHistory,
         commentTextFieldState = commentTextField,
         commentUiState = commentUiState,
         selectedCommentWriter = selectedCommentWriter,
+        questDetail = questDetail,
         listScrollPosition = listScrollPosition,
         onBackButtonClick = onBackButtonClick,
         onProfileClick = onProfileClick,
@@ -81,7 +90,7 @@ internal fun ApprovalDetailScreen(
         onMissionHistoryReportClick = {
             onMissionHistoryReportClick(missionHistory.missionHistoryId)
         },
-        onCtaButtonClick = {},
+        onCtaButtonClick = viewModel::selectQuest,
         onCommentSelected = viewModel::selectComment,
         onCommentUnselected = viewModel::unselectComment,
         onSendButtonClick = viewModel::createComment,
@@ -89,15 +98,21 @@ internal fun ApprovalDetailScreen(
         onCommentDeleteClick = viewModel::deleteComment,
         validateComment = viewModel::validateComment,
         onShownCommentAlert = viewModel::shownCommentAlert,
-        onListScrolled = viewModel::clearScrollPosition
+        onListScrolled = viewModel::clearScrollPosition,
+        onFavoriteClick = viewModel::updateQuestFavoriteStatus,
+        onMissionImageClick = onMissionImageClick,
+        onApproveButtonClick = onApproveButtonClick,
+        onDismissRequest = viewModel::unselectQuest
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ApprovalDetailScreen(
     missionHistory: MissionHistoryUiModel,
     commentTextFieldState: TextFieldState,
     commentUiState: CommentUiState,
+    questDetail: QuestDetailUiModel?,
     listScrollPosition: Int?,
     selectedCommentWriter: String?,
     onBackButtonClick: () -> Unit,
@@ -112,7 +127,11 @@ private fun ApprovalDetailScreen(
     onCommentReportClick: (Int) -> Unit,
     validateComment: suspend () -> Unit,
     onShownCommentAlert: () -> Unit,
-    onListScrolled: () -> Unit
+    onListScrolled: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    onApproveButtonClick: (Int, Int, MissionType, Boolean) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     val focusRequest = remember { FocusRequester() }
     val lazyListState = rememberLazyListState()
@@ -135,6 +154,41 @@ private fun ApprovalDetailScreen(
                 onDismissRequest = onShownCommentAlert
             )
         }
+    }
+
+    if (questDetail != null) {
+        QuestBottomSheet(
+            quest = questDetail,
+            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            onFavoriteClick = onFavoriteClick,
+            onMissionImageClick = {
+                questDetail.missions.firstOrNull()?.let { mission ->
+                    onMissionImageClick(
+                        mission.id,
+                        questDetail.id,
+                        questDetail.title,
+                        questDetail.writerName,
+                        questDetail.questType,
+                        questDetail.isIsZoneQuest
+                    )
+                }
+                onDismissRequest()
+            },
+            onApproveButtonClick = {
+                val questId = questDetail.id
+                val mission = questDetail.missions.firstOrNull()
+                mission?.let {
+                    onApproveButtonClick(
+                        questId,
+                        mission.id,
+                        mission.type,
+                        questDetail.isIsZoneQuest
+                    )
+                }
+                onDismissRequest()
+            },
+            onDismiss = onDismissRequest
+        )
     }
 
     Surface(
@@ -333,6 +387,11 @@ private fun ApprovalDetailScreenPreview() {
         onCommentReportClick = {},
         validateComment = {},
         onShownCommentAlert = {},
-        onListScrolled = {}
+        onListScrolled = {},
+        questDetail = null,
+        onFavoriteClick = {},
+        onMissionImageClick = { _, _, _, _, _, _ -> },
+        onApproveButtonClick = { _, _, _, _ -> },
+        onDismissRequest = {}
     )
 }

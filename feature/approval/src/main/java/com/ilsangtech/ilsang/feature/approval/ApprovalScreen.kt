@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,15 +25,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ilsangtech.ilsang.core.model.mission.MissionHistoryUser
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
+import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
+import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.R
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.designsystem.theme.gray400
@@ -45,12 +52,14 @@ import kotlinx.coroutines.flow.flowOf
 internal fun ApprovalScreen(
     approvalViewModel: ApprovalViewModel = hiltViewModel(),
     navigateToApprovalDetail: (MissionHistoryUiModel) -> Unit,
-    navigateToQuestTab: (Int) -> Unit,
+    navigateToApprovalExample: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToReport: (Int) -> Unit
 ) {
     val randomMissionHistoryItems =
         approvalViewModel.randomMissionHistories.collectAsLazyPagingItems()
+    val questDetail by approvalViewModel.questDetail.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         approvalViewModel.missionHistoryRefreshTrigger.collect {
@@ -60,23 +69,69 @@ internal fun ApprovalScreen(
 
     ApprovalScreen(
         missionHistoryItems = randomMissionHistoryItems,
+        questDetail = questDetail,
         onApprovalItemClick = navigateToApprovalDetail,
-        onCtaCardClick = navigateToQuestTab,
+        onCtaCardClick = approvalViewModel::selectQuest,
         onLikeButtonClick = approvalViewModel::likeChallenge,
         onReportButtonClick = navigateToReport,
-        navigateToProfile = navigateToProfile
+        navigateToProfile = navigateToProfile,
+        onFavoriteClick = approvalViewModel::updateQuestFavoriteStatus,
+        onMissionImageClick = navigateToApprovalExample,
+        onApproveButtonClick = navigateToSubmit,
+        onDismissRequest = approvalViewModel::unselectQuest
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ApprovalScreen(
     missionHistoryItems: LazyPagingItems<MissionHistoryUiModel>,
+    questDetail: QuestDetailUiModel?,
     onApprovalItemClick: (MissionHistoryUiModel) -> Unit,
     onCtaCardClick: (Int) -> Unit,
     onLikeButtonClick: (MissionHistoryUiModel) -> Unit,
     onReportButtonClick: (Int) -> Unit,
-    navigateToProfile: (String) -> Unit
+    navigateToProfile: (String) -> Unit,
+    onFavoriteClick: () -> Unit,
+    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    onApproveButtonClick: (Int, Int, MissionType, Boolean) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
+    if (questDetail != null) {
+        QuestBottomSheet(
+            quest = questDetail,
+            bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            onFavoriteClick = onFavoriteClick,
+            onMissionImageClick = {
+                questDetail.missions.firstOrNull()?.let { mission ->
+                    onMissionImageClick(
+                        mission.id,
+                        questDetail.id,
+                        questDetail.title,
+                        questDetail.writerName,
+                        questDetail.questType,
+                        questDetail.isIsZoneQuest
+                    )
+                }
+                onDismissRequest()
+            },
+            onApproveButtonClick = {
+                val questId = questDetail.id
+                val mission = questDetail.missions.firstOrNull()
+                mission?.let {
+                    onApproveButtonClick(
+                        questId,
+                        mission.id,
+                        mission.type,
+                        questDetail.isIsZoneQuest
+                    )
+                }
+                onDismissRequest()
+            },
+            onDismiss = onDismissRequest
+        )
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -127,7 +182,7 @@ private fun ApprovalScreen(
                         missionHistory = randomMissionHistory,
                         onItemClick = { onApprovalItemClick(randomMissionHistory) },
                         onProfileClick = { navigateToProfile(randomMissionHistory.user.userId) },
-                        onCtaCardClick = { /*TODO 실제 퀘스트 id 적용 필요*/ onCtaCardClick(0) },
+                        onCtaCardClick = { onCtaCardClick(randomMissionHistory.questId) },
                         onLikeButtonClick = { onLikeButtonClick(randomMissionHistory) },
                         onReportButtonClick = { onReportButtonClick(randomMissionHistory.missionHistoryId) }
                     )
@@ -202,10 +257,15 @@ private fun ApprovalScreenPreview() {
 
     ApprovalScreen(
         missionHistoryItems = lazyPagingItems,
+        questDetail = null,
         onApprovalItemClick = {},
         onCtaCardClick = {},
         onLikeButtonClick = {},
         onReportButtonClick = {},
-        navigateToProfile = {}
+        navigateToProfile = {},
+        onFavoriteClick = {},
+        onMissionImageClick = { _, _, _, _, _, _ -> },
+        onApproveButtonClick = { _, _, _, _ -> },
+        onDismissRequest = {}
     )
 }

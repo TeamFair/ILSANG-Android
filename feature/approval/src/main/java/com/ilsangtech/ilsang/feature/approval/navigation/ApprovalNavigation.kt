@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.approval.ApprovalDetailScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
@@ -47,10 +48,22 @@ fun NavController.navigateToApprovalDetail(missionHistory: MissionHistoryUiModel
     navigate(ApprovalDetailRoute(missionHistory))
 }
 
+fun NavController.navigateToApprovalExample(
+    missionId: Int,
+    questId: Int,
+    title: String,
+    writerName: String,
+    questType: QuestType,
+    isIsZoneQuest: Boolean
+) {
+    navigate(ApprovalExampleRoute(missionId, questId, title, writerName, questType, isIsZoneQuest))
+}
+
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
     navigateToApprovalDetail: (MissionHistoryUiModel) -> Unit,
-    navigateToQuestTab: (Int) -> Unit,
+    navigateToApprovalExample: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToMissionReport: (Int) -> Unit,
@@ -60,7 +73,8 @@ fun NavGraphBuilder.approvalNavigation(
         composable<ApprovalRoute> {
             ApprovalScreen(
                 navigateToApprovalDetail = navigateToApprovalDetail,
-                navigateToQuestTab = navigateToQuestTab,
+                navigateToApprovalExample = navigateToApprovalExample,
+                navigateToSubmit = navigateToSubmit,
                 navigateToProfile = navigateToProfile,
                 navigateToReport = navigateToMissionReport
             )
@@ -82,7 +96,9 @@ fun NavGraphBuilder.approvalNavigation(
             onBackButtonClick = popBackStack,
             onProfileClick = navigateToProfile,
             onMissionHistoryReportClick = navigateToMissionReport,
-            onCommentReportClick = navigateToCommentReport
+            onCommentReportClick = navigateToCommentReport,
+            onMissionImageClick = navigateToApprovalExample,
+            onApproveButtonClick = navigateToSubmit
         )
     }
 }

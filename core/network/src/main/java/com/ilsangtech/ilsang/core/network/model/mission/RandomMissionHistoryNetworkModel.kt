@@ -4,12 +4,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RandomMissionHistoryNetworkModel(
+    val missionHistoryId: Int,
+    val questId: Int,
     val commercialAreaCode: String,
     val createdAt: String,
     val currentUserEmojis: List<String>,
     val hateCount: Int,
     val likeCount: Int,
-    val missionHistoryId: Int,
     val submitImageId: String,
     val title: String,
     val writerName: String,
