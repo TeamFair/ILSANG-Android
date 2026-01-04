@@ -96,7 +96,9 @@ fun NavGraphBuilder.approvalNavigation(
             onBackButtonClick = popBackStack,
             onProfileClick = navigateToProfile,
             onMissionHistoryReportClick = navigateToMissionReport,
-            onCommentReportClick = navigateToCommentReport
+            onCommentReportClick = navigateToCommentReport,
+            onMissionImageClick = navigateToApprovalExample,
+            onApproveButtonClick = navigateToSubmit
         )
     }
 }
