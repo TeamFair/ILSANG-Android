@@ -124,6 +124,7 @@ internal fun ApprovalItem(
                 questTitle = missionHistory.title,
                 questType = missionHistory.questType,
                 writerName = missionHistory.writerName,
+                missionExecutionUiState = missionHistory.missionExecutionUiState,
                 onClick = onCtaCardClick,
             )
             ApprovalItemStatsRow(
@@ -164,8 +165,6 @@ private fun ApprovalItemPreview() {
         commentCount = 20,
         writerName = "야미돈까스 정자동점",
         questType = QuestType.Repeat.Weekly,
-        lastCompleteDate = "",
-        expireDate = "",
         isIsZoneQuest = false,
         questId = 0
     )
