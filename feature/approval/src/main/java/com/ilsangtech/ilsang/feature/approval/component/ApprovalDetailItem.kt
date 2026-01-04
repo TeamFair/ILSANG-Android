@@ -38,6 +38,7 @@ internal fun ApprovalDetailItem(
             questTitle = missionHistory.title,
             writerName = missionHistory.writerName,
             questType = missionHistory.questType,
+            missionExecutionUiState = missionHistory.missionExecutionUiState,
             onClick = onCtaButtonClick
         )
     }
