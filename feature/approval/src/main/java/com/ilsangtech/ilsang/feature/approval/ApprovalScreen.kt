@@ -165,8 +165,6 @@ private fun ApprovalScreenPreview() {
             questType = QuestType.Normal,
             commentCount = 20,
             shareCount = 20,
-            lastCompleteDate = null,
-            expireDate = "",
             isIsZoneQuest = false,
             questId = 0
         ),
@@ -194,8 +192,6 @@ private fun ApprovalScreenPreview() {
             questType = QuestType.Repeat.Weekly,
             commentCount = 20,
             shareCount = 20,
-            lastCompleteDate = null,
-            expireDate = "",
             isIsZoneQuest = false,
             questId = 0
         )

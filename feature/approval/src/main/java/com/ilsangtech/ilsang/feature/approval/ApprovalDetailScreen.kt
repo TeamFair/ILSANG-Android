@@ -267,8 +267,6 @@ private fun ApprovalDetailScreenPreview() {
         questType = QuestType.Repeat.Weekly,
         commentCount = 10,
         shareCount = 2,
-        lastCompleteDate = "2025.04.12 12:00",
-        expireDate = "2025.04.12 12:00",
         isIsZoneQuest = false
     )
 

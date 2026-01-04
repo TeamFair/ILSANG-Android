@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.feature.approval.model.MissionExecutionUiState
 
 @Composable
 internal fun ApprovalExampleCtaCard(
@@ -22,6 +23,7 @@ internal fun ApprovalExampleCtaCard(
     writerName: String,
     questType: QuestType,
     missionType: MissionType = MissionType.Photo,
+    missionExecutionUiState: MissionExecutionUiState = MissionExecutionUiState.Available,
     onClick: () -> Unit
 ) {
     Box(
@@ -44,7 +46,11 @@ internal fun ApprovalExampleCtaCard(
             .clickable(
                 indication = null,
                 interactionSource = null,
-                onClick = onClick
+                onClick = {
+                    if (missionExecutionUiState is MissionExecutionUiState.Available) {
+                        onClick()
+                    }
+                }
             ),
     ) {
         ApprovalQuestContent(
@@ -56,6 +62,7 @@ internal fun ApprovalExampleCtaCard(
             writerName = writerName,
             questType = questType,
             missionType = missionType,
+            missionExecutionUiState = missionExecutionUiState,
             ctaText = "바로가기"
         )
     }

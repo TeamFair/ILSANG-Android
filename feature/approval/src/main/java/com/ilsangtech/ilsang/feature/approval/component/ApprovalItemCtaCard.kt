@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.designsystem.theme.gray100
+import com.ilsangtech.ilsang.feature.approval.model.MissionExecutionUiState
 
 @Composable
 internal fun ApprovalItemCtaCard(
@@ -21,6 +22,7 @@ internal fun ApprovalItemCtaCard(
     writerName: String,
     questType: QuestType,
     missionType: MissionType = MissionType.Photo,
+    missionExecutionUiState: MissionExecutionUiState,
     onClick: () -> Unit
 ) {
     OutlinedCard(
@@ -28,7 +30,11 @@ internal fun ApprovalItemCtaCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
         border = BorderStroke(width = 1.dp, color = gray100),
-        onClick = onClick
+        onClick = {
+            if (missionExecutionUiState is MissionExecutionUiState.Available) {
+                onClick()
+            }
+        }
     ) {
         ApprovalQuestContent(
             modifier = Modifier.padding(16.dp),
@@ -36,6 +42,7 @@ internal fun ApprovalItemCtaCard(
             writerName = writerName,
             questType = questType,
             missionType = missionType,
+            missionExecutionUiState = missionExecutionUiState,
             ctaText = "나도 하기"
         )
     }
@@ -49,6 +56,7 @@ private fun ApprovalItemCtaCardPreview() {
         writerName = "야미돈까스 정자동점",
         questType = QuestType.Repeat.Daily,
         missionType = MissionType.Photo,
+        missionExecutionUiState = MissionExecutionUiState.Available,
         onClick = {}
     )
 }
