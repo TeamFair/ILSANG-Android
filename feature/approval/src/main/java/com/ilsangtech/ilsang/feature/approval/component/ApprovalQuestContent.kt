@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,10 +31,12 @@ import com.ilsangtech.ilsang.core.ui.quest.EventQuestTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.MissionTypeBadge
 import com.ilsangtech.ilsang.core.ui.quest.RepeatQuestTypeBadge
 import com.ilsangtech.ilsang.designsystem.R
+import com.ilsangtech.ilsang.designsystem.theme.gray300
 import com.ilsangtech.ilsang.designsystem.theme.gray400
 import com.ilsangtech.ilsang.designsystem.theme.gray500
 import com.ilsangtech.ilsang.designsystem.theme.tapBoldTextStyle
 import com.ilsangtech.ilsang.designsystem.theme.toSp
+import com.ilsangtech.ilsang.feature.approval.model.MissionExecutionUiState
 
 @Composable
 internal fun ApprovalQuestContent(
@@ -42,8 +45,17 @@ internal fun ApprovalQuestContent(
     writerName: String,
     questType: QuestType,
     missionType: MissionType,
+    missionExecutionUiState: MissionExecutionUiState,
     ctaText: String
 ) {
+    val (chipText, chipTextColor) = remember {
+        when (missionExecutionUiState) {
+            MissionExecutionUiState.Available -> ctaText to gray500
+            MissionExecutionUiState.Completed -> "수행 완료" to gray300
+            MissionExecutionUiState.Expired -> "기간 만료" to gray300
+        }
+    }
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -87,12 +99,12 @@ internal fun ApprovalQuestContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = ctaText,
+                text = chipText,
                 style = tapBoldTextStyle.copy(
                     fontSize = 14.dp.toSp(),
                     lineHeight = 24.dp.toSp(),
                 ),
-                color = gray500
+                color = chipTextColor
             )
             Icon(
                 modifier = Modifier.size(20.dp),
@@ -112,6 +124,7 @@ private fun ApprovalQuestContentPreview() {
         writerName = "야미돈까스 정자동점",
         questType = QuestType.Repeat.Daily,
         missionType = MissionType.Photo,
+        missionExecutionUiState = MissionExecutionUiState.Available,
         ctaText = "바로가기"
     )
 }
