@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.ilsangtech.ilsang.core.ui.ResultStore
 import com.ilsangtech.ilsang.feature.my.screens.challenge.MyChallengeScreen
 import com.ilsangtech.ilsang.feature.my.screens.challenge_detail.MyChallengeDetailScreen
 import com.ilsangtech.ilsang.feature.my.screens.customer_center.CustomerCenterScreen
@@ -89,6 +90,7 @@ fun NavHostController.navigateToLegendTitle(titleName: String, titleId: String) 
 }
 
 fun NavGraphBuilder.myTabNavigation(
+    resultStore: ResultStore,
     navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToMyTabMain: () -> Unit,
@@ -110,6 +112,7 @@ fun NavGraphBuilder.myTabNavigation(
     navigation<MyBaseRoute>(startDestination = MyRoute) {
         composable<MyRoute> {
             MyTabScreen(
+                resultStore = resultStore,
                 onSettingButtonClick = navigateToSetting,
                 onProfileEditButtonClick = navigateToMyProfileEdit,
                 onMissionHistoryButtonClick = navigateToMyChallenge,
@@ -134,7 +137,10 @@ fun NavGraphBuilder.myTabNavigation(
             }
         ) {
             UserProfileEditScreen(
-                navigateToMyTabMain = navigateToMyTabMain
+                navigateToMyTabMain = { isEdited ->
+                    if (isEdited) resultStore.setResult("isEdited", true)
+                    navigateToMyTabMain()
+                }
             )
         }
 

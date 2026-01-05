@@ -16,6 +16,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.model.MyTabScreenUiState
 import com.ilsangtech.ilsang.feature.my.screens.mytab.model.toMyPointSummaryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,8 +24,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,9 +39,12 @@ class MyTabViewModel @Inject constructor(
     private val _selectedSeason = MutableStateFlow<SeasonUiModel>(SeasonUiModel.Total)
     val selectedSeason = _selectedSeason.asStateFlow()
 
+    private val _myInfoTrigger = MutableSharedFlow<Unit>(replay = 1)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val myTabScreenUiState = combine(
-        userRepository.getMyInfo(),
+        _myInfoTrigger.onStart { emit(Unit) }
+            .flatMapLatest { userRepository.getMyInfo() },
         selectedSeason.flatMapLatest { season ->
             val seasonId = (season as? SeasonUiModel.Specific)?.id
             userRepository.getUserPoint(seasonId = seasonId)
@@ -92,11 +98,17 @@ class MyTabViewModel @Inject constructor(
         emit(MyTabScreenUiState.Error(e.message.orEmpty()))
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(0),
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = MyTabScreenUiState.Loading
     )
 
     fun updateSeason(season: SeasonUiModel) {
         _selectedSeason.update { season }
+    }
+
+    fun retryMyInfo() {
+        viewModelScope.launch {
+            _myInfoTrigger.emit(Unit)
+        }
     }
 }

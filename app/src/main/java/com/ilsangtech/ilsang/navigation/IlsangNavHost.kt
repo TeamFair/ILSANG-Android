@@ -29,6 +29,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.title.UserTitle
+import com.ilsangtech.ilsang.core.ui.rememberResultStore
 import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
@@ -87,6 +88,7 @@ fun IlsangNavHost(
 ) {
     val context = LocalContext.current
     val navController = rememberNavController()
+    val resultStore = rememberResultStore()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination
@@ -190,6 +192,7 @@ fun IlsangNavHost(
             )
 
             myTabNavigation(
+                resultStore = resultStore,
                 navigateToLogin = {
                     Firebase.auth.signOut()
                     logout()

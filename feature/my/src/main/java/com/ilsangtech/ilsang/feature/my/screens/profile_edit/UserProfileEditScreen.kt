@@ -33,7 +33,7 @@ import com.ilsangtech.ilsang.feature.my.screens.profile_edit.component.UserImage
 @Composable
 fun UserProfileEditScreen(
     viewModel: UserProfileEditViewModel = hiltViewModel(),
-    navigateToMyTabMain: () -> Unit
+    navigateToMyTabMain: (Boolean) -> Unit
 ) {
     val originNickname = viewModel.originNickname
     val profileImageId = viewModel.profileImageId
@@ -45,7 +45,7 @@ fun UserProfileEditScreen(
 
     LaunchedEffect(isUserProfileEditSuccess) {
         if (isUserProfileEditSuccess != null) {
-            navigateToMyTabMain()
+            navigateToMyTabMain(true)
             viewModel.resetUserProfileEditSuccess()
         }
     }
@@ -56,7 +56,7 @@ fun UserProfileEditScreen(
             onDismissRequest = { showCancelDialog = false },
             onConfirm = {
                 showCancelDialog = false
-                navigateToMyTabMain()
+                navigateToMyTabMain(false)
             },
             onCancel = { showCancelDialog = false }
         )

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +21,7 @@ import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
 import com.ilsangtech.ilsang.core.model.title.UserTitle
+import com.ilsangtech.ilsang.core.ui.ResultStore
 import com.ilsangtech.ilsang.core.ui.season.model.SeasonUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TopCommercialAreaUiModel
 import com.ilsangtech.ilsang.core.ui.user.model.TotalOwnerContributionUiModel
@@ -37,6 +39,7 @@ import com.ilsangtech.ilsang.feature.my.screens.mytab.model.MyTabScreenUiState
 
 @Composable
 internal fun MyTabScreen(
+    resultStore: ResultStore,
     viewModel: MyTabViewModel = hiltViewModel(),
     onProfileEditButtonClick: (nickname: String, profileImageId: String?) -> Unit,
     onMissionHistoryButtonClick: () -> Unit,
@@ -48,6 +51,14 @@ internal fun MyTabScreen(
 ) {
     val uiState by viewModel.myTabScreenUiState.collectAsStateWithLifecycle()
     val selectedSeason by viewModel.selectedSeason.collectAsStateWithLifecycle()
+    val isEdited = resultStore.getResult<Boolean>("isEdited")
+
+    LaunchedEffect(isEdited) {
+        if (isEdited == true) {
+            viewModel.retryMyInfo()
+            resultStore.removeResult<Boolean>("isEdited")
+        }
+    }
 
     MyTabScreen(
         uiState = uiState,
