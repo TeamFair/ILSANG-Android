@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:datastore-proto"))
+    implementation(projects.core.datastoreProto)
     implementation(libs.protobuf.protoc)
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.hilt.android)

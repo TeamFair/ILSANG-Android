@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
+    implementation(projects.core.designsystem)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
