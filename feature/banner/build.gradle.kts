@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    implementation(projects.core.ui)
 
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.core.ktx)

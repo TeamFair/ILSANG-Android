@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    implementation(projects.core.ui)
 
     implementation(libs.camera.core)
     implementation(libs.androidx.camera.camera2)

@@ -51,11 +51,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
-    implementation(project(":core:util"))
-    implementation(project(":core:ui"))
+    implementation(projects.core.designsystem)
+    implementation(projects.core.domain)
+    implementation(projects.core.model)
+    implementation(projects.core.util)
+    implementation(projects.core.ui)
 
     implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)

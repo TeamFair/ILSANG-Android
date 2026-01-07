@@ -37,12 +37,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:datastore"))
-    implementation(project(":core:datastore-proto"))
-    implementation(project(":core:util"))
-    implementation(project(":core:network"))
-    implementation(project(":core:model"))
-    implementation(project(":core:domain"))
+    implementation(projects.core.datastore)
+    implementation(projects.core.datastoreProto)
+    implementation(projects.core.util)
+    implementation(projects.core.network)
+    implementation(projects.core.model)
+    implementation(projects.core.domain)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.androidx.paging.runtime)
