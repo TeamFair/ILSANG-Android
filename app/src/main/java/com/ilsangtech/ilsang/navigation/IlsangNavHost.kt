@@ -150,25 +150,13 @@ fun IlsangNavHost(
                 navigateToProfile = {
                     navController.navigate(ProfileRoute(it))
                 },
-                navigateToSubmit = navController::navigateToSubmit,
+                navigateToQuestDetail = navController::navigateToQuestDetail,
                 onBannerClick = navController::navigateToBannerDetail,
                 onMyZoneClick = {
                     navController.navigate(MyZoneBaseRoute)
                 },
                 onIsZoneClick = {
                     navController.navigate(IsZoneBaseRoute)
-                },
-                onMissionImageClick = { missionId, questId, title, writerName, questType, isIsZoneQuest ->
-                    navController.navigate(
-                        ApprovalExampleRoute(
-                            missionId = missionId,
-                            questId = questId,
-                            title = title,
-                            writerName = writerName,
-                            questType = questType,
-                            isIsZoneQuest = isIsZoneQuest
-                        )
-                    )
                 }
             )
 

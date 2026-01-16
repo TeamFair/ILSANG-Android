@@ -8,15 +8,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ilsangtech.ilsang.core.model.banner.Banner
-import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.LargeRewardQuest
 import com.ilsangtech.ilsang.core.model.quest.PopularQuest
 import com.ilsangtech.ilsang.core.model.quest.QuestType
@@ -35,8 +31,6 @@ import com.ilsangtech.ilsang.core.model.reward.RewardPoint
 import com.ilsangtech.ilsang.core.model.title.Title
 import com.ilsangtech.ilsang.core.model.title.TitleGrade
 import com.ilsangtech.ilsang.core.model.title.TitleType
-import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
-import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.core.ui.season.SeasonOpenDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSelectDisabledDialog
 import com.ilsangtech.ilsang.designsystem.theme.background
@@ -51,114 +45,55 @@ import com.ilsangtech.ilsang.feature.home.model.HomeTabSuccessData
 import com.ilsangtech.ilsang.feature.home.model.HomeTabUiState
 import com.ilsangtech.ilsang.feature.home.model.MyInfoUiModel
 import com.ilsangtech.ilsang.feature.home.model.OpenSeasonUiModel
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeTabScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    onQuestClick: (Int) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit
 ) {
     val shouldShowSeasonOpenDialog by homeViewModel.shouldShowSeasonOpenDialog.collectAsState()
     val homeTabUiState by homeViewModel.homeTabUiState.collectAsStateWithLifecycle()
-    val selectedQuest by homeViewModel.selectedQuest.collectAsStateWithLifecycle()
 
     HomeTabScreen(
         homeTabUiState = homeTabUiState,
         shouldShowSeasonOpenDialog = shouldShowSeasonOpenDialog,
-        selectedQuest = selectedQuest,
         navigateToQuestTab = navigateToQuestTab,
         navigateToMyTab = navigateToMyTab,
-        navigateToSubmit = navigateToSubmit,
         navigateToRankingTab = navigateToRankingTab,
         navigateToProfile = navigateToProfile,
         onBannerClick = onBannerClick,
         onMyZoneClick = onMyZoneClick,
         onIsZoneClick = onIsZoneClick,
-        onMissionImageClick = onMissionImageClick,
-        onSelectQuest = homeViewModel::selectQuest,
-        onUnselectQuest = homeViewModel::unselectQuest,
-        onFavoriteClick = homeViewModel::updateQuestFavoriteStatus,
+        onQuestClick = onQuestClick,
         onDismissSeasonOpenDialog = homeViewModel::seasonOpenDialogShown
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeTabScreen(
     homeTabUiState: HomeTabUiState,
     shouldShowSeasonOpenDialog: Boolean?,
-    selectedQuest: QuestDetailUiModel?,
     navigateToQuestTab: () -> Unit,
     navigateToMyTab: () -> Unit,
-    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToRankingTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
     onIsZoneClick: () -> Unit,
-    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
-    onSelectQuest: (Int) -> Unit,
-    onUnselectQuest: () -> Unit,
-    onFavoriteClick: () -> Unit,
+    onQuestClick: (Int) -> Unit,
     onDismissSeasonOpenDialog: (Boolean) -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showZoneSelectDisabledDialog by remember { mutableStateOf(false) }
 
     if (showZoneSelectDisabledDialog) {
         IsZoneSelectDisabledDialog { showZoneSelectDisabledDialog = false }
-    }
-
-    if (selectedQuest != null) {
-        QuestBottomSheet(
-            quest = selectedQuest,
-            bottomSheetState = bottomSheetState,
-            onDismiss = onUnselectQuest,
-            onFavoriteClick = onFavoriteClick,
-            onMissionImageClick = {
-                selectedQuest.missions.firstOrNull()?.let { mission ->
-                    if (mission.exampleImageIds.isNotEmpty()) {
-                        coroutineScope.launch {
-                            bottomSheetState.hide()
-                            onUnselectQuest()
-                            onMissionImageClick(
-                                mission.id,
-                                selectedQuest.id,
-                                selectedQuest.title,
-                                selectedQuest.writerName,
-                                selectedQuest.questType,
-                                selectedQuest.isIsZoneQuest
-                            )
-                        }
-                    }
-                }
-            },
-            onApproveButtonClick = {
-                coroutineScope.launch {
-                    val mission = selectedQuest.missions.firstOrNull()
-                    bottomSheetState.hide()
-                    onUnselectQuest()
-                    mission?.let { missionId ->
-                        navigateToSubmit(
-                            selectedQuest.id,
-                            mission.id,
-                            mission.type,
-                            selectedQuest.isIsZoneQuest
-                        )
-                    }
-                }
-            }
-        )
     }
 
     Surface(
@@ -208,7 +143,7 @@ private fun HomeTabScreen(
                     item {
                         PopularQuestsContent(
                             popularQuests = popularQuests,
-                            onPopularQuestClick = onSelectQuest,
+                            onPopularQuestClick = onQuestClick,
                         )
                     }
                     item { Spacer(Modifier.height(36.dp)) }
@@ -216,7 +151,7 @@ private fun HomeTabScreen(
                         RecommendedQuestsContent(
                             userNickname = userInfo.nickname,
                             recommendedQuests = recommendedQuests,
-                            onRecommendedQuestClick = onSelectQuest,
+                            onRecommendedQuestClick = onQuestClick,
                         )
                     }
                     item { Spacer(Modifier.height(36.dp)) }
@@ -224,7 +159,7 @@ private fun HomeTabScreen(
                         LargeRewardQuestContent(
                             modifier = Modifier.padding(horizontal = 20.dp),
                             largeRewardQuests = largeRewardQuests,
-                            onQuestClick = onSelectQuest,
+                            onQuestClick = onQuestClick,
                             onMoreButtonClick = navigateToQuestTab
                         )
                     }
@@ -254,7 +189,6 @@ private fun HomeTabScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun HomeTabScreenPreview() {
@@ -416,23 +350,17 @@ private fun HomeTabScreenPreview() {
         )
     )
 
-
     HomeTabScreen(
         homeTabUiState = homeTabUiState,
         shouldShowSeasonOpenDialog = false,
-        selectedQuest = null,
         navigateToQuestTab = {},
         navigateToMyTab = {},
-        navigateToSubmit = { _, _, _, _ -> },
         navigateToRankingTab = {},
         navigateToProfile = {},
         onBannerClick = {},
         onMyZoneClick = {},
         onIsZoneClick = {},
-        onMissionImageClick = { _, _, _, _, _, _ -> },
-        onSelectQuest = {},
-        onUnselectQuest = {},
-        onFavoriteClick = {},
+        onQuestClick = {},
         onDismissSeasonOpenDialog = {}
     )
 }

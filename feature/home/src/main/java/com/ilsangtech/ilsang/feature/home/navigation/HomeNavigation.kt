@@ -4,8 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ilsangtech.ilsang.core.model.banner.Banner
-import com.ilsangtech.ilsang.core.model.mission.MissionType
-import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.home.HomeTabScreen
 import kotlinx.serialization.Serializable
 
@@ -20,11 +18,10 @@ fun NavGraphBuilder.homeNavigation(
     navigateToRankingTab: () -> Unit,
     navigateToMyTab: () -> Unit,
     navigateToProfile: (String) -> Unit,
-    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
+    navigateToQuestDetail: (Int) -> Unit,
     onBannerClick: (Banner) -> Unit,
     onMyZoneClick: () -> Unit,
-    onIsZoneClick: () -> Unit,
-    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit
+    onIsZoneClick: () -> Unit
 ) {
     navigation<HomeBaseRoute>(startDestination = HomeRoute) {
         composable<HomeRoute> {
@@ -32,12 +29,11 @@ fun NavGraphBuilder.homeNavigation(
                 navigateToQuestTab = navigateToQuestTab,
                 navigateToMyTab = navigateToMyTab,
                 navigateToRankingTab = navigateToRankingTab,
-                navigateToSubmit = navigateToSubmit,
                 navigateToProfile = navigateToProfile,
+                onQuestClick = navigateToQuestDetail,
                 onBannerClick = onBannerClick,
                 onMyZoneClick = onMyZoneClick,
-                onIsZoneClick = onIsZoneClick,
-                onMissionImageClick = onMissionImageClick
+                onIsZoneClick = onIsZoneClick
             )
         }
     }
