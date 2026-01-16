@@ -5,12 +5,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,31 +16,25 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
-import com.ilsangtech.ilsang.core.ui.quest.bottomsheet.QuestBottomSheet
 import com.ilsangtech.ilsang.core.ui.quest.model.BannerQuestUiModel
-import com.ilsangtech.ilsang.core.ui.quest.model.QuestDetailUiModel
 import com.ilsangtech.ilsang.designsystem.theme.background
 import com.ilsangtech.ilsang.feature.banner.component.BannerDetailHeader
 import com.ilsangtech.ilsang.feature.banner.component.bannerDetailInfoContent
 import com.ilsangtech.ilsang.feature.banner.component.bannerDetailQuestsContent
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun BannerDetailScreen(
     bannerDetailViewModel: BannerDetailViewModel = hiltViewModel(),
-    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
-    navigateToMissionExample: (Int, Int, String, String, QuestType, Boolean) -> Unit,
+    onQuestClick: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
     val bannerDetailInfo = bannerDetailViewModel.bannerDetailInfo
 
     val selectedQuestType by bannerDetailViewModel.selectedQuestType.collectAsStateWithLifecycle()
     val selectedSortType by bannerDetailViewModel.selectedSortType.collectAsStateWithLifecycle()
-    val selectedQuest by bannerDetailViewModel.selectedQuestDetail.collectAsStateWithLifecycle()
 
     val onGoingQuests = bannerDetailViewModel.onGoingQuests.collectAsLazyPagingItems()
     val completedQuests = bannerDetailViewModel.completedQuests.collectAsLazyPagingItems()
@@ -52,86 +43,31 @@ internal fun BannerDetailScreen(
         imageId = bannerDetailInfo.imageId,
         title = bannerDetailInfo.title,
         description = bannerDetailInfo.description,
-        selectedQuest = selectedQuest,
         selectedQuestType = selectedQuestType,
         selectedSortType = selectedSortType,
         onGoingQuests = onGoingQuests,
         completedQuests = completedQuests,
-        onQuestClick = bannerDetailViewModel::selectQuest,
-        onUnselectQuest = bannerDetailViewModel::unselectQuest,
+        onQuestClick = onQuestClick,
         onQuestTypeChanged = bannerDetailViewModel::onQuestTypeChanged,
         onSortTypeChanged = bannerDetailViewModel::onSortTypeChanged,
-        onBackButtonClick = onBackButtonClick,
-        onFavoriteClick = bannerDetailViewModel::updateQuestFavoriteStatus,
-        onMissionImageClick = navigateToMissionExample,
-        onSubmitButtonClick = navigateToSubmit
+        onBackButtonClick = onBackButtonClick
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BannerDetailScreen(
     imageId: String,
     title: String,
     description: String,
-    selectedQuest: QuestDetailUiModel?,
     selectedQuestType: BannerDetailQuestType,
     selectedSortType: BannerDetailSortType,
     onGoingQuests: LazyPagingItems<BannerQuestUiModel>,
     completedQuests: LazyPagingItems<BannerQuestUiModel>,
     onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
     onSortTypeChanged: (BannerDetailSortType) -> Unit,
-    onQuestClick: (BannerQuestUiModel) -> Unit,
-    onUnselectQuest: () -> Unit,
-    onFavoriteClick: () -> Unit,
-    onMissionImageClick: (Int, Int, String, String, QuestType, Boolean) -> Unit,
-    onSubmitButtonClick: (Int, Int, MissionType, Boolean) -> Unit,
+    onQuestClick: (Int) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    if (selectedQuest != null) {
-        QuestBottomSheet(
-            quest = selectedQuest,
-            bottomSheetState = bottomSheetState,
-            onFavoriteClick = onFavoriteClick,
-            onMissionImageClick = {
-                selectedQuest.missions.firstOrNull()?.let { mission ->
-                    if (mission.exampleImageIds.isNotEmpty()) {
-                        coroutineScope.launch {
-                            bottomSheetState.hide()
-                            onUnselectQuest()
-                            onMissionImageClick(
-                                mission.id,
-                                selectedQuest.id,
-                                selectedQuest.title,
-                                selectedQuest.writerName,
-                                selectedQuest.questType,
-                                selectedQuest.isIsZoneQuest
-                            )
-                        }
-                    }
-                }
-            },
-            onApproveButtonClick = {
-                coroutineScope.launch {
-                    val mission = selectedQuest.missions.firstOrNull()
-                    bottomSheetState.hide()
-                    onUnselectQuest()
-                    mission?.let { missionId ->
-                        onSubmitButtonClick(
-                            selectedQuest.id,
-                            mission.id,
-                            mission.type,
-                            selectedQuest.isIsZoneQuest
-                        )
-                    }
-                }
-            },
-            onDismiss = onUnselectQuest
-        )
-    }
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = background
@@ -227,7 +163,6 @@ private fun BannerDetailScreenPreview() {
         imageId = "sample_banner_image",
         title = "Sample Banner Title",
         description = "This is a sample banner description. It can be a long text explaining the details of the banner.",
-        selectedQuest = null,
         selectedQuestType = BannerDetailQuestType.OnGoing,
         selectedSortType = BannerDetailSortType.Popular,
         onGoingQuests = onGoingQuests,
@@ -235,10 +170,6 @@ private fun BannerDetailScreenPreview() {
         onQuestClick = {},
         onQuestTypeChanged = {},
         onSortTypeChanged = {},
-        onSubmitButtonClick = { _, _, _, _ -> },
-        onBackButtonClick = {},
-        onUnselectQuest = {},
-        onFavoriteClick = {},
-        onMissionImageClick = { _, _, _, _, _, _ -> }
+        onBackButtonClick = {}
     )
 }

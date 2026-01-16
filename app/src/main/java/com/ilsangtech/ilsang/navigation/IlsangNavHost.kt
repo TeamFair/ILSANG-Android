@@ -33,7 +33,6 @@ import com.ilsangtech.ilsang.core.ui.title.TitleObtainmentDialog
 import com.ilsangtech.ilsang.core.ui.zone.IsZoneSuggestionDialog
 import com.ilsangtech.ilsang.designsystem.component.ILSANGNavigationBar
 import com.ilsangtech.ilsang.designsystem.component.IlsangNavigationBarItem
-import com.ilsangtech.ilsang.feature.approval.navigation.ApprovalExampleRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.ReportRoute
 import com.ilsangtech.ilsang.feature.approval.navigation.approvalNavigation
 import com.ilsangtech.ilsang.feature.approval.navigation.navigateToApprovalDetail
@@ -272,20 +271,8 @@ fun IlsangNavHost(
             isZoneNavigation(onBackButtonClick = navController::popBackStack)
 
             bannerNavigation(
-                onBackButtonClick = navController::popBackStack,
-                navigateToSubmit = navController::navigateToSubmit,
-                navigateToMissionExample = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
-                    navController.navigate(
-                        ApprovalExampleRoute(
-                            missionId,
-                            questId,
-                            questTitle,
-                            writerName,
-                            questType,
-                            isIsZoneQuest
-                        )
-                    )
-                }
+                navigateToQuestDetail = navController::navigateToQuestDetail,
+                onBackButtonClick = navController::popBackStack
             )
 
             couponNavigation(

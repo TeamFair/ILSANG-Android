@@ -51,7 +51,7 @@ internal fun LazyListScope.bannerDetailQuestsContent(
     completedQuests: LazyPagingItems<BannerQuestUiModel>,
     selectedQuestType: BannerDetailQuestType,
     selectedSortType: BannerDetailSortType,
-    onQuestClick: (BannerQuestUiModel) -> Unit,
+    onQuestClick: (Int) -> Unit,
     onQuestTypeChanged: (BannerDetailQuestType) -> Unit,
     onSortTypeChanged: (BannerDetailSortType) -> Unit
 ) {
@@ -180,13 +180,13 @@ internal fun LazyListScope.bannerDetailQuestsContent(
                     QuestCardWithArrow(
                         modifier = Modifier.padding(horizontal = 20.dp),
                         quest = bannerQuest,
-                        onClick = { onQuestClick(bannerQuest) }
+                        onClick = { onQuestClick(bannerQuest.questId) }
                     )
                 } else {
                     CompletedQuestCard(
                         modifier = Modifier.padding(horizontal = 20.dp),
                         quest = bannerQuest,
-                        onClick = { onQuestClick(bannerQuest) }
+                        onClick = { onQuestClick(bannerQuest.questId) }
                     )
                 }
 
