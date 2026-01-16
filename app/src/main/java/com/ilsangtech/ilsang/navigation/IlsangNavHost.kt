@@ -161,21 +161,9 @@ fun IlsangNavHost(
             )
 
             questNavigation(
-                onNavigateToSubmit = navController::navigateToSubmit,
+                onNavigateToQuestDetail = navController::navigateToQuestDetail,
                 onNavigateToMyZone = {
                     navController.navigate(MyZoneBaseRoute)
-                },
-                onMissionImageClick = { missionId, questId, questTitle, writerName, questType, isIsZoneQuest ->
-                    navController.navigate(
-                        ApprovalExampleRoute(
-                            missionId,
-                            questId,
-                            questTitle,
-                            writerName,
-                            questType,
-                            isIsZoneQuest
-                        )
-                    )
                 }
             )
 

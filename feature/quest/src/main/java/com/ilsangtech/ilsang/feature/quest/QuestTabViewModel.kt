@@ -11,23 +11,19 @@ import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.quest.TypedQuest
-import com.ilsangtech.ilsang.core.ui.quest.model.TypedQuestUiModel
 import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import com.ilsangtech.ilsang.feature.quest.model.QuestTabUiModel
 import com.ilsangtech.ilsang.feature.quest.model.RepeatQuestTypeUiModel
 import com.ilsangtech.ilsang.feature.quest.model.SortTypeUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
@@ -42,8 +38,6 @@ class QuestTabViewModel @Inject constructor(
     private val questRepository: QuestRepository,
     questCompleteDateRepository: QuestCompleteDateRepository
 ) : ViewModel() {
-    private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
-
     private val _selectedQuestTab = MutableStateFlow(QuestTabUiModel.NORMAL)
     val selectedQuestTab = _selectedQuestTab.asStateFlow()
 
@@ -52,8 +46,6 @@ class QuestTabViewModel @Inject constructor(
 
     private val _selectedSortType = MutableStateFlow(SortTypeUiModel.PointDesc)
     val selectedSortType = _selectedSortType.asStateFlow()
-
-    private val _selectedQuest = MutableStateFlow<TypedQuestUiModel?>(null)
 
     private val myInfo = userRepository.getMyInfo().shareIn(
         scope = viewModelScope,
@@ -77,25 +69,6 @@ class QuestTabViewModel @Inject constructor(
     private val unfavoriteQuests = MutableStateFlow(setOf<Int>())
 
     private val questCompleteDateMapFlow = questCompleteDateRepository.questCompleteDateMapFlow
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedQuestDetail = combine(
-        _selectedQuest,
-        questDetailRefreshTrigger.onStart { emit(Unit) }
-    ) { quest, _ -> quest }.flatMapLatest { quest ->
-        quest?.let {
-            questRepository.getQuestDetail(
-                questId = it.questId,
-                isIsZoneQuest = it.isIsZoneQuest
-            ).map { questDetail ->
-                questDetail.toUiModel(quest.remainHours)
-            }
-        } ?: flowOf(null)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
-    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val normalQuests = myInfo.flatMapLatest { myInfo ->
@@ -215,14 +188,6 @@ class QuestTabViewModel @Inject constructor(
         }
     }
 
-    fun selectQuest(quest: TypedQuestUiModel) {
-        _selectedQuest.update { quest }
-    }
-
-    fun unselectQuest() {
-        _selectedQuest.update { null }
-    }
-
     fun selectQuestType(questTab: QuestTabUiModel) {
         _selectedQuestTab.update { questTab }
         if (questTab == QuestTabUiModel.REPEAT) {
@@ -242,7 +207,6 @@ class QuestTabViewModel @Inject constructor(
         viewModelScope.launch {
             if (!isFavorite) {
                 questRepository.registerFavoriteQuest(questId).onSuccess {
-                    questDetailRefreshTrigger.emit(Unit)
                     favoriteQuestSet.update { it + questId }
                     if (questId in unfavoriteQuests.value) {
                         unfavoriteQuests.update { it - questId }
@@ -250,7 +214,6 @@ class QuestTabViewModel @Inject constructor(
                 }
             } else {
                 questRepository.deleteFavoriteQuest(questId).onSuccess {
-                    questDetailRefreshTrigger.emit(Unit)
                     unfavoriteQuests.update { it + questId }
                     if (questId in unfavoriteQuests.value) {
                         favoriteQuestSet.update { it - questId }
