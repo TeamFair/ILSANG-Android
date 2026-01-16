@@ -65,6 +65,8 @@ import com.ilsangtech.ilsang.feature.profile.navigation.ProfileRoute
 import com.ilsangtech.ilsang.feature.profile.navigation.navigateToChallenge
 import com.ilsangtech.ilsang.feature.profile.navigation.profileRoute
 import com.ilsangtech.ilsang.feature.quest.navigation.questNavigation
+import com.ilsangtech.ilsang.feature.quest_detail.navigation.navigateToQuestDetail
+import com.ilsangtech.ilsang.feature.quest_detail.navigation.questDetailNavigation
 import com.ilsangtech.ilsang.feature.ranking.navigation.SeasonRewardRoute
 import com.ilsangtech.ilsang.feature.ranking.navigation.rankingNavigation
 import com.ilsangtech.ilsang.feature.submit.navigation.ImageSubmitBaseRoute
@@ -316,6 +318,8 @@ fun IlsangNavHost(
                 },
                 popBackStack = navController::popBackStack
             )
+
+            questDetailNavigation(popBackStack = navController::popBackStack)
         }
     }
 }
