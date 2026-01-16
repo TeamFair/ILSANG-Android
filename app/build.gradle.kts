@@ -80,6 +80,7 @@ dependencies {
     implementation(projects.feature.iszone)
     implementation(projects.feature.banner)
     implementation(projects.feature.coupon)
+    implementation(projects.feature.questDetail)
 
     implementation(libs.coil)
     implementation(libs.androidx.appcompat)
