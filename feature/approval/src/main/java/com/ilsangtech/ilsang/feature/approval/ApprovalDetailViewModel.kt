@@ -9,10 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ilsangtech.ilsang.core.domain.CommentRepository
-import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.comment.CommentCreationResult
-import com.ilsangtech.ilsang.core.ui.quest.model.toUiModel
 import com.ilsangtech.ilsang.feature.approval.model.CommentAlertUiState
 import com.ilsangtech.ilsang.feature.approval.model.CommentUiModel
 import com.ilsangtech.ilsang.feature.approval.model.CommentUiState
@@ -28,8 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -41,8 +37,7 @@ import javax.inject.Inject
 class ApprovalDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     userRepository: UserRepository,
-    private val commentRepository: CommentRepository,
-    private val questRepository: QuestRepository
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
     val missionHistoryUiModel =
         savedStateHandle.toRoute<ApprovalDetailRoute>(missionHistoryUiModelTypeMap).missionHistory
@@ -100,24 +95,6 @@ class ApprovalDetailViewModel @Inject constructor(
 
     private val _listScrollRequestPosition = MutableStateFlow<Int?>(null)
     val listScrollPosition: StateFlow<Int?> = _listScrollRequestPosition
-
-
-    private val _selectedQuestId = MutableStateFlow<Int?>(null)
-    private val questDetailRefreshTrigger = MutableSharedFlow<Unit>(replay = 1)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val questDetail = combine(
-        _selectedQuestId,
-        questDetailRefreshTrigger.onStart { emit(Unit) }
-    ) { questId, _ -> questId }.flatMapLatest { questId ->
-        questId?.let {
-            questRepository.getQuestDetail(questId).map { it.toUiModel() }
-        } ?: flowOf(null)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = null
-    )
 
     fun selectComment(commentUiModel: CommentUiModel) {
         selectedComment.update { commentUiModel }
@@ -199,29 +176,5 @@ class ApprovalDetailViewModel @Inject constructor(
 
     fun shownCommentAlert() {
         _commentAlertUiState.update { null }
-    }
-
-    fun selectQuest() {
-        _selectedQuestId.update { missionHistoryUiModel.questId }
-    }
-
-    fun unselectQuest() {
-        _selectedQuestId.update { null }
-    }
-
-    fun updateQuestFavoriteStatus() {
-        viewModelScope.launch {
-            questDetail.value?.let { questDetail ->
-                if (!questDetail.favoriteYn) {
-                    questRepository.registerFavoriteQuest(questDetail.id).onSuccess {
-                        questDetailRefreshTrigger.emit(Unit)
-                    }
-                } else {
-                    questRepository.deleteFavoriteQuest(questDetail.id).onSuccess {
-                        questDetailRefreshTrigger.emit(Unit)
-                    }
-                }
-            }
-        }
     }
 }

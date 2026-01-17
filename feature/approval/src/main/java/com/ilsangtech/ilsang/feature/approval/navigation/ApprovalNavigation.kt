@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ilsangtech.ilsang.core.model.mission.MissionType
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.feature.approval.ApprovalDetailScreen
 import com.ilsangtech.ilsang.feature.approval.ApprovalExampleScreen
@@ -62,8 +61,6 @@ fun NavController.navigateToApprovalExample(
 fun NavGraphBuilder.approvalNavigation(
     popBackStack: () -> Unit,
     navigateToApprovalDetail: (MissionHistoryUiModel) -> Unit,
-    navigateToApprovalExample: (Int, Int, String, String, QuestType, Boolean) -> Unit,
-    navigateToSubmit: (Int, Int, MissionType, Boolean) -> Unit,
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToMissionReport: (Int) -> Unit,
@@ -97,8 +94,7 @@ fun NavGraphBuilder.approvalNavigation(
             onProfileClick = navigateToProfile,
             onMissionHistoryReportClick = navigateToMissionReport,
             onCommentReportClick = navigateToCommentReport,
-            onMissionImageClick = navigateToApprovalExample,
-            onApproveButtonClick = navigateToSubmit
+            onQuestClick = navigateToQuestDetail
         )
     }
 }
