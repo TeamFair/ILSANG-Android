@@ -67,16 +67,16 @@ fun NavGraphBuilder.approvalNavigation(
     navigateToImageCapture: (Int, Int, Boolean) -> Unit,
     navigateToProfile: (String) -> Unit,
     navigateToMissionReport: (Int) -> Unit,
-    navigateToCommentReport: (Int) -> Unit
+    navigateToCommentReport: (Int) -> Unit,
+    navigateToQuestDetail: (Int) -> Unit,
 ) {
     navigation<ApprovalBaseRoute>(startDestination = ApprovalRoute) {
         composable<ApprovalRoute> {
             ApprovalScreen(
                 navigateToApprovalDetail = navigateToApprovalDetail,
-                navigateToApprovalExample = navigateToApprovalExample,
-                navigateToSubmit = navigateToSubmit,
                 navigateToProfile = navigateToProfile,
-                navigateToReport = navigateToMissionReport
+                navigateToReport = navigateToMissionReport,
+                navigateToQuestDetail = navigateToQuestDetail
             )
         }
     }

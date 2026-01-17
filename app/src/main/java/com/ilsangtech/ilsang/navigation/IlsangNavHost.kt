@@ -263,7 +263,8 @@ fun IlsangNavHost(
                 },
                 navigateToCommentReport = { commentId ->
                     navController.navigate(ReportRoute(commentId = commentId))
-                }
+                },
+                navigateToQuestDetail = navController::navigateToQuestDetail
             )
 
             myZoneNavigation(onBackButtonClick = navController::popBackStack)
