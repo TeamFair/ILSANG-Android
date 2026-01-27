@@ -81,6 +81,7 @@ dependencies {
     implementation(projects.feature.banner)
     implementation(projects.feature.coupon)
 
+    implementation(libs.kotlinx.collections.immutable)
     implementation(libs.coil)
     implementation(libs.androidx.appcompat)
     implementation(libs.play.services.oss.licenses)
