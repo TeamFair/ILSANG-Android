@@ -7,6 +7,8 @@ import com.ilsangtech.ilsang.core.domain.TitleRepository
 import com.ilsangtech.ilsang.core.domain.UserRepository
 import com.ilsangtech.ilsang.core.model.title.UserTitle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +40,9 @@ class MainActivityViewModel @Inject constructor(
                 if (myInfo.showIsZoneDialogAgain) {
                     _shouldShowIsZoneDialog.update { true }
                 }
-                _unreadTitleList.update { titleRepository.getUnreadTitleList() }
+                _unreadTitleList.update {
+                    titleRepository.getUnreadTitleList().toPersistentList()
+                }
             }
             .map { true }
             .catch { emit(false) }
@@ -54,8 +58,12 @@ class MainActivityViewModel @Inject constructor(
         initialValue = false
     )
 
-    private val _unreadTitleList = MutableStateFlow<List<UserTitle>>(emptyList())
-    val unreadTitleList = _unreadTitleList.asStateFlow()
+    private val _unreadTitleList = MutableStateFlow(persistentListOf<UserTitle>())
+    val unreadTitleList = _unreadTitleList.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = persistentListOf()
+    )
 
     init {
         viewModelScope.launch {
@@ -96,7 +104,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch {
             titleRepository.readTitle(titleHistoryId)
             _unreadTitleList.update { list ->
-                list.filter { it.titleHistoryId != titleHistoryId }
+                list.filterNot { it.titleHistoryId == titleHistoryId }.toPersistentList()
             }
         }
     }
