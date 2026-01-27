@@ -72,13 +72,14 @@ import com.ilsangtech.ilsang.feature.submit.navigation.navigateToImageSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.navigateToSubmit
 import com.ilsangtech.ilsang.feature.submit.navigation.submitNavigation
 import com.ilsangtech.ilsang.feature.tutorial.navigation.tutorialNavigation
+import kotlinx.collections.immutable.PersistentList
 import kotlin.reflect.KClass
 
 @Composable
 fun IlsangNavHost(
     startDestination: KClass<*>,
     shouldShowIsZoneDialog: Boolean,
-    unreadTitleList: List<UserTitle>,
+    unreadTitleList: PersistentList<UserTitle>,
     login: () -> Unit,
     logout: () -> Unit,
     completeOnBoarding: () -> Unit,

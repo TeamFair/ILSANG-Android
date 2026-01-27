@@ -7,13 +7,14 @@ import com.ilsangtech.ilsang.feature.home.navigation.HomeBaseRoute
 import com.ilsangtech.ilsang.feature.login.navigation.LoginBaseRoute
 import com.ilsangtech.ilsang.feature.tutorial.navigation.TutorialBaseRoute
 import com.ilsangtech.ilsang.navigation.IlsangNavHost
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun IlsangApp(
     isLoggedIn: Boolean?,
     shouldShowOnBoarding: Boolean,
     shouldShowIsZoneDialog: Boolean,
-    unreadTitleList: List<UserTitle>,
+    unreadTitleList: PersistentList<UserTitle>,
     completeOnBoarding: () -> Unit,
     shownIsZoneDialog: (Boolean) -> Unit,
     onDismissTitleDialog: (Int) -> Unit,
