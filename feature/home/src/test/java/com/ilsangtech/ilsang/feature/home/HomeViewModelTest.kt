@@ -3,6 +3,7 @@ package com.ilsangtech.ilsang.feature.home
 import app.cash.turbine.test
 import com.ilsangtech.ilsang.core.domain.AreaRepository
 import com.ilsangtech.ilsang.core.domain.BannerRepository
+import com.ilsangtech.ilsang.core.domain.QuestCompleteDateRepository
 import com.ilsangtech.ilsang.core.domain.QuestRepository
 import com.ilsangtech.ilsang.core.domain.RankRepository
 import com.ilsangtech.ilsang.core.domain.SeasonRepository
@@ -23,20 +24,24 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
+    private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var viewModel: HomeViewModel
 
@@ -58,10 +63,12 @@ class HomeViewModelTest {
     @MockK
     private lateinit var rankRepository: RankRepository
 
+    @MockK
+    private lateinit var questCompleteDateRepository: QuestCompleteDateRepository
 
     @Before
     fun setup() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
         MockKAnnotations.init(this, relaxed = true)
     }
 
@@ -87,6 +94,10 @@ class HomeViewModelTest {
         )
         coEvery { seasonRepository.getCurrentSeason() } returns mockk<Season>(relaxed = true)
 
+        coEvery { questCompleteDateRepository.questCompleteDateMapFlow } returns MutableStateFlow(
+            emptyMap()
+        )
+
         // when
         viewModel = HomeViewModel(
             userRepository,
@@ -94,13 +105,14 @@ class HomeViewModelTest {
             areaRepository,
             bannerRepository,
             questRepository,
-            rankRepository
+            rankRepository,
+            questCompleteDateRepository
         )
 
         // then
         viewModel.homeTabUiState.test {
-            val item = awaitItem()
-            assertTrue(item is HomeTabUiState.Success)
+            skipItems(1)
+            assertTrue(awaitItem() is HomeTabUiState.Success)
             assertEquals(
                 "강남역 상권",
                 (viewModel.homeTabUiState.value as HomeTabUiState.Success).data.myInfo.isCommericalAreaName
@@ -121,11 +133,13 @@ class HomeViewModelTest {
             areaRepository,
             bannerRepository,
             questRepository,
-            rankRepository
+            rankRepository,
+            questCompleteDateRepository
         )
 
         // then
         viewModel.homeTabUiState.test {
+            skipItems(1)
             val item = awaitItem()
             assertTrue(item is HomeTabUiState.Error)
             assertTrue((item as HomeTabUiState.Error).throwable is IllegalStateException)
@@ -150,7 +164,8 @@ class HomeViewModelTest {
             areaRepository,
             bannerRepository,
             questRepository,
-            rankRepository
+            rankRepository,
+            questCompleteDateRepository
         )
 
         // when
@@ -158,6 +173,7 @@ class HomeViewModelTest {
 
         viewModel.selectedQuest.test {
             // then
+            skipItems(1)
             val item = awaitItem()
             assertTrue(item != null)
             assertEquals("Test Quest", item?.title)
@@ -166,14 +182,18 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `즐겨찾기 등록 로직이 올바르게 동작하고 퀘스트 상세 재조회가 트리거된다`() = runTest {
+    fun `즐겨찾기 등록 시 퀘스트 상세 재조회가 트리거된다 - turbine`() = runTest {
         // given
         every { userRepository.getMyInfo() } returns flowOf(mockk(relaxed = true))
         every {
             questRepository.getQuestDetail(any(), any())
-        } returns flowOf(mockk(relaxed = true) {
-            every { favoriteYn } returns false
-        })
+        } returns flowOf(
+            mockk(relaxed = true) {
+                every { id } returns 1
+                every { favoriteYn } returns false
+            }
+        )
+
         coEvery {
             questRepository.registerFavoriteQuest(any())
         } returns Result.success(Unit)
@@ -184,23 +204,32 @@ class HomeViewModelTest {
             areaRepository,
             bannerRepository,
             questRepository,
-            rankRepository
+            rankRepository,
+            questCompleteDateRepository
         )
 
         viewModel.selectedQuest.test {
-            awaitItem()
+            skipItems(1)
             // when
             viewModel.selectQuest(1)
+            val first = awaitItem()
+            assertNotNull(first)
+
             viewModel.updateQuestFavoriteStatus()
-            awaitItem()
+            advanceUntilIdle()
+
+            // then
+            coVerify(exactly = 1) {
+                questRepository.registerFavoriteQuest(1)
+            }
+            coVerify(atLeast = 2) {
+                questRepository.getQuestDetail(1, any())
+            }
         }
-        // then
-        coVerify(exactly = 1) { questRepository.registerFavoriteQuest(any()) }
-        coVerify(atLeast = 2) { questRepository.getQuestDetail(1, any()) } // 최초 1회 + refresh 1회
     }
 
     @Test
-    fun `시즌 오픈 다이얼로그 읽음 처리 시 읽음 상태가 업데이트 되어야 한다`() {
+    fun `시즌 오픈 다이얼로그 읽음 처리 시 읽음 상태가 업데이트 되어야 한다`() = runTest {
         // given
         viewModel = HomeViewModel(
             userRepository,
@@ -208,10 +237,12 @@ class HomeViewModelTest {
             areaRepository,
             bannerRepository,
             questRepository,
-            rankRepository
+            rankRepository,
+            questCompleteDateRepository
         )
         // when
         viewModel.seasonOpenDialogShown(true)
+        advanceUntilIdle()
         // then
         coVerify { userRepository.updateSeasonOpenDialogRejected(true) }
         assertEquals(viewModel.shouldShowSeasonOpenDialog.value, false)
