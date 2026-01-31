@@ -1,4 +1,4 @@
-package com.ilsangtech.ilsang.core.ui.quest.model
+package com.ilsangtech.ilsang.feature.quest_detail.model
 
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
