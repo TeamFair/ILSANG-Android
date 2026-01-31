@@ -3,10 +3,11 @@ package com.ilsangtech.ilsang.core.model.quest
 import com.ilsangtech.ilsang.core.model.coupon.QuestDetailCoupon
 import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import java.util.Date
 
 data class QuestDetail(
     val id: Int,
-    val expireDate: String?,
+    val expireDate: Date?,
     val favoriteYn: Boolean,
     val imageId: String?,
     val mainImageId: String?,

@@ -8,11 +8,12 @@ import com.ilsangtech.ilsang.core.network.model.coupon.QuestDetailCouponNetworkM
 import com.ilsangtech.ilsang.core.network.model.mission.MissionNetworkModel
 import com.ilsangtech.ilsang.core.network.model.quest.QuestDetailResponse
 import com.ilsangtech.ilsang.core.network.model.quest.RewardPointNetworkModel
+import com.ilsangtech.ilsang.core.util.DateConverter
 
 internal fun QuestDetailResponse.toQuestDetail(isIsZoneQuest: Boolean): QuestDetail {
     return QuestDetail(
         id = id,
-        expireDate = expireDate,
+        expireDate = expireDate?.let { DateConverter.parseDate(it) },
         favoriteYn = favoriteYn,
         imageId = imageId,
         mainImageId = mainImageId,

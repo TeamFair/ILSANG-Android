@@ -5,6 +5,7 @@ import com.ilsangtech.ilsang.core.model.mission.Mission
 import com.ilsangtech.ilsang.core.model.quest.QuestDetail
 import com.ilsangtech.ilsang.core.model.quest.QuestType
 import com.ilsangtech.ilsang.core.model.reward.RewardPoint
+import com.ilsangtech.ilsang.core.util.DateConverter
 
 data class QuestDetailUiModel(
     val id: Int,
@@ -29,7 +30,9 @@ data class QuestDetailUiModel(
 fun QuestDetail.toUiModel(remainHours: Int? = null): QuestDetailUiModel {
     return QuestDetailUiModel(
         id = id,
-        expireDate = expireDate,
+        expireDate = expireDate?.let {
+            "${DateConverter.formatDate(it)} 까지"
+        },
         favoriteYn = favoriteYn,
         imageId = imageId,
         mainImageId = mainImageId,
