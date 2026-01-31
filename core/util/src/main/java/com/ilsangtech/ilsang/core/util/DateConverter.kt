@@ -16,6 +16,13 @@ object DateConverter {
         return sdf.parse(dateStr)!!
     }
 
+    fun formatDate(date: Date, outputPattern: String = "yyyy.MM.dd"): String {
+        val sdf = SimpleDateFormat(outputPattern, Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }
+        return sdf.format(date)
+    }
+
     fun formatDate(input: String, outputPattern: String = "yyyy.MM.dd"): String {
         return try {
             val inputFormat = SimpleDateFormat(DEFAULT_PATTERN, Locale.getDefault()).apply {
